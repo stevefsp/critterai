@@ -27,7 +27,7 @@ package org.critterai.nmgen;
  * class could extend HeightSpan.  But this class is being kept separate for clarity.  
  * As an independent class it can use the {@link #floor()} and {@link #ceiling()} nomenclature that
  * makes reading code much easier.</p>
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro">Introduction to Heightfields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Heightfields</a>
  * @see HeightSpan
  */
 public final class OpenHeightSpan 
@@ -159,7 +159,7 @@ public final class OpenHeightSpan
 	 * @param direction  The direction to search.
 	 * @return A reference to the axis-neighbor in the specified direction.  Or null if there
 	 * is no neighbor in the direction or the direction index is invalid.
-	 * @see <a href="http://www.critterai.org/?q=nmgen_hfintro#nsearch">Neighbor Searches</a>
+	 * @see <a href="http://www.critterai.org/?q=nmgen_hfintro#nsearch" target="_parent">Neighbor Searches</a>
 	 */
 	public OpenHeightSpan getNeighbor(int direction)
 	{
@@ -179,7 +179,7 @@ public final class OpenHeightSpan
 	 * Zero is the neighbor offset at (-1, 0) and the search proceeds clockwise.</p>
 	 * @param direction The direction of the neighbor.
 	 * @param neighbor The neighbor of this span.
-	 * @see <a href="http://www.critterai.org/?q=nmgen_hfintro#nsearch">Neighbor Searches</a>
+	 * @see <a href="http://www.critterai.org/?q=nmgen_hfintro#nsearch" target="_parent">Neighbor Searches</a>
 	 */
 	public void setNeighbor(int direction, OpenHeightSpan neighbor)
 	{

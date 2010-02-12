@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Applies an algorithm to contours which results in null-region edges
  * following the original detail source geometry edge more closely.
  * TODO: DOC: Add visualization.
- * @see <a href="http://www.critterai.org/?q=nmgen_config#maxEdgeLength">Configuration Options</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_config#maxEdgeLength" target="_parent">Configuration Options</a>
  */
 public final class MatchNullRegionEdges 
 	implements IContourAlgorithm 

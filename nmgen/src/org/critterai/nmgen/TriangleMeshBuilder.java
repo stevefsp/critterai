@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * mesh to the surface defined in the open heightfield.
  * TODO: DOC: Add visualizations.
  * @see TriangleMesh
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro">Introduction to Height Fields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  */
 public class TriangleMeshBuilder 
 {

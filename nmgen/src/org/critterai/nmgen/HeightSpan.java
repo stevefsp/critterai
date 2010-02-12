@@ -24,7 +24,7 @@ package org.critterai.nmgen;
 /**
  * Represents a span within the cell column of a heightfield.
  * Spans represent one or more contiguous voxels.
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro">Introduction to Heightfields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Heightfields</a>
  */
 public class HeightSpan 
 {

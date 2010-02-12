@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
  * <p>For this type of heightfield, spans represent the floor and ceiling of the open spaces.</p> 
  * <p>WARNING: This class has very little protections build into it.  It is basically an uncontrolled
  * data structure with convenience functions.</p>
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro">Introduction to Height Fields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  */
 public final class OpenHeightfield 
 	extends BaseHeightfield<OpenHeightSpan>
