@@ -23,7 +23,7 @@ package org.critterai.nmgen;
 
 /**
  * Represents the final triangle mesh created by the navigation mesh generation process.
- * <p>WARNING: The core data within the class is unprotected.</p>
+ * <p>WARNING: The core data within this class is unprotected.</p>
  */
 public final class TriangleMesh 
 {

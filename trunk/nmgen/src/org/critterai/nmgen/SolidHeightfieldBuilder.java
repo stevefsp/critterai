@@ -37,7 +37,7 @@ package org.critterai.nmgen;
  * <li>If ledge culling is enabled, the top of the span does not represent a ledge.  
  * (Agents can legally "step down" from the span to any of its neighbors.)</li>
  * </ul>
- * @see <a href="http://www.critterai.org/nmgen_hfintro">Introduction to Heightfields.</a>
+ * @see <a href="http://www.critterai.org/nmgen_hfintro" target="_parent">Introduction to Heightfields.</a>
  * @see <a href="http://www.ecn.purdue.edu/purpl/level2/papers/consvox.pdf" target="_blank">Conservative Voxelization (PDF)</a>
  */
 public final class SolidHeightfieldBuilder 

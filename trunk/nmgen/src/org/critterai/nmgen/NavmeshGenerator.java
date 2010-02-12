@@ -28,10 +28,10 @@ import java.util.ArrayList;
  * <p>When the build operation is provided with source geometry, a triangle mesh is
  * generated which represents the traversable (walkable) surfaces of the source geometry.  A large number
  * of configuration options are used to adjust the final result.</p>
- * <img src="http://www.critterai.org/sites/default/files/study/nmgen/main_navmesh_lg.png"/>
- * @see <a href="http://www.critterai.org/?q=nmgen">Project Home</a>
- * @see <a href="http://www.critterai.org/?q=nmgen_overview">Process Overview</a>
- * @see <a href="http://www.critterai.org/?q=nmgen_config">Configuration Options</a>
+ * <img src="http://www.critterai.org/sites/default/files/study/nmgen/main_navmesh.jpg"/>
+ * @see <a href="http://www.critterai.org/?q=nmgen" target="_parent">Project Home</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_overview" target="_parent">Process Overview</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_config" target="_parent">Configuration Options</a>
  */
 public final class NavmeshGenerator
 {
@@ -153,8 +153,7 @@ public final class NavmeshGenerator
 	 * @throws IllegalArgumentException  If there are any unresolvable argument errors.  (Most argument errors
 	 * are avoided through value clamping and other auto-correction methods.)
 	 * 
-	 * @see <a href="http://www.critterai.org/?q=nmgen_config">
-	 * Detailed parameter information.</a>
+	 * @see <a href="http://www.critterai.org/?q=nmgen_config" target="_parent">Detailed parameter information.</a>
 	 */
 	public NavmeshGenerator(float cellSize
 				, float cellHeight
@@ -250,7 +249,7 @@ public final class NavmeshGenerator
 	 * successfully generated.
 	 * @param outLogData If non-null, this argument will be poplulated with log data.
 	 * @return The generated navigation mesh, or null if generation failed.
-	 * @see <a href="http://www.critterai.org/?q=nmgen_overview">Process Overview</a>
+	 * @see <a href="http://www.critterai.org/?q=nmgen_overview" target="_parent">Process Overview</a>
 	 */
 	public TriangleMesh build(float[] vertices
 			, int[] indices
