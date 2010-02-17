@@ -7,10 +7,11 @@
 
 <body>
 
-<p>NMGen is adaptation of <a href="http://code.google.com/p/recastnavigation/" target="_blank">Recast's</a> static mesh functionality in the Java language for purposes of study  and experimentation. It takes an arbitrary triangle mesh as input  and outputs a simplified triangle mesh representing the traversable  surface of the original mesh. </p>
+<p>NMGen is adaptation of <a href="http://code.google.com/p/recastnavigation/" target="_blank">Recast's</a> static mesh functionality in the Java language for purposes of study  and experimentation. It takes an arbitrary triangle mesh as input  and outputs meshes representing the traversable  surface of the original mesh.</p>
 <p><a href="http://www.critterai.org/nmgen" target="_parent">Project Documentation<br />
 </a><a href="http://code.google.com/p/critterai/" target="_parent">Project Source</a><br />
 <a href="http://www.critterai.org/nmgen_codelicense" target="_parent">License</a></p>
+<p>Example of a detail mesh:</p>
 <img src="http://www.critterai.org/sites/default/files/study/nmgen/main_navmesh.jpg"/>
 <p><strong>Navigation Mesh Generation Process</strong></p>
 
@@ -29,9 +30,8 @@ created and released by Mikko Mononen under the
 	<li>
 		Generate Contours - Detect the contours of the regions and form them into <a href="http://en.wikipedia.org/wiki/Polygon#Convexity" target="_blank">simple polygons</a>.</li>
 	<li>
-		Generate Convex Polygons - Divide the contours into convex polygons.</li>
-	<li>
-		Generate the Final Navigation Mesh - <a href="http://mathworld.wolfram.com/Triangulation.html" target="_blank">Triangulate</a> the polygons.</li>
+		Generate Polygon Mesh - Divide the contours into convex polygons.</li>
+	<li>Generate  Detailed Mesh - <a href="http://mathworld.wolfram.com/Triangulation.html" target="_blank">Triangulate</a> the polygon mesh and add height detail.</li>
 </ol>
   
 <p>See <a href="http://www.critterai.org/nmgen_overview" target="_parent">The High Level Process</a>
@@ -68,14 +68,14 @@ as input for the next:</p>
          <td>{@link org.critterai.nmgen.OpenHeightfield} (Fully built.)</td>
      </tr>
      <tr>
-         <td>Convex Polygon Generation</td>
+         <td>Polygon Mesh Generation</td>
          <td>{@link org.critterai.nmgen.PolyMeshField}</td>
          <td>{@link org.critterai.nmgen.PolyMeshField}</td>
          <td>{@link org.critterai.nmgen.ContourSet}</td>
      </tr>
      <tr>
-         <td>Final Navigation Mesh Generation</td>
-         <td>{@link org.critterai.nmgen.TriangleMeshBuilder}</td>
+         <td>Detail  Mesh Generation</td>
+         <td>{@link org.critterai.nmgen.DetailMeshBuilder}</td>
          <td>{@link org.critterai.nmgen.TriangleMesh}</td>
          <td>{@link org.critterai.nmgen.PolyMeshField}</td>
      </tr>
