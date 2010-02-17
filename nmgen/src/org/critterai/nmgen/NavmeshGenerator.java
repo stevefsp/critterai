@@ -25,9 +25,10 @@ import java.util.ArrayList;
 
 /**
  * Used to generate static triangle meshes representing the traversable surfaces of arbitrary source geometry.
- * <p>When the build operation is provided with source geometry, a triangle mesh is
- * generated which represents the traversable (walkable) surfaces of the source geometry.  A large number
+ * <p>When the build operation is provided with source geometry, several meshes are generated which represent 
+ * the traversable (walkable) surfaces of the source geometry.  A large number
  * of configuration options are used to adjust the final result.</p>
+ * <p>Example of a detail mesh:</p>
  * <img src="http://www.critterai.org/sites/default/files/study/nmgen/main_navmesh.jpg"/>
  * @see <a href="http://www.critterai.org/?q=nmgen" target="_parent">Project Home</a>
  * @see <a href="http://www.critterai.org/?q=nmgen_overview" target="_parent">Process Overview</a>
@@ -55,7 +56,7 @@ public final class NavmeshGenerator
 	private final OpenHeightfieldBuilder mOpenHeightFieldBuilder;
 	private final ContourSetBuilder mContourSetBuilder;
 	private final PolyMeshFieldBuilder mPolyMeshBuilder;
-	private final TriangleMeshBuilder mTriangleMeshBuilder;
+	private final DetailMeshBuilder mTriangleMeshBuilder;
 	
 	/**
 	 * Constructor
@@ -237,7 +238,7 @@ public final class NavmeshGenerator
 		
 		// Construct the polymesh and triange mesh builders.
 		mPolyMeshBuilder = new PolyMeshFieldBuilder(maxVertsPerPoly);
-		mTriangleMeshBuilder = new TriangleMeshBuilder(contourSampleDistance, contourMaxDeviation);
+		mTriangleMeshBuilder = new DetailMeshBuilder(contourSampleDistance, contourMaxDeviation);
 	}
 	
 	/**
