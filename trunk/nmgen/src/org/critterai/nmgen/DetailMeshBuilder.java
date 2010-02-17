@@ -28,11 +28,11 @@ import java.util.ArrayList;
  * Builds an triangle mesh from {@link OpenHeightfield } and {@link PolyMeshField} data.  
  * The polygon mesh field is triangulated and detail added as needed to match the surface of the 
  * mesh to the surface defined in the open heightfield.
- * TODO: DOC: Add visualizations.
+ * <p>TODO: DOC: Add visualizations.</p>
  * @see TriangleMesh
  * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  */
-public class TriangleMeshBuilder 
+public class DetailMeshBuilder 
 {
 
 	/*
@@ -113,7 +113,7 @@ public class TriangleMeshBuilder
 	 * triangles in the final navmesh at a high processing cost.</p>
 	 * <p>Constraints:  >= 0</p>
 	 */
-	public TriangleMeshBuilder(float contourSampleDistance, float contourMaxDeviation)
+	public DetailMeshBuilder(float contourSampleDistance, float contourMaxDeviation)
 	{
 		mContourSampleDistance = Math.max(0, contourSampleDistance);
 		mContourMaxDeviation = Math.max(0, contourMaxDeviation);
