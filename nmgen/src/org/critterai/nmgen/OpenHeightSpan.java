@@ -23,6 +23,9 @@ package org.critterai.nmgen;
 
 /**
  * Represents the open space above a solid span within the cell column of a heightfield.
+ *  * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/hf_07_openfield.png" target="_blank">
+ * <img alt="" height="449" src="http://www.critterai.org/sites/default/files/study/nmgen/hf_07_openfield.jpg" width="620" />
+ * </a></p>
  * <p>Design Note: Structurally this class is so similar with {@link HeightSpan} that this 
  * class could extend HeightSpan.  But this class is being kept separate for clarity.  
  * As an independent class it can use the {@link #floor()} and {@link #ceiling()} nomenclature that

@@ -32,7 +32,10 @@ import java.util.ArrayList;
  * <li>If a region is below a threshold size, attempts to merge the region into the most
  * appropriate larger neighbor region.</li>
  * </ul>
- * TODO: DOC: Add visualization.
+ * <a href="http://www.critterai.org/sites/default/files/study/nmgen/islandregion_filter.png" target="_blank">
+ * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/islandregion_filter.jpg" style="width: 620px; height: 452px; " />
+ * </a>
+ * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>
  */
 public final class FilterOutSmallRegions 
 	implements IOpenHeightFieldAlgorithm 
@@ -41,7 +44,7 @@ public final class FilterOutSmallRegions
 	/*
 	 * Recast Reference: filerSmallRegions() in RecastRegion.cpp
 	 * 
-	 * Doc State: Text Complete. TODO: DOC: Add visualizations.
+	 * Doc State: Complete.
 	 * Standards Check: Complete
 	 */
 	
@@ -52,7 +55,7 @@ public final class FilterOutSmallRegions
 	 * Constructor
 	 * @param minUnconnectedRegionSize The minimum region size for unconnected (island) regions. (Voxels)
 	 * <p>Any generated regions that are not connected to any other region and are smaller than this
-	 * size will be culled before final navmesh generation.  I.e. No longer considered walkable.<p>
+	 * size will be culled before final navmesh generation.  I.e. No longer considered traversable.<p>
 	 * <p>Constraints:  > 0</p>
 	 * 
 	 * @param mergeRegionSize Any regions smaller than this size will, if possible, be merged with larger regions. (Voxels)
@@ -62,8 +65,7 @@ public final class FilterOutSmallRegions
 	 * <p>If a region cannot be legally merged with a neighbor region, then it will be left alone.</p>
 	 * <p>Constraints:  >= 0</p>
 	 * 
-	 * @see <a href="http://www.critterai.org/?q=nmgen_config#minUnconnectedRegionSize">
-	 * Detailed parameter information.</a>
+	 * @see <a href="http://www.critterai.org/?q=nmgen_config#minUnconnectedRegionSize">Detailed parameter information.</a>
 	 */
 	public FilterOutSmallRegions(int minUnconnectedRegionSize
 			, int mergeRegionSize)
@@ -86,11 +88,14 @@ public final class FilterOutSmallRegions
 			return;
 		
 		/*
-		 *  Over the life of the region array, the ids of region objects may be changed as follows:
+		 *  Over the life of the region array, the ids of region objects contained within
+		 *  the array may be changed as follows:
 		 * 		- To the null region.  This indicates the region has been abandoned.  All spans assigned
 		 *  	  to it will be merged into the null region.
 		 *  	- To another region id.  This indicates that the spans assigned to the region
 		 *  	  will be re-assigned to the new region.  (This occurs when region merging occurs.)
+		 *  So the index of the array indicates the original region id.  The region objects within
+		 *  the array contain the current/target region id.
 		 */
 		final Region[] regions = new Region[field.regionCount()];
 		
@@ -142,7 +147,7 @@ public final class FilterOutSmallRegions
 			int edgeDirection = getRegionEdgeDirection(span);
 			if (edgeDirection != -1)
 				// This is the first span detected that lies on the edge of its region.
-				// Can now generate this region's the connection information.
+				// Can generate this region's the connection information.
 				findRegionConnections(span, edgeDirection, region.connections);                         
 		}
 		
@@ -190,14 +195,13 @@ public final class FilterOutSmallRegions
 		 * Example:
 		 * 
 		 * Region 11 is at array index 11.  It is merged with region 18 at index 18.  
-		 * After the merge, the region at index 11 and will have an id of 18.
+		 * After the merge, the region object at index 11 and will have an id of 18.
 		 */
 		int mergeCount;
 		do
 		{
-			// Reset to zero for this loop.
 			mergeCount = 0;
-			// Search all regions.
+			// Loop through all regions.
 			for (Region region : regions)
 			{
 				
@@ -205,7 +209,7 @@ public final class FilterOutSmallRegions
 					// Skip null and empty regions.
 					continue;
 				
-				// TODO: Figure out why being connected to null matters.
+				// TODO: EVAL: Figure out why being connected to null matters.
 				if (region.spanCount > mMergeRegionSize 
 						&& region.connections.contains(OpenHeightfield.NULL_REGION_ID))
 					// Region is not a candidate for being merged into another region.
@@ -216,7 +220,7 @@ public final class FilterOutSmallRegions
 				// Find its smallest neighbor region.
 				Region targetMergeRegion = null;
 				int smallestSizeFound = Integer.MAX_VALUE;
-				// Loop through all region neighbors (connections).
+				// Loop through all region's neighbor (connections).
 				for (Integer nRegionID : region.connections)
 				{
 					if (nRegionID <= 0)
@@ -263,11 +267,11 @@ public final class FilterOutSmallRegions
 		for (Region region : regions)
 		{
 			if (region.id > 0)
-				// This is not a null region.  So it needs remapping.
+				// This is not a null region.  So it needs to be considered for remapping.
 				region.remap = true;
 		}
 		
-		int currRegionID = 0;  // Will be incremented to 1 the first time it is used.
+		int currRegionID = 0;  // Will be incremented to 1 the first interation of the loop.
 		for (Region region : regions)
 		{
 			if (!region.remap)
@@ -284,7 +288,7 @@ public final class FilterOutSmallRegions
 				{
 					// This region uses the old ID.  Re-assign it to the new ID.
 					r.id = currRegionID;
-					r.remap = false;  // Don't consider this one again.
+					r.remap = false;  // Don't consider this region again.
 				}
 			}
 		}
@@ -337,8 +341,6 @@ public final class FilterOutSmallRegions
 		// Merging candidate into target.  So need to save original target connections
 		// prior to the rebuilding them.
 		final ArrayList<Integer> targetConns = new ArrayList<Integer>(target.connections);
-		
-		// TODO: DOC: Add visualization.
 		
 		/*
 		 *  Merge connection information.
@@ -526,8 +528,7 @@ public final class FilterOutSmallRegions
 	{
 		
 		/*
-		 * TODO: DOC: Add visualization.
-		 * It is a bit hard to describe this algorithm.  The best way to visualize it may be to think of a
+		 * It is a bit hard to describe this algorithm.  A good way to visualize it is to think of a
 		 * robot sitting on the floor facing a known wall.  It then does the following to skirt the wall:
 		 * 1. If there is a wall in front of it, turn clockwise in 90 degrees increments until
 		 *    it finds the wall is gone.

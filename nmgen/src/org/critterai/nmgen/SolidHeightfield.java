@@ -27,10 +27,11 @@ import java.util.NoSuchElementException;
 /**
  * Contains data that represents the obstructed (solid) area of a bounded field of voxels.
  * <p>The data is stored within spans which represent a vertically contiguous group of solid voxels.  
- * A reference to the lowest span within a grid location is stored at that grid's width/depth index.
+ * A reference to the lowest span within a grid location is stored at that grid location's width/depth index.
  * Height spans further up in the grid's column can be accessed via {@link HeightSpan#next()} on the base span.
- * I.e. By climbing up the links.)</p>
- * TODO: DOC: Add visualizations.
+ * (I.e. By climbing up the links.)</p>
+ * @see SolidHeightfieldBuilder
+ * @see <a href="http://www.critterai.org/nmgen_voxel" target="_parent">The Voxelization Process</a>
  * @see <a href="http://www.critterai.org/nmgen_hfintro">Introduction to Height Fields</a>
  */
 public final class SolidHeightfield
@@ -40,12 +41,12 @@ public final class SolidHeightfield
 	/*
 	 * Recast Reference: reHeightfield in Recast.h
 	 * 
-	 * Doc State: Text Complete TODO: DOC: Add visualizations.
+	 * Doc State: Complete
 	 * Standards Check: Complete
 	 */
 	
 	/**
-	 * Spans contained by the heightfield's grid.
+	 * Contains the spans within the heightfield's grid.
 	 * <p>Key: Grid index obtained via {@link #gridIndex(int, int)}.<br/>
 	 * Value: The lowest span at the grid location, or null if there are no spans
 	 * at the grid location.</p>
@@ -94,7 +95,7 @@ public final class SolidHeightfield
 	}
 
 	/**
-	 * Adds voxel information to the height field.  Voxels are either added to existing spans or a new span
+	 * Adds span data to the heightfield.  New span data is either merged into existing spans or a new span
 	 * is created.
 	 * <p>Only the following validations are peformed:</p>
 	 * <ul>
@@ -112,9 +113,8 @@ public final class SolidHeightfield
 	 * <li>Otherwise, the new data's flags are ignored.</li>
 	 * </ul>
 	 * <p>Basically, only the flags at the top of a span are considered to matter.</p>
-	 * TODO: DOC: Add visualizations.
-	 * @param widthIndex The width index of the column that contains the new information.
-	 * @param depthIndex The depth index of the column that contains the new information.
+	 * @param widthIndex The width index of the column that contains the new data.
+	 * @param depthIndex The depth index of the column that contains the new data.
 	 * @param heightIndexMin The solid span's minimum. The minimum of the obstructed space.
 	 * (In zero-based height increments based on {@link #cellHeight()}.)
 	 * @param heightIndexMax The solid span's maximum. The maximum of the obstructed space.
@@ -133,7 +133,7 @@ public final class SolidHeightfield
 			// Invalid height values.
 			return false; 
 		
-		// Find the grid location of the voxel and get existing data for the location.
+		// Find the grid location of the span and get existing data for the location.
 		int gridIndex = gridIndex(widthIndex, depthIndex);
 		HeightSpan currentSpan = mSpans.get(gridIndex);
 		
@@ -146,7 +146,7 @@ public final class SolidHeightfield
 		}
 		
 		// Span data already exists at this location.  Search the spans in this column
-		// to see which one should contain this voxel.  Or if a new span should be created.
+		// to see which one should contain this span.  Or if a new span should be created.
 		HeightSpan previousSpan = null;
 		while (currentSpan != null)
 		{
@@ -184,7 +184,6 @@ public final class SolidHeightfield
 					// The new span is the final span.
 					// Insert it above the current span.
 					currentSpan.setNext(new HeightSpan(heightIndexMin, heightIndexMax, flags));
-					// Finished.
 					return true;
 				}
 				// Continue searching up the span's in this column.
@@ -195,29 +194,27 @@ public final class SolidHeightfield
 			{
 				/*
 				 * There is either overlap or adjacency between the current span and
-				 * the new voxel. 
+				 * the new span. 
 				 * Need to perform a merge of some type.
 				 * Will always return after the merge is complete.
 				 * Get easy stuff out of the way first.
 				 */
 				if (heightIndexMin < currentSpan.min())
-					// This voxel will result in a new minimum for the span.
-					// Adjust the spans minimum.
+					// This span will result in a new minimum for the current span.
+					// Adjust the current span's minimum.
 					currentSpan.setMin(heightIndexMin);
 				if (heightIndexMax == currentSpan.max())
 				{
-					// The new voxel ends at same height as current span.  
+					// The new span ends at same height as current span.  
 					// Merge flags.
 					currentSpan.setFlags((byte)(currentSpan.flags() | flags));
-					// Finished.
 					return true;
 				}
 				if (currentSpan.max() > heightIndexMax)
-					// The top of the current span is higher than the new voxel.
-					// So discard the new voxel's flag.
-					// Finished.
+					// The top of the current span is higher than the new span.
+					// So discard the new span's flag.
 					return true;
-				// The new voxel's maximum height is higher than the current span's
+				// The new spans's maximum height is higher than the current span's
 				// maximum height.
 				// Need to search up the spans to find where the merge ends.				
 				HeightSpan nextSpan = currentSpan.next();
@@ -226,7 +223,7 @@ public final class SolidHeightfield
 					if (nextSpan == null || nextSpan.min() > heightIndexMax + 1)
 					{
 						// There are no spans above the current span, or the height
-						// increase caused by this voxel will not touch the next span.
+						// increase caused by this span will not touch the next span.
 						// Can just expand the current span upward.
 						currentSpan.setMax(heightIndexMax);
 						// New span is new "top", so its flags replace current span's flags.
@@ -256,12 +253,10 @@ public final class SolidHeightfield
 						currentSpan.setFlags(nextSpan.flags());
 						if (heightIndexMax == currentSpan.max())
 						{
-							// New voxel ends at same height as merged span.  Merge flags.
+							// New span ends at same height as merged span.  Merge flags.
 							currentSpan.setFlags(currentSpan.flags() | flags);
-							// Finished.
 							return true;
 						}
-						// Finished.
 						return true;
 					}
 					// The current span overlaps with the next span.
@@ -271,7 +266,7 @@ public final class SolidHeightfield
 			}
 		}
 		
-		// Will only ever be able to get here if there is a code logic error.
+		// Will only ever get here if there is a code logic error.
 		return false;
 		
 	}

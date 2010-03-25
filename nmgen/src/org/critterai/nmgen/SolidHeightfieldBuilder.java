@@ -37,7 +37,8 @@ package org.critterai.nmgen;
  * <li>If ledge culling is enabled, the top of the span does not represent a ledge.  
  * (Agents can legally "step down" from the span to any of its neighbors.)</li>
  * </ul>
- * @see <a href="http://www.critterai.org/nmgen_hfintro" target="_parent">Introduction to Heightfields.</a>
+ * @see <a href="http://www.critterai.org/nmgen_voxel" target="_parent">The Voxelization Process</a>
+ * @see <a href="http://www.critterai.org/nmgen_hfintro" target="_parent">Introduction to Heightfields</a>
  * @see <a href="http://www.ecn.purdue.edu/purpl/level2/papers/consvox.pdf" target="_blank">Conservative Voxelization (PDF)</a>
  */
 public final class SolidHeightfieldBuilder 
@@ -60,7 +61,7 @@ public final class SolidHeightfieldBuilder
 	 * TODO: EVAL: It may be better to implement post-processing as external algorithms
 	 * similar to what is done with the open heightfield and contour classes.
 	 * 
-	 * Doc State: Text Complete TODO: DOC: Add visualizations.
+	 * Doc State: Complete
 	 * Standards Check: Complete
 	 */
 	
@@ -79,16 +80,16 @@ public final class SolidHeightfieldBuilder
 	
 	/**
 	 * The cell size to use for all new fields.
-	 * <p>IMPORTANT: Only use this value for height field object initialization.
-	 * After that, use the value in the height field object.  (Since the height
-	 * field object may place limitations on the value.)</p>
+	 * <p>IMPORTANT: Only use this value for heightfield object initialization.
+	 * After that, use the value in the heightfield object.  (Since the heightfield
+	 * object may place limitations on the value.)</p>
 	 */
 	private final float mCellSize;
 	
 	/**
 	 * The cell height to use for all new fields.
-	 * <p>IMPORTANT: Only use this value for height field object initialization.
-	 * After that, use the value in the height field object.  (Since the height
+	 * <p>IMPORTANT: Only use this value for heightfield object initialization.
+	 * After that, use the value in the heightfield object.  (Since the height
 	 * field object may place limitations on the value.)</p>
 	 */
 	private final float mCellHeight;
@@ -104,25 +105,25 @@ public final class SolidHeightfieldBuilder
 	 * voxels.</p>
 	 * 
 	 * @param minTraversableHeight Represents the minimum floor to ceiling height that will still allow a
-	 * floor area to be considered walkable.
+	 * floor area to be considered traversable.
 	 * <p>Permits detection of overhangs in the geometry which make the geometry below become unwalkable.</p>
 	 * <p>Constraints:  > 0</p>
 	 * 
 	 * @param maxTraversableStep Represents the maximum ledge height that is considered to
-	 * still be walkable.
+	 * still be traversable.
 	 * <p>Prevents minor deviations in height from improperly showing as obstructions.
 	 * Permits detection of stair-like structures, curbs, etc.</p> 
 	 * <p>Constraints:  >= 0</p>
 	 * 
-	 * @param maxTraversableSlope The maximum slope that is considered walkable. (Degrees)
-	 * <p>Spans that are above this slope have the {@link SpanFlags#WALKABLE} flag removed.
+	 * @param maxTraversableSlope The maximum slope that is considered traversable. (Degrees)
+	 * <p>Spans that are at or above this slope have the {@link SpanFlags#WALKABLE} flag removed.</p>
 	 * <p>Constraints:  > 0</p>
 	 * 
 	 * @param clipLedges Indicates whether ledges should be marked as unwalkable.
 	 * I.e. The {@link SpanFlags#WALKABLE} flag will be removed.
-	 * <p>A ledge is a normally walkable voxel that has one or more accessible neighbors with a 
-	 * an un-steppable drop from voxel top to voxel top.</p>
-	 * <p>E.g. If an agent using the navmesh were to travel down from the ledge voxel to its neighbor voxel, it would 
+	 * <p>A ledge is a normally traversable span that has one or more accessible neighbors with a 
+	 * an un-steppable drop from span top to span top.</p>
+	 * <p>E.g. If an agent using the navmesh were to travel down from the ledge span to its neighbor span, it would 
 	 * result in the maximum traversable step distance being violated.  The agent cannot legally "step down"
 	 * from a ledge to its neighbor.</p>
 	 */
@@ -146,7 +147,7 @@ public final class SolidHeightfieldBuilder
 		 * Base Reference: http://mathworld.wolfram.com/DihedralAngle.html
 		 * 
 		 * By ensuring n1 and n2 are both normalized before the calculation, the
-		 * denominator in the equations in the reference evaluate to 1 and
+		 * denominator in the reference equations evaluate to 1 and
 		 * can be discarded. So the reference equation is simplified to...
 		 * 
 		 * cos theta = n1 dot n2
@@ -170,13 +171,13 @@ public final class SolidHeightfieldBuilder
 	}
 	
 	/**
-	 * Generates a solid height field from the provided source geometry.  The solid height field
+	 * Generates a solid heightfield from the provided source geometry.  The solid heightfield
 	 * will represent the space obstructed by the source geometry.
-	 * <p>The {@link SpanFlags#WALKABLE} will be applied to spans whose top surface is considered walkable. See
+	 * <p>The {@link SpanFlags#WALKABLE} will be applied to spans whose top surface is considered traversable. See
 	 * the class description for details.</p>
 	 * @param vertices Source geometry vertices in the form (x, y, z).
 	 * @param indices Source geometry indices in the form (VertA, VertB, VertC). Wrapped: Clockwise.
-	 * @return The generated solid height field, or null if the generation fails.
+	 * @return The generated solid heightfield, or null if the generation fails.
 	 */
 	public SolidHeightfield build(float[] vertices, int[] indices)
 	{
@@ -187,10 +188,10 @@ public final class SolidHeightfieldBuilder
 				|| indices.length % 3 != 0)
 			return null;
 		
-		// Initialize field.
+		// Initialize heightfield.
 		final SolidHeightfield result = new SolidHeightfield(mCellSize, mCellHeight);
 		
-		// Pre-calculated values to save on the cost of division later.
+		// Pre-calculate values to save on the cost of division later.
 		final float inverseCellSize = 1 / result.cellSize();
 		final float inverseCellHeight = 1 / result.cellHeight();
 		
@@ -222,15 +223,15 @@ public final class SolidHeightfieldBuilder
 		// the slope.)
 		final int[] polyFlags = markInputMeshWalkableFlags(vertices, indices);
 		
-		// For each polygon in the source mesh: Voxelize it and add the voxels to the
+		// For each polygon in the source mesh: Voxelize it and add the resulting spans to the
 		// solid field.
 		final int polyCount = indices.length / 3;
-		for (int polyIndex = 0; polyIndex < polyCount; polyIndex++)
+		for (int iPoly = 0; iPoly < polyCount; iPoly++)
 		{
-			voxelizeTriangle(polyIndex
+			voxelizeTriangle(iPoly
 					, vertices
 					, indices
-					, polyFlags[polyIndex]
+					, polyFlags[iPoly]
 					, inverseCellSize
 					, inverseCellHeight
 					, result);
@@ -248,8 +249,8 @@ public final class SolidHeightfieldBuilder
 	}
 	
 	/**
-	 * Checks the slope of each polygon against the maximum allowed.  Any polygon that whose slope is
-	 * below the maximum allowed get the {@link SpanFlags#WALKABLE} flag.
+	 * Checks the slope of each polygon against the maximum allowed.  Any polygon whose slope is
+	 * below the maximum permitted gets the {@link SpanFlags#WALKABLE} flag.
 	 * @param vertices  The source geometry vertices in the form (x, y, z).
 	 * @param indices The source geometry indices in the form (vertA, vertB, vertC), clockwise wrapped.
 	 * @return An array of flags in the form (polyFlag0, polyFlag1, ..., polyFlagN), stride = 1.
@@ -259,7 +260,6 @@ public final class SolidHeightfieldBuilder
 		
 		// See mMinNormalY in constructor for more information on how this works.
 		
-		// The final result. Form: (polyFlag0, polyFlag1, ..., polyFlagN), stride = 1
 		final int[] flags = new int[indices.length / 3];
 		
 		// Working variables.  Content changes for every loop
@@ -283,7 +283,7 @@ public final class SolidHeightfieldBuilder
 	    			        , subtract(pVertC, pVertA, vertices, diffAC), crossDiff));
 			
 			if (normalY > mMinNormalY)
-				// The slow of this polygon is acceptable.  Mark it as walkable.
+				// The slope of this polygon is acceptable.  Mark it as walkable.
 				flags[iPoly] = SpanFlags.WALKABLE;
 		}
 		
@@ -291,13 +291,14 @@ public final class SolidHeightfieldBuilder
 	}
 
 	/**
-	 * Remove the waklable flags from any spans that have another span too close above it.
-	 * (What is really happening here is a de-marking.)
-	 * @param field  The field to operate on.
+	 * Remove the traversable flag from spans that have another span too close above them.
+	 * @param field  The heightfield to operate on.
 	 */
 	private void markLowHeightSpans(SolidHeightfield field)
 	{
 		// TODO: EVAL: Consider merging this operation with markLedgeSpans.
+		
+		// For visualization, see the @see in the class' javadoc.
 		
 		// Iterate through all spans in the field.
 		IHeightfieldIterator<HeightSpan> iter = field.dataIterator();
@@ -323,7 +324,7 @@ public final class SolidHeightfieldBuilder
 	}
 	
 	/**
-	 * Removes the walkable flag for any spans that represent a ledge.
+	 * Removes the traversable flag for any spans that represent a ledge.
 	 * A ledge occurs when stepping from the top of one span down to any of its
 	 * neighbor spans exceeds the allowed walk climb distance.  (i.e. Can't legally step down
 	 * to a neighbor span.)
@@ -336,6 +337,8 @@ public final class SolidHeightfieldBuilder
 		 * Note: While this is a solid field representing obstructions, much of this
 		 * algorithm deals with the space between obstructions.  (The gaps.)
 		 * So you will need to twist your thinking to gaps rather than obstructions.
+		 * 
+		 * For visualization, see the @see in the class' javadoc.
 		 */
 		
 		// Loop through all spans.
@@ -462,8 +465,8 @@ public final class SolidHeightfieldBuilder
 	}
 	
 	/**
-	 * Voxelizes the chosen polygon and adds it to the field.
-	 * <p>The inverse arguments are their for optimization.  (No need to recalculate the 
+	 * Voxelizes the chosen polygon and adds the resulting spans to the heightfield.
+	 * <p>The inverse arguments are included for optimization.  (No need to recalculate the 
 	 * values for every call.)</p>
 	 * <p>The heightfield will make the final decision on whether to apply the flags provided in the
 	 * arguments.  See the {@link SolidHeightfield#addData(int, int, int, int, int) heightfield add operation}
@@ -471,10 +474,10 @@ public final class SolidHeightfieldBuilder
 	 * @param polyIndex The polygon to voxelize.
 	 * @param vertices The vertices of the source geometry in the form (x, y, z).
 	 * @param indices The indices of the source geometry in the form (vertA, vertB, vertC), wrapped clockwise.
-	 * @param polyFlags The flags to apply to all new voxels.
+	 * @param polyFlags The flags to apply to all new spans within the heightfield.
 	 * @param inverseCellSize Inverse cell size. (1/cellSize) 
 	 * @param inverseCellHeight Inverse cell height. (1/cellheight)
-	 * @param inoutField The height field to add new voxels to.
+	 * @param inoutField The heightfield to add new spans to.
 	 */
 	private static void voxelizeTriangle(int polyIndex
 			, float[] vertices
@@ -495,7 +498,7 @@ public final class SolidHeightfieldBuilder
 		 * 
 		 * But, with the possible exception of object creation, the extra cost is not
 		 * big.  So I'm leaving the algorithm as it is just in case it is converted to a public
-		 * algorithm at some point.
+		 * operation at a later date.
 		 */
 		
 		// Pointer to the polygon.
@@ -514,7 +517,8 @@ public final class SolidHeightfieldBuilder
 					, vertices[indices[pPoly+2]*3+2]
 				};
 		
-		// Get the bounding box of the polygon.
+		// Determine the bounding box of the polygon.
+		
 		// Initialize bounds to the first triangle vertex.
 		final float[] triBoundsMin = { triVerts[0], triVerts[1], triVerts[2] };
 		final float[] triBoundsMax = { triVerts[0], triVerts[1], triVerts[2] };
@@ -530,16 +534,16 @@ public final class SolidHeightfieldBuilder
 			triBoundsMax[2] = Math.max(triBoundsMax[2], triVerts[vertPointer + 2]);
 		}	
 		
-		// If the triangle does not overlap the height field, then skip it.
+		// If the triangle does not overlap the heightfield, then skip it.
 		if (!inoutField.overlaps(triBoundsMin, triBoundsMax)) 
 			return;
 		
 		/*
-		 * Determine footprint of triangle bounding box on the height field's grid.
+		 * Determine footprint of triangle bounding box on the heightfield's grid.
 		 * 
 		 * Notes:
 		 * 
-		 * The height field is an integer based grid with its origin at the heightfield's
+		 * The heightfield is an integer based grid with its origin at the heightfield's
 		 * minimum bounds.  I.e. Grid coordinate (0, 0) => (heightField.minbounds.x, heightField.minbounds.z)
 		 * 
 		 * The heightfield width/depth values map to the (x, z) plane of the triangle,
@@ -579,16 +583,17 @@ public final class SolidHeightfieldBuilder
 		 * Clip the triangle into all grid cells it touches.
 		 * 
 		 * Any early exit from either of the loops means that the triangle
-		 * does not overlap the column defined by the grid location, or is outside the height
+		 * does not overlap the grid column, or is outside the height
 		 * bounds of the field.
 		 * 
 		 * All detailed clip data is discarded in the end.  The only information
 		 * preserved is the height information.
 		 * 
-		 * Dev Note:  I don't understand the math algorithm used here.  I've marked it as magic.
-		 * But tracing the process on paper, what is happening is that the algorithm is finding
-		 * all intersection points between the column that represents the grid location and the 
-		 * triangle face.
+		 * Dev Note:  I don't understand the mathematical algorithm used here.  So I've marked it as magic.
+		 * But by tracing the process on paper I've determined that the algorithm is finding
+		 * all intersection points between the grid column and the triangle face.
+		 * 
+		 * For visualization, see the @see in the class' javadoc.
 		 */
 		for (int depthIndex = triDepthMin; depthIndex <= triDepthMax; ++depthIndex)
 		{
@@ -620,24 +625,24 @@ public final class SolidHeightfieldBuilder
 					continue;
 				
 				// If got here, then "in" contains the definition for a poly representing the portion
-				// of the input triangle that overlaps the grid location, plus an extra triple.
+				// of the input triangle that overlaps the grid location.
 				
 				// Find the height (y-axis) range for this grid location.
 				float heightMin = in[1];
 				float heightMax = in[1];
 				for (int i = 1; i < vertCount; ++i)
 				{
-					heightMin = Math.min(heightMin, in[i * 3 + 1]);
-					heightMax = Math.max(heightMax, in[i * 3 + 1]);
+					heightMin = Math.min(heightMin, in[i*3+1]);
+					heightMax = Math.max(heightMax, in[i*3+1]);
 				}
-				// Convert to height above the "floor" of the height field.
+				// Convert to height above the "floor" of the heightfield.
 				heightMin -= inoutField.boundsMin()[1];
 				heightMax -= inoutField.boundsMin()[1];
 				if (heightMax < 0.0f || heightMin > fieldHeight)
-					// The height of the potential voxel is entirely outside
+					// The height of the potential span is entirely outside
 					// the bounds of the heightfield.
 					continue;
-				// Clamp to the height field bounding box.
+				// Clamp to the heightfield bounding box.
 				if (heightMin < 0.0f)
 					heightMin = inoutField.boundsMin()[1];
 				if (heightMax > fieldHeight)
@@ -653,7 +658,7 @@ public final class SolidHeightfieldBuilder
 						, 0
 						, Short.MAX_VALUE);
 				
-				// Add the voxel to the heightfield.
+				// Add the span to the heightfield.
 				inoutField.addData(widthIndex
 						, depthIndex
 						, heightIndexMin
@@ -668,7 +673,7 @@ public final class SolidHeightfieldBuilder
 	{
 		
 		// TODO: DOC: Figure out what is going on here.  Not familiar with algorithm.
-		// Are pnx and pnz normals?
+		// pnx and pnz normals.
 		
 		float d[] = new float[inputVertCount];
 		for (int vertIndex = 0; vertIndex < inputVertCount; ++vertIndex)
