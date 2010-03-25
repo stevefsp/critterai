@@ -26,8 +26,17 @@ package org.critterai.nmgen;
  * ensures they are in the most appropriate region.
  * <p>This algorithm reduces the likelihood of a region flowing slightly around a null region
  * corner in a manner that results in a contour that is a self-intersecting polygon.</p>
- * TODO: DOC: Add visualization.
  * <p>This is an experimental algorithm.  It has only been validated in a limited number of test scenarios.</p>
+ * <p>Example: Before the algorithm is applied.</p> 
+ * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_08_cornerwrapbefore.png" target="_blank">
+ * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_08_cornerwrapbefore.jpg" style="width: 620px; height: 353px; " />
+ * </a></p> 
+ * <p>Example: After the algorithm is applied.</p> 
+ * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_09_cornerwrapafter.png" target="_blank">
+ * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_09_cornerwrapafter.jpg" style="width: 620px; height: 353px; " />
+ * </a></p> 
+ * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>
+ * 
  */
 public final class CleanNullRegionCorners
 	implements IOpenHeightFieldAlgorithm
@@ -45,7 +54,7 @@ public final class CleanNullRegionCorners
 	 * 
 	 * Recast Reference: None
 	 * 
-	 * Doc State: Text complete.  TODO: DOC: Need visualizations.
+	 * Doc State: Complete.
 	 * Standards Check: Complete
 	 */
 	
@@ -92,8 +101,6 @@ public final class CleanNullRegionCorners
 			 * during this process.  So there is no need to re-initialize its content
 			 * at the beginning of each loop.
 			 */
-			
-			// TODO: DOC: Add visualization.
 			
 			final OpenHeightSpan span = iter.next();
 			

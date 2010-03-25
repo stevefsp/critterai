@@ -32,7 +32,12 @@ import java.util.Hashtable;
  * specified flag.
  * <p>Options are provided to generate neighbor, distance field, and region information
  * for the open span data</p>
+ * <p>Example of a fully formed open heightfield.  (I.e. With region information.) Only the
+ * floor of the spans is shown.</p>
+ * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/gen_04_regions.png" target="_blank">
+ * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/gen_04_regions.jpg" style="width: 620px; height: 464px;" /></a></p> 
  * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
+ * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>
  * @see OpenHeightfield
  * @see OpenHeightSpan
  */
@@ -51,7 +56,7 @@ public final class OpenHeightfieldBuilder
 	 * Never add setters.  Configuration should remain immutable to keep
 	 * the class thread friendly.
 	 * 
-	 * Doc State: Text Complete, TODO: DOC: Add visualizations.
+	 * Doc State: Complete
 	 * Standards Check: Complete
 	 */
 	
@@ -238,7 +243,6 @@ public final class OpenHeightfieldBuilder
 						; nSpan != null
 						; nSpan = nSpan.next())
 				{
-					// TODO: DOC: Add visualizations.
 					// Select the floor, current or neighbor span, that is higher.
 					int maxFloor = Math.max(span.floor(), nSpan.floor());
 					// Select the ceiling, current or neighbor span, this is lower.
@@ -285,7 +289,7 @@ public final class OpenHeightfieldBuilder
 	public void generateDistanceField(OpenHeightfield field)
 	{
 		
-		// TODO:  Need to find source documentation for this algorithm.
+		// TODO: DOC: Need to find source documentation for this algorithm.
 		
 		if (field == null)
 			return;
@@ -600,7 +604,7 @@ public final class OpenHeightfieldBuilder
 		 * Reference: http://en.wikipedia.org/wiki/Watershed_%28algorithm%29
 		 * A good visualization: http://artis.imag.fr/Publications/2003/HDS03/ (PDF)
 		 * 
-		 * Summary:
+		 * Summary: 
 		 * 
 		 * This algorithm utilizes the span.distanceToBorder() value, which is generated
 		 * by the generateDistanceField() operation.
