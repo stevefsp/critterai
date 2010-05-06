@@ -436,7 +436,7 @@ public class Vector2
 	 * @param ux The x-value of the vector (ux, uy).
 	 * @param uy The y-value of the vector (ux, uy).
 	 * @param vx The x-value of the vector (vx, vy).
-	 * @param vx The y-value of the vector (vx, vy).
+	 * @param vy The y-value of the vector (vx, vy).
 	 * @param out The vector to load the result into.
 	 * @return A reference to the out argument.
 	 */
@@ -516,7 +516,7 @@ public class Vector2
 	 * @param ux The x-value of the vector (ux, uy).
 	 * @param uy The y-value of the vector (ux, uy).
 	 * @param vx The x-value of the vector (vx, vy).
-	 * @param vx The y-value of the vector (vx, vy).
+	 * @param vy The y-value of the vector (vx, vy).
 	 * @return The dot product of the provided vectors.
 	 * @see <a href="http://en.wikipedia.org/wiki/Dot_product" target="_blank">Wikipedia- Dot Product</a>
 	 */
@@ -776,7 +776,7 @@ public class Vector2
 	 * @param ux The x-value of the vector (ux, uy).
 	 * @param uy The y-value of the vector (ux, uy).
 	 * @param vx The x-value of the vector (vx, vy).
-	 * @param vx The y-value of the vector (vx, vy).
+	 * @param vy The y-value of the vector (vx, vy).
 	 * @param tolerance The tolerance for the test.  
 	 * @return TRUE if the the associated elements of each vector are within the specified tolerance
 	 * of each other.  Otherwise FALSE.
