@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.critterai.math.geom.junit;
+package org.critterai.math.geom;
 
 import static org.junit.Assert.*;
 import static org.critterai.math.geom.Polygon3.*;
