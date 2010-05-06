@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="critterai-util" default="package-lib">
+
+	<description>
+	Builds and bundles the projects within the CritterAI namespace.
+	</description>
+
+	<property file="build.properties"/>
+	
+	<!-- Override via the command line as necessary with -Dutilversion= -->
+	<property name="utilversion" value="snapshot" />
+	
+	<target name="compile"
+		description="Builds the critterai utility classes.">
+		<mkdir dir="${util.classes.dir}" />
+		<javac srcdir="${util.src.dir}" 
+			destdir="${util.classes.dir}"
+			includeAntRuntime="no"/>
+	</target>
+	
+	<target name="compile-test"
+		depends="compile"
+		description="Builds the critterai utility test suite.">
+		<mkdir dir="${util.test.classes.dir}" />
+		<javac srcdir="${util.test.src.dir}" 
+			destdir="${util.test.classes.dir}"
+			includeAntRuntime="no">
+			<classpath>
+				<pathelement location="${lib.dir}/junit-4.7.jar" />
+				<pathelement location="${util.classes.dir}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="unit-test" 
+		depends="compile-test"
+		description="Unit test the critterai utility classes">
+		<junit fork="yes" haltonerror="yes" printsummary="no">
+			<classpath>
+				<pathelement location="${lib.dir}/junit-4.7.jar" />
+				<pathelement location="${util.classes.dir}" />
+				<pathelement location="${util.test.classes.dir}" />
+			</classpath>
+			<formatter type="brief" usefile="false"/>
+			<test name="org.critterai.math.AllTests" />
+			<test name="org.critterai.math.geom.AllTests" />
+		</junit>
+	</target>
+	
+	<target name="package-lib" 
+		depends="clean, unit-test"
+		description="Creates the jar file for the critterai utility classes.">
+		<mkdir dir="${util.dist.dir}" />
+		<copy file="${misc.resources.dir}/LCOPY.TXT" 
+			tofile="${util.classes.dir}/LICENSE.TXT" />
+		<jar destfile="${util.dist.dir}/cai-util-${utilversion}.jar"
+			basedir="${util.classes.dir}"
+			excludes="**/package-info.*"
+			duplicate="preserve" />
+	</target>
+	
+	<target name="javadoc"
+		description="Creates javadoc for the critterai utility library.">
+		<delete dir="${util.doc.dir}/javadoc" />	
+		<mkdir dir="${util.doc.dir}/javadoc" />	
+		<javadoc sourcepath="${util.src.dir}"
+			packagenames="org.critterai.*"
+			destdir="${util.doc.dir}/javadoc"
+			access="protected"
+			windowtitle="CritterAI Utilities"
+			overview="${util.misc.dir}/overview.html"
+			failonerror="yes">
+			<link href="http://java.sun.com/javase/6/docs/api/" />
+			<bottom>
+			<![CDATA[
+				<div align="center">
+				<font size="-1">
+				<p>
+				<a href="http://www.critterai.org/" target="_parent">
+				Project Home
+				</a> and 
+				<a href="http://code.google.com/p/critterai/" target="_parent">
+				Source Code
+				</a>
+				</p>
+				<p>
+				Copyright 2010 Stephen Pratt. All rights reserved. Use is subject to 
+				<a href="http://www.critterai.org/nmgen_codelicense" target="_parent">
+				license terms</a>.
+				</p>
+				</font>
+				</div>
+			]]>
+			</bottom>
+		</javadoc>
+	</target>
+	
+	<target name="clean"
+		description="Deletes all temporary critterai utility artifacts.">
+		<delete dir="${util.build.dir}" />
+	</target>
+	
+</project>
