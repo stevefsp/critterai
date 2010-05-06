@@ -25,12 +25,13 @@
  * following standards have been implemented:</p>
  * <ul>
  * <li>There is no validation of arguments outside of constructors.
- * For example, the {@link Vector2#add(float, float, float, Vector2)} operation does not
- * validate that the Vector2 argument is non-null.  If the argument is null a runtime error
- * will occur.</li>
+ * For example, the {@link org.critterai.math.Vector2#add(float, float, float, Vector2)} 
+ * operation does not validate that the {@link org.critterai.math.Vector2} argument is non-null.
+ * If the argument is null a runtime error will occur.</li>
  * <li>All static operations that return an object require the object be passed in as an "out" argument.
  * The out object is updated with the result and its reference returned.  This reduces the construction
  * costs by allowing clients of the class to re-use the out objects for multiple calls.</p>
  * </li>
+ * </ul>
  */
 package org.critterai.math;

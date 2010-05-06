@@ -97,7 +97,7 @@ public class Vector3
 	 * <p>The values of this vector are mutated.</p>
 	 * @param x The x-value of the vector (x, y).
 	 * @param y The y-value of the vector (x, y).
-	 * @param y The z-value of the vector (x, y).
+	 * @param z The z-value of the vector (x, y).
 	 * @return A reference to this vector.
 	 */
 	public Vector3 add(float x, float y, float z) 
