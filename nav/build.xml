@@ -18,7 +18,7 @@
             <classpath>
                 <pathelement location="${util.lib}" />
             </classpath>
-    	</javac>
+        </javac>
     </target>
 
     <target name="compile-test"
@@ -30,7 +30,7 @@
             includeAntRuntime="no">
             <classpath>
                 <pathelement location="${lib.dir}/junit-4.7.jar" />
-            	<pathelement location="${util.lib}" />
+                <pathelement location="${util.lib}" />
                 <pathelement location="${classes.dir}" />
             </classpath>
         </javac>
@@ -42,7 +42,7 @@
         <junit fork="yes" haltonerror="yes" printsummary="no">
             <classpath>
                 <pathelement location="${lib.dir}/junit-4.7.jar" />
-            	<pathelement location="${util.lib}" />
+                <pathelement location="${util.lib}" />
                 <pathelement location="${classes.dir}" />
                 <pathelement location="${test.classes.dir}" />
             </classpath>
@@ -78,9 +78,9 @@
             failonerror="yes"/>
         <zip destfile="${build.dir}/${project.fullname}.zip"
             duplicate="fail">
-        	<zipfileset dir="${dist.dir}"
-        		includes="**/*"
-        		prefix="${project.fullname}" />
+            <zipfileset dir="${dist.dir}"
+                includes="**/*"
+                prefix="${project.fullname}" />
             <zipfileset dir="${doc.dir}"
                  includes="**/*"
                  prefix="${project.fullname}/docs" />
@@ -98,10 +98,10 @@
             windowtitle="CritterAI Navigation"
             overview="${local.misc.dir}/overview.html"
             failonerror="yes">
-        	<classpath>
-        		 <pathelement location="${util.lib}" />
-        	</classpath>
-        	<link href="http://www.critterai.org/projects/util/docs/api/" />
+            <classpath>
+                 <pathelement location="${util.lib}" />
+            </classpath>
+            <link href="http://www.critterai.org/projects/util/docs/api/" />
             <link href="http://java.sun.com/javase/6/docs/api/" />
             <bottom>
             <![CDATA[
