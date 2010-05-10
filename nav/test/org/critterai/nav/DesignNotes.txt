@@ -1,0 +1,27 @@
+Design notes for org.critterai.nav.junit
+
+This test suite covers the classes in org.critterai.nav.
+
+In general, the more lower level the class, the more thorough the testing.  Higher level
+classes are tested less thoroughly and often assume proper functioning of the 
+lower level classes.
+
+For lower level classes:  
+
+- Few assumptions are made about the internal operations of the class.
+- Minimal optimizations due to knowledge about how the class works.
+- Minimal dependencies on functionality in other classes in the same library.
+
+For higher level classes:
+
+- Tests designed in such a way that they will fail if classes they depend on are not
+functioning properly.
+- Tests are more often designed based on knowledge of how the class works internally.
+- For wrapper functions, tests already performed on the wrapped class functions are 
+generally not re-performed.
+
+Test Meshes
+
+The implementation of generalized test meshes via the ITestMesh interface
+is a good way along, but only partially complete.  Test suites will need review
+and upgrades before different meshes can be swapped in and out at will.
