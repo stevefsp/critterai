@@ -35,33 +35,33 @@ import org.junit.Test;
 public final class NavRequestTest 
 {
 
-	@Before
-	public void setUp() throws Exception 
-	{
-	}
+    @Before
+    public void setUp() throws Exception 
+    {
+    }
 
-	@Test
-	public void testPrimaryGetters() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
-		MasterNavRequest<Boolean>.NavRequest nr = mnr.request();
-		assertTrue(mnr.data() == nr.data());
-		assertTrue(mnr.state() == nr.state());
-		mnr.set(NavRequestState.COMPLETE, true);
-		assertTrue(mnr.data() == nr.data());
-		assertTrue(mnr.state() == nr.state());
-	}
+    @Test
+    public void testPrimaryGetters() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
+        MasterNavRequest<Boolean>.NavRequest nr = mnr.request();
+        assertTrue(mnr.data() == nr.data());
+        assertTrue(mnr.state() == nr.state());
+        mnr.set(NavRequestState.COMPLETE, true);
+        assertTrue(mnr.data() == nr.data());
+        assertTrue(mnr.state() == nr.state());
+    }
 
-	@Test
-	public void testIsComplete() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.PROCESSING);
-		MasterNavRequest<Boolean>.NavRequest nr = mnr.request();
-		assertTrue(nr.isFinished() == false);
-		mnr.setState(NavRequestState.FAILED);
-		assertTrue(nr.isFinished() == true);
-		mnr.setState(NavRequestState.COMPLETE);
-		assertTrue(nr.isFinished() == true);
-	}
+    @Test
+    public void testIsComplete() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.PROCESSING);
+        MasterNavRequest<Boolean>.NavRequest nr = mnr.request();
+        assertTrue(nr.isFinished() == false);
+        mnr.setState(NavRequestState.FAILED);
+        assertTrue(nr.isFinished() == true);
+        mnr.setState(NavRequestState.COMPLETE);
+        assertTrue(nr.isFinished() == true);
+    }
 
 }

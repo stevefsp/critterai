@@ -30,17 +30,17 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses( {TriCellTests.class
-	, TriCellQuadTreeTests.class
-	, TriNavMeshTests.class
-	, DistanceHeuristicTest.class
-	, TriCellPathNodeTest.class
-	, TriCellPathComparatorTest.class
-	, MasterNavRequestTest.class
-	, NavRequestTest.class
-	, MasterPathTest.class
-	, PathTest.class
-	, AStarSearchTest.class
-	, DijkstraSearchTest.class
-	, MasterNavigatorTest.class
-	, NavigatorTest.class} )
+    , TriCellQuadTreeTests.class
+    , TriNavMeshTests.class
+    , DistanceHeuristicTest.class
+    , TriCellPathNodeTest.class
+    , TriCellPathComparatorTest.class
+    , MasterNavRequestTest.class
+    , NavRequestTest.class
+    , MasterPathTest.class
+    , PathTest.class
+    , AStarSearchTest.class
+    , DijkstraSearchTest.class
+    , MasterNavigatorTest.class
+    , NavigatorTest.class} )
 public final class AllTests { }

@@ -32,37 +32,37 @@ import java.util.Comparator;
  * <p>Instances of this class are not thread-safe.</p>
  */
 public final class TriCellPathComparator 
-	implements Comparator<TriCellPathNode>, Serializable 
+    implements Comparator<TriCellPathNode>, Serializable 
 {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Compares its two arguments for order.
-	 * <p>Returns a value of zero if both objects have the same estimated
-	 * path cost.<br/>
-	 * Returns a value greater than zero if the path cost of nodeA 
-	 * exceeds the path cost of nodeB.<br/>
-	 * Returns a value less than zero if the path cost of nodeB exceeds
-	 * the cost of nodeA.<br/></p>
-	 * @param nodeA The first node to be compared.
-	 * @param nodeB The second node to be compared.
-	 * @return A negative integer, zero, or positive integer if the first
-	 * argument has lower, same, or higher path cost than the second argument.
-	 */
-	@Override
-	public int compare(TriCellPathNode nodeA, TriCellPathNode nodeB) 
-		throws NullPointerException
-	{
-		float delta = nodeA.f() - nodeB.f();
-		
-		// Handle special cases.
-		if (delta > 0 && delta < 1.0f) 
-			return 1;
-		else if (delta < 0 && delta > -1.0f) 
-			return -1;
-		
-		return (int)delta;
-	}
+    /**
+     * Compares its two arguments for order.
+     * <p>Returns a value of zero if both objects have the same estimated
+     * path cost.<br/>
+     * Returns a value greater than zero if the path cost of nodeA 
+     * exceeds the path cost of nodeB.<br/>
+     * Returns a value less than zero if the path cost of nodeB exceeds
+     * the cost of nodeA.<br/></p>
+     * @param nodeA The first node to be compared.
+     * @param nodeB The second node to be compared.
+     * @return A negative integer, zero, or positive integer if the first
+     * argument has lower, same, or higher path cost than the second argument.
+     */
+    @Override
+    public int compare(TriCellPathNode nodeA, TriCellPathNode nodeB) 
+        throws NullPointerException
+    {
+        float delta = nodeA.f() - nodeB.f();
+        
+        // Handle special cases.
+        if (delta > 0 && delta < 1.0f) 
+            return 1;
+        else if (delta < 0 && delta > -1.0f) 
+            return -1;
+        
+        return (int)delta;
+    }
 
 }
