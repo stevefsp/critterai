@@ -30,6 +30,6 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses( {MathUtilTests.class
-	, Vector2Tests.class
-	, Vector3Tests.class})
+    , Vector2Tests.class
+    , Vector3Tests.class})
 public class AllTests  { }
