@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="critterai-util" default="package-lib">
+<project name="critterai-util" default="package">
 
 	<description>
 	Builds and bundles the projects within the CritterAI namespace.
@@ -8,26 +8,26 @@
 	<property file="build.properties"/>
 	
 	<!-- Override via the command line as necessary with -Dutilversion= -->
-	<property name="utilversion" value="snapshot" />
+	<property name="version" value="snapshot" />
 	
 	<target name="compile"
 		description="Builds the critterai utility classes.">
-		<mkdir dir="${util.classes.dir}" />
-		<javac srcdir="${util.src.dir}" 
-			destdir="${util.classes.dir}"
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" 
+			destdir="${classes.dir}"
 			includeAntRuntime="no"/>
 	</target>
 	
 	<target name="compile-test"
 		depends="compile"
 		description="Builds the critterai utility test suite.">
-		<mkdir dir="${util.test.classes.dir}" />
-		<javac srcdir="${util.test.src.dir}" 
-			destdir="${util.test.classes.dir}"
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" 
+			destdir="${test.classes.dir}"
 			includeAntRuntime="no">
 			<classpath>
 				<pathelement location="${lib.dir}/junit-4.7.jar" />
-				<pathelement location="${util.classes.dir}" />
+				<pathelement location="${classes.dir}" />
 			</classpath>
 		</javac>
 	</target>
@@ -38,8 +38,8 @@
 		<junit fork="yes" haltonerror="yes" printsummary="no">
 			<classpath>
 				<pathelement location="${lib.dir}/junit-4.7.jar" />
-				<pathelement location="${util.classes.dir}" />
-				<pathelement location="${util.test.classes.dir}" />
+				<pathelement location="${classes.dir}" />
+				<pathelement location="${test.classes.dir}" />
 			</classpath>
 			<formatter type="brief" usefile="false"/>
 			<test name="org.critterai.math.AllTests" />
@@ -47,28 +47,28 @@
 		</junit>
 	</target>
 	
-	<target name="package-lib" 
+	<target name="package" 
 		depends="clean, unit-test"
 		description="Creates the jar file for the critterai utility classes.">
-		<mkdir dir="${util.dist.dir}" />
+		<mkdir dir="${dist.dir}" />
 		<copy file="${misc.resources.dir}/LCOPY.TXT" 
-			tofile="${util.classes.dir}/LICENSE.TXT" />
-		<jar destfile="${util.dist.dir}/cai-util-${utilversion}.jar"
-			basedir="${util.classes.dir}"
+			tofile="${classes.dir}/LICENSE.TXT" />
+		<jar destfile="${dist.dir}/cai-util-${version}.jar"
+			basedir="${classes.dir}"
 			excludes="**/package-info.*"
 			duplicate="preserve" />
 	</target>
 	
 	<target name="javadoc"
 		description="Creates javadoc for the critterai utility library.">
-		<delete dir="${util.doc.dir}/javadoc" />	
-		<mkdir dir="${util.doc.dir}/javadoc" />	
-		<javadoc sourcepath="${util.src.dir}"
+		<delete dir="${doc.dir}/javadoc" />	
+		<mkdir dir="${doc.dir}/javadoc" />	
+		<javadoc sourcepath="${src.dir}"
 			packagenames="org.critterai.*"
-			destdir="${util.doc.dir}/javadoc"
+			destdir="${doc.dir}/javadoc"
 			access="protected"
 			windowtitle="CritterAI Utilities"
-			overview="${util.misc.dir}/overview.html"
+			overview="${local.misc.dir}/overview.html"
 			failonerror="yes">
 			<link href="http://java.sun.com/javase/6/docs/api/" />
 			<bottom>
@@ -97,7 +97,7 @@
 	
 	<target name="clean"
 		description="Deletes all temporary critterai utility artifacts.">
-		<delete dir="${util.build.dir}" />
+		<delete dir="${build.dir}" />
 	</target>
 	
 </project>
