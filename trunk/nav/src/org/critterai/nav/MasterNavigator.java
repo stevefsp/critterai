@@ -363,7 +363,7 @@ public final class MasterNavigator
      * The maximum age that paths will be cached.  (milliseconds)
      * When a path expires, it is disposed and removed from the cache.
      * <p>Paths will expire, even if still in use by clients, unless the client uses
-     * the {@link Navigator#keepPathAlive(Path)} operation to reset the path's age.<p>
+     * the {@link Navigator#keepPathAlive(MasterPath.Path)} operation to reset the path's age.<p>
      * <p>If set to zero, no path caching will occur, paths will never be disposed,
      * path sharing will never occur, and path repair will not be possible</p> 
      */
@@ -377,7 +377,7 @@ public final class MasterNavigator
 
     /**
      * The maximum search depth to use when attempting to repair paths.
-     * @see Navigator#repairPath(float, float, float, Path)
+     * @see Navigator#repairPath(float, float, float, MasterPath.Path)
      */
     public final int repairSearchDepth;
 
@@ -659,7 +659,7 @@ public final class MasterNavigator
      * The number of pending "nearest location" requests.
      * <p>This value will always be zero following a call
      * to any of the process operations.</p>
-     * @return
+     * @return The number of pending "nearest location" requests.
      */
     public int nearestLocationRequestCount() { return mNearestLocationRequests.size(); }
     
@@ -674,7 +674,7 @@ public final class MasterNavigator
      * (Path searches have not begun.)
      * <p>This value will always be zero following a call
      * to any of the process operations.</p>
-     * @return
+     * @return The number of pending path requests.
      */
     public int pathRequestCount() { return mAStarRequests.size(); }
     

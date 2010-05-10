@@ -26,8 +26,8 @@ import org.critterai.nav.MasterNavigator.Navigator;
 /**
  * A navigator suitable for running on its own thread.
  * <p>The navigator will only be thread safe if it is constructed in a thread safe
- * manner, such as using 
- * {@link NavUtil#getThreadedNavigator(float[], int[], int, float, float, DistanceHeuristicType, long, int, int, int, long) getThreadedNavigator()}</p>
+ * manner, such as using the 
+ * {@link NavUtil#getThreadedNavigator(float[], int[], int, float, float, DistanceHeuristicType, int, long, int, int, int, long)}</p>
  * <p>While running on its own thread, the navigator will still 
  * utilize the {@link MasterNavigator#maxProcessingTimeslice} functionality
  * of its {@link MasterNavigator} object.</p>

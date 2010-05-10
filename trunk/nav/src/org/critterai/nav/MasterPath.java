@@ -39,7 +39,7 @@ import org.critterai.math.geom.Triangle2;
  * for details.</li>
  * <li>The instance's reference is not shared between threads.</li>
  * <li>Other threads access path data through instances of {@link Path} objects obtained via 
- * {@link #getPath()}.</li>
+ * {@link #getPath(float, float, float)}.</li>
  * <li>References to {@link Path} objects are not shared between threads.</li>
  * </ul>
  * <p>In summary, a single thread constructs and manages an instance of {@literal MasterPath}
