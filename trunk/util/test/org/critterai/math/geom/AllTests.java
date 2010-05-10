@@ -30,8 +30,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses( {Line2Tests.class
-	, Triangle2Test.class
-	, Rectangle2Tests.class
-	, Polygon3Tests.class
-	, Triangle3Tests.class} )
+    , Triangle2Test.class
+    , Rectangle2Tests.class
+    , Polygon3Tests.class
+    , Triangle3Tests.class} )
 public class AllTests { }

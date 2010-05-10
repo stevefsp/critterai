@@ -31,62 +31,62 @@ package org.critterai.math.geom;
 public class Rectangle2 
 {
 
-	private Rectangle2() { }
-	
-	/**
-	 * Indicates whether or not a point is contained within an axis-aligned rectangle.
-	 * The test is inclusive of the edges of the rectangle.  I.e. If the point lies
-	 * on the edge of the rectangle, then it is contained by the rectangle.
-	 * @param minX The minimum x-axis bounds of the rectangle.
-	 * @param minY The minimum y-axis bounds of the rectangle.
-	 * @param maxX The maximum x-axis bounds of the rectangle.
-	 * @param maxY The maximum y-axis bounds of the rectangle.
-	 * @param x The x-value of the point (x, y) to test.
-	 * @param y The y-value of the point (x, y) to test.
-	 * @return TRUE if the point lies within the rectangle.  Otherwise FALSE.
-	 */
-	public static boolean contains(float minX, float minY, float maxX, float maxY, float x, float y)
-	{
-		return !(x < minX || y < minY || x > maxX || y > maxY);
-	}
-	
-	/**
-	 * Indicates whether or not an axis-alighed rectangle (B) is contained within another
-	 * axis-aligned rectangle (A).
-	 * The test is inclusive of the edges of the rectangles.
-	 * @param minXA The minimum x-axis bounds of rectangle A.
-	 * @param minYA The minimum y-axis bounds of rectangle A.
-	 * @param maxXA The maximum x-axis bounds of rectangle A.
-	 * @param maxYA The maximum y-axis bounds of rectangle A.
-	 * @param minXB The minimum x-axis bounds of rectangle B.
-	 * @param minYB The minimum y-axis bounds of rectangle B.
-	 * @param maxXB The maximum x-axis bounds of rectangle B.
-	 * @param maxYB The maximum y-axis bounds of rectangle B.
-	 * @return TRUE if rectangle B is fully contained by rectangle A.  Otherwise FALSE.
-	 */
-	public static boolean contains(float minXA, float minYA, float maxXA, float maxYA
-			, float minXB, float minYB, float maxXB, float maxYB)
-	{
-		return (minXB >= minXA && minYB >= minYA && maxXB <= maxXA && maxYB <= maxYA);
-	}
-	
-	/**
-	 * Indicates whether or not two axis-aligned rectangles intersect. 
-	 * The test is inclusive of the edges of the rectangles.
-	 * @param minAX The minimum x-axis bounds of rectangle A.
-	 * @param minAY The minimum y-axis bounds of rectangle A.
-	 * @param maxAX The maximum x-axis bounds of rectangle A.
-	 * @param maxAY The maximum y-axis bounds of rectangle A.
-	 * @param minBX The minimum x-axis bounds of rectangle B.
-	 * @param minBY The minimum y-axis bounds of rectangle B.
-	 * @param maxBX The maximum x-axis bounds of rectangle B.
-	 * @param maxBY The maximum y-axis bounds of rectangle B.
-	 * @return TRUE if the two rectangles intersect in any manner.  Otherwise FALSE.
-	 */
-	public static boolean intersectsAABB(float minAX, float minAY, float maxAX, float maxAY
-			, float minBX, float minBY, float maxBX, float maxBY)
-	{
-		return !(maxBX < minAX || maxAX < minBX || maxBY < minAY || maxAY < minBY );
-	}
-	
+    private Rectangle2() { }
+    
+    /**
+     * Indicates whether or not a point is contained within an axis-aligned rectangle.
+     * The test is inclusive of the edges of the rectangle.  I.e. If the point lies
+     * on the edge of the rectangle, then it is contained by the rectangle.
+     * @param minX The minimum x-axis bounds of the rectangle.
+     * @param minY The minimum y-axis bounds of the rectangle.
+     * @param maxX The maximum x-axis bounds of the rectangle.
+     * @param maxY The maximum y-axis bounds of the rectangle.
+     * @param x The x-value of the point (x, y) to test.
+     * @param y The y-value of the point (x, y) to test.
+     * @return TRUE if the point lies within the rectangle.  Otherwise FALSE.
+     */
+    public static boolean contains(float minX, float minY, float maxX, float maxY, float x, float y)
+    {
+        return !(x < minX || y < minY || x > maxX || y > maxY);
+    }
+    
+    /**
+     * Indicates whether or not an axis-alighed rectangle (B) is contained within another
+     * axis-aligned rectangle (A).
+     * The test is inclusive of the edges of the rectangles.
+     * @param minXA The minimum x-axis bounds of rectangle A.
+     * @param minYA The minimum y-axis bounds of rectangle A.
+     * @param maxXA The maximum x-axis bounds of rectangle A.
+     * @param maxYA The maximum y-axis bounds of rectangle A.
+     * @param minXB The minimum x-axis bounds of rectangle B.
+     * @param minYB The minimum y-axis bounds of rectangle B.
+     * @param maxXB The maximum x-axis bounds of rectangle B.
+     * @param maxYB The maximum y-axis bounds of rectangle B.
+     * @return TRUE if rectangle B is fully contained by rectangle A.  Otherwise FALSE.
+     */
+    public static boolean contains(float minXA, float minYA, float maxXA, float maxYA
+            , float minXB, float minYB, float maxXB, float maxYB)
+    {
+        return (minXB >= minXA && minYB >= minYA && maxXB <= maxXA && maxYB <= maxYA);
+    }
+    
+    /**
+     * Indicates whether or not two axis-aligned rectangles intersect. 
+     * The test is inclusive of the edges of the rectangles.
+     * @param minAX The minimum x-axis bounds of rectangle A.
+     * @param minAY The minimum y-axis bounds of rectangle A.
+     * @param maxAX The maximum x-axis bounds of rectangle A.
+     * @param maxAY The maximum y-axis bounds of rectangle A.
+     * @param minBX The minimum x-axis bounds of rectangle B.
+     * @param minBY The minimum y-axis bounds of rectangle B.
+     * @param maxBX The maximum x-axis bounds of rectangle B.
+     * @param maxBY The maximum y-axis bounds of rectangle B.
+     * @return TRUE if the two rectangles intersect in any manner.  Otherwise FALSE.
+     */
+    public static boolean intersectsAABB(float minAX, float minAY, float maxAX, float maxAY
+            , float minBX, float minBY, float maxBX, float maxBY)
+    {
+        return !(maxBX < minAX || maxAX < minBX || maxBY < minAY || maxAY < minBY );
+    }
+    
 }

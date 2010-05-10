@@ -27,34 +27,34 @@ package org.critterai.math.geom;
  */
 public enum WrapDirection 
 {
-	/**
-	 * Polygon vertex wrap direction is clockwise.
-	 */
-	CLOCKWISE,
-	
-	/**
-	 * Polygon vertex wrap direction is counter-clockwise.
-	 */
-	COUNTERCLOCKWISE,
-	
-	/**
-	 * The wrap direction hasn't been determined or could not be determined, depending
-	 * on the use case.
-	 */
-	UNKNOWN;
-	
-	/**
-	 * Returns the opposite of the provided direction.
-	 * NULL and {@link #UNKNOWN} will always return {@link #UNKNOWN}.
-	 * @param direction The direction to invert.
-	 * @return The opposite of the provided direction.
-	 */
-	public static WrapDirection getInverted(WrapDirection direction)
-	{
-		if (direction == CLOCKWISE)
-			return COUNTERCLOCKWISE;
-		if (direction == COUNTERCLOCKWISE)
-			return CLOCKWISE;
-		return UNKNOWN;
-	}
+    /**
+     * Polygon vertex wrap direction is clockwise.
+     */
+    CLOCKWISE,
+    
+    /**
+     * Polygon vertex wrap direction is counter-clockwise.
+     */
+    COUNTERCLOCKWISE,
+    
+    /**
+     * The wrap direction hasn't been determined or could not be determined, depending
+     * on the use case.
+     */
+    UNKNOWN;
+    
+    /**
+     * Returns the opposite of the provided direction.
+     * NULL and {@link #UNKNOWN} will always return {@link #UNKNOWN}.
+     * @param direction The direction to invert.
+     * @return The opposite of the provided direction.
+     */
+    public static WrapDirection getInverted(WrapDirection direction)
+    {
+        if (direction == CLOCKWISE)
+            return COUNTERCLOCKWISE;
+        if (direction == COUNTERCLOCKWISE)
+            return CLOCKWISE;
+        return UNKNOWN;
+    }
 }

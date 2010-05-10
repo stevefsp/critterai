@@ -26,18 +26,18 @@ package org.critterai.math.geom;
  */
 public enum PointLineRelType
 {
-	/**
-	 * The point is on, or very near, the line
-	 */
-	ON_LINE,
+    /**
+     * The point is on, or very near, the line
+     */
+    ON_LINE,
 
-	/**
-	 * The test point is to the left when looking from point A toward B on the line.
-	 */
-	LEFT_SIDE,
-	
-	/**
-	 * The test point is to the right when looking from point A toward B on the line.
-	 */
-	RIGHT_SIDE
+    /**
+     * The test point is to the left when looking from point A toward B on the line.
+     */
+    LEFT_SIDE,
+    
+    /**
+     * The test point is to the right when looking from point A toward B on the line.
+     */
+    RIGHT_SIDE
 }
