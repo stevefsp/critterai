@@ -26,15 +26,15 @@ package org.critterai.nav;
  */
 public enum DistanceHeuristicType 
 {
-	/**
-	 * The longest axis distance between two points.
-	 * E.g. The longest of (ax - bx), (ay - by), or (az - bz).
-	 */
-	LONGEST_AXIS,
-	
-	/**
-	 * The Manhattan distance between two points.
-	 * @see <a href="http://en.wikipedia.org/wiki/Manhattan_distance" target="_blank">Manhattan Distance (Wikipedia)</a>
-	 */
-	MANHATTAN;
+    /**
+     * The longest axis distance between two points.
+     * E.g. The longest of (ax - bx), (ay - by), or (az - bz).
+     */
+    LONGEST_AXIS,
+    
+    /**
+     * The Manhattan distance between two points.
+     * @see <a href="http://en.wikipedia.org/wiki/Manhattan_distance" target="_blank">Manhattan Distance (Wikipedia)</a>
+     */
+    MANHATTAN;
 }

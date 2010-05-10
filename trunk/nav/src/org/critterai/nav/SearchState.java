@@ -26,30 +26,30 @@ package org.critterai.nav;
  */
 public enum SearchState 
 {
-	/**
-	 * The search has not been initialized and is not ready for
-	 * a search. (No search data loaded.)
-	 */
-	UNINITIALIZED,
-	
-	/**
-	 * The search has been prepared but has not undergone any processing.
-	 * (Search data has been loaded and is ready for use.)
-	 */
-	INITIALIZED,
-	
-	/**
-	 * The search in in-progress.
-	 */
-	PROCESSING,
-	
-	/**
-	 * The search has completed successfully and data is available.
-	 */
-	COMPLETE,
-	
-	/**
-	 * The search has failed.  No data is available.
-	 */
-	FAILED,
+    /**
+     * The search has not been initialized and is not ready for
+     * a search. (No search data loaded.)
+     */
+    UNINITIALIZED,
+    
+    /**
+     * The search has been prepared but has not undergone any processing.
+     * (Search data has been loaded and is ready for use.)
+     */
+    INITIALIZED,
+    
+    /**
+     * The search in in-progress.
+     */
+    PROCESSING,
+    
+    /**
+     * The search has completed successfully and data is available.
+     */
+    COMPLETE,
+    
+    /**
+     * The search has failed.  No data is available.
+     */
+    FAILED,
 }

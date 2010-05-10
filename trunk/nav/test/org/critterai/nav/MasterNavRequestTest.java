@@ -33,70 +33,70 @@ import org.junit.Test;
  */
 public final class MasterNavRequestTest 
 {
-	
-	@Before
-	public void setUp() throws Exception 
-	{
-	}
+    
+    @Before
+    public void setUp() throws Exception 
+    {
+    }
 
-	@Test
-	public void testConstructorDefault() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
-		assertTrue(mnr.data() == null);
-		assertTrue(mnr.state() == NavRequestState.PROCESSING);
-	}
+    @Test
+    public void testConstructorDefault() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
+        assertTrue(mnr.data() == null);
+        assertTrue(mnr.state() == NavRequestState.PROCESSING);
+    }
 
-	@Test
-	public void testConstructorState() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.FAILED);
-		assertTrue(mnr.data() == null);
-		assertTrue(mnr.state() == NavRequestState.FAILED);
-	}
+    @Test
+    public void testConstructorState() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.FAILED);
+        assertTrue(mnr.data() == null);
+        assertTrue(mnr.state() == NavRequestState.FAILED);
+    }
 
-	@Test
-	public void testConstructorFull() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
-		assertTrue(mnr.data() == true);
-		assertTrue(mnr.state() == NavRequestState.COMPLETE);
-	}
+    @Test
+    public void testConstructorFull() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
+        assertTrue(mnr.data() == true);
+        assertTrue(mnr.state() == NavRequestState.COMPLETE);
+    }
 
-	@Test
-	public void testGetRequest() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
-		assertTrue(mnr.request() == mnr.request());  // Same ref on multiple calls.
-	}
+    @Test
+    public void testGetRequest() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
+        assertTrue(mnr.request() == mnr.request());  // Same ref on multiple calls.
+    }
 
-	@Test
-	public void testSetData() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
-		assertTrue(mnr.data() == true);
-		mnr.setData(false);
-		assertTrue(mnr.data() == false);
-	}
+    @Test
+    public void testSetData() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>(NavRequestState.COMPLETE, true);
+        assertTrue(mnr.data() == true);
+        mnr.setData(false);
+        assertTrue(mnr.data() == false);
+    }
 
-	@Test
-	public void testSetState() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
-		assertTrue(mnr.state() == NavRequestState.PROCESSING);
-		mnr.setState(NavRequestState.FAILED);
-		assertTrue(mnr.state() == NavRequestState.FAILED);
-	}
+    @Test
+    public void testSetState() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
+        assertTrue(mnr.state() == NavRequestState.PROCESSING);
+        mnr.setState(NavRequestState.FAILED);
+        assertTrue(mnr.state() == NavRequestState.FAILED);
+    }
 
-	@Test
-	public void testSet() 
-	{
-		MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
-		assertTrue(mnr.data() == null);
-		assertTrue(mnr.state() == NavRequestState.PROCESSING);
-		mnr.set(NavRequestState.COMPLETE, true);
-		assertTrue(mnr.state() == NavRequestState.COMPLETE);
-		assertTrue(mnr.data() == true);
-	}
+    @Test
+    public void testSet() 
+    {
+        MasterNavRequest<Boolean> mnr = new MasterNavRequest<Boolean>();
+        assertTrue(mnr.data() == null);
+        assertTrue(mnr.state() == NavRequestState.PROCESSING);
+        mnr.set(NavRequestState.COMPLETE, true);
+        assertTrue(mnr.state() == NavRequestState.COMPLETE);
+        assertTrue(mnr.data() == true);
+    }
 
 }

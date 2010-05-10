@@ -25,20 +25,20 @@ package org.critterai.nav;
  * Represents the possible relationship of a path (line segment) to a cell.
  */
 public enum PathRelType
-{	
-	/**
-	 * The path ends in the cell
-	 */
-	ENDING_CELL,
-	
-	/**
-	 * The path exits the cell.
-	 * The path may have started in the cell or simply crossed the cell.
-	 */
-	EXITING_CELL,
-	
-	/**
-	 * The path does not intersect the cell.
-	 */
-	NO_RELATIONSHIP;
+{    
+    /**
+     * The path ends in the cell
+     */
+    ENDING_CELL,
+    
+    /**
+     * The path exits the cell.
+     * The path may have started in the cell or simply crossed the cell.
+     */
+    EXITING_CELL,
+    
+    /**
+     * The path does not intersect the cell.
+     */
+    NO_RELATIONSHIP;
 }

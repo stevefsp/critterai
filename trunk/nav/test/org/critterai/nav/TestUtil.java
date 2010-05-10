@@ -28,55 +28,55 @@ import org.critterai.nav.TriCell;
  */
 public final class TestUtil 
 {
-	
-	private TestUtil() { }
-	
-	public static TriCell[] getAllCells(float[] verts, int[] indices)
-	{
-		int polyCount = indices.length / 3;
-		final TriCell[] polys = new TriCell[polyCount];
-		for (int iPoly = 0; iPoly < polyCount; iPoly++)
-		{
-			final int pPoly = iPoly*3;
-			polys[iPoly] = new TriCell(verts
-					, indices[pPoly]
-					, indices[pPoly+1]
-					, indices[pPoly+2]);
-		}
-		return polys;
-	}
+    
+    private TestUtil() { }
+    
+    public static TriCell[] getAllCells(float[] verts, int[] indices)
+    {
+        int polyCount = indices.length / 3;
+        final TriCell[] polys = new TriCell[polyCount];
+        for (int iPoly = 0; iPoly < polyCount; iPoly++)
+        {
+            final int pPoly = iPoly*3;
+            polys[iPoly] = new TriCell(verts
+                    , indices[pPoly]
+                    , indices[pPoly+1]
+                    , indices[pPoly+2]);
+        }
+        return polys;
+    }
 
-	public static void linkAllCells(TriCell[] polys)
-	{
-		for (int iPoly = 0; iPoly < polys.length; iPoly++)
-		{
-			for (int iPolyNext = iPoly+1; iPolyNext < polys.length; iPolyNext++)
-			{
-				polys[iPoly].link(polys[iPolyNext], true);
-			}
-		}
-	}
-	
-	public static float[] getVertBounds(float[] verts)
-	{
-		if (verts == null || verts.length % 3 != 0)
-			return null;
-		float[] result = new float[6];
-		result[0] = verts[0];
-		result[1] = verts[1];
-		result[2] = verts[2];
-		result[3] = verts[0];
-		result[4] = verts[1];
-		result[5] = verts[2];
-		for (int pPoly = 3; pPoly < verts.length; pPoly += 3)
-		{
-			result[0] = Math.min(result[0], verts[pPoly]);
-			result[1] = Math.min(result[1], verts[pPoly+1]);
-			result[2] = Math.min(result[2], verts[pPoly+2]);
-			result[3] = Math.max(result[3], verts[pPoly]);
-			result[4] = Math.max(result[4], verts[pPoly+1]);
-			result[5] = Math.max(result[5], verts[pPoly+2]);
-		}
-		return result;
-	}
+    public static void linkAllCells(TriCell[] polys)
+    {
+        for (int iPoly = 0; iPoly < polys.length; iPoly++)
+        {
+            for (int iPolyNext = iPoly+1; iPolyNext < polys.length; iPolyNext++)
+            {
+                polys[iPoly].link(polys[iPolyNext], true);
+            }
+        }
+    }
+    
+    public static float[] getVertBounds(float[] verts)
+    {
+        if (verts == null || verts.length % 3 != 0)
+            return null;
+        float[] result = new float[6];
+        result[0] = verts[0];
+        result[1] = verts[1];
+        result[2] = verts[2];
+        result[3] = verts[0];
+        result[4] = verts[1];
+        result[5] = verts[2];
+        for (int pPoly = 3; pPoly < verts.length; pPoly += 3)
+        {
+            result[0] = Math.min(result[0], verts[pPoly]);
+            result[1] = Math.min(result[1], verts[pPoly+1]);
+            result[2] = Math.min(result[2], verts[pPoly+2]);
+            result[3] = Math.max(result[3], verts[pPoly]);
+            result[4] = Math.max(result[4], verts[pPoly+1]);
+            result[5] = Math.max(result[5], verts[pPoly+2]);
+        }
+        return result;
+    }
 }
