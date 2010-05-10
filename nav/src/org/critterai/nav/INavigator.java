@@ -21,7 +21,7 @@ public interface INavigator {
      * <p>The request will fail if the start or goal point is outside the 
      * the xz-column of the mesh.</p>
      * <p>This is a potentially costly operation.  Consider using 
-     * {@link #repairPath(float, float, float, int)} if the client already has a path
+     * {@link #repairPath(float, float, float, MasterPath.Path)} if the client already has a path
      * to the goal.</p>
      * @param startX The x-value of the start point of the path. (startX, startY, startZ)
      * @param startY The y-value of the start point of the path. (startX, startY, startZ)

@@ -45,7 +45,7 @@ import java.util.PriorityQueue;
  * <p>Primary use case:</p>
  * <ol>
  * <li>Perform the 
- * {@link #initialize(float, float, float, float, float, float, TriCell, TriCell) initialize()}
+ * {@link #initialize(float, float, float, TriCell, TriCell[], int, boolean)}
  * operation to set up the search.</li>
  * <li>Perform the {@link #process()} operation until the search is complete.</li>
  * <li>If the search completes successfully, use the {@link #pathCount()} and {@link #getPathCells(int)}
