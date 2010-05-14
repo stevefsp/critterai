@@ -62,21 +62,6 @@ public final class MasterNavigator
     /*
      * Design Notes:
      * 
-     * Design performance is tuned for minimal
-     * client impact at the expense of navigator
-     * thread.
-     * Only one request type will
-     * be locked at a time by the navigator thread.
-     * For example: If the navigator thread is
-     * emptying the repair request queue, clients
-     * can continue requesting new paths,
-     * keep alive requests, etc.
-     * The down side is that the the navigator
-     * thread must perform 6 locks per call to
-     * the process operations.  This makes the
-     * process once operation the most expensive
-     * process operation.
-     * 
      * Potential Optimizations:
      * 
      * For Path Repair
@@ -135,7 +120,7 @@ public final class MasterNavigator
             if (mIsDisposed)
                 return new MasterNavRequest<Vector3>(NavRequestState.FAILED).request();
             VectorJob job = new VectorJob(new Vector3(x, y, z));
-            synchronized (mNearestLocationRequests) 
+            synchronized (mAStarRequests) 
             {
                 mNearestLocationRequests.add(job);
             }
@@ -147,8 +132,7 @@ public final class MasterNavigator
          */
         public MasterNavRequest<Path>.NavRequest getPath(float startX, float startY, float startZ,
                 float goalX, float goalY, float goalZ) 
-        {
-            
+        {   
             if (mIsDisposed)
                 return mFailedPath.request();
             PathJob job = null;
@@ -168,6 +152,55 @@ public final class MasterNavigator
             return job.request.request();
         }
 
+// Save for potential upgrade later.
+// Don't have time to properly test yet.
+//        /**
+//         * Request a batch of searches.
+//         * @param points The start and goal points in the form 
+//         * (startX, startY, startZ, goalX, goalY, goalZ) * requestCount
+//         * @param out The requests in the same order at the start/goal points.  Size will
+//         * be zero if the navigator is disposed.
+//         */
+//        public void getPaths(ArrayList<Float> points, ArrayList<MasterNavRequest<Path>.NavRequest> out)
+//        {
+//            /*
+//             * Design note:
+//
+//             * This design might result in blocking issues for 
+//             * the navigation thread, if the search pool size is
+//             * not set high enough,
+//             */
+//            out.clear();
+//            if (mIsDisposed)
+//                return;
+//            PathJob job = null;
+//            synchronized (mAStarRequests) 
+//            {
+//                for (int p = 0; p+5 < points.size(); p += 6)
+//                {
+//                    if (mAStarPool.size() == 0)
+//                        job = new PathJob(points.get(p+0)
+//                                , points.get(p+1)
+//                                , points.get(p+2)
+//                                , points.get(p+3)
+//                                , points.get(p+4)
+//                                , points.get(p+5));
+//                    if (job == null)
+//                    {
+//                        job = mAStarPool.pollLast();
+//                        job.initialize(points.get(p+0)
+//                                , points.get(p+1)
+//                                , points.get(p+2)
+//                                , points.get(p+3)
+//                                , points.get(p+4)
+//                                , points.get(p+5));
+//                    }
+//                    mAStarRequests.add(job);  
+//                    out.add(job.request.request());
+//                }
+//            }
+//        }
+
         /**
          * {@inheritDoc}
          */
@@ -183,7 +216,7 @@ public final class MasterNavigator
                 return new MasterNavRequest<Boolean>(NavRequestState.FAILED, false).request();
             yTolerance = Math.max(0, yTolerance);
             ValidLocationJob job = new ValidLocationJob(x, y, z, yTolerance);
-            synchronized (mValidLocationRequests) 
+            synchronized (mAStarRequests) 
             {
                 mValidLocationRequests.add(job);
             }
@@ -214,7 +247,7 @@ public final class MasterNavigator
             RepairJob job = null;
             if (mRepairPool.size() == 0)
                 job = new RepairJob(startX, startY, startZ, path);
-            synchronized (mPathRepairRequests) 
+            synchronized (mAStarRequests) 
             {
                 if (job == null)
                 {
@@ -436,7 +469,8 @@ public final class MasterNavigator
     
     /**
      * Pending "nearest location" requests.
-     * <p>IMPORTANT: All access to this object must be synchronized.</p>
+     * <p>IMPORTANT: Access to this object must be synchronized via a lock
+     * on {@link #mAStarRequests}.</p>
      */
     private final ArrayDeque<VectorJob> mNearestLocationRequests  = new ArrayDeque<VectorJob>();
 
@@ -452,13 +486,14 @@ public final class MasterNavigator
     
     /**
      * Pending path repair requests.
-     * <p>IMPORTANT: All access to this object must be synchronized.</p>
+     * <p>IMPORTANT: Access to this object must be synchronized via a lock
+     * on {@link #mAStarRequests}.</p>
      */
     private final ArrayDeque<RepairJob> mPathRepairRequests = new ArrayDeque<RepairJob>();
     /**
      * The repair search pool.  (Repair jobs available for new requests.)
      * <p>IMPORTANT: Access to this object must be synchronized via a lock
-     * on {@link #mPathRepairRequests}.</p>
+     * on {@link #mAStarRequests}.</p>
      */
     private final ArrayDeque<RepairJob> mRepairPool;
     
@@ -482,7 +517,8 @@ public final class MasterNavigator
 
     /**
      * Pending "valid location" requests.
-     * <p>IMPORTANT: All access to this object must be synchronized.</p>
+     * <p>IMPORTANT: Access to this object must be synchronized via a lock
+     * on {@link #mAStarRequests}.</p>
      */
     private final ArrayDeque<ValidLocationJob> mValidLocationRequests 
             = new ArrayDeque<ValidLocationJob>();
@@ -575,12 +611,24 @@ public final class MasterNavigator
         mIsDisposed = true;
         mKeepAliveRequests.clear();
         mSearchCancellationRequests.clear();
-        synchronized (mPathRepairRequests)
+        synchronized (mAStarRequests)
         {
             while (mPathRepairRequests.size() > 0)
             {
                 mPathRepairRequests.poll().request.setState(NavRequestState.FAILED);
             }
+             while (mValidLocationRequests.size() > 0)
+            {
+                mValidLocationRequests.poll().request.setState(NavRequestState.FAILED);
+            }  
+            while (mNearestLocationRequests.size() > 0)
+            {
+                mNearestLocationRequests.poll().request.setState(NavRequestState.FAILED);
+            } 
+            while (mAStarRequests.size() > 0)
+            {
+                mAStarRequests.poll().request.setState(NavRequestState.FAILED);
+            }            
         }
         for (RepairJob job : mPathRepairJobs)
         {
@@ -589,34 +637,13 @@ public final class MasterNavigator
                 job.search.reset();
         }
         mPathRepairJobs.clear();
-        synchronized (mValidLocationRequests)
-        {
-            while (mValidLocationRequests.size() > 0)
-            {
-                mValidLocationRequests.poll().request.setState(NavRequestState.FAILED);
-            }
-        }
         while (mValidLocationJobs.size() > 0)
         {
             mValidLocationJobs.poll().request.setState(NavRequestState.FAILED);
         }
-        synchronized (mNearestLocationRequests)
-        {
-            while (mNearestLocationRequests.size() > 0)
-            {
-                mNearestLocationRequests.poll().request.setState(NavRequestState.FAILED);
-            }
-        }
         while (mNearestLocationJobs.size() > 0)
         {
             mNearestLocationJobs.poll().request.setState(NavRequestState.FAILED);
-        }
-        synchronized (mAStarRequests)
-        {
-            while (mAStarRequests.size() > 0)
-            {
-                mAStarRequests.poll().request.setState(NavRequestState.FAILED);
-            }
         }
         for (PathJob job : mAStarJobs)
         {
@@ -848,7 +875,7 @@ public final class MasterNavigator
         job.reset();
         if (mRepairPool.size() < mRepairPoolMax)
         {
-            synchronized (mPathRepairRequests) 
+            synchronized (mAStarRequests) 
             {
                 mRepairPool.add(job);
             }
@@ -1163,35 +1190,21 @@ public final class MasterNavigator
             {
                 mAStarJobs.add(mAStarRequests.poll());
             }
-        }
-        
-        // Transfer path repair requests.
-        synchronized (mPathRepairRequests) 
-        {
-            while (mPathRepairRequests.size() > 0)
+            
+             while (mPathRepairRequests.size() > 0)
             {
                 mPathRepairJobs.add(mPathRepairRequests.poll());
-            }
-        }
-        
-        // Transfer nearest location requests.
-        synchronized (mNearestLocationRequests) 
-        {
-            while (mNearestLocationRequests.size() > 0)
+            }           
+            
+             while (mNearestLocationRequests.size() > 0)
             {
                 mNearestLocationJobs.add(mNearestLocationRequests.poll());
-            }
-        }
-        
-        /*
-         * Transfer valid location requests.
-         */
-        synchronized (mValidLocationRequests) 
-        {
+            }           
+            
             while (mValidLocationRequests.size() > 0)
             {
                 mValidLocationJobs.add(mValidLocationRequests.poll());
-            }
+            }             
         }
     }
 
