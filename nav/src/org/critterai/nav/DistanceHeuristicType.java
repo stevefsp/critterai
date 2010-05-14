@@ -37,4 +37,24 @@ public enum DistanceHeuristicType
      * @see <a href="http://en.wikipedia.org/wiki/Manhattan_distance" target="_blank">Manhattan Distance (Wikipedia)</a>
      */
     MANHATTAN;
+    
+    /**
+     * A safe version of {@link #valueOf(String)} that will return
+     * null if the argument is invalid.
+     * @param value A string representing the exact {@link #toString()} value
+     * of a valid enumeration.
+     * @return The enumeration associated with the string value, or null
+     * if there is no match.
+     */
+    public static DistanceHeuristicType valueOfSafe(String value)
+    {
+        try
+        {
+            return valueOf(value);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 }
