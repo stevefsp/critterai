@@ -121,7 +121,7 @@ public final class FilterOutSmallRegions
 				// Span is in the null region.  So skip it.
 				continue;
 			
-			// Get current span's region and increment its membership count.
+			// Get current span's region object and increment its membership count.
 			Region region = regions[span.regionID()];
 			region.spanCount++;
 			
@@ -131,10 +131,10 @@ public final class FilterOutSmallRegions
 					; nextHigherSpan = nextHigherSpan.next())
 			{
 				if (nextHigherSpan.regionID() <= OpenHeightfield.NULL_REGION_ID)
-					// Span is in the null region.  So skip it.
+					// Span is in the null region.  So ignore it.
 					continue;
 				if (!region.overlappingRegions.contains(nextHigherSpan.regionID()))
-					// This is a previously undetected span above the current region.
+					// This is a previously undetected region above the current region.
 					region.overlappingRegions.add(nextHigherSpan.regionID());
 			}
 			
@@ -195,7 +195,7 @@ public final class FilterOutSmallRegions
 		 * Example:
 		 * 
 		 * Region 11 is at array index 11.  It is merged with region 18 at index 18.  
-		 * After the merge, the region object at index 11 and will have an id of 18.
+		 * After the merge, the region OBJECT at index 11 and will have an id of 18.
 		 */
 		int mergeCount;
 		do
@@ -204,19 +204,16 @@ public final class FilterOutSmallRegions
 			// Loop through all regions.
 			for (Region region : regions)
 			{
-				
 				if (region.id <= OpenHeightfield.NULL_REGION_ID || region.spanCount == 0)
 					// Skip null and empty regions.
 					continue;
 				
-				// TODO: EVAL: Figure out why being connected to null matters.
-				if (region.spanCount > mMergeRegionSize 
-						&& region.connections.contains(OpenHeightfield.NULL_REGION_ID))
+				if (region.spanCount > mMergeRegionSize)
 					// Region is not a candidate for being merged into another region.
 					continue;
 				
 				// Region is either a small region, or a large region not connected
-				// to a null region.  
+				// to a null region.
 				// Find its smallest neighbor region.
 				Region targetMergeRegion = null;
 				int smallestSizeFound = Integer.MAX_VALUE;
@@ -248,8 +245,17 @@ public final class FilterOutSmallRegions
 						if (r.id <= 0)
 							// Ignore null region.
 							continue;
-						replaceNeighborRegionID(r, oldRegionID, targetMergeRegion.id);
+						if (r.id == oldRegionID)
+							// This region was merged into the old outdated region.
+							// Re-point its id to the new target region.
+							r.id = targetMergeRegion.id;
+						else
+							// Fix connection and overlap information.
+							replaceNeighborRegionID(r, oldRegionID, targetMergeRegion.id);
+						
 					}
+//					System.out.println("Merge: " + oldRegionID + " -> " + targetMergeRegion.id 
+//							+ " : " + targetMergeRegion.connections);
 					mergeCount++;
 				}
 			}
