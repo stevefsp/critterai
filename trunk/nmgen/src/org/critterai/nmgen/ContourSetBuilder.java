@@ -26,9 +26,6 @@ import java.util.ArrayList;
 /**
  * Builds a set of contours from the region information contained by an
  * {@link OpenHeightfield}.  It does this by locating and "walking" the edges
- * of the field's regions.
- * <p>The resulting contour set will include both detailed and simplified
- * contours.</p>
  * TODO: DOC: Add visualization.
  * @see Contour
  * @see ContourSet
@@ -89,13 +86,12 @@ public final class ContourSetBuilder
 		/*
 		 *  Set the flags on all spans in non-null regions to indicate which edges 
 		 *  are connected to external regions.
-		 *  By the end of this loop, the span flags will be in the following format:
-		 *  
-		 *  If a span has no connections to external regions or is completely surrounded by other
-		 *  regions (an island), its flag will be zero.
 		 *  
 		 *  Reference:  Neighbor search and nomenclature.
 		 *  http://www.critterai.org/?q=nmgen_hfintro#nsearch
+		 *  
+		 *  If a span has no connections to external regions or is completely surrounded by other
+		 *  regions (an island), its flag will be zero.
 		 *  
 		 *  If a span is connected to one or more external regions then the flag will be a 4 bit
 		 *  value where connections are recorded as follows:
@@ -105,7 +101,8 @@ public final class ContourSetBuilder
 		 *      bit4 = neighbor3
 		 *  With the meaning of the bits as follows:
 		 *      0 = neighbor in same region.
-		 *      1 = neighbor not in same region.  (It may be the null region or a real region.)
+		 *      1 = neighbor not in same region. (Neighbor may be the null region
+		 *          or a real region.)
 		 */
 		final IHeightfieldIterator<OpenHeightSpan> iter = sourceField.dataIterator();
 		while(iter.hasNext())
@@ -142,7 +139,7 @@ public final class ContourSetBuilder
 		}
 		
 		/*
-		 * These are working lists whose content changes with each iteration of the upcoming loop.
+		 * These are working lists whose content changes with each iteration of the up coming loop.
 		 * They represent the detailed and simple contour vertices.
 		 * Initial sizing is arbitrary.
 		 */
@@ -193,16 +190,14 @@ public final class ContourSetBuilder
 			result.add(new Contour(span.regionID(), workingRawVerts, workingDetailVerts));
 		}
 		
-		/*
-		 * TODO: EVAL: Review
-		 * This is not a fatal error.  So don't return null.
-		 * Rather, if logging is added, add a warning.
-		 * The only time this should occur is if an invalid contour was formed (see above)
-		 * or if a region somehow resulted in multiple contours.
-		 */
-//		if (result.size() != sourceField.regionCount())
-//			// Unexpected number of contours have been generated.
-//			return null;
+		if (result.size() != sourceField.regionCount())
+			/*
+			 * The only time this should occur is if an invalid contour was formed
+			 * or if a region somehow resulted in multiple contours (bad region data).
+			 * While it may not be a fatal error, it should be addressed since
+			 * odd, hard to spot anomalies can occur later in the pipeline.
+			 */
+			return null;
 		
 		return result;
 		
@@ -235,7 +230,7 @@ public final class ContourSetBuilder
 		/*
 		 * Flaw in Algorithm:
 		 * 
-		 * This method of contour generation can result in an inappropriate impasssable seam 
+		 * This method of contour generation can result in an inappropriate impassable seam 
 		 * between two adjacent regions in the following case:
 		 * 
 		 * 1. One region connects to another region on two sides in an uninterrupted manner.  (Visualize
@@ -251,7 +246,6 @@ public final class ContourSetBuilder
 		 */
 		
 		/*
-		 * TODO: DOC: Add visualization.
 		 * It is a bit hard to describe the stepping portion of this algorithm.  The best way to visualize
 		 * it may be to think of a robot sitting on the floor facing a known wall.  It then does the
 		 * following to skirt the wall:
@@ -422,7 +416,7 @@ public final class ContourSetBuilder
 					uri = pVert / 4;
 				}
 			}
-			// See the simplified contour with this edge.
+			// Seed the simplified contour with this edge.
 			outVerts.add(llx);
 			outVerts.add(lly);
 			outVerts.add(llz);
@@ -446,13 +440,16 @@ public final class ContourSetBuilder
 				// TODO: EVAL: Find a way to get rid of the modulus.
 				if (sourceVerts.get(iVert*4+3) != sourceVerts.get(((iVert+1)%vCount)*4+3))
 				{
-					// Change in vertex region.  Add this vertex.
+					// The current vertex has a different region than the
+					// next vertex.  So there is a change in vertex region.
 					outVerts.add(sourceVerts.get(iVert*4));
 					outVerts.add(sourceVerts.get(iVert*4+1));
 					outVerts.add(sourceVerts.get(iVert*4+2));
 					outVerts.add(iVert);
 				}
 			}
+//			if (outVerts.size() < 12)
+//				System.out.println("Unexpected: Out verts < 3.");
 		}
 		
 		// Run all post processing algorithms.  These will build the final
@@ -493,7 +490,7 @@ public final class ContourSetBuilder
 		 * Examples:  
 		 * - Only 3 vertices are surveyed instead of the 4
 		 *   the recast uses.
-		 * - This searches more thoroughly for the diagonal neighbor.
+		 * - This algorithm searches more thoroughly for the diagonal neighbor.
 		 * 
 		 * Reference: Neighbor search and nomenclature.
 		 * http://www.critterai.org/?q=nmgen_hfintro#nsearch

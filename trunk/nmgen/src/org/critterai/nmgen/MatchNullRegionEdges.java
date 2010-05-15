@@ -36,9 +36,6 @@ public final class MatchNullRegionEdges
 	/*
 	 * Recast Reference: simplifyContour() in RecastContour.cpp
 	 * 
-	 * Recast does not have the multi-plane functionality.  That functionality is
-	 * considered experimental.
-	 * 
 	 * Doc State: Text Complete.  TODO: DOC: Add visualizations.
 	 * Standards Check: Complete
 	 */
