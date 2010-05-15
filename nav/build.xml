@@ -2,12 +2,12 @@
 <project name="critterai-nav" default="compile">
 
     <description>
-    Builds the CritterAI Navigation library.
+        Builds the CritterAI Navigation library.
+    	Override the version property with -Dversion.
+    	Override the utility library version property with -Dutil.version
     </description>
 
     <property file="build.properties"/>
-    
-    <!-- Override version via the command line with -Dversion= -->
     
     <target name="compile"
         description="Generates the class files.">
@@ -16,7 +16,7 @@
             destdir="${classes.dir}"
             includeAntRuntime="no">
             <classpath>
-                <pathelement location="${util.lib}" />
+                <pathelement location="${util.lib}-${util.version}.jar" />
             </classpath>
         </javac>
     </target>
@@ -29,8 +29,8 @@
             destdir="${test.classes.dir}"
             includeAntRuntime="no">
             <classpath>
-                <pathelement location="${lib.dir}/junit-4.7.jar" />
-                <pathelement location="${util.lib}" />
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${util.lib}-${util.version}.jar" />
                 <pathelement location="${classes.dir}" />
             </classpath>
         </javac>
@@ -41,8 +41,8 @@
         description="Unit test the library.">
         <junit fork="yes" haltonerror="yes" printsummary="no">
             <classpath>
-                <pathelement location="${lib.dir}/junit-4.7.jar" />
-                <pathelement location="${util.lib}" />
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${util.lib}-${util.version}.jar" />
                 <pathelement location="${classes.dir}" />
                 <pathelement location="${test.classes.dir}" />
             </classpath>
@@ -67,7 +67,7 @@
     <target name="package-dist"
         depends="package-jar, javadoc"
         description="Creates the zip distribution for the library.">
-        <copy file="${util.lib}"
+        <copy file="${util.lib}-${util.version}.jar"
             todir="${dist.dir}"
             failonerror="yes" />
         <copy file="${misc.resources.dir}/LCOPY.TXT" 
@@ -84,6 +84,9 @@
             <zipfileset dir="${doc.dir}"
                  includes="**/*"
                  prefix="${project.fullname}/docs" />
+        	<zipfileset dir="${src.dir}"
+        	                 includes="**/*"
+        	                 prefix="${project.fullname}/src" />
         </zip>
     </target>
     
@@ -99,7 +102,7 @@
             overview="${local.misc.dir}/overview.html"
             failonerror="yes">
             <classpath>
-                 <pathelement location="${util.lib}" />
+                 <pathelement location="${util.lib}-${util.version}.jar" />
             </classpath>
             <link href="http://www.critterai.org/projects/util/docs/api/" />
             <link href="http://java.sun.com/javase/6/docs/api/" />
