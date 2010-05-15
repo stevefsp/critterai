@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 /**
  * Represents the detailed and simplified versions of a contour.
- * A contour is expected to always represent a simple polygon.
+ * A contour is expected to always represent a simple polygon. (Convex or concave.)
  * TODO: DOC: Add visualization.
  */
 public final class Contour

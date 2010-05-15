@@ -117,6 +117,9 @@ public final class OpenHeightfield
 	
 	/**
 	 * Sets the region count.
+	 * <p>The region count is expected to be zero based with the zero region representing
+	 * the null region.  So the region count is expected to be one more that the maximum
+	 * region value.  E.g. If the highest region value is 14, then the region count is 15.</p>
 	 * <p>IMPORTANT: There is no automatic region count management.  Region count
 	 * must be managed manually.</p>
 	 * @param value The new region count.
@@ -226,18 +229,22 @@ public final class OpenHeightfield
 	 */
 	public void printRegionField()
 	{
-		System.out.println("Distance Field (Spans: " + mSpanCount + ")");
-		final OpenHeightFieldIterator iter = new OpenHeightFieldIterator();
-		int depth = -1;
+		System.out.println("Distance Field (Spans: " + mSpanCount 
+				+ ", Regions: " + mRegionCount + ")");
 		System.out.print("\t");
 		for (int width = 0; width < width(); width++)
 			System.out.print(width + "\t");
-		while (iter.hasNext())
+		for (int iDepth = 0; iDepth < depth(); iDepth++)
 		{
-			OpenHeightSpan span = iter.next();
-			if (iter.depthIndex() != depth)
-				System.out.print("\n" + ++depth + "\t");
-			System.out.print(span.regionID() + "\t");
+			System.out.print("\n" + iDepth + "\t");
+			for (int iWidth = 0; iWidth < width(); iWidth++)
+			{
+				OpenHeightSpan span = getData(iWidth, iDepth);
+				if (span == null)
+					System.out.print(" \t");
+				else
+					System.out.print(span.regionID() + "\t");
+			}	
 		}
 		System.out.println();
 	}
