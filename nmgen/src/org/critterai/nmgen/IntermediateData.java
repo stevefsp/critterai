@@ -28,87 +28,87 @@ package org.critterai.nmgen;
  */
 public final class IntermediateData 
 {
-	
-	/*
-	 * Recast Reference: None
-	 * 
-	 * Doc State: Complete
-	 * Standards Check: Complete
-	 */
-	
-	private SolidHeightfield mSolidHeightfield;
-	private OpenHeightfield mOpenHeightfield;
-	private ContourSet mContours;
-	private PolyMeshField mPolyMesh;
-	
-	/**
-	 * The solid heightfield associated with the source geometry.
-	 * @return The solid heightfield derived from the source geometry.
-	 */
-	public SolidHeightfield solidHeightfield() { return mSolidHeightfield; }
-	
-	/**
-	 * The open heightfield associated with the solid heightfield.
-	 * @return The open heightfield associated with the solid heightfield.
-	 */
-	public OpenHeightfield openHeightfield() { return mOpenHeightfield; }
-	
-	/**
-	 * The contour set associated with the open heightfield.
-	 * @return The contours associated with the open heightfield.
-	 */
-	public ContourSet contours() { return mContours; }
-	
-	/**
-	 * The polygon mesh associated with the contour set.
-	 * @return The polygon mesh associated with the contour set.
-	 */
-	public PolyMeshField polyMesh() { return mPolyMesh; }
-	
-	/**
-	 * Sets the solid height field.
-	 * @param field The solid heightfield.
-	 */
-	public void setSolidHeightfield(SolidHeightfield field)
-	{
-		mSolidHeightfield = field;
-	}
-	
-	/**
-	 * Sets the open heightfield.
-	 * @param field The open heightfield.
-	 */
-	public void setOpenHeightfield(OpenHeightfield field)
-	{
-		mOpenHeightfield = field;
-	}
-	
-	/**
-	 * Sets the contour set.
-	 * @param contours The contour set.
-	 */
-	public void setContours(ContourSet contours)
-	{
-		mContours = contours;
-	}
-	
-	/**
-	 * Sets the polygon mesh.
-	 * @param mesh The polygon mesh.
-	 */
-	public void setPolyMesh(PolyMeshField mesh)
-	{
-		mPolyMesh = mesh;
-	}
-	
-	/**
-	 * Resets all data to null.
-	 */
-	public void reset()
-	{
-		mSolidHeightfield = null;
-		mOpenHeightfield = null;
-		mContours = null;
-		mPolyMesh = null;
-	}
+    
+    /*
+     * Recast Reference: None
+     * 
+     * Doc State: Complete
+     * Standards Check: Complete
+     */
+    
+    private SolidHeightfield mSolidHeightfield;
+    private OpenHeightfield mOpenHeightfield;
+    private ContourSet mContours;
+    private PolyMeshField mPolyMesh;
+    
+    /**
+     * The solid heightfield associated with the source geometry.
+     * @return The solid heightfield derived from the source geometry.
+     */
+    public SolidHeightfield solidHeightfield() { return mSolidHeightfield; }
+    
+    /**
+     * The open heightfield associated with the solid heightfield.
+     * @return The open heightfield associated with the solid heightfield.
+     */
+    public OpenHeightfield openHeightfield() { return mOpenHeightfield; }
+    
+    /**
+     * The contour set associated with the open heightfield.
+     * @return The contours associated with the open heightfield.
+     */
+    public ContourSet contours() { return mContours; }
+    
+    /**
+     * The polygon mesh associated with the contour set.
+     * @return The polygon mesh associated with the contour set.
+     */
+    public PolyMeshField polyMesh() { return mPolyMesh; }
+    
+    /**
+     * Sets the solid height field.
+     * @param field The solid heightfield.
+     */
+    public void setSolidHeightfield(SolidHeightfield field)
+    {
+        mSolidHeightfield = field;
+    }
+    
+    /**
+     * Sets the open heightfield.
+     * @param field The open heightfield.
+     */
+    public void setOpenHeightfield(OpenHeightfield field)
+    {
+        mOpenHeightfield = field;
+    }
+    
+    /**
+     * Sets the contour set.
+     * @param contours The contour set.
+     */
+    public void setContours(ContourSet contours)
+    {
+        mContours = contours;
+    }
+    
+    /**
+     * Sets the polygon mesh.
+     * @param mesh The polygon mesh.
+     */
+    public void setPolyMesh(PolyMeshField mesh)
+    {
+        mPolyMesh = mesh;
+    }
+    
+    /**
+     * Resets all data to null.
+     */
+    public void reset()
+    {
+        mSolidHeightfield = null;
+        mOpenHeightfield = null;
+        mContours = null;
+        mPolyMesh = null;
+    }
 }

@@ -31,27 +31,27 @@ import java.util.Iterator;
  * @param <E> The type of data held by the heightfield.
  */
 public interface IHeightfieldIterator<E> 
-	extends Iterator<E> 
+    extends Iterator<E> 
 {
-	
-	// Doc State: Complete
-	// Standards Check: Complete
-	
-	/**
-	 * The width index of the last span returned by {@link #next()}
-	 * @return The width index of the last span returned by {@link #next()}
-	 */
-	int widthIndex();
-	
-	/**
-	 * The depth index of the last span returned by {@link #next()}
-	 * @return The depth index of the last span returned by {@link #next()}
-	 */
-	int depthIndex();
-	
-	/**
-	 * Resets the iterator so that it can be re-used.
-	 */
-	void reset();
-	
+    
+    // Doc State: Complete
+    // Standards Check: Complete
+    
+    /**
+     * The width index of the last span returned by {@link #next()}
+     * @return The width index of the last span returned by {@link #next()}
+     */
+    int widthIndex();
+    
+    /**
+     * The depth index of the last span returned by {@link #next()}
+     * @return The depth index of the last span returned by {@link #next()}
+     */
+    int depthIndex();
+    
+    /**
+     * Resets the iterator so that it can be re-used.
+     */
+    void reset();
+    
 }

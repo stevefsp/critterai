@@ -29,20 +29,20 @@ import java.util.ArrayList;
 public interface IContourAlgorithm 
 {
 
-	// Doc State: Complete
-	// Standards Check: Complete
-	
-	/**
-	 * Apply an algorithm to a contour.
-	 * <p>The implementation is permitted to require that the the result vertices be seeded
-	 * with existing data.  In this case the argument becomes an in/out argument rather than just an
-	 * out argument.</p>
-	 * @param sourceVerts The source vertices that represent the contour in the form (x, y, z, regionID).
-	 * @param resultVerts The contour vertices produced by the operation in the form (x, y, z, sourceIndex).
-	 * <p>Source index is the index (not pointer) of the related source vertex in sourcVerts.  
-	 * E.g. If the vertex in resultsList references the vertex at position 12 of sourceVerts,
-	 * then sourceIndex will be 3 (12 / 4).</p>
-	 */
-	void apply(ArrayList<Integer> sourceVerts, ArrayList<Integer> resultVerts);
-	
+    // Doc State: Complete
+    // Standards Check: Complete
+    
+    /**
+     * Apply an algorithm to a contour.
+     * <p>The implementation is permitted to require that the the result vertices be seeded
+     * with existing data.  In this case the argument becomes an in/out argument rather than just an
+     * out argument.</p>
+     * @param sourceVerts The source vertices that represent the contour in the form (x, y, z, regionID).
+     * @param resultVerts The contour vertices produced by the operation in the form (x, y, z, sourceIndex).
+     * <p>Source index is the index (not pointer) of the related source vertex in sourcVerts.  
+     * E.g. If the vertex in resultsList references the vertex at position 12 of sourceVerts,
+     * then sourceIndex will be 3 (12 / 4).</p>
+     */
+    void apply(ArrayList<Integer> sourceVerts, ArrayList<Integer> resultVerts);
+    
 }

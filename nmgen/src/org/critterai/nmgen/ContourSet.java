@@ -31,64 +31,64 @@ import java.util.ArrayList;
  * @see Contour
  */
 public final class ContourSet 
-	extends BoundedField
+    extends BoundedField
 {
-	
-	/*
-	 * Design notes:
-	 * 
-	 * Not adding the ability to remove contours until it is needed.
-	 * 
-	 * Recast Reference: rcContourSet in Recast.h
-	 * 
-	 * Doc State: Complete
-	 * Standards Check: Complete
-	 */
-	
-	private final ArrayList<Contour> mContours;
-	
-	/**
-	 * Constructor
-	 * @param gridBoundsMin The minimum bounds of the field in the form (minX, minY, minZ).
-	 * @param gridBoundsMax The maximum bounds of the field in the form (maxX, maxY, maxZ).
-	 * @param cellSize The size of the cells.  (The grid that forms the base of the field.)
-	 * @param cellHeight The height increment of the field.
-	 * @param initialSize  The initial size of the set.  Effects performance and memory
-	 * consumption.  The actual size will dynamically resize as needed.
-	 */
-	ContourSet(float[] gridBoundsMin
-			, float[] gridBoundsMax
-			, float cellSize
-			, float cellHeight
-			, int initialSize)
-	{
-		super(gridBoundsMin, gridBoundsMax, cellSize, cellHeight);
-		mContours = new ArrayList<Contour>(initialSize);
-	}
-	
-	/**
-	 * The number of contours in the set.
-	 * @return The number of contours in the set.
-	 */
-	public int size() {  return mContours.size(); }
-	
-	/**
-	 * Gets the contour specified by the index.
-	 * @param index The index of the contour to retrieve.
-	 * @return The contour for the specified index, or null if the index is invalid.
-	 */
-	public Contour get(int index)
-	{
-		if (index < 0 || index >= mContours.size())
-			return null;
-		return mContours.get(index);
-	}
-	
-	/**
-	 * Add a contour to the set.
-	 * <p>Behavior is undefined if the contour argument is null.</p>
-	 * @param contour The contour to add to the set.
-	 */
-	public void add(Contour contour) { mContours.add(contour);}
-	
+    
+    /*
+     * Design notes:
+     * 
+     * Not adding the ability to remove contours until it is needed.
+     * 
+     * Recast Reference: rcContourSet in Recast.h
+     * 
+     * Doc State: Complete
+     * Standards Check: Complete
+     */
+    
+    private final ArrayList<Contour> mContours;
+    
+    /**
+     * Constructor
+     * @param gridBoundsMin The minimum bounds of the field in the form (minX, minY, minZ).
+     * @param gridBoundsMax The maximum bounds of the field in the form (maxX, maxY, maxZ).
+     * @param cellSize The size of the cells.  (The grid that forms the base of the field.)
+     * @param cellHeight The height increment of the field.
+     * @param initialSize  The initial size of the set.  Effects performance and memory
+     * consumption.  The actual size will dynamically resize as needed.
+     */
+    ContourSet(float[] gridBoundsMin
+            , float[] gridBoundsMax
+            , float cellSize
+            , float cellHeight
+            , int initialSize)
+    {
+        super(gridBoundsMin, gridBoundsMax, cellSize, cellHeight);
+        mContours = new ArrayList<Contour>(initialSize);
+    }
+    
+    /**
+     * The number of contours in the set.
+     * @return The number of contours in the set.
+     */
+    public int size() {  return mContours.size(); }
+    
+    /**
+     * Gets the contour specified by the index.
+     * @param index The index of the contour to retrieve.
+     * @return The contour for the specified index, or null if the index is invalid.
+     */
+    public Contour get(int index)
+    {
+        if (index < 0 || index >= mContours.size())
+            return null;
+        return mContours.get(index);
+    }
+    
+    /**
+     * Add a contour to the set.
+     * <p>Behavior is undefined if the contour argument is null.</p>
+     * @param contour The contour to add to the set.
+     */
+    public void add(Contour contour) { mContours.add(contour);}
+    
 }
