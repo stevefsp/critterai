@@ -26,7 +26,11 @@ import java.util.ArrayList;
 /**
  * Builds a set of contours from the region information contained by an
  * {@link OpenHeightfield}.  It does this by locating and "walking" the edges
- * TODO: DOC: Add visualization.
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.jpg" width="620" />
+ * </a></p>
+ * @see <a href="http://www.critterai.org/nmgen_contourgen" target="_parent">Contour Generation</a> 
  * @see Contour
  * @see ContourSet
  */
@@ -42,7 +46,7 @@ public final class ContourSetBuilder
 	 * 
 	 * Recast Reference: rcBuildContours() in RecastContour.cpp
 	 * 
-	 * Doc State: Text Complete.  TODO: DOC: Add visualizations.
+	 * Doc State: Text Complete.
 	 * Standards Check: Complete
 	 */
 	
@@ -195,7 +199,7 @@ public final class ContourSetBuilder
 			 * The only time this should occur is if an invalid contour was formed
 			 * or if a region somehow resulted in multiple contours (bad region data).
 			 * While it may not be a fatal error, it should be addressed since
-			 * odd, hard to spot anomalies can occur later in the pipeline.
+			 * this can result in odd, hard to spot anomalies later in the pipeline.
 			 */
 			return null;
 		
@@ -246,8 +250,8 @@ public final class ContourSetBuilder
 		 */
 		
 		/*
-		 * It is a bit hard to describe the stepping portion of this algorithm.  The best way to visualize
-		 * it may be to think of a robot sitting on the floor facing a known wall.  It then does the
+		 * It is a bit hard to describe the stepping portion of this algorithm.  One way to visualize
+		 * it is to think of a robot sitting on the floor facing a known wall.  It then does the
 		 * following to skirt the wall:
 		 * 1. If there is a wall in front of it, turn clockwise in 90 degrees increments until
 		 *    it finds the wall is gone.
@@ -255,6 +259,8 @@ public final class ContourSetBuilder
 		 * 3. Turn counter-clockwise by 90 degrees.
 		 * 4. Repeat from step 1 until it finds itself at its original location facing its
 		 *    original direction.
+		 * 
+		 * See also: http://www.critterai.org/nmgen_contourgen#robotwalk
 		 */
 		
 		// Initialize to current span pointing to the edge.
@@ -290,7 +296,6 @@ public final class ContourSetBuilder
 				 * The update is such that the corner being represented is
 				 * clockwise from the edge the direction is currently pointing 
 				 * toward.
-				 * TODO: DOC: Add visualization.
 				 */
 				switch(dir)
 				{
@@ -359,7 +364,7 @@ public final class ContourSetBuilder
 	{
 		
 		/*
-		 * NOTE: The forth vertex index position in the output list contains the index of its corresponding
+		 * NOTE: The forth vertex entry position in the output list contains the index of its corresponding
 		 * source vertex until the end of this operation.  Only at the very end is the region information
 		 * copied from the source to the output list.
 		 */
@@ -469,7 +474,6 @@ public final class ContourSetBuilder
 			final int sourceVertIndex = (outVerts.get(iVert * 4 + 3) + 1) % sourceVertCount;
 			outVerts.set(iVert * 4 + 3, sourceVerts.get(sourceVertIndex * 4 + 3));
 		}
-		
 	}
 
 	/**
@@ -495,7 +499,7 @@ public final class ContourSetBuilder
 		 * Reference: Neighbor search and nomenclature.
 		 * http://www.critterai.org/?q=nmgen_hfintro#nsearch
 		 * 
-		 * TODO: DOC: Add visualization.
+		 * See also: http://www.critterai.org/nmgen_contourgen#yselection
 		 */
 		
 		// Default height to the current floor.

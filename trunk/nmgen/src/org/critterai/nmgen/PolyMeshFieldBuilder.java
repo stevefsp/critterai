@@ -27,6 +27,11 @@ import java.util.Hashtable;
 /**
  * Builds an convex polygon mesh consisting of variable sized polygons.  The mesh is generated from contour data
  * contained by a {@link ContourSet} object.
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/stage_polygon_mesh.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/stage_polygon_mesh.jpg" width="620" />
+ * </a></p>
+ * @see <a href="http://www.critterai.org/nmgen_polygen" target="_parent">Convex Polygon Generation</a>
  * @see PolyMeshField
  */
 public final class PolyMeshFieldBuilder 
@@ -40,7 +45,7 @@ public final class PolyMeshFieldBuilder
 	 * Never add setters.  Configuration should remain immutable to keep
 	 * the class thread friendly.
 	 * 
-	 * Doc State: Text Complete TODO: DOC: Add visualizations.
+	 * Doc State: Text Complete
 	 * Standards Check: Complete
 	 */
 	
@@ -258,7 +263,7 @@ public final class PolyMeshFieldBuilder
 			{
 				// Merging of triangles into larger polygons is permitted.
 				// Continue until no polygons can be found to merge.
-				// TODO: DOC: Add visualization.
+				// http://www.critterai.org/nmgen_polygen#mergepolys
 				while(true)
 				{
 					
@@ -319,7 +324,6 @@ public final class PolyMeshFieldBuilder
 					 * Duplicate vertices are avoided, while ensuring we get all vertices, since each loop 
 					 * drops the vertex that starts its polygon's shared edge and:  PolyAStartVert == PolyBEndVert
 					 * and PolyAEndVert == PolyBStartVert.
-					 * TODO: DOC: Add visualization.
 					 */
 					for (int i = 0; i < vertCountA - 1; i++)
 						mergedPoly[position++] = workingPolys[pBestPolyA + ((iPolyAVert+1+i) % vertCountA)];
@@ -565,7 +569,6 @@ public final class PolyMeshFieldBuilder
 					 * iVert is NOT a primary vertex in this case.  We are looking
 					 * for the "other" polygon that shares this edge.  If there is another
 					 * polygon sharing this edge, its primary vertex will be iNextVert.
-					 * TODO: DOC: Add visualization.
 					 * 
 					 * Climb the edge chain for iNextVert, looking for an edge that has
 					 * iVert as its secondary vertex.
@@ -783,7 +786,7 @@ public final class PolyMeshFieldBuilder
 		 * primary vertex.
 		 * E.g.: i, iPlus1, and iPlus2.
 		 * 
-		 * TODO: DOC: Add visualization.
+		 * Visualizations: http://www.critterai.org/nmgen_polygen#triangulation
 		 */
 		
 		// Loop through all vertices, flagging all indices that represent a center
@@ -1042,7 +1045,6 @@ public final class PolyMeshFieldBuilder
 		
 		/*
 		 * This is modified 2D line-line intersection/segment-segment intersection test.
-		 * TODO:  Try to find a public reference for this algorithm.
 		 * TODO:  EVAL: This algorithm has two float divisions.  Will that cause rounding or performance
 		 * problems that don't exist in integer only algorithms?
 		 */
@@ -1090,19 +1092,9 @@ public final class PolyMeshFieldBuilder
 	 * <p>Vertex B does not have to be within the polygon border.  It just has be be within the area
 	 * encompassed by the internal angle formed at vertex A.</p>
 	 * 
-	 * <p>This operation is a fast way of determining whether a line segment can possibly for a valid
+	 * <p>This operation is a fast way of determining whether a line segment can possibly form a valid
 	 * polygon partition.  If this test returns FALSE, then more expensive checks can be skipped.</p>
-	 * 
-	 * <p>TODO: DOC: Add visualization.  Until then...</p>
-	 * <p>Visualize a Hexagon.  Vertex A defines where two edges of the hexagon intersect.
-	 * Discard all other edges of the hexagon and convert the edges joined by vertex A into rays
-	 * emanating outwards from A.</p>
-	 * <p>These two rays form two angles.  One angle is external to the original hexagon.
-	 * (Points away from the hexagon.)  The other angle is internal to the original hexagon. (Points toward
-	 * the hexagon.) Select the internal angle.</p>
-	 * <p>Shade in all of the area enveloped by this internal angle out to infinity.
-	 * Any point that lies in this shaded area is considered to be within the "cone" of the internal angle and 
-	 * will result in this operation returning TRUE.</p>
+	 * <a href="http://www.critterai.org/nmgen_polygen#anglecheck">Visualizations</a>
 	 * <p>Special case:
 	 * FALSE is returned if vertex B lies directly on either of the rays cast from vertex A
 	 * along its associated polygon edges.  So the test on vertex B is exclusive of the polygon edges.</p>

@@ -28,11 +28,11 @@ package org.critterai.nmgen;
  * corner in a manner that results in a contour that is a self-intersecting polygon.</p>
  * <p>This is an experimental algorithm.  It has only been validated in a limited number of test scenarios.</p>
  * <p>Example: Before the algorithm is applied.</p> 
- * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_08_cornerwrapbefore.png" target="_blank">
+ * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_08_cornerwrapbefore.png"  target="_parent">
  * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_08_cornerwrapbefore.jpg" style="width: 620px; height: 353px; " />
  * </a></p> 
  * <p>Example: After the algorithm is applied.</p> 
- * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_09_cornerwrapafter.png" target="_blank">
+ * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_09_cornerwrapafter.png"  target="_parent">
  * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/ohfg_09_cornerwrapafter.jpg" style="width: 620px; height: 353px; " />
  * </a></p> 
  * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>

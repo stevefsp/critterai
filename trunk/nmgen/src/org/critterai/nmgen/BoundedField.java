@@ -38,7 +38,7 @@ package org.critterai.nmgen;
  * contain partial cells.</li>
  * </ul>
  * <p>Warning: Behavior is undefined if the minimum bounds is set to be greater than the maximum bounds.</p>
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro">Introduction to Height Fields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro"  target="_parent">Introduction to Height Fields</a>
  */
 public class BoundedField
 {

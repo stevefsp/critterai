@@ -26,14 +26,18 @@ import java.util.ArrayList;
 /**
  * Represents the detailed and simplified versions of a contour.
  * A contour is expected to always represent a simple polygon. (Convex or concave.)
- * TODO: DOC: Add visualization.
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.jpg" width="620" />
+ * </a></p>
+ * @see ContourSetBuilder
  */
 public final class Contour
 {
 	/*
 	 * Recast Reference: rcContour in Recast.h
 	 * 
-	 * Doc State: Complete TODO: DOC: Add visualizations.
+	 * Doc State: Complete
 	 * Standards Check: Complete.  
 	 */
 	

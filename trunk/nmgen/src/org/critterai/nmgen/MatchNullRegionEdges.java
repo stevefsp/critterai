@@ -26,8 +26,8 @@ import java.util.ArrayList;
 /**
  * Applies an algorithm to contours which results in null-region edges
  * following the original detail source geometry edge more closely.
- * TODO: DOC: Add visualization.
- * @see <a href="http://www.critterai.org/?q=nmgen_config#maxEdgeLength" target="_parent">Configuration Options</a>
+ * @see <a href="http://www.critterai.org/nmgen_contourgen#nulledgesimple" target="_parent">Visualizations</a>
+ * 
  */
 public final class MatchNullRegionEdges 
 	implements IContourAlgorithm 
@@ -36,7 +36,7 @@ public final class MatchNullRegionEdges
 	/*
 	 * Recast Reference: simplifyContour() in RecastContour.cpp
 	 * 
-	 * Doc State: Text Complete.  TODO: DOC: Add visualizations.
+	 * Doc State: Text Complete.
 	 * Standards Check: Complete
 	 */
 	
@@ -118,7 +118,8 @@ public final class MatchNullRegionEdges
 				 * Loop through the source vertices until the end vertex
 				 * is found, searching for the vertex that is farthest from
 				 * the line segment formed by the begin/end vertices.
-				 * TODO: DOC: Add visualization.
+				 * 
+				 * Visualizations: http://www.critterai.org/nmgen_contourgen#nulledgesimple
 				 */
 				while (iTestVert != iVertBSource)
 				{
