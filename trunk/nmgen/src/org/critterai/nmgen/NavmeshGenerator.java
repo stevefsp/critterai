@@ -28,8 +28,8 @@ import java.util.ArrayList;
  * <p>When the build operation is provided with source geometry, several meshes are generated which represent 
  * the traversable (walkable) surfaces of the source geometry.  A large number
  * of configuration options are used to adjust the final result.</p>
- * <p>Example of a detail mesh:</p>
- * <img src="http://www.critterai.org/sites/default/files/study/nmgen/main_navmesh.jpg"/>
+ * <p>
+ * <img src="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.jpg"/></p>
  * @see <a href="http://www.critterai.org/?q=nmgen" target="_parent">Project Home</a>
  * @see <a href="http://www.critterai.org/?q=nmgen_overview" target="_parent">Process Overview</a>
  * @see <a href="http://www.critterai.org/?q=nmgen_config" target="_parent">Configuration Options</a>
