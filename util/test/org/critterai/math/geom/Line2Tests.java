@@ -143,7 +143,7 @@ public class Line2Tests {
         expected = Vector2.getDistanceSq(JX, JY, EX, EY);
         assertTrue(getPointSegmentDistanceSq(JX, JY, EX, EY, BX, BY) == expected);
         
-        // Closest to mid-point of AB.
+        // Closest to mid-point of AB. (E)
         expected = Vector2.getDistanceSq(-1, 5, EX, EY);
         assertTrue(getPointSegmentDistanceSq(-1, 5, AX, AY, BX, BY) == expected);
         expected = Vector2.getDistanceSq(-3, -1, EX, EY);
