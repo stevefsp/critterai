@@ -24,6 +24,10 @@ package org.critterai.nmgen;
 /**
  * Represents the a triangle mesh created by the navigation mesh generation process.
  * <p>WARNING: The core data within this class is unprotected.</p>
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.jpg" width="620" />
+ * </a></p>
  */
 public final class TriangleMesh 
 {

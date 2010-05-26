@@ -28,9 +28,12 @@ import java.util.ArrayList;
  * Builds an triangle mesh from {@link OpenHeightfield } and {@link PolyMeshField} data.  
  * The polygon mesh field is triangulated and detail added as needed to match the surface of the 
  * mesh to the surface defined in the open heightfield.
- * <p>TODO: DOC: Add visualizations.</p>
+ * <p> 
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.jpg" width="620" />
+ * </a></p>
+ * @see <a href="http://www.critterai.org/nmgen_detailgen" target="_parent">Detail Mesh Generation</a>
  * @see TriangleMesh
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  */
 public class DetailMeshBuilder 
 {
@@ -44,7 +47,7 @@ public class DetailMeshBuilder
 	 * Never add setters.  Configuration should remain immutable to keep
 	 * the class thread friendly.
 	 * 
-	 * Doc State: Text Complete TODO: DOC: Add visualizations.
+	 * Doc State: Text Complete
 	 * Standards Check: Complete
 	 */
 	
@@ -120,6 +123,7 @@ public class DetailMeshBuilder
 	}
 	
 	/**
+	 * Build a triangle mesh with detailed height information from the provided polygon mesh.
 	 * <p>Concerning sampling: Sampling functionality will only work correctly if
 	 * the y-values in the source mesh are accurate to within {@link OpenHeightfield#cellHeight()}
 	 * of an associated span within the provided height field.  Otherwise the algorithms used by
@@ -449,8 +453,9 @@ public class DetailMeshBuilder
 		
 		// Seed the output vertices array with the source vertices.
 		System.arraycopy(sourcePoly, 0, outVerts, 0, sourceVertCount*3);
-		// The number of vertices in the final detail polygon.  If no new vertices are added,
-		// will equal the source vertex count.  This is the return value.
+		
+		// The number of vertices in the final detail polygon.  Will equal the source
+		// vertex count if no new vertices are added.  This is the return value.
 		int outVertCount = sourceVertCount;
 		
 		if (mContourSampleDistance > 0)
@@ -466,21 +471,7 @@ public class DetailMeshBuilder
 			 * This is the first of two sampling passes.  In this pass only the edges are
 			 * sampled.  In the second pass, the inside of the polygon is sampled.
 			 * 
-			 * For each edge in the original polygon:
-			 * 
-			 * Split the edge into segments based on the sample distance.
-			 * E.g. If the edge is 10 units long and the sample distance is 2 units,
-			 * then break the edge into 5 segments of equal length.
-			 * 
-			 * Snap the height (y-value) of each sample vertex to the height field.  Not all of these sample
-			 * vertices are necessarily used.  These are "potential" new vertices at this point.
-			 * 
-			 * Starting with the original edge segment, check the distances of the sample vertices
-			 * from the segment. If the maximum deviation is exceeded, add the sample vertex to the segment.
-			 * 
-			 * Repeat the distance checks until the new section of the polygon is complete.
-			 * 
-			 * TODO: DOC: Needs visualizations.  Lots.
+			 * See: http://www.critterai.org/nmgen_detailgen#edgedetail
 			 * 
 			 */
 			
@@ -872,7 +863,6 @@ public class DetailMeshBuilder
 		int triangleCount = 0;
 		workingEdges.clear();
 		
-		// TODO: DOC: Find public source for this algorithm.
 		// General reference: http://en.wikipedia.org/wiki/Delaunay_triangulation
 		// More references at: http://digestingduck.blogspot.com/2009/10/delaunay-triangulations.html
 		
@@ -1366,9 +1356,6 @@ public class DetailMeshBuilder
 			, float dx
 			, float dy)
 	{
-		
-		// TODO: DOC: Find public reference.
-		
 		final float deltaABx = bx - ax;	
 		final float deltaABy = by - ay;
 		
@@ -1521,8 +1508,6 @@ public class DetailMeshBuilder
 			, ArrayList<Integer> indices)
 	{
 		
-		// TODO: Need to understand the math for this algorithm and find a public reference.
-		
 		float minDistance = Float.MAX_VALUE;
 		
 		final int triangleCount = indices.size() / 3;
@@ -1589,8 +1574,6 @@ public class DetailMeshBuilder
 	 */
 	private static float getSignedDistanceToPolygonSq(float x, float z, float[] verts, int vertCount)
 	{
-		
-		// TODO: DOC: Get public source for this algorithm.
 		
 		float minDistance = Float.MAX_VALUE;
 		int iVertB;
@@ -1682,7 +1665,6 @@ public class DetailMeshBuilder
 			, float by
 			, float bz)
 	{
-		// TODO: DOC: Need to find exact public source algorithm.
 		// See the 2D version to get the idea of what is happening.
 		// TODO: EVAL: Replace this algorithm with one that matches the 2D
 		// version more closely.

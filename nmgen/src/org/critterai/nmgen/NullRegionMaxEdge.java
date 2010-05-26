@@ -26,14 +26,21 @@ import java.util.ArrayList;
 /**
  * Adds vertices to a contour such that no null region edge segment exceeds the allowed edge length. 
  * <p>Only null region edges are operated on.</p>
- * TODO: DOC: Add visualization.
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/study/nmgen/main_maxedge_off.png" target="_parent">
+ * <img class="insert" height="464" src="http://www.critterai.org/sites/default/files/study/nmgen/main_maxedge_off.jpg" width="620" />
+ * </a></p>
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/study/nmgen/main_maxedge_on.png" target="_parent">
+ * <img class="insert" height="464" src="http://www.critterai.org/sites/default/files/study/nmgen/main_maxedge_on.jpg" width="620" />
+ * </a></p>
  */
 public class NullRegionMaxEdge 
 	implements IContourAlgorithm 
 {
 
 	/*
-	 * Doc State: Text complete.  TODO: DOC: Add visualizations. 
+	 * Doc State: Text complete.
 	 * Standards Check: Complete
 	 */
 	
@@ -91,8 +98,6 @@ public class NullRegionMaxEdge
 			
 			// TODO: EVAL: Three costly modulus operations in this algorithm.
 			// Consider replacing with faster wrapping method.
-			
-			// TODO: DOC: Add visualization.
 			
 			final int iVertB = (iVertA + 1) % resultVertCount;  // Wrap if necessary.
 			

@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * <li>If a region is below a threshold size, attempts to merge the region into the most
  * appropriate larger neighbor region.</li>
  * </ul>
- * <a href="http://www.critterai.org/sites/default/files/study/nmgen/islandregion_filter.png" target="_blank">
+ * <a href="http://www.critterai.org/sites/default/files/study/nmgen/islandregion_filter.png"  target="_parent">
  * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/islandregion_filter.jpg" style="width: 620px; height: 452px; " />
  * </a>
  * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>

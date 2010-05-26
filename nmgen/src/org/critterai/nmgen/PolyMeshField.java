@@ -26,6 +26,11 @@ package org.critterai.nmgen;
  * <p>The polygons are usually connected (share edges), but are expected
  * to not intersect.</p>
  * <p>The data within this class is unprotected.  So care must be taken.</p>
+ * <p>
+ * <a href="http://www.critterai.org/sites/default/files/nmgen/stage_polygon_mesh.png" target="_parent">
+ * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/stage_polygon_mesh.jpg" width="620" />
+ * </a></p>
+ * @see PolyMeshFieldBuilder
  */
 public final class PolyMeshField 
 	extends BoundedField 

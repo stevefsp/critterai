@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
  * (I.e. By climbing up the links.)</p>
  * @see SolidHeightfieldBuilder
  * @see <a href="http://www.critterai.org/nmgen_voxel" target="_parent">The Voxelization Process</a>
- * @see <a href="http://www.critterai.org/nmgen_hfintro">Introduction to Height Fields</a>
+ * @see <a href="http://www.critterai.org/nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  */
 public final class SolidHeightfield
 	extends BaseHeightfield<HeightSpan>

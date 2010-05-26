@@ -28,6 +28,7 @@ import java.util.ArrayList;
  * within a bounded field.
  * <p>The contours may be connected (share edges), but are expected
  * to not intersect.</p>
+ * @see Contour
  */
 public final class ContourSet 
 	extends BoundedField

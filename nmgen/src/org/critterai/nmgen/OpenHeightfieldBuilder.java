@@ -34,8 +34,8 @@ import java.util.Hashtable;
  * for the open span data</p>
  * <p>Example of a fully formed open heightfield.  (I.e. With region information.) Only the
  * floor of the spans is shown.</p>
- * <p><a href="http://www.critterai.org/sites/default/files/study/nmgen/gen_04_regions.png" target="_blank">
- * <img alt="" src="http://www.critterai.org/sites/default/files/study/nmgen/gen_04_regions.jpg" style="width: 620px; height: 464px;" /></a></p> 
+ * <p><a href="http://www.critterai.org/sites/default/files/nmgen/stage_regions.png" target="_parent">
+ * <img alt="" src="http://www.critterai.org/sites/default/files/nmgen/stage_regions.gif" style="width: 620px; height: 465px;" /></a></p> 
  * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Height Fields</a>
  * @see <a href="http://www.critterai.org/nmgen_regiongen" target="_parent">Region Generation</a>
  * @see OpenHeightfield
