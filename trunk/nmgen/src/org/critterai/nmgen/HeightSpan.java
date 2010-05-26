@@ -29,104 +29,104 @@ package org.critterai.nmgen;
 public class HeightSpan 
 {
 
-	/*
-	 * Recast Reference: rcSpan in Recast.h
-	 * 
-	 * Doc State: Complete
-	 * Standards Check: Complete
-	 */
-	
-	private int mMinimum;
-	private int mMaximum;
-	private int mFlags = 0;
-	private HeightSpan mNext = null;
-	
-	/**
-	 * Constructor
-	 * @param min The minimum increment of the span. (Usually the height increment.)
-	 * @param max The maximum increment of the span. (Usually the height increment.)
-	 * @param flags The span flags.
-	 * @throws IllegalArgumentException If the minimum is greater than or equal to the maximum.
-	 */
-	public HeightSpan(int min, int max, int flags)
-		throws IllegalArgumentException
-	{
-		if (min > max) 
-			throw new IllegalArgumentException("Minimum is greater than or equal to the maximum.");
-		mMinimum = min;
-		mMaximum = max;
-		mFlags = flags;
-	}
-	
-	/**
-	 * The span minimum.
-	 * @return The span minimum.
-	 */
-	public int min() { return mMinimum; }
-	
-	/**
-	 * Sets the span minimum.
-	 * <p>Auto-clamps the value to ({@link #max()} - 1).</p>
-	 * @param value The new minimum.
-	 */
-	public void setMin(int value)
-	{
-		if (value >= mMaximum) 
-			mMinimum = mMaximum - 1;
-		else 
-			mMinimum = value;
-	}
-	
-	/**
-	 * The span maximum.
-	 * @return The span maximum.
-	 */
-	public int max() { return mMaximum; }
-	
-	/**
-	 * Sets the span maximum.
-	 * <p>Auto-clamps the value to ({@link #min()} + 1).</p>
-	 * @param value The new maximum.
-	 */
-	public void setMax(int value)
-	{
-		if (value <= mMinimum)
-			mMaximum = mMinimum + 1;
-		else 
-			mMaximum = value;
-	}
-	
-	/**
-	 * The next span in the column.  (Usually above the current span.)
-	 * @return The next span in the column.  Or null if there is no next span.
-	 */
-	public HeightSpan next() { return mNext; }
-	
-	/**
-	 * Set the next span value.
-	 * @param value The new next span.  (null is a valid value.)
-	 */
-	void setNext(HeightSpan value) { mNext = value; }
-	
-	/**
-	 * The flags for the span.
-	 * @return The flags for the span.
-	 */
-	public int flags() { return mFlags; }
-	
-	/**
-	 * Set the flags for the span.
-	 * @param value The new flags for the span.
-	 */
-	public void setFlags(int value) { mFlags = value; }
+    /*
+     * Recast Reference: rcSpan in Recast.h
+     * 
+     * Doc State: Complete
+     * Standards Check: Complete
+     */
+    
+    private int mMinimum;
+    private int mMaximum;
+    private int mFlags = 0;
+    private HeightSpan mNext = null;
+    
+    /**
+     * Constructor
+     * @param min The minimum increment of the span. (Usually the height increment.)
+     * @param max The maximum increment of the span. (Usually the height increment.)
+     * @param flags The span flags.
+     * @throws IllegalArgumentException If the minimum is greater than or equal to the maximum.
+     */
+    public HeightSpan(int min, int max, int flags)
+        throws IllegalArgumentException
+    {
+        if (min > max) 
+            throw new IllegalArgumentException("Minimum is greater than or equal to the maximum.");
+        mMinimum = min;
+        mMaximum = max;
+        mFlags = flags;
+    }
+    
+    /**
+     * The span minimum.
+     * @return The span minimum.
+     */
+    public int min() { return mMinimum; }
+    
+    /**
+     * Sets the span minimum.
+     * <p>Auto-clamps the value to ({@link #max()} - 1).</p>
+     * @param value The new minimum.
+     */
+    public void setMin(int value)
+    {
+        if (value >= mMaximum) 
+            mMinimum = mMaximum - 1;
+        else 
+            mMinimum = value;
+    }
+    
+    /**
+     * The span maximum.
+     * @return The span maximum.
+     */
+    public int max() { return mMaximum; }
+    
+    /**
+     * Sets the span maximum.
+     * <p>Auto-clamps the value to ({@link #min()} + 1).</p>
+     * @param value The new maximum.
+     */
+    public void setMax(int value)
+    {
+        if (value <= mMinimum)
+            mMaximum = mMinimum + 1;
+        else 
+            mMaximum = value;
+    }
+    
+    /**
+     * The next span in the column.  (Usually above the current span.)
+     * @return The next span in the column.  Or null if there is no next span.
+     */
+    public HeightSpan next() { return mNext; }
+    
+    /**
+     * Set the next span value.
+     * @param value The new next span.  (null is a valid value.)
+     */
+    void setNext(HeightSpan value) { mNext = value; }
+    
+    /**
+     * The flags for the span.
+     * @return The flags for the span.
+     */
+    public int flags() { return mFlags; }
+    
+    /**
+     * Set the flags for the span.
+     * @param value The new flags for the span.
+     */
+    public void setFlags(int value) { mFlags = value; }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() 
-	{
-		return mMinimum + "->" + mMaximum + ", Flags: " + mFlags;
-	}
-	
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() 
+    {
+        return mMinimum + "->" + mMaximum + ", Flags: " + mFlags;
+    }
+    
 }

@@ -29,13 +29,13 @@ package org.critterai.nmgen;
 public interface IOpenHeightFieldAlgorithm 
 {
 
-	// Doc State: Complete
-	// Standards Check: Complete
-	
-	/**
-	 * Applies the algorithm to the height field.
-	 * @param field The field to apply the algorithm to.
-	 */
-	void apply(OpenHeightfield field);
-	
+    // Doc State: Complete
+    // Standards Check: Complete
+    
+    /**
+     * Applies the algorithm to the height field.
+     * @param field The field to apply the algorithm to.
+     */
+    void apply(OpenHeightfield field);
+    
 }

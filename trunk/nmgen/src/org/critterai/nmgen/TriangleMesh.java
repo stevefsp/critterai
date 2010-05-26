@@ -32,84 +32,84 @@ package org.critterai.nmgen;
 public final class TriangleMesh 
 {
 
-	/*
-	 * Recast Reference: rcPolyMeshDetail in Recast.h
-	 * 
-	 * Doc State: Complete
-	 * Standards Check: Complete
-	 */
-	
-	/**
-	 * Vertices for the triangle mesh in the forma (x, y, z)
-	 */
-	public float[] vertices = null;
-	
-	/**
-	 * Triangles in the mesh in the forma (vertAIndex, vertBIndex, vertCIndex)
-	 * where the vertices are wrapped clockwise.
-	 */
-	public int[] indices = null;
-	
-	/**
-	 * The region to which each triangle belongs.
-	 * <p>Index corresponds to the indices array index.<p>
-	 */
-	public int[] triangleRegions = null;
-	
-	/**
-	 * The number of triangles in the mesh.
-	 * @return The number of triangles in the mesh.
-	 */
-	public int triangleCount() 
-	{ 
-		return (triangleRegions == null ? 0 : triangleRegions.length);
-	}
-	
-	/**
-	 * The number of vertices in the mesh.
-	 * @return The number of vertices in the mesh.
-	 */
-	public int vertCount() 
-	{ 
-		return (vertices == null ? 0 : vertices.length / 3);
-	}
-	
-	/**
-	 * Gets the vertices for a particular triangle in the form
-	 * (vertAx, vertAy, vertAz, vertBx, vertBy, vertBz, vertCx, vertCy, vertCz)
-	 * @param index The index of the triangle to retrieve.
-	 * @return The vertices in the specified triangle. Or null if the index is invalid.
-	 */
-	public float[] getTriangleVerts(int index)
-	{
-		
-		int pTriangle = index*3;
-		if (index < 0 || pTriangle >= indices.length)
-			return null;
-		
-		float[] result = new float[9];
-		
-		for (int i = 0; i < 3; i++)
-		{
-			int pVert = indices[pTriangle+i]*3;
-			result[i*3] = vertices[pVert];
-			result[i*3+1] = vertices[pVert+1];
-			result[i*3+2] = vertices[pVert+2];
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Gets the region ID associated with a triangle
-	 * @param index The index of the triangle.
-	 * @return The region ID of the triangle.  Or -1 if the index is invalid.
-	 */
-	public int getTriangleRegion(int index)
-	{
-		if (index < 0 || index >= triangleRegions.length)
-			return -1;
-		return triangleRegions[index];
-	}
+    /*
+     * Recast Reference: rcPolyMeshDetail in Recast.h
+     * 
+     * Doc State: Complete
+     * Standards Check: Complete
+     */
+    
+    /**
+     * Vertices for the triangle mesh in the forma (x, y, z)
+     */
+    public float[] vertices = null;
+    
+    /**
+     * Triangles in the mesh in the forma (vertAIndex, vertBIndex, vertCIndex)
+     * where the vertices are wrapped clockwise.
+     */
+    public int[] indices = null;
+    
+    /**
+     * The region to which each triangle belongs.
+     * <p>Index corresponds to the indices array index.<p>
+     */
+    public int[] triangleRegions = null;
+    
+    /**
+     * The number of triangles in the mesh.
+     * @return The number of triangles in the mesh.
+     */
+    public int triangleCount() 
+    { 
+        return (triangleRegions == null ? 0 : triangleRegions.length);
+    }
+    
+    /**
+     * The number of vertices in the mesh.
+     * @return The number of vertices in the mesh.
+     */
+    public int vertCount() 
+    { 
+        return (vertices == null ? 0 : vertices.length / 3);
+    }
+    
+    /**
+     * Gets the vertices for a particular triangle in the form
+     * (vertAx, vertAy, vertAz, vertBx, vertBy, vertBz, vertCx, vertCy, vertCz)
+     * @param index The index of the triangle to retrieve.
+     * @return The vertices in the specified triangle. Or null if the index is invalid.
+     */
+    public float[] getTriangleVerts(int index)
+    {
+        
+        int pTriangle = index*3;
+        if (index < 0 || pTriangle >= indices.length)
+            return null;
+        
+        float[] result = new float[9];
+        
+        for (int i = 0; i < 3; i++)
+        {
+            int pVert = indices[pTriangle+i]*3;
+            result[i*3] = vertices[pVert];
+            result[i*3+1] = vertices[pVert+1];
+            result[i*3+2] = vertices[pVert+2];
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Gets the region ID associated with a triangle
+     * @param index The index of the triangle.
+     * @return The region ID of the triangle.  Or -1 if the index is invalid.
+     */
+    public int getTriangleRegion(int index)
+    {
+        if (index < 0 || index >= triangleRegions.length)
+            return -1;
+        return triangleRegions[index];
+    }
 
 }
