@@ -152,55 +152,6 @@ public final class MasterNavigator
             return job.request.request();
         }
 
-// Save for potential upgrade later.
-// Don't have time to properly test yet.
-//        /**
-//         * Request a batch of searches.
-//         * @param points The start and goal points in the form 
-//         * (startX, startY, startZ, goalX, goalY, goalZ) * requestCount
-//         * @param out The requests in the same order at the start/goal points.  Size will
-//         * be zero if the navigator is disposed.
-//         */
-//        public void getPaths(ArrayList<Float> points, ArrayList<MasterNavRequest<Path>.NavRequest> out)
-//        {
-//            /*
-//             * Design note:
-//
-//             * This design might result in blocking issues for 
-//             * the navigation thread, if the search pool size is
-//             * not set high enough,
-//             */
-//            out.clear();
-//            if (mIsDisposed)
-//                return;
-//            PathJob job = null;
-//            synchronized (mAStarRequests) 
-//            {
-//                for (int p = 0; p+5 < points.size(); p += 6)
-//                {
-//                    if (mAStarPool.size() == 0)
-//                        job = new PathJob(points.get(p+0)
-//                                , points.get(p+1)
-//                                , points.get(p+2)
-//                                , points.get(p+3)
-//                                , points.get(p+4)
-//                                , points.get(p+5));
-//                    if (job == null)
-//                    {
-//                        job = mAStarPool.pollLast();
-//                        job.initialize(points.get(p+0)
-//                                , points.get(p+1)
-//                                , points.get(p+2)
-//                                , points.get(p+3)
-//                                , points.get(p+4)
-//                                , points.get(p+5));
-//                    }
-//                    mAStarRequests.add(job);  
-//                    out.add(job.request.request());
-//                }
-//            }
-//        }
-
         /**
          * {@inheritDoc}
          */
@@ -557,7 +508,7 @@ public final class MasterNavigator
         if (maxUpdateTimeslice <= 0)
             this.maxProcessingTimeslice = 0;
         else
-            this.maxProcessingTimeslice = Math.min(Math.max(10, maxUpdateTimeslice), 9000000000l);
+            this.maxProcessingTimeslice = Math.max(10, maxUpdateTimeslice);
         
         this.maxPathAge = Math.max(0, maxPathAge);
         this.repairSearchDepth = Math.max(1, repairSearchDepth);
