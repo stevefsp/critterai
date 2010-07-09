@@ -109,7 +109,7 @@ public class MathUtil
     
     /**
      * Returns the maximum value in the list of values.
-     * @param values The values to test.
+     * @param values The values to search.
      * @return The maximum value in the list of values.
      */
     public static float max(float ...values)
@@ -121,9 +121,9 @@ public class MathUtil
     }
     
     /**
-     * Returns the maximum value in the list of values.
-     * @param values The values to test.
-     * @return The maximum value in the list of values.
+     * Returns the minimum value in the list of values.
+     * @param values The values to search.
+     * @return The minimum value in the list of values.
      */
     public static float min(float ...values)
     {
