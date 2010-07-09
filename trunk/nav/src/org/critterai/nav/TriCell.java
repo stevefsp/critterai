@@ -343,8 +343,16 @@ public final class TriCell
     /**
      * Forces the point to slightly within the cell column if it is located outside
      * of the column.  Otherwise no change occurs.
+     * <p>The movement of the point will be toward the cell along the line 
+     * connecting the point and the cell's centroid.</p> 
      * @param x The x-value of point (x, z).
      * @param z The z-value of point (x, z).
+     * @param offsetScale This value impacts how far
+     * into the cell the point will be moved.  It represents the percentage
+     * distance between the cell centroid and the cell wall.  So setting the 
+     * value to 1 will move the point to the cell wall.  Setting the value to 0.9
+     * will move the point inside the cell wall by 10% of the distance from
+     * the wall to the cell centroid.
      * @param out A vector to store the result in.
      * @return A reference to the out argument.
      */
@@ -1007,14 +1015,6 @@ public final class TriCell
                 + f.format(centroidZ) + ")";
     }
 
-    /**
-     * Determines the relationship between a point and the line.
-     * @param point The point to compare against the line.
-     * @param tolerance The tolerance to use for determining whether the points is on the line.
-     *     If the point is closer to the line than the tolerance, then the point is considered
-     *     on the line.
-     * @return  The relationship between the point and the line.
-     */
     private PointLineRelType getRelationship(int wallIndex, float x, float y, float tolerance)
     {
         

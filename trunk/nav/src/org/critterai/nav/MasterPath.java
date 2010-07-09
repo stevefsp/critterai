@@ -191,8 +191,8 @@ public final class MasterPath
          * Returns a list of triangles representing the path corridor.
          * Uses standard vertices/indices representation with clockwise wrapping.
          * @param outVerts An array of size {@link #pathVertCount()}*3 to load the
-         * vertices into.  The vertices of the triangles in the form 
-         * @param outIndices An array of size ({@link #getPathPolys(float[], int[])}*3 to load
+         * vertices into. 
+         * @param outIndices An array of size ({@link #pathPolyCount()}*3 to load
          * the results into.
          */
         public void getPathPolys(float[] outVerts, int[] outIndices)
@@ -522,7 +522,7 @@ public final class MasterPath
          * operation's return value to see if a target was obtained.</p>
          * @param x The x-value of the point to evaluate. (x, z) from the point (x, y, z)
          * @param z The z-value of the point to evaluate. (x, z) from the point (x, y, z)
-         * @return TRUE if the point is within the column of the path. Otherwise false.
+         * @return TRUE if the point is within the column of the path. Otherwise FALSE.
          */
         public boolean isInPathColumn(float x, float z)
         {

@@ -176,6 +176,9 @@ public final class TriCellPathNode
      * and leave it that way, only assigning a new parent to replace an existing parent.</p>
      * <p>Behavior is undefined if this use case is violated.</p>
      * @param parent The new parent of this path node.
+     * @param startX The x-value of the path starting point. (startX, startY, startZ)
+     * @param startY The y-value of the path starting point. (startX, startY, startZ)
+     * @param startZ The z-value of the path starting point. (startX, startY, startZ)
      */
     public void setParent(TriCellPathNode parent, float startX, float startY, float startZ) 
     { 
