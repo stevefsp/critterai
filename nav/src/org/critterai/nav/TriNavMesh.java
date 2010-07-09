@@ -225,20 +225,17 @@ public final class TriNavMesh
                       , cell.boundsMaxX + TOLERANCE
                       , cell.boundsMaxZ + TOLERANCE
                       , neighborCells);
-            // Loop through all link locations and check to see if
-            // any of the neighbors can be linked.
-            for (int iLink = 0; iLink < maxLinks; iLink++)
-            {
-                if (cell.getLink(iLink) == null)
-                {
-                    for (TriCell nCell : neighborCells)
-                    {
-                        if (cell.link(nCell, true) != TriCell.NULL_INDEX)
-                            // Successful link.
-                            break;
-                    }
-                }
-            }
+            // Attempt to link neighbors.
+	        for (TriCell nCell : neighborCells)
+	        {
+	            if (cell.link(nCell, true) != TriCell.NULL_INDEX)
+	            {
+	            	// Successful link.
+	            	if (cell.linkCount() == maxLinks)
+	            		break;
+	                continue;
+	            }
+	        }
         }
         
         return result;
