@@ -21,25 +21,27 @@
  */
 package org.critterai.nav;
 
+/**
+ * Represents the state of a navigation request.
+ */
 public enum NavRequestState 
 {
     /**
      * The data in the request is ready for use and the
      * request is complete.
-     * Data is available.
      */
     COMPLETE, 
     
     /**
      * The request failed and is closed.
-     * The request data is not valid for use. (Unless it is boolean.)
+     * The request's data is not valid for use.
      */
     FAILED, 
      
      /**
-     * The request is incomplete and either in queue
+     * The request is incomplete and either in-queue
      * or being actively worked on.
-     * The request data is not valid for use.
+     * The request's data is not valid for use.
      */
     PROCESSING;
 }
