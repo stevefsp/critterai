@@ -42,5 +42,6 @@ import org.junit.runners.Suite.SuiteClasses;
     , AStarSearchTest.class
     , DijkstraSearchTest.class
     , MasterNavigatorTest.class
-    , NavigatorTest.class} )
+    , NavigatorTest.class
+    , QuickMeshTest.class} )
 public final class AllTests { }
