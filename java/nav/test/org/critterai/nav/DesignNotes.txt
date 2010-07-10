@@ -2,9 +2,12 @@ Design notes for org.critterai.nav.junit
 
 This test suite covers the classes in org.critterai.nav.
 
-In general, the more lower level the class, the more thorough the testing.  Higher level
-classes are tested less thoroughly and often assume proper functioning of the 
-lower level classes.
+Since the code base represents a prototype, to save time most of these 
+tests do not follow unit testing standards.
+
+In general, the more lower level the class, the more thorough the testing.  
+Higher level classes are tested less thoroughly and often assume proper 
+functioning of the lower level classes.
 
 For lower level classes:  
 
@@ -14,11 +17,12 @@ For lower level classes:
 
 For higher level classes:
 
-- Tests designed in such a way that they will fail if classes they depend on are not
-functioning properly.
-- Tests are more often designed based on knowledge of how the class works internally.
-- For wrapper functions, tests already performed on the wrapped class functions are 
-generally not re-performed.
+- Tests designed in such a way that they will fail if classes they depend on
+  are not functioning properly.
+- Tests are more often designed based on knowledge of how the class works
+  internally.
+- For wrapper functions, tests already performed on the wrapped class
+  functions are generally not re-performed.
 
 Test Meshes
 
