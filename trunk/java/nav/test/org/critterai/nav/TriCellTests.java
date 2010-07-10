@@ -1517,8 +1517,6 @@ public final class TriCellTests
                 // for vertices.
                 assertTrue(iCell + ":" + iWall, ip.sloppyEquals(ax, az, TOLERANCE_STD));
                 // Edge case: Just inside vertex to centroid.
-                if (iCell == 6 && iWall == 2)
-                    System.out.println();                
                 relType = cells[iCell].getPathRelationship(ax + offset.x, az + offset.y
                         , ax - offset.x, az - offset.y
                         , ep
