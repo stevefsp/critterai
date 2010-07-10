@@ -26,6 +26,7 @@ import org.critterai.math.MathUtil;
 
 /**
  * NOT ready for use.
+ * Dispose if not used by 2011-01-01.
  */
 public final class GridMesh 
     implements ITestMesh 
@@ -77,7 +78,8 @@ public final class GridMesh
                 || stepCountX < 1
                 || stepCountZ < 1
                 || maxYOffset < 0)
-            throw new IllegalArgumentException("One or more invalid arguments.");
+            throw new IllegalArgumentException
+            		("One or more invalid arguments.");
         
         this.minX = minX;
         this.minY = minY;
@@ -331,7 +333,8 @@ public final class GridMesh
             pOffset = 0;
             result[p+12] = mVerts[pVert+pOffset+0] + offset;
             result[p+13] = mVerts[pVert+pOffset+2] + (stepZ * 0.5f);
-            pOffset = ((stepCountZ-iGridZ)*rowStride)*3;  // Clamp to maxZ border.
+            // Clamp to maxZ border.
+            pOffset = ((stepCountZ-iGridZ)*rowStride)*3;  
             result[p+14] = mVerts[pVert+pOffset+0] + (stepX * 0.5f);
             result[p+15] = mVerts[pVert+pOffset+2] - offset;
         }
@@ -369,7 +372,8 @@ public final class GridMesh
             // Inside, and shift axis.
             iOffset = 0;
             result[p+8] = iPoly+iOffset;
-            iOffset = ((stepCountZ-1-iGridZ)*xRowOffset);  // Clamp to maxZ border.
+            // Clamp to maxZ border.
+            iOffset = ((stepCountZ-1-iGridZ)*xRowOffset);  
             result[p+9] = iPoly+iOffset;
         }
         return result;
