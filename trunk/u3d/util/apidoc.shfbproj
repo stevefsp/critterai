@@ -26,10 +26,19 @@
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\Release\cai-util-u3d.dll" xmlns="" />
-<DocumentationSource sourceFile="bin\Release\cai-util-u3d.xml" xmlns="" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Release\cai-util-u3d.xml" xmlns="" />
+    </DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="org.critterai.math" isDocumented="True" xmlns="">Provides various math related classes and operations.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.math.geom" isDocumented="True" xmlns="">Provides various geometry related classes and operations.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="org.critterai.math" isDocumented="True">Provides math related functionality used by CritterAI projects.
+
+&lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
+&lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
+&lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.math.geom" isDocumented="True">Provides computational geometry related functionality used by CritterAI projects.
+
+&lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
+&lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
+&lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;</NamespaceSummaryItem></NamespaceSummaries>
     <ProjectSummary>The CritterAI Utilities library provides support functionality for various CritterAI projects.
 
 Note:  This library requires &amp;lt%3ba href=&amp;quot%3bhttp://unity3d.com/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bUnity3D&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
