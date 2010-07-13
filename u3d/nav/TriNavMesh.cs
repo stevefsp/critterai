@@ -258,7 +258,7 @@ namespace org.critterai.nav
         /// <li>The start cell contains the start position.</li>
         /// <li>The end cell contains the end position.</li>
         /// <li>The start and end cells are part of a properly constructed and linked
-        /// mesh of {@Link TriCell} objects.</li>
+        /// mesh of <see cref="TriCell">TriCell</see> objects.</li>
         /// </ul>
         /// <para>Behavior is undefined if assumptions are not met.</para>
         /// </remarks>
