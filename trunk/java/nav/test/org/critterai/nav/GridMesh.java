@@ -470,19 +470,16 @@ public final class GridMesh
     @Override
     public int getPathCount() 
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public float[] getPathPoints(int index) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public int[] getPathPolys(int index) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -491,31 +488,27 @@ public final class GridMesh
 
     @Override
     public int getMultiPathCount() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public float[] getMultiPathGoalPoint(int index) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public int[] getMultiPathPolys(int index) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public float[] getMultiPathStartPoint() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public int getShortestMultiPath() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
