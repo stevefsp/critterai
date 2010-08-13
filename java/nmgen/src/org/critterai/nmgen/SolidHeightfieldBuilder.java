@@ -128,7 +128,7 @@ public final class SolidHeightfieldBuilder
      * traversable. (Degrees)
      * <p>Spans that are at or above this slope have the
      * {@link SpanFlags#WALKABLE} flag removed.</p>
-     * <p>Constraints:  > 0</p>
+     * <p>Constraints:  0 <= value <= 85</p>
      * 
      * @param clipLedges Indicates whether ledges should be marked as
      * unwalkable. I.e. The {@link SpanFlags#WALKABLE} flag will be removed.
@@ -150,6 +150,7 @@ public final class SolidHeightfieldBuilder
 
         mMinTraversableHeight = Math.max(1, minTraversableHeight);
         mMaxTraversableStep = Math.max(0, maxTraversableStep);
+        maxTraversableSlope = Math.min(85, Math.max(0, maxTraversableSlope));
         mClipLedges = clipLedges;
         mCellSize = cellSize;
         mCellHeight = cellHeight;

@@ -103,7 +103,7 @@ public final class OpenHeightfieldBuilder
      * <p>This value impacts region formation and border detection.  A higher
      * value results in generally larger regions and larger border sizes.
      * A value of zero will disable smoothing.</p>
-     * <p>Constraints:  >= 0</p>
+     * <p>Constraints:  0 <= value <= 4</p>
      * 
      * @param filterFlags The flags used to determine which spans from the
      * source {@link SolidHeightfield} should be used to build the
@@ -135,7 +135,7 @@ public final class OpenHeightfieldBuilder
         mMinTraversableHeight = Math.max(1, minTraversableHeight);
         mTraversableAreaBorderSize = Math.max(0, traversableAreaBorderSize);
         mFilterFlags = filterFlags;
-        mSmoothingThreshold = Math.max(0, smoothingThreshold);
+        mSmoothingThreshold = Math.min(4, Math.max(0, smoothingThreshold));
         mUseConservativeExpansion = useConservativeExpansion;
         if (regionAlgorithms != null)
             mRegionAlgorithms.addAll(regionAlgorithms);
