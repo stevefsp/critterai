@@ -827,8 +827,27 @@ public final class DetailMeshBuilder
                             ; iTestVert < iWorkingVertB
                             ; iTestVert++)
                     {
-                        float distanceSq =
-                            getDistancePointSegmentSq(workingVerts[iTestVert*3]
+                        if (workingVerts[iTestVert*3+1] == HeightPatch.UNSET)
+                            /*
+                             * This vertex cannot be used.
+                             * 
+                             * Special case:  No valid height could be derived
+                             * for the point.  This is not necessarily an error,
+                             * though it does indicate a potential problem
+                             * with the configuration used for generation
+                             * of the navigation mesh.
+                             * 
+                             *  Several potential causes:
+                             *   - The line segment crosses through a true null
+                             *     region (a region with no spans).  E.g.
+                             *     polygon mesh doesn't have enough detail
+                             *     at null region border.
+                             *   - Error in input data.
+                             *   - Error in height patch build process.
+                             */
+                            continue;
+                        float distanceSq = Geometry.getPointSegmentDistanceSq(
+                                        workingVerts[iTestVert*3]
                                       , workingVerts[iTestVert*3+1]
                                       , workingVerts[iTestVert*3+2]
                                       , workingVerts[pWorkingVertA]
@@ -1073,6 +1092,22 @@ public final class DetailMeshBuilder
                         ; iSampleVert < sampleCount
                         ; iSampleVert++)
                 {
+                    /*
+                     * Design note:
+                     * 
+                     * There is a potential that the y-value for a sample
+                     * vertex will be > Integer.MAX_VALUE because a height
+                     * value for the vertex could not be found in the height
+                     * patch.
+                     * 
+                     * Unlike for the edge vertices earlier, there is no known 
+                     * valid reason for this to occur, so it is not being 
+                     * checked and handled here.
+                     * 
+                     * If it does occur, the symptom will be the insertion of
+                     * a vertex with a very high y-value that will disrupt
+                     * the mesh at its location.
+                     */
                     // Get the position of the sample in polygon space and
                     // its distance from the current mesh.
                     final float sampleX =
@@ -1537,8 +1572,8 @@ public final class DetailMeshBuilder
                 {
                     // Found a span at a good height at the zero offset
                     // grid location. Don't search further. (Early exit.)
-                    outWidthDepth[0] = 0;
-                    outWidthDepth[1] = 0;
+                    outWidthDepth[0] = widthIndex;
+                    outWidthDepth[1] = depthIndex;
                     return span;
                 }
                 else if (distance < minDistance)
@@ -1584,50 +1619,6 @@ public final class DetailMeshBuilder
             }
         }
         return result;
-    }
-    
-    private static float getDistancePointSegmentSq(float px
-            , float py
-            , float pz
-            , float ax
-            , float ay
-            , float az
-            , float bx
-            , float by
-            , float bz)
-    {
-        // See the 2D version to get the idea of what is happening.
-        // TODO: EVAL: Replace this algorithm with one that matches the 2D
-        // version more closely.
-        
-        final float deltaABx = bx - ax;
-        final float deltaABy = by - ay;
-        final float deltaABz = bz - az;
-        float deltaAPx = px - ax;
-        float deltaAPy = py - ay;
-        float deltaAPz = pz - az;
-        
-        final float denominator = deltaABx * deltaABx
-                                        + deltaABy * deltaABy
-                                        + deltaABz * deltaABz;
-        float t = deltaABx * deltaAPx
-                            + deltaABy * deltaAPy
-                            + deltaABz * deltaAPz;
-        
-        if (denominator > 0)
-            t /= denominator;
-        if (t < 0)
-            t = 0;
-        else if (t > 1)
-            t = 1;
-        
-        deltaAPx = ax + t * deltaABx - px;
-        deltaAPy = ay + t * deltaABy - py;
-        deltaAPz = az + t * deltaABz - pz;
-        
-        return deltaAPx * deltaAPx
-                        + deltaAPy * deltaAPy
-                        + deltaAPz * deltaAPz;
     }
     
     /**
@@ -1729,8 +1720,12 @@ public final class DetailMeshBuilder
         if (height == HeightPatch.UNSET)
         {
             /*
-             * Special case when data is either bad or there are floating point
-             * calculation errors.
+             * One of the following special cases exist:
+             * - Data is bad.
+             * - Floating point calculation errors.
+             * - The vertex is in a true null region.  (A region without
+             *   any spans.) This can happen since sloppiness is permitted
+             *   around null regions.
              * Find nearest neighbor which has valid height.
              * This is an 8 neighbor search.
              */
