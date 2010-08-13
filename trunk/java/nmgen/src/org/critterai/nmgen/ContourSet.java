@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * to not intersect.</p>
  * @see Contour
  */
-public final class ContourSet 
+public final class ContourSet
     extends BoundedField
 {
     
@@ -40,21 +40,22 @@ public final class ContourSet
      * Not adding the ability to remove contours until it is needed.
      * 
      * Recast Reference: rcContourSet in Recast.h
-     * 
-     * Doc State: Complete
-     * Standards Check: Complete
      */
     
     private final ArrayList<Contour> mContours;
     
     /**
      * Constructor
-     * @param gridBoundsMin The minimum bounds of the field in the form (minX, minY, minZ).
-     * @param gridBoundsMax The maximum bounds of the field in the form (maxX, maxY, maxZ).
-     * @param cellSize The size of the cells.  (The grid that forms the base of the field.)
+     * @param gridBoundsMin The minimum bounds of the field in the form
+     * (minX, minY, minZ).
+     * @param gridBoundsMax The maximum bounds of the field in the form
+     * (maxX, maxY, maxZ).
+     * @param cellSize The size of the cells.  (The grid that forms the
+     * base of the field.)
      * @param cellHeight The height increment of the field.
-     * @param initialSize  The initial size of the set.  Effects performance and memory
-     * consumption.  The actual size will dynamically resize as needed.
+     * @param initialSize  The initial size of the set.  Effects performance
+     * and memory consumption.  The actual size will dynamically resize
+     * as needed.
      */
     ContourSet(float[] gridBoundsMin
             , float[] gridBoundsMax
@@ -67,15 +68,17 @@ public final class ContourSet
     }
     
     /**
-     * The number of contours in the set.
-     * @return The number of contours in the set.
+     * Add a contour to the set.
+     * <p>Behavior is undefined if the contour argument is null.</p>
+     * @param contour The contour to add to the set.
      */
-    public int size() {  return mContours.size(); }
+    public void add(Contour contour) { mContours.add(contour);}
     
     /**
      * Gets the contour specified by the index.
      * @param index The index of the contour to retrieve.
-     * @return The contour for the specified index, or null if the index is invalid.
+     * @return The contour for the specified index, or null if the index
+     * is invalid.
      */
     public Contour get(int index)
     {
@@ -85,10 +88,9 @@ public final class ContourSet
     }
     
     /**
-     * Add a contour to the set.
-     * <p>Behavior is undefined if the contour argument is null.</p>
-     * @param contour The contour to add to the set.
+     * The number of contours in the set.
+     * @return The number of contours in the set.
      */
-    public void add(Contour contour) { mContours.add(contour);}
+    public int size() {  return mContours.size(); }
     
 }

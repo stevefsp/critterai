@@ -23,17 +23,14 @@ package org.critterai.nmgen;
 
 /**
  * A class used to hold intermediate data used to build a navigation mesh.
- * <p>When this data is combined with the source geometry and final navigation mesh,
- * the entire build process is represented.</p>
+ * <p>When this data is combined with the source geometry and final navigation
+ * mesh, the entire build process is represented.</p>
  */
-public final class IntermediateData 
+public final class IntermediateData
 {
     
     /*
      * Recast Reference: None
-     * 
-     * Doc State: Complete
-     * Standards Check: Complete
      */
     
     private SolidHeightfield mSolidHeightfield;
@@ -42,10 +39,10 @@ public final class IntermediateData
     private PolyMeshField mPolyMesh;
     
     /**
-     * The solid heightfield associated with the source geometry.
-     * @return The solid heightfield derived from the source geometry.
+     * The contour set associated with the open heightfield.
+     * @return The contours associated with the open heightfield.
      */
-    public SolidHeightfield solidHeightfield() { return mSolidHeightfield; }
+    public ContourSet contours() { return mContours; }
     
     /**
      * The open heightfield associated with the solid heightfield.
@@ -54,33 +51,20 @@ public final class IntermediateData
     public OpenHeightfield openHeightfield() { return mOpenHeightfield; }
     
     /**
-     * The contour set associated with the open heightfield.
-     * @return The contours associated with the open heightfield.
-     */
-    public ContourSet contours() { return mContours; }
-    
-    /**
      * The polygon mesh associated with the contour set.
      * @return The polygon mesh associated with the contour set.
      */
     public PolyMeshField polyMesh() { return mPolyMesh; }
     
     /**
-     * Sets the solid height field.
-     * @param field The solid heightfield.
+     * Resets all data to null.
      */
-    public void setSolidHeightfield(SolidHeightfield field)
+    public void reset()
     {
-        mSolidHeightfield = field;
-    }
-    
-    /**
-     * Sets the open heightfield.
-     * @param field The open heightfield.
-     */
-    public void setOpenHeightfield(OpenHeightfield field)
-    {
-        mOpenHeightfield = field;
+        mSolidHeightfield = null;
+        mOpenHeightfield = null;
+        mContours = null;
+        mPolyMesh = null;
     }
     
     /**
@@ -93,6 +77,15 @@ public final class IntermediateData
     }
     
     /**
+     * Sets the open heightfield.
+     * @param field The open heightfield.
+     */
+    public void setOpenHeightfield(OpenHeightfield field)
+    {
+        mOpenHeightfield = field;
+    }
+    
+    /**
      * Sets the polygon mesh.
      * @param mesh The polygon mesh.
      */
@@ -102,13 +95,17 @@ public final class IntermediateData
     }
     
     /**
-     * Resets all data to null.
+     * Sets the solid height field.
+     * @param field The solid heightfield.
      */
-    public void reset()
+    public void setSolidHeightfield(SolidHeightfield field)
     {
-        mSolidHeightfield = null;
-        mOpenHeightfield = null;
-        mContours = null;
-        mPolyMesh = null;
+        mSolidHeightfield = field;
     }
+    
+    /**
+     * The solid heightfield associated with the source geometry.
+     * @return The solid heightfield derived from the source geometry.
+     */
+    public SolidHeightfield solidHeightfield() { return mSolidHeightfield; }
 }

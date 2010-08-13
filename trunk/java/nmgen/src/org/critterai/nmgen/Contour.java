@@ -25,10 +25,15 @@ import java.util.ArrayList;
 
 /**
  * Represents the detailed and simplified versions of a contour.
- * A contour is expected to always represent a simple polygon. (Convex or concave.)
+ * A contour is expected to always represent a simple polygon.
+ * (Convex or concave.)
  * <p>
- * <a href="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.png" target="_parent">
- * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/cont_11_simplified_full.jpg" width="620" />
+ * <a href=
+ * "http://www.critterai.org/projects/nmgen/images/cont_11_simplified_full.png"
+ * target="_parent">
+ * <img class="insert" height="465" src=
+ * "http://www.critterai.org/projects/nmgen/images/cont_11_simplified_full.jpg"
+ * width="620" />
  * </a></p>
  * @see ContourSetBuilder
  */
@@ -36,9 +41,6 @@ public final class Contour
 {
     /*
      * Recast Reference: rcContour in Recast.h
-     * 
-     * Doc State: Complete
-     * Standards Check: Complete.  
      */
     
     /**
@@ -74,20 +76,24 @@ public final class Contour
     
     /**
      * Constructor
-     * <p>All vertex lists are expected to be clockwise wrapped in 
-     * the form (x, y, z, regionID), where regionID is the external 
+     * <p>All vertex lists are expected to be clockwise wrapped in
+     * the form (x, y, z, regionID), where regionID is the external
      * region the vertex is considered to be connected to.</p>
      * @param regionID The region associated with the contour.
-     * @param rawList The vertices which represent the raw (or detailed) contour.
+     * @param rawList The vertices which represent the raw (or detailed)
+     * contour.
      * @param vertList The vertices which represent the detailed contour.
      * @throws IllegalArgumentException  If either vertex list is null.
      * The size of the vertex lists is not checked.
      */
-    public Contour(int regionID, ArrayList<Integer> rawList, ArrayList<Integer> vertList)
+    public Contour(int regionID
+                    , ArrayList<Integer> rawList
+                    , ArrayList<Integer> vertList)
         throws IllegalArgumentException
     {
         if (rawList == null || vertList == null)
-            throw new IllegalArgumentException("One or both vertex lists are null.");
+            throw new IllegalArgumentException(
+                            "One or both vertex lists are null.");
         
         this.regionID = regionID;
         

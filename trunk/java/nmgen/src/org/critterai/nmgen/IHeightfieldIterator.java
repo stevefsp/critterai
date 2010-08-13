@@ -24,25 +24,15 @@ package org.critterai.nmgen;
 import java.util.Iterator;
 
 /**
- * Implements an iterator that will iterate through all spans within a height field. (Not just the
- * base spans.)
- * <p>Behavior of the iterator is undefined if the interator's source is changed
- * during iteration.</p>
+ * Implements an iterator that will iterate through all spans within a
+ * height field. (Not just the base spans.)
+ * <p>Behavior of the iterator is undefined if the interator's source
+ * is changed during iteration.</p>
  * @param <E> The type of data held by the heightfield.
  */
-public interface IHeightfieldIterator<E> 
-    extends Iterator<E> 
+public interface IHeightfieldIterator<E>
+    extends Iterator<E>
 {
-    
-    // Doc State: Complete
-    // Standards Check: Complete
-    
-    /**
-     * The width index of the last span returned by {@link #next()}
-     * @return The width index of the last span returned by {@link #next()}
-     */
-    int widthIndex();
-    
     /**
      * The depth index of the last span returned by {@link #next()}
      * @return The depth index of the last span returned by {@link #next()}
@@ -54,4 +44,9 @@ public interface IHeightfieldIterator<E>
      */
     void reset();
     
+    /**
+     * The width index of the last span returned by {@link #next()}
+     * @return The width index of the last span returned by {@link #next()}
+     */
+    int widthIndex();
 }

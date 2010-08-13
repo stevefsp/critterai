@@ -24,16 +24,14 @@ package org.critterai.nmgen;
 /**
  * Represents a span within the cell column of a heightfield.
  * Spans represent one or more contiguous voxels.
- * @see <a href="http://www.critterai.org/?q=nmgen_hfintro" target="_parent">Introduction to Heightfields</a>
+ * @see <a href="http://www.critterai.org/?q=nmgen_hfintro"
+ * target="_parent">Introduction to Heightfields</a>
  */
-public class HeightSpan 
+public final class HeightSpan
 {
 
     /*
      * Recast Reference: rcSpan in Recast.h
-     * 
-     * Doc State: Complete
-     * Standards Check: Complete
      */
     
     private int mMinimum;
@@ -43,20 +41,36 @@ public class HeightSpan
     
     /**
      * Constructor
-     * @param min The minimum increment of the span. (Usually the height increment.)
-     * @param max The maximum increment of the span. (Usually the height increment.)
+     * @param min The minimum increment of the span.
+     * (Usually the height increment.)
+     * @param max The maximum increment of the span.
+     * (Usually the height increment.)
      * @param flags The span flags.
-     * @throws IllegalArgumentException If the minimum is greater than or equal to the maximum.
+     * @throws IllegalArgumentException If the minimum is greater than or
+     * equal to the maximum.
      */
     public HeightSpan(int min, int max, int flags)
         throws IllegalArgumentException
     {
-        if (min > max) 
-            throw new IllegalArgumentException("Minimum is greater than or equal to the maximum.");
+        if (min > max)
+            throw new IllegalArgumentException(
+                            "Minimum is greater than or equal to the maximum.");
         mMinimum = min;
         mMaximum = max;
         mFlags = flags;
     }
+    
+    /**
+     * The flags for the span.
+     * @return The flags for the span.
+     */
+    public int flags() { return mFlags; }
+    
+    /**
+     * The span maximum.
+     * @return The span maximum.
+     */
+    public int max() { return mMaximum; }
     
     /**
      * The span minimum.
@@ -65,23 +79,16 @@ public class HeightSpan
     public int min() { return mMinimum; }
     
     /**
-     * Sets the span minimum.
-     * <p>Auto-clamps the value to ({@link #max()} - 1).</p>
-     * @param value The new minimum.
+     * The next span in the column.  (Usually above the current span.)
+     * @return The next span in the column.  Or null if there is no next span.
      */
-    public void setMin(int value)
-    {
-        if (value >= mMaximum) 
-            mMinimum = mMaximum - 1;
-        else 
-            mMinimum = value;
-    }
+    public HeightSpan next() { return mNext; }
     
     /**
-     * The span maximum.
-     * @return The span maximum.
+     * Set the flags for the span.
+     * @param value The new flags for the span.
      */
-    public int max() { return mMaximum; }
+    public void setFlags(int value) { mFlags = value; }
     
     /**
      * Sets the span maximum.
@@ -92,41 +99,36 @@ public class HeightSpan
     {
         if (value <= mMinimum)
             mMaximum = mMinimum + 1;
-        else 
+        else
             mMaximum = value;
     }
     
     /**
-     * The next span in the column.  (Usually above the current span.)
-     * @return The next span in the column.  Or null if there is no next span.
+     * Sets the span minimum.
+     * <p>Auto-clamps the value to ({@link #max()} - 1).</p>
+     * @param value The new minimum.
      */
-    public HeightSpan next() { return mNext; }
+    public void setMin(int value)
+    {
+        if (value >= mMaximum)
+            mMinimum = mMaximum - 1;
+        else
+            mMinimum = value;
+    }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return mMinimum + "->" + mMaximum + ", Flags: " + mFlags;
+    }
+
     /**
      * Set the next span value.
      * @param value The new next span.  (null is a valid value.)
      */
     void setNext(HeightSpan value) { mNext = value; }
-    
-    /**
-     * The flags for the span.
-     * @return The flags for the span.
-     */
-    public int flags() { return mFlags; }
-    
-    /**
-     * Set the flags for the span.
-     * @param value The new flags for the span.
-     */
-    public void setFlags(int value) { mFlags = value; }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() 
-    {
-        return mMinimum + "->" + mMaximum + ", Flags: " + mFlags;
-    }
     
 }
