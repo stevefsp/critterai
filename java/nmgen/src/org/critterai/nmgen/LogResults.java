@@ -25,9 +25,8 @@ package org.critterai.nmgen;
  * Holds performance and log related data.
  * <p>All time values are in nanoseconds (ns).
  */
-public class LogResults 
+public final class LogResults
 {
-
     /**
      * The data is undefined. (Has not been set.)
      */
@@ -66,7 +65,7 @@ public class LogResults
     {
         if (finalMeshGenTime == UNDEFINED)
             return UNDEFINED;
-        return voxelizationTime 
+        return voxelizationTime
             + regionGenTime
             + contourGenTime
             + polyGenTime

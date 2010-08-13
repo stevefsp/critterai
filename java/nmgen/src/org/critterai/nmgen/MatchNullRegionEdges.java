@@ -26,19 +26,18 @@ import java.util.ArrayList;
 /**
  * Applies an algorithm to contours which results in null-region edges
  * following the original detail source geometry edge more closely.
- * @see <a href="http://www.critterai.org/nmgen_contourgen#nulledgesimple" target="_parent">Visualizations</a>
- * 
+ * @see <a href="http://www.critterai.org/nmgen_contourgen#nulledgesimple"
+ * target="_parent">Visualizations</a>
  */
-public final class MatchNullRegionEdges 
-    implements IContourAlgorithm 
+public final class MatchNullRegionEdges
+    implements IContourAlgorithm
 {
     
     /*
      * Recast Reference: simplifyContour() in RecastContour.cpp
-     * 
-     * Doc State: Text Complete.
-     * Standards Check: Complete
      */
+    
+    private static final int NULL_REGION = OpenHeightSpan.NULL_REGION;
     
     /**
      * The maximum distance the edge of the contour may deviate from the source
@@ -48,12 +47,14 @@ public final class MatchNullRegionEdges
     
     /**
      * Constructor.
-     * @param threshold The maximum distance the edge of the contour may deviate from the source
-     * geometry.
-     * <p>Setting this lower will result in the navmesh edges following the geometry contour more accurately at
-     * the expense of an increased vertex count.</p>
-     * <p>Setting the value to zero is not recommended since it can result in a large increase in the number of
-     * vertices at a high processing cost.</p>
+     * @param threshold The maximum distance the edge of the contour may
+     * deviate from the source geometry.
+     * <p>Setting this lower will result in the navmesh edges following the
+     * geometry contour more accurately at the expense of an increased
+     * vertex count.</p>
+     * <p>Setting the value to zero is not recommended since it can result
+     * in a large increase in the number of vertices at a high processing
+     * cost.</p>
      * <p>Constraints:  >= 0</p>
      */
     public MatchNullRegionEdges(float threshold)
@@ -63,32 +64,32 @@ public final class MatchNullRegionEdges
     
     /**
      * {@inheritDoc}
-     * <p>Adds vertices from the source list to the result list such that if any null 
-     * region vertices are compared against the result list, none of the vertices
-     * will be further from the null region edges than the
-     * allowed threshold.</p>
-     * <p>Only null-region edges are operated on.  All other edges are ignored.</p>
-     * <p>The result vertices is expected to be seeded with at least two source vertices.</p>
+     * <p>Adds vertices from the source list to the result list such that
+     * if any null  region vertices are compared against the result list,
+     * none of the vertices will be further from the null region edges than
+     * the allowed threshold.</p>
+     * <p>Only null-region edges are operated on.  All other edges are
+     * ignored.</p>
+     * <p>The result vertices is expected to be seeded with at least two
+     * source vertices.</p>
      */
     @Override
-    public void apply(ArrayList<Integer> sourceVerts, ArrayList<Integer> inoutResultVerts) 
+    public void apply(ArrayList<Integer> sourceVerts
+            , ArrayList<Integer> inoutResultVerts)
     {
-        
-        // TODO: EVAL: Try to optimize out the modulus' used in this operation.
-        
-        if (sourceVerts == null || inoutResultVerts == null) 
+        if (sourceVerts == null || inoutResultVerts == null)
             return;
         
         final int sourceVertCount = sourceVerts.size() / 4;
-        int simplifiedVertCount = inoutResultVerts.size() / 4;  // Value will change.
+        int simplifiedVertCount = inoutResultVerts.size() / 4;  // Will change.
         int iResultVertA = 0;
         
         /*
          * Loop through all edges in this contour.
          * 
-         * NOTE: The simplifiedVertCount in the loop condition 
+         * NOTE: The simplifiedVertCount in the loop condition
          * increases over iterations.  That is what keeps the loop going beyond
-         * the initial vertex count.    
+         * the initial vertex count.
          */
         while (iResultVertA < simplifiedVertCount)
         {
@@ -104,14 +105,15 @@ public final class MatchNullRegionEdges
             final int bz = inoutResultVerts.get(iResultVertB*4+2);
             final int iVertBSource = inoutResultVerts.get(iResultVertB*4+3);
         
-            // The source index of the next vertex to test.  (The vertex just after
-            // the current vertex in the source vertex list.)
+            // The source index of the next vertex to test.  (The vertex just
+            // after the current vertex in the source vertex list.)
             int iTestVert = (iVertASource + 1) % sourceVertCount;
             float maxDeviation = 0;
             
-            int iVertToInsert = -1;  // Default to no index.  No new vert to add.
+            // Default to no index.  No new vert to add.
+            int iVertToInsert = -1;
             
-            if (sourceVerts.get(iTestVert*4+3) == OpenHeightfield.NULL_REGION_ID)
+            if (sourceVerts.get(iTestVert*4+3) == NULL_REGION)
             {
                 /*
                  * This test vertex is part of a null region edge.
@@ -119,11 +121,13 @@ public final class MatchNullRegionEdges
                  * is found, searching for the vertex that is farthest from
                  * the line segment formed by the begin/end vertices.
                  * 
-                 * Visualizations: http://www.critterai.org/nmgen_contourgen#nulledgesimple
+                 * Visualizations:
+                 * http://www.critterai.org/nmgen_contourgen#nulledgesimple
                  */
                 while (iTestVert != iVertBSource)
                 {
-                    final float deviation = getPointSegmentDistanceSq(sourceVerts.get(iTestVert * 4)
+                    final float deviation = Geometry.getPointSegmentDistanceSq(
+                            sourceVerts.get(iTestVert * 4)
                             , sourceVerts.get(iTestVert * 4 + 2)
                             , ax
                             , az
@@ -142,77 +146,26 @@ public final class MatchNullRegionEdges
             
             if (iVertToInsert != -1 && maxDeviation > (mThreshold * mThreshold))
             {
-                // A vertex was found that is further than allowed from the current edge.
-                // Add this vertex to the contour.
-                inoutResultVerts.add((iResultVertA+1)*4, sourceVerts.get(iVertToInsert*4));
-                inoutResultVerts.add((iResultVertA+1)*4+1, sourceVerts.get(iVertToInsert*4+1));
-                inoutResultVerts.add((iResultVertA+1)*4+2, sourceVerts.get(iVertToInsert*4+2));
-                inoutResultVerts.add((iResultVertA+1)*4+3, iVertToInsert);
+                // A vertex was found that is further than allowed from the
+                // current edge. Add this vertex to the contour.
+                inoutResultVerts.add((iResultVertA+1)*4
+                        , sourceVerts.get(iVertToInsert*4));
+                inoutResultVerts.add((iResultVertA+1)*4+1
+                        , sourceVerts.get(iVertToInsert*4+1));
+                inoutResultVerts.add((iResultVertA+1)*4+2
+                        , sourceVerts.get(iVertToInsert*4+2));
+                inoutResultVerts.add((iResultVertA+1)*4+3
+                        , iVertToInsert);
                 // Update the vertex count since a new vertex was added.
                 simplifiedVertCount = inoutResultVerts.size() / 4;
-                // Not incrementing the vertex since we need to test the edge formed by vertA 
-                // and this this new vertex on the next iteration of the loop.
+                // Not incrementing the vertex since we need to test the edge
+                // formed by vertA  and this this new vertex on the next
+                // iteration of the loop.
             }
-            else 
-                // This edge segment does not need to be altered.  Move to the next vertex.
+            else
+                // This edge segment does not need to be altered.  Move to
+                // the next vertex.
                 iResultVertA++;
         }
-
     }
-    
-    /**
-     * Returns the distance squared from the point to the line segment.
-     * <p>Behavior is undefined if the the closest distance is outside the 
-     * line segment.</p>
-     * @param px The x-value of point (px, py).
-     * @param py The y-value of point (px, py)
-     * @param ax The x-value of the line segment's vertex A.
-     * @param ay The y-value of the line segment's vertex A.
-     * @param bx The x-value of the line segment's vertex B.
-     * @param by The y-value of the line segment's vertex B.
-     * @return The distance squared from the point (px, py) to line segment AB.
-     */
-    public static float getPointSegmentDistanceSq(int px, int py, int ax, int ay, int bx, int by)
-    {
-        
-        /*
-         * Reference: http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
-         * 
-         * The goal of the algorithm is to find the point on line segment AB that is
-         * closest to P and then calculate the distance between P and that point.
-         */
-        
-        final float deltaABx = bx - ax;
-        final float deltaABy = by - ay;
-        final float deltaAPx = px - ax;
-        final float deltaAPy = py - ay;        
-        
-        final float segmentABLengthSq = deltaABx * deltaABx + deltaABy * deltaABy;
-        
-        if (segmentABLengthSq == 0)
-            // AB is not a line segment.  So just return
-            // distanceSq from P to A
-            return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
-            
-        final float u = (deltaAPx * deltaABx + deltaAPy * deltaABy) / segmentABLengthSq;
-        
-        if (u < 0)
-            // Closest point on line AB is outside outside segment AB and closer to A.
-            // So return distanceSq from P to A.
-            return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
-        else if (u > 1)
-            // Closest point on line AB is outside segment AB and closer to B.
-            // So return distanceSq from P to B.
-            return (px - bx)*(px - bx) + (py - by)*(py - by);
-        
-        // Closest point on lineAB is inside segment AB.  So find the exact point on AB
-        // and calculate the distanceSq from it to P.
-        
-        // The calculation in parenthesis is the location of the point on the line segment.
-        final float deltaX = (ax + u * deltaABx) - px;
-        final float deltaY = (ay + u * deltaABy) - py;
-    
-        return deltaX*deltaX + deltaY*deltaY;
-    }
-
 }

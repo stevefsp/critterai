@@ -22,21 +22,23 @@
 package org.critterai.nmgen;
 
 /**
- * Represents the a triangle mesh created by the navigation mesh generation process.
+ * Represents the a triangle mesh created by the navigation mesh generation
+ * process.
  * <p>WARNING: The core data within this class is unprotected.</p>
  * <p>
- * <a href="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.png" target="_parent">
- * <img class="insert" height="465" src="http://www.critterai.org/sites/default/files/nmgen/stage_detail_mesh.jpg" width="620" />
+ * <a href=
+ * "http://www.critterai.org/projects/nmgen/images/stage_detail_mesh.png"
+ * target="_parent">
+ * <img class="insert" height="465" src=
+ * "http://www.critterai.org/projects/nmgen/images/stage_detail_mesh.jpg"
+ * width="620" />
  * </a></p>
  */
-public final class TriangleMesh 
+public final class TriangleMesh
 {
 
     /*
      * Recast Reference: rcPolyMeshDetail in Recast.h
-     * 
-     * Doc State: Complete
-     * Standards Check: Complete
      */
     
     /**
@@ -57,28 +59,23 @@ public final class TriangleMesh
     public int[] triangleRegions = null;
     
     /**
-     * The number of triangles in the mesh.
-     * @return The number of triangles in the mesh.
+     * Gets the region ID associated with a triangle
+     * @param index The index of the triangle.
+     * @return The region ID of the triangle.  Or -1 if the index is invalid.
      */
-    public int triangleCount() 
-    { 
-        return (triangleRegions == null ? 0 : triangleRegions.length);
-    }
-    
-    /**
-     * The number of vertices in the mesh.
-     * @return The number of vertices in the mesh.
-     */
-    public int vertCount() 
-    { 
-        return (vertices == null ? 0 : vertices.length / 3);
+    public int getTriangleRegion(int index)
+    {
+        if (index < 0 || index >= triangleRegions.length)
+            return -1;
+        return triangleRegions[index];
     }
     
     /**
      * Gets the vertices for a particular triangle in the form
      * (vertAx, vertAy, vertAz, vertBx, vertBy, vertBz, vertCx, vertCy, vertCz)
      * @param index The index of the triangle to retrieve.
-     * @return The vertices in the specified triangle. Or null if the index is invalid.
+     * @return The vertices in the specified triangle. Or null if the index is
+     * invalid.
      */
     public float[] getTriangleVerts(int index)
     {
@@ -101,15 +98,21 @@ public final class TriangleMesh
     }
     
     /**
-     * Gets the region ID associated with a triangle
-     * @param index The index of the triangle.
-     * @return The region ID of the triangle.  Or -1 if the index is invalid.
+     * The number of triangles in the mesh.
+     * @return The number of triangles in the mesh.
      */
-    public int getTriangleRegion(int index)
+    public int triangleCount()
     {
-        if (index < 0 || index >= triangleRegions.length)
-            return -1;
-        return triangleRegions[index];
+        return (triangleRegions == null ? 0 : triangleRegions.length);
+    }
+    
+    /**
+     * The number of vertices in the mesh.
+     * @return The number of vertices in the mesh.
+     */
+    public int vertCount()
+    {
+        return (vertices == null ? 0 : vertices.length / 3);
     }
 
 }
