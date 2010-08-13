@@ -272,7 +272,7 @@ public final class OpenHeightfield
     @Override
     public IHeightfieldIterator<OpenHeightSpan> dataIterator()
     {
-        return new OpenHeightFieldIterator();
+        return this.new OpenHeightFieldIterator();
     }
     
     /**
