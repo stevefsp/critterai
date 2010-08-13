@@ -418,7 +418,7 @@ public final class SolidHeightfield
     @Override
     public IHeightfieldIterator<HeightSpan> dataIterator()
     {
-        return new HeightFieldIterator();
+        return this.new HeightFieldIterator();
     }
 
     /**
