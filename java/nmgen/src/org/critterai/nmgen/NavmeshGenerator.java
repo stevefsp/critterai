@@ -69,7 +69,8 @@ public final class NavmeshGenerator
      * <p>Constraints:  > 0</p>
      * 
      * @param cellHeight The height resolution used when sampling the
-     * source mesh.  Value must be > 0.
+     * source mesh.
+     * <p>Constraints:  > 0</p>
      * 
      * @param minTraversableHeight Represents the minimum floor to ceiling
      * height that will still allow the floor area to be considered walkable.
@@ -86,7 +87,7 @@ public final class NavmeshGenerator
      * 
      * @param maxTraversableSlope The maximum slope that is considered
      * walkable. (Degrees)
-     * <p>Constraints:  > 0</p>
+     * <p>Constraints:  0 <= value <= 85</p>
      * 
      * @param clipLedges Indicates whether ledges should be marked
      * as unwalkable.
@@ -109,7 +110,7 @@ public final class NavmeshGenerator
      * <p>This value impacts region formation and border detection.  A
      * higher value results in generally larger regions and larger border
      * sizes.  A value of zero will disable smoothing.</p>
-     * <p>Constraints:  >= 0</p>
+     * <p>Constraints: 0 <= value <= 4</p>
      * 
      * @param useConservativeExpansion Applies extra algorithms to regions
      * to help prevent poorly formed regions from forming.
@@ -305,15 +306,11 @@ public final class NavmeshGenerator
      */
     public TriangleMesh build(float[] vertices
             , int[] indices
-            , IntermediateData outIntermediateData
-            , LogResults outLogData)
+            , IntermediateData outIntermediateData)
     {
         
         if (outIntermediateData != null)
             outIntermediateData.reset();
-        
-        if (outLogData != null)
-            outLogData.reset();
         
         long timerStart = 0;
         
@@ -321,7 +318,7 @@ public final class NavmeshGenerator
         // http://www.critterai.org/?q=nmgen_hfintro
         
         // Generate a height field representing obstructed (solid) space.
-        if (outLogData != null)
+        if (outIntermediateData != null)
             timerStart = System.nanoTime();
         
         final SolidHeightfield solidField =
@@ -329,8 +326,9 @@ public final class NavmeshGenerator
         if (solidField == null || !solidField.hasSpans())
             return null;
         
-        if (outLogData != null)
-            outLogData.voxelizationTime = System.nanoTime() - timerStart;
+        if (outIntermediateData != null)
+            outIntermediateData.voxelizationTime = 
+                System.nanoTime() - timerStart;
         
         if (outIntermediateData != null)
             // Store intermediate data.
@@ -349,7 +347,7 @@ public final class NavmeshGenerator
          * touching the open heightfield builder class.
          */
         
-        if (outLogData != null)
+        if (outIntermediateData != null)
             timerStart = System.nanoTime();
         
         final OpenHeightfield openField =
@@ -368,8 +366,8 @@ public final class NavmeshGenerator
         mOpenHeightFieldBuilder.blurDistanceField(openField);
         mOpenHeightFieldBuilder.generateRegions(openField);
         
-        if (outLogData != null)
-            outLogData.regionGenTime = System.nanoTime() - timerStart;
+        if (outIntermediateData != null)
+            outIntermediateData.regionGenTime = System.nanoTime() - timerStart;
         
         // Terminology references:
         // http://en.wikipedia.org/wiki/Polygon
@@ -379,15 +377,15 @@ public final class NavmeshGenerator
         // Contours are simply polygons that represent the edges of regions.
         
 
-        if (outLogData != null)
+        if (outIntermediateData != null)
             timerStart = System.nanoTime();
         
         final ContourSet contours = mContourSetBuilder.build(openField);
         if (contours == null)
             return null;
         
-        if (outLogData != null)
-            outLogData.contourGenTime = System.nanoTime() - timerStart;
+        if (outIntermediateData != null)
+            outIntermediateData.contourGenTime = System.nanoTime() - timerStart;
         
         if (outIntermediateData != null)
             // Store intermediate data.
@@ -396,15 +394,15 @@ public final class NavmeshGenerator
         // Generate a convex polygon mesh from the contours.
         // Converts contours (simple polygons) to convex polygons.
         
-        if (outLogData != null)
+        if (outIntermediateData != null)
             timerStart = System.nanoTime();
         
         final PolyMeshField polyMesh = mPolyMeshBuilder.build(contours);
         if (polyMesh == null)
             return null;
 
-        if (outLogData != null)
-            outLogData.polyGenTime = System.nanoTime() - timerStart;
+        if (outIntermediateData != null)
+            outIntermediateData.polyGenTime = System.nanoTime() - timerStart;
         
         if (outIntermediateData != null)
             // Store intermediate data.
@@ -413,13 +411,13 @@ public final class NavmeshGenerator
         // Triangulate the convex polygon mesh.  This is where contour
         // matching is performed. Also referred to as tesselation.
       
-        if (outLogData != null)
+        if (outIntermediateData != null)
             timerStart = System.nanoTime();
         
         TriangleMesh mesh = mTriangleMeshBuilder.build(polyMesh, openField);
         
-        if (outLogData != null && mesh != null)
-            outLogData.finalMeshGenTime = System.nanoTime() - timerStart;
+        if (outIntermediateData != null && mesh != null)
+            outIntermediateData.finalMeshGenTime = System.nanoTime() - timerStart;
             
          return mesh;
         

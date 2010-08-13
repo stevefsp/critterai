@@ -22,9 +22,10 @@
 package org.critterai.nmgen;
 
 /**
- * A class used to hold intermediate data used to build a navigation mesh.
- * <p>When this data is combined with the source geometry and final navigation
- * mesh, the entire build process is represented.</p>
+ * A class used to hold intermediate and performance data related to building
+ * the navigation mesh.
+ * <p>The entire build process is represented when this data is combined with 
+ * the source geometry and final navigation mesh.</p>
  */
 public final class IntermediateData
 {
@@ -32,6 +33,36 @@ public final class IntermediateData
     /*
      * Recast Reference: None
      */
+    
+    /**
+     * The data is undefined. (Has not been set.)
+     */
+    public static final long UNDEFINED = -1;
+    
+    /**
+     * The time to perform voxelization. (ns)
+     */
+    public long voxelizationTime;
+    
+    /**
+     * The time to perform region generation. (ns)
+     */
+    public long regionGenTime;
+    
+    /**
+     * The time to perform contour generation. (ns)
+     */
+    public long contourGenTime;
+    
+    /**
+     * The time to perform polygon generation. (ns)
+     */
+    public long polyGenTime;
+    
+    /**
+     * The time to perform the final triangulation. (ns)
+     */
+    public long finalMeshGenTime;
     
     private SolidHeightfield mSolidHeightfield;
     private OpenHeightfield mOpenHeightfield;
@@ -43,6 +74,21 @@ public final class IntermediateData
      * @return The contours associated with the open heightfield.
      */
     public ContourSet contours() { return mContours; }
+    
+    /**
+     * Returns the total time to generate the navigation mesh. (ns)
+     * @return The total time to generate the navigation mesh. (ns)
+     */
+    public long getTotalGenTime()
+    {
+        if (finalMeshGenTime == UNDEFINED)
+            return UNDEFINED;
+        return voxelizationTime
+            + regionGenTime
+            + contourGenTime
+            + polyGenTime
+            + finalMeshGenTime;
+    }
     
     /**
      * The open heightfield associated with the solid heightfield.
@@ -61,6 +107,11 @@ public final class IntermediateData
      */
     public void reset()
     {
+        voxelizationTime = UNDEFINED;
+        regionGenTime = UNDEFINED;
+        contourGenTime = UNDEFINED;
+        polyGenTime = UNDEFINED;
+        finalMeshGenTime = UNDEFINED;
         mSolidHeightfield = null;
         mOpenHeightfield = null;
         mContours = null;
