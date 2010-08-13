@@ -7,6 +7,16 @@ package org.critterai.nmgen;
  */
 public final class Geometry
 {
+    
+    /*
+     * Design Notes:
+     * 
+     * Until computational geometry functions are moved to the utilities
+     * library, they will slowly be migrated here as needed for easier 
+     * unit testing.
+     * 
+     */
+    
     // TODO: GENERALIZATION: Move these algorithms to the utility library.
     
     private Geometry() { }
@@ -70,6 +80,65 @@ public final class Geometry
         final float deltaY = (ay + u * deltaABy) - py;
     
         return deltaX*deltaX + deltaY*deltaY;
+    }
+    
+    public static float getPointSegmentDistanceSq(float px
+                    , float py
+                    , float pz
+                    , float ax
+                    , float ay
+                    , float az
+                    , float bx
+                    , float by
+                    , float bz)
+    {
+        
+        final float deltaABx = bx - ax;
+        final float deltaABy = by - ay;
+        final float deltaABz = bz - az;
+        float deltaAPx = px - ax;
+        float deltaAPy = py - ay;
+        float deltaAPz = pz - az;
+        
+        final float segmentABDistSq = deltaABx * deltaABx
+                                        + deltaABy * deltaABy
+                                        + deltaABz * deltaABz;
+        if (segmentABDistSq == 0)
+            // AB is not a line segment.  So just return
+            // distanceSq from P to A.
+            return deltaAPx * deltaAPx
+                        + deltaAPy * deltaAPy
+                        + deltaAPz * deltaAPz;
+        
+        float u = (deltaABx * deltaAPx
+                            + deltaABy * deltaAPy
+                            + deltaABz * deltaAPz) / segmentABDistSq;
+        
+        if (u < 0)
+            // Closest point on line AB is outside outside segment AB and
+            // closer to A. So return distanceSq from P to A.
+            return deltaAPx * deltaAPx
+                        + deltaAPy * deltaAPy
+                        + deltaAPz * deltaAPz;
+        else if (u > 1)
+            // Closest point on line AB is outside segment AB and closer to B.
+            // So return distanceSq from P to B.
+            return (px - bx)*(px - bx) 
+                        + (py - by)*(py - by) 
+                        + (pz - bz)*(pz - bz);
+        
+        
+        // Closest point on lineAB is inside segment AB.  So find the exact
+        // point on AB and calculate the distanceSq from it to P.
+        
+        // The calculation in parenthesis is the location of the point on
+        // the line segment.
+        final float deltaX = (ax + u * deltaABx) - px;
+        final float deltaY = (ay + u * deltaABy) - py;
+        final float deltaZ = (az + u * deltaABz) - pz;
+    
+        return deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ;
+
     }
     
     /**
