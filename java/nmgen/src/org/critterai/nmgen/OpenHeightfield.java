@@ -22,6 +22,7 @@
 package org.critterai.nmgen;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -51,10 +52,14 @@ public final class OpenHeightfield
      */
     
     /**
+     * An iterator that will iterate through all spans within a
+     * height field. (Not just the base spans.)
+     * <p>Behavior of the iterator is undefined if the interator's source
+     * is changed during iteration.</p>
      * The iterator returned by {@link OpenHeightfield#dataIterator()}.
      */
-    private class OpenHeightFieldIterator
-        implements IHeightfieldIterator<OpenHeightSpan>
+    public final class OpenHeightFieldIterator
+        implements Iterator<OpenHeightSpan>
     {
     
         // See reset() for initialization information.
@@ -69,15 +74,15 @@ public final class OpenHeightfield
         /**
          * Constructor.
          */
-        public OpenHeightFieldIterator()
+        private OpenHeightFieldIterator()
         {
             reset();
         }
         
         /**
-         * {@inheritDoc}
+         * The depth index of the last span returned by {@link #next()}
+         * @return The depth index of the last span returned by {@link #next()}
          */
-        @Override
         public int depthIndex() { return mLastDepth; }
 
         /**
@@ -117,9 +122,8 @@ public final class OpenHeightfield
         }
 
         /**
-         * {@inheritDoc}
+         * Resets the iterator so that it can be re-used.
          */
-        @Override
         public void reset()
         {
             mNextWidth = 0;
@@ -131,9 +135,9 @@ public final class OpenHeightfield
         }
 
         /**
-         * {@inheritDoc}
+         * The width index of the last span returned by {@link #next()}
+         * @return The width index of the last span returned by {@link #next()}
          */
-        @Override
         public int widthIndex() { return mLastWidth; }
         
         /**
@@ -264,11 +268,11 @@ public final class OpenHeightfield
     }
     
     /**
-     * {@inheritDoc}
+     * An iterator for the heightfields spans.
      * The returned iterator does not support the
-     * {@link IHeightfieldIterator#remove()} operation.
+     * {@link Iterator#remove()} operation.
      */
-    public IHeightfieldIterator<OpenHeightSpan> dataIterator()
+    public OpenHeightFieldIterator dataIterator()
     {
         return this.new OpenHeightFieldIterator();
     }
@@ -420,8 +424,8 @@ public final class OpenHeightfield
         
         // Iterate through all spans and reset the values if new min/max's are
         // found.
-        IHeightfieldIterator<OpenHeightSpan> iter =
-            new OpenHeightFieldIterator();
+        OpenHeightFieldIterator iter =
+            this.new OpenHeightFieldIterator();
         while (iter.hasNext())
         {
             OpenHeightSpan span = iter.next();

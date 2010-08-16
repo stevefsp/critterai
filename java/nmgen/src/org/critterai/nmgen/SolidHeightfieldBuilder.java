@@ -21,6 +21,8 @@
  */
 package org.critterai.nmgen;
 
+import org.critterai.nmgen.SolidHeightfield.SolidHeightFieldIterator;
+
 /**
  * A class used to build solid heightfields from source geometry using a
  * given configuration. The solid heightfield represents the space obstructed
@@ -337,7 +339,7 @@ public final class SolidHeightfieldBuilder
          */
         
         // Loop through all spans.
-        IHeightfieldIterator<HeightSpan> iter = field.dataIterator();
+        SolidHeightFieldIterator iter = field.dataIterator();
         while (iter.hasNext())
         {
             HeightSpan span = iter.next();
@@ -495,7 +497,7 @@ public final class SolidHeightfieldBuilder
         // For visualization, see the @see in the class' javadoc.
         
         // Iterate through all spans in the field.
-        IHeightfieldIterator<HeightSpan> iter = field.dataIterator();
+        SolidHeightFieldIterator iter = field.dataIterator();
         while (iter.hasNext())
         {
             HeightSpan span = iter.next();

@@ -25,6 +25,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import org.critterai.nmgen.OpenHeightfield.OpenHeightFieldIterator;
+
 /**
  * Builds an open heightfield from the solid data contained by an
  * {@link SolidHeightfield}.  It does this by locating and creating spans
@@ -178,7 +180,7 @@ public final class OpenHeightfieldBuilder
             = new Hashtable<OpenHeightSpan, Integer>(field.spanCount());
         
         // Loop through all spans.
-        final IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        final OpenHeightFieldIterator iter = field.dataIterator();
         while (iter.hasNext())
         {
             final OpenHeightSpan span = iter.next();
@@ -379,7 +381,7 @@ public final class OpenHeightfieldBuilder
          * 4 known neighbors.)
          * Set distance to NEEDS_INIT for non-boundary spans.
          */
-        final IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        final OpenHeightFieldIterator iter = field.dataIterator();
         while (iter.hasNext())
         {
             final OpenHeightSpan span = iter.next();
@@ -607,7 +609,7 @@ public final class OpenHeightfieldBuilder
             return;
         
         // Loop through all spans and generate neighbor information.
-        IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        OpenHeightFieldIterator iter = field.dataIterator();
         while (iter.hasNext())
         {
             final OpenHeightSpan span = iter.next();
@@ -759,7 +761,7 @@ public final class OpenHeightfieldBuilder
         final ArrayDeque<OpenHeightSpan> workingStack =
             new ArrayDeque<OpenHeightSpan>(1024);
         
-        final IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        final OpenHeightFieldIterator iter = field.dataIterator();
         
         // Zero is reserved for the null-region. So initializing to 1.
         int nextRegionID = 1;

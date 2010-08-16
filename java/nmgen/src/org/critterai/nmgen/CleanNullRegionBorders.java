@@ -2,6 +2,8 @@ package org.critterai.nmgen;
 
 import java.util.ArrayDeque;
 
+import org.critterai.nmgen.OpenHeightfield.OpenHeightFieldIterator;
+
 /**
  * Implements three algorithms that clean up issues that can
  * develop around null region boarders.
@@ -130,7 +132,7 @@ public class CleanNullRegionBorders
     {
         
         int nextRegionID = field.regionCount();
-        final IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        final OpenHeightFieldIterator iter = field.dataIterator();
         
         // Iterate over the spans, trying to find null region borders.
         while (iter.hasNext())

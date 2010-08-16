@@ -22,6 +22,7 @@
 package org.critterai.nmgen;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -48,10 +49,13 @@ public final class SolidHeightfield
      */
     
     /**
-     * Span iterator.  Will iterate through all spans at all grid locations.
+     * Implements an iterator that will iterate through all spans within a
+     * height field. (Not just the base spans.)
+     * <p>Behavior of the iterator is undefined if the interator's source
+     * is changed during iteration.</p>
      */
-    private class HeightFieldIterator
-        implements IHeightfieldIterator<HeightSpan>
+    public class SolidHeightFieldIterator
+        implements Iterator<HeightSpan>
     {
     
         private int mNextWidth = 0;
@@ -61,15 +65,15 @@ public final class SolidHeightfield
         private int mLastWidth = 0;
         private int mLastDepth = 0;
         
-        public HeightFieldIterator()
+        private SolidHeightFieldIterator()
         {
             moveToNext();
         }
         
         /**
-         * {@inheritDoc}
+         * The depth index of the last span returned by {@link #next()}
+         * @return The depth index of the last span returned by {@link #next()}
          */
-        @Override
         public int depthIndex() { return mLastDepth; }
     
         /**
@@ -106,10 +110,8 @@ public final class SolidHeightfield
         }
     
         /**
-         * 
-         * {@inheritDoc}
+         * Resets the iterator so that it can be re-used.
          */
-        @Override
         public void reset()
         {
             mNextWidth = 0;
@@ -121,9 +123,9 @@ public final class SolidHeightfield
         }
         
         /**
-         * {@inheritDoc}
+         * The width index of the last span returned by {@link #next()}
+         * @return The width index of the last span returned by {@link #next()}
          */
-        @Override
         public int widthIndex() { return mLastWidth; }
         
         /**
@@ -410,14 +412,14 @@ public final class SolidHeightfield
     }
 
     /**
-     * {@inheritDoc}
+     * Provides an iterator that iterates all spans in the field.
      * <p>Unlike {@link #getData(int, int)}, this iterator will iterate
      * through all spans, not just the base spans.  So their is no need to
      * use {@link HeightSpan#next()} to climb  the span structure.</p>
      */
-    public IHeightfieldIterator<HeightSpan> dataIterator()
+    public SolidHeightFieldIterator dataIterator()
     {
-        return this.new HeightFieldIterator();
+        return this.new SolidHeightFieldIterator();
     }
 
     /**

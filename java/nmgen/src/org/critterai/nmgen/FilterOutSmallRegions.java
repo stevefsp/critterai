@@ -23,6 +23,8 @@ package org.critterai.nmgen;
 
 import java.util.ArrayList;
 
+import org.critterai.nmgen.OpenHeightfield.OpenHeightFieldIterator;
+
 /**
  * Removes and merges small regions within a height field.
  * <p>Applies two algorithms:</p>
@@ -117,7 +119,7 @@ public final class FilterOutSmallRegions
             regions[i] = new Region(i);
         }
         
-        final IHeightfieldIterator<OpenHeightSpan> iter = field.dataIterator();
+        final OpenHeightFieldIterator iter = field.dataIterator();
         
         /*
          * Region object initialization.
