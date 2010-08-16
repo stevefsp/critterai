@@ -24,6 +24,8 @@ package org.critterai.nmgen;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.critterai.nmgen.OpenHeightfield.OpenHeightFieldIterator;
+
 /**
  * Builds a set of contours from the region information contained by an
  * {@link OpenHeightfield}.  It does this by locating and "walking" the edges
@@ -122,7 +124,7 @@ public final class ContourSetBuilder
          *      1 = neighbor not in same region. (Neighbor may be the null
          *      region or a real region.)
          */
-        final IHeightfieldIterator<OpenHeightSpan> iter =
+        final OpenHeightFieldIterator iter =
             sourceField.dataIterator();
         while(iter.hasNext())
         {
