@@ -42,9 +42,8 @@ import java.util.NoSuchElementException;
  * target="_parent">Introduction to Height Fields</a>
  */
 public final class OpenHeightfield
-    extends BaseHeightfield<OpenHeightSpan>
+    extends BoundedField
 {
-    
     /*
      * Recast Reference: rcCompactHeightfield in Recast.h
      * The internal structure of this class is very different from Recast.
@@ -269,7 +268,6 @@ public final class OpenHeightfield
      * The returned iterator does not support the
      * {@link IHeightfieldIterator#remove()} operation.
      */
-    @Override
     public IHeightfieldIterator<OpenHeightSpan> dataIterator()
     {
         return this.new OpenHeightFieldIterator();
@@ -285,7 +283,6 @@ public final class OpenHeightfield
      * @return The base (lowest) span for the specified grid location.  Null
      * if there is no data for the grid location.
      */
-    @Override
     public OpenHeightSpan getData(int widthIndex, int depthIndex)
     {
         return mSpans.get(gridIndex(widthIndex, depthIndex));

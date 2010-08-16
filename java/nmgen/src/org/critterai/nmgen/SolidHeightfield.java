@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
  * target="_parent">Introduction to Height Fields</a>
  */
 public final class SolidHeightfield
-    extends BaseHeightfield<HeightSpan>
+    extends BoundedField
 {
     
     /*
@@ -415,7 +415,6 @@ public final class SolidHeightfield
      * through all spans, not just the base spans.  So their is no need to
      * use {@link HeightSpan#next()} to climb  the span structure.</p>
      */
-    @Override
     public IHeightfieldIterator<HeightSpan> dataIterator()
     {
         return this.new HeightFieldIterator();
@@ -427,7 +426,6 @@ public final class SolidHeightfield
      * @return The lowest span at the grid location, or null if there are no
      * spans at the location.
      */
-    @Override
     public HeightSpan getData(int widthIndex, int depthIndex)
     {
         return mSpans.get(gridIndex(widthIndex, depthIndex));
