@@ -683,6 +683,11 @@ public final class DetailMeshBuilder
         // the return value.
         int outVertCount = sourceVertCount;
         
+        // Any value sample vertex height value equal to or greater than
+        // this value means a height could not be found in the patch.
+        final float heightPathLimit = 
+            HeightPatch.UNSET * heightField.cellHeight();
+        
         if (mContourSampleDistance > 0)
         {
             
@@ -827,7 +832,8 @@ public final class DetailMeshBuilder
                             ; iTestVert < iWorkingVertB
                             ; iTestVert++)
                     {
-                        if (workingVerts[iTestVert*3+1] == HeightPatch.UNSET)
+                        if (workingVerts[iTestVert*3+1] >= heightPathLimit)
+                        {
                             /*
                              * This vertex cannot be used.
                              * 
@@ -845,7 +851,14 @@ public final class DetailMeshBuilder
                              *   - Error in input data.
                              *   - Error in height patch build process.
                              */
+                            logger.warning("Potential loss of polygon height"
+                                    + "detail on polygon edge: Could not"
+                                    + "determine height for sample vertex at (" 
+                                    + workingVerts[iTestVert*3+0] + ", "
+                                    + workingVerts[iTestVert*3+2] + ")."
+                                    + " Heightpatch data not availalable.");
                             continue;
+                        }
                         float distanceSq = Geometry.getPointSegmentDistanceSq(
                                         workingVerts[iTestVert*3]
                                       , workingVerts[iTestVert*3+1]
