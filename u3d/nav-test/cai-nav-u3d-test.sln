@@ -9,12 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		cai-nav-u3d-test.vsmdi = cai-nav-u3d-test.vsmdi
 		cai-nav-u3d-test1.vsmdi = cai-nav-u3d-test1.vsmdi
+		cai-nav-u3d-test2.vsmdi = cai-nav-u3d-test2.vsmdi
 		TestRunConfig.testrunconfig = TestRunConfig.testrunconfig
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = cai-nav-u3d-test1.vsmdi
+		CategoryFile = cai-nav-u3d-test2.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
