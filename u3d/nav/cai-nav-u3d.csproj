@@ -45,25 +45,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStarSearch.cs" />
-    <Compile Include="DijkstraSearch.cs" />
-    <Compile Include="DistanceHeuristic.cs" />
-    <Compile Include="DistanceHeuristicType.cs" />
-    <Compile Include="INavigator.cs" />
-    <Compile Include="MasterNavigator.cs" />
-    <Compile Include="MasterNavRequest.cs" />
-    <Compile Include="MasterPath.cs" />
     <Compile Include="NavRequestState.cs" />
-    <Compile Include="NavUtil.cs" />
-    <Compile Include="PathRelType.cs" />
-    <Compile Include="ThreadedNavigator.cs" />
-    <Compile Include="TriCellPathNodeHeap.cs" />
+    <Compile Include="nmpath\AStarSearch.cs" />
+    <Compile Include="nmpath\DijkstraSearch.cs" />
+    <Compile Include="nmpath\DistanceHeuristic.cs" />
+    <Compile Include="nmpath\DistanceHeuristicType.cs" />
+    <Compile Include="nmpath\INavigator.cs" />
+    <Compile Include="nmpath\MasterNavigator.cs" />
+    <Compile Include="nmpath\MasterNavRequest.cs" />
+    <Compile Include="nmpath\MasterPath.cs" />
+    <Compile Include="nmpath\NavUtil.cs" />
+    <Compile Include="nmpath\PathRelType.cs" />
+    <Compile Include="nmpath\SearchState.cs" />
+    <Compile Include="nmpath\ThreadedNavigator.cs" />
+    <Compile Include="nmpath\TriCell.cs" />
+    <Compile Include="nmpath\TriCellPathNode.cs" />
+    <Compile Include="nmpath\TriCellPathNodeHeap.cs" />
+    <Compile Include="nmpath\TriCellQuadTree.cs" />
+    <Compile Include="nmpath\TriNavMesh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchState.cs" />
-    <Compile Include="TriCell.cs" />
-    <Compile Include="TriCellPathNode.cs" />
-    <Compile Include="TriCellQuadTree.cs" />
-    <Compile Include="TriNavMesh.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
