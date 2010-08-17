@@ -42,13 +42,15 @@ namespace org.critterai.nav
          */
         
         /// <summary>
-        /// Provides access to navidation Request State and Data.
+        /// Provides access to the state and data related to a navigation request.
+        /// </summary>
+        /// <remarks>
         /// <para>When polling to see if a Request is complete, check <see cref="IsFinished">IsFinished</see>
         /// rather than <see cref="State">State</see>.  Using State incurs synchronization costs.</para>
         /// <para>Instances of this class are thread-safe only if its associated 
         /// MasterRequest.
         /// object is used in a thread-safe manner.</para>
-        /// </summary>
+        /// </remarks>
         public sealed class NavRequest
         {
 
@@ -79,7 +81,7 @@ namespace org.critterai.nav
             /// Indicates whether or not the request is finished being processed.
             /// The request is considered finished if its State is either
             /// <see cref="NavRequestState.Complete">Complete</see> or 
-            /// <see cref="NavRequestState.Failed">Finished</see>.
+            /// <see cref="NavRequestState.Failed">Failed</see>.
             /// </summary>
             public Boolean IsFinished { get { return mRoot.mIsComplete; } }
             
