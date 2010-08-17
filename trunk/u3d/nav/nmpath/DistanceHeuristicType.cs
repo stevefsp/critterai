@@ -19,32 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-namespace org.critterai.nav
+namespace org.critterai.nav.nmpath
 {
     /// <summary>
-    /// The state of a navigation request.
+    ///  The supported distance heuristics.
     /// </summary>
-    public enum NavRequestState : byte
+    public enum DistanceHeuristicType : byte 
     {
         /// <summary>
-        /// The request is complete.  Any clientData associated
-        /// with the request is available and ready for use.
+        /// The longest axis distance between two points.
+        /// E.G. The longest of (ax - bx), (ay - by), or (az - bz).
         /// </summary>
-        Complete,
-
+        LongestAxis,
+        
         /// <summary>
-        /// The request failed and is closed.
-        /// In general, any clientData associated with the request is not
-        /// valid for use. (Potential exception: Boolean clientData.)
+        /// The Manhattan distance between two points.
+        /// <seealso>
+        /// <a href="http://en.wikipedia.org/wiki/Manhattan_distance" target="_blank">Manhattan Distance (Wikipedia)</a>
+        /// </seealso>
         /// </summary>
-        Failed,
-
-        /// <summary>
-        /// The request is incomplete and either in queue
-        /// or being actively worked on.  Any clientData assoicated with the
-        /// request is not valid for use.
-        /// </summary>
-        Processing,
+        Manhattan,
     }
 }

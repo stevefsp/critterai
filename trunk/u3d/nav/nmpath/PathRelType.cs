@@ -20,31 +20,27 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nav
+namespace org.critterai.nav.nmpath
 {
     /// <summary>
-    /// The state of a navigation request.
+    /// Represents the possible relationship of a path (line segment) to a Cell.
     /// </summary>
-    public enum NavRequestState : byte
+    public enum PathRelType : byte
     {
         /// <summary>
-        /// The request is complete.  Any clientData associated
-        /// with the request is available and ready for use.
+        /// The path ends in the cell.
         /// </summary>
-        Complete,
+        EndingCell,
 
         /// <summary>
-        /// The request failed and is closed.
-        /// In general, any clientData associated with the request is not
-        /// valid for use. (Potential exception: Boolean clientData.)
+        /// The path exits the cell.
+        /// The path may have started in the cell or simply crossed the cell.
         /// </summary>
-        Failed,
+        ExitingCell,
 
         /// <summary>
-        /// The request is incomplete and either in queue
-        /// or being actively worked on.  Any clientData assoicated with the
-        /// request is not valid for use.
+        /// The path does not intersect the cell.
         /// </summary>
-        Processing,
+        NoRelationship
     }
 }

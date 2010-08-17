@@ -43,25 +43,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStarSearchTest.cs" />
-    <Compile Include="IntegrationTests.cs" />
-    <Compile Include="CorridorMesh.cs" />
-    <Compile Include="DijkstraSearchTest.cs" />
-    <Compile Include="DistanceHeuristicTest.cs" />
-    <Compile Include="ITestMesh.cs" />
-    <Compile Include="MasterNavigatorTest.cs" />
-    <Compile Include="MasterNavRequestTest .cs" />
-    <Compile Include="MasterPathTest.cs" />
-    <Compile Include="NavigatorTest.cs" />
-    <Compile Include="NavRequestTest.cs" />
-    <Compile Include="PathTest.cs" />
+    <Compile Include="nmpath\AStarSearchTest.cs" />
+    <Compile Include="nmpath\CorridorMesh.cs" />
+    <Compile Include="nmpath\DijkstraSearchTest.cs" />
+    <Compile Include="nmpath\DistanceHeuristicTest.cs" />
+    <Compile Include="nmpath\IntegrationTests.cs" />
+    <Compile Include="nmpath\ITestMesh.cs" />
+    <Compile Include="nmpath\MasterNavigatorTest.cs" />
+    <Compile Include="nmpath\MasterNavRequestTest .cs" />
+    <Compile Include="nmpath\MasterPathTest.cs" />
+    <Compile Include="nmpath\NavigatorTest.cs" />
+    <Compile Include="nmpath\NavRequestTest.cs" />
+    <Compile Include="nmpath\PathTest.cs" />
+    <Compile Include="nmpath\TestUtil.cs" />
+    <Compile Include="nmpath\TriCellPathNodeHeapTest.cs" />
+    <Compile Include="nmpath\TriCellPathNodeTest.cs" />
+    <Compile Include="nmpath\TriCellQuadTreeTests.cs" />
+    <Compile Include="nmpath\TriCellTest.cs" />
+    <Compile Include="nmpath\TriNavMeshTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestUtil.cs" />
-    <Compile Include="TriCellPathNodeHeapTest.cs" />
-    <Compile Include="TriCellPathNodeTest.cs" />
-    <Compile Include="TriCellQuadTreeTests.cs" />
-    <Compile Include="TriCellTest.cs" />
-    <Compile Include="TriNavMeshTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\cai-nav-u3d.accessor" />
@@ -77,6 +77,9 @@
       <Project>{07219796-1BD2-4386-B5BA-2CCCA2458E63}</Project>
       <Name>cai-nav-u3d</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nmpath\TestRunConfig.testrunconfig" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

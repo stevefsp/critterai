@@ -20,31 +20,38 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nav
+namespace org.critterai.nav.nmpath
 {
     /// <summary>
-    /// The state of a navigation request.
+    /// The State of a search.
     /// </summary>
-    public enum NavRequestState : byte
+    public enum SearchState : byte
     {
         /// <summary>
-        /// The request is complete.  Any clientData associated
-        /// with the request is available and ready for use.
+        /// The search has not been initialized and is not ready for
+        /// a search. (No search data loaded.)
+        /// </summary>
+        Uninitialized,
+
+        /// <summary>
+        /// The search has been prepared but has not undergone any processing.
+        /// (Search data has been loaded and is ready for use.)
+        /// </summary>
+        Initialized,
+
+        /// <summary>
+        /// The search in in-progress.
+        /// </summary>
+        Processing,
+
+        /// <summary>
+        /// The search has completed successfully and data is available.
         /// </summary>
         Complete,
 
         /// <summary>
-        /// The request failed and is closed.
-        /// In general, any clientData associated with the request is not
-        /// valid for use. (Potential exception: Boolean clientData.)
+        /// The search has failed.  No data is available.
         /// </summary>
         Failed,
-
-        /// <summary>
-        /// The request is incomplete and either in queue
-        /// or being actively worked on.  Any clientData assoicated with the
-        /// request is not valid for use.
-        /// </summary>
-        Processing,
     }
 }
