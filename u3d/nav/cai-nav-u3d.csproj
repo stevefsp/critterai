@@ -56,7 +56,6 @@
     <Compile Include="NavRequestState.cs" />
     <Compile Include="NavUtil.cs" />
     <Compile Include="PathRelType.cs" />
-    <Compile Include="QuickMesh.cs" />
     <Compile Include="ThreadedNavigator.cs" />
     <Compile Include="TriCellPathNodeHeap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

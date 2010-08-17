@@ -48,6 +48,7 @@
     <Compile Include="math\geom\Triangle3Test.cs" />
     <Compile Include="math\Vector2UtilTest.cs" />
     <Compile Include="math\Vector3UtilTest.cs" />
+    <Compile Include="util\QuickMeshTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\cai-util-u3d.accessor" />
@@ -57,6 +58,9 @@
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="assets\quickmesh.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

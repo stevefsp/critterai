@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
+using org.critterai.util;
 
 namespace org.critterai.nav
 {
