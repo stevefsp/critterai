@@ -25,7 +25,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace org.critterai.nav
+namespace org.critterai.util
 {
     /// <summary>
     /// Creates a mesh from a file or <see cref="UnityEngine.TextAsset">TextAsset</see>

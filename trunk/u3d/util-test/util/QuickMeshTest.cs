@@ -24,7 +24,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.nav
+namespace org.critterai.util
 {
     /// <summary>
     /// Summary description for QuickMeshTest
@@ -39,7 +39,7 @@ namespace org.critterai.nav
          * This test suite does not currently test exception handling.
          */
 
-        private const String TEST_FILE_NAME = "assets.quickmesh.txt";
+        private const String TEST_FILE_NAME = "org.critterai.assets.quickmesh.txt";
 
         private TestContext testContextInstance;
 
@@ -63,8 +63,10 @@ namespace org.critterai.nav
         public static void SetupOnce(TestContext testContext)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            String[] rns = asm.GetManifestResourceNames();
-            StreamReader reader = new StreamReader(asm.GetManifestResourceStream(typeof(QuickMeshTest), TEST_FILE_NAME));
+            //String[] rns = asm.GetManifestResourceNames();
+            //if (rns.Length == 0)
+            //    rns = null;
+            StreamReader reader = new StreamReader(asm.GetManifestResourceStream(TEST_FILE_NAME));
 
             StreamWriter writer = new StreamWriter(TEST_FILE_NAME);
             writer.Write(reader.ReadToEnd());
