@@ -298,8 +298,6 @@ public final class NavmeshGenerator
      * @param outIntermediateData  If non-null, the intermediate build
      * results will be added to this object.  If the build fails, the object
      * will contain all intermediate results which were successfully generated.
-     * @param outLogData If non-null, this argument will be poplulated with
-     * log data.
      * @return The generated navigation mesh, or null if generation failed.
      * @see <a href="http://www.critterai.org/?q=nmgen_overview"
      * target="_parent">Process Overview</a>
