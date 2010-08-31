@@ -16,8 +16,36 @@
             includeAntRuntime="no"/>
     </target>
     
+    <target name="compile-test"
+        depends="compile"
+        description="Generates the test suite class files.">
+        <mkdir dir="${test.classes.dir}" />
+        <javac srcdir="${test.src.dir}" 
+            destdir="${test.classes.dir}"
+            includeAntRuntime="no">
+            <classpath>
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${classes.dir}" />
+            </classpath>
+        </javac>
+    </target>
+    
+    <target name="unit-test" 
+        depends="compile-test"
+        description="Unit test the library.">
+        <junit fork="yes" haltonerror="yes" printsummary="no">
+            <classpath>
+                <pathelement location="${misc.resources.dir}/lib/java/junit-4.7.jar" />
+                <pathelement location="${classes.dir}" />
+                <pathelement location="${test.classes.dir}" />
+            </classpath>
+            <formatter type="brief" usefile="false"/>
+            <test name="org.critterai.nmgen.AllTests" />
+        </junit>
+    </target>
+	
     <target name="package-jar" 
-        depends="clean, compile"
+        depends="clean, unit-test"
         description="Creates the jar file for the library.">
         <mkdir dir="${dist.dir}" />
         <copy file="${misc.resources.dir}/LCOPY.TXT" 
@@ -49,6 +77,9 @@
             <zipfileset dir="${src.dir}"
                              includes="**/*"
                              prefix="${project.fullname}/src" />
+            <zipfileset dir="${test.src.dir}"
+                             includes="**/*"
+                             prefix="${project.fullname}/test" />
         </zip>
        	<copy file="${dist.dir}/${project.fullname}.jar" 
        	            tofile="${dist.scm.dir}/${project.fullname}.jar" 
@@ -73,15 +104,15 @@
                 <font size="-1">
                 <p>
             	<a href="http://www.critterai.org/nmgen" target="_parent">
-                Project Home
-                </a> and   
+                Project Home</a> and   
                 <a href="http://code.google.com/p/critterai/" target="_parent">
                 Source Code
                 </a>
                 </p>
                 <p>
-                Copyright 2010 Stephen Pratt. All rights reserved. Use is subject to 
-                <a href="http://www.critterai.org/nmgen_codelicense" target="_parent">
+                Copyright 2010 Stephen Pratt. All rights reserved. 
+            	Use is subject to 
+                <a href="http://www.critterai.org/cailic" target="_parent">
                 license terms</a>.
                 </p>
                 </font>
