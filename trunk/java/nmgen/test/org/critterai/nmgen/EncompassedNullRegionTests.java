@@ -22,7 +22,7 @@ public class EncompassedNullRegionTests
      * These tests make assumptions on the way the OpenHeightField
      * iterates.  Specifically that it is a width first search.
      * 
-     * The all span searches inherently validate the detection of
+     * The "all span" searches inherently validate the detection of
      * outer encompassing null regions.
      */
     
@@ -82,7 +82,7 @@ public class EncompassedNullRegionTests
         
         algo.apply(field);
         
-        field.printRegionField();
+        // field.printRegionField();
         
         assertTrue(field.regionCount() == 3);
         

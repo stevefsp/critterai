@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests related to the OpenHeightSpan class.
+ */
 public class OpenHeightSpanTests
 {
     

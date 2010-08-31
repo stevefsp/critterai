@@ -53,6 +53,7 @@ public class NullRegionShortWrapTests
         
     }
     
+    @Test
     public void testNoAlternative()
     {
         CleanNullRegionBorders algo = new CleanNullRegionBorders(true);
@@ -80,6 +81,7 @@ public class NullRegionShortWrapTests
         
     }
     
+    @Test
     public void testNoBreakAllowed()
     {
         CleanNullRegionBorders algo = new CleanNullRegionBorders(true);

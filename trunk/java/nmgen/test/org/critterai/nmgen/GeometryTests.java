@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 import static org.critterai.nmgen.Geometry.*;
 import org.junit.Test;
 
+/**
+ * Tests functionality in the Geomtry class.
+ */
 public final class GeometryTests
 {
 
