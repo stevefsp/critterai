@@ -423,10 +423,10 @@ public final class SolidHeightfield
     }
 
     /**
-     * {@inheritDoc}
-     * <p>The data will be the lowest span at the grid location.</p>
-     * @return The lowest span at the grid location, or null if there are no
+     * Gets the lowest span at the grid location, or null if there are no
      * spans at the location.
+     * <p>The data will be the lowest span at the grid location.</p>
+     * @return The lowest span at the grid location.
      */
     public HeightSpan getData(int widthIndex, int depthIndex)
     {
