@@ -63,8 +63,11 @@
         <copy file="${misc.resources.dir}/LCOPY.TXT" 
             tofile="${dist.dir}/LICENSE.TXT" 
             failonerror="yes"/>
-        <copy file="${local.misc.dir}/README.TXT" 
+        <copy file="${local.misc.dir}/README.txt" 
             tofile="${dist.dir}/README.TXT" 
+            failonerror="yes"/>
+        <copy file="${local.misc.dir}/CHANGES.txt" 
+            tofile="${dist.dir}/CHANGES.TXT" 
             failonerror="yes"/>
         <zip destfile="${build.dir}/${project.fullname}.zip"
             duplicate="fail">
