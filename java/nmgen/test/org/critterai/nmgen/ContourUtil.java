@@ -2,6 +2,9 @@ package org.critterai.nmgen;
 
 import java.util.ArrayList;
 
+/**
+ * Provides utilities useful for Contour tests.
+ */
 public final class ContourUtil
 {
     private ContourUtil() { }
@@ -9,7 +12,7 @@ public final class ContourUtil
     /**
      * Shifts the vertices one position higher in the list and
      * inserts the last vertex into the first position.
-     * @param list The contour to shift. (Expect a stride of 4.)
+     * @param list The contour to shift. (Expecting a stride of 4.)
      */
     public static void shiftContour(ArrayList<Integer> list)
     {

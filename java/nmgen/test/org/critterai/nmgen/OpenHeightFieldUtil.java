@@ -1,5 +1,8 @@
 package org.critterai.nmgen;
 
+/**
+ * Utilities useful for tests involving the open height field.
+ */
 public final class OpenHeightFieldUtil
 {
     private static final int NULL_REGION = OpenHeightSpan.NULL_REGION;

@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 
+/**
+ * Test related to the ContourSetBuilder.removeIntersectingSegments()
+ * operation.
+ */
 public class RemoveIntersectingSegmentTests
 {
 

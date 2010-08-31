@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 
+/**
+ * Tests related to the ContourSetBuilder.removeVerticalSegments()
+ * operation.
+ */
 public class RemoveVerticalSegmentTests
 {
     /*
