@@ -19,25 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.math.geom
 {
     /// <summary>
-    /// Provides operations related to 2-dimensional triangles.
+    /// Provides various 2D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>This class is optimized for speed.  To support this priority, no argument validation is
-    /// performed.  E.g. No checks are performed to ensure the arguments represent a valid triangle.</para>
-    /// <para>Static operations are thread safe.</para>
+    /// <p>This class is optimized for speed.  To support this priority, no 
+    /// argument validation is performed.  E.g. No checks are performed to 
+    /// ensure the arguments represent a valid triangle.</p>
+    /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Triangle2
     {
-
         /// <summary>
         /// Returns TRUE if the point (px, py) is contained by the triangle.
-        /// <para>The test is inclusive.  So points on the vertices or edges
-        /// of the triangle are considered to be contained by the triangle.</para>
+        /// <p>The test is inclusive.  So points on the vertices or edges
+        /// of the triangle are considered to be contained by the triangle.</p>
         /// </summary>
         /// <param name="px">The x-value for the point to test. (px, py)</param>
         /// <param name="py">The y-value for the poitn to test. (px, py)</param>
@@ -47,8 +46,9 @@ namespace org.critterai.math.geom
         /// <param name="by">The y-value for vertex B in triangle ABC</param>
         /// <param name="cx">The x-value for vertex C in triangle ABC</param>
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <returns>TRUE if the point (x, y) is contained by the triangle ABC.</returns>
-        public static Boolean Contains(float px, float py
+        /// <returns>TRUE if the point (x, y) is contained by the triangle ABC.
+        /// </returns>
+        public static bool Contains(float px, float py
                 , float ax, float ay
                 , float bx, float by
                 , float cx, float cy)
@@ -70,26 +70,30 @@ namespace org.critterai.math.geom
             float u = (dotABAB * dotACAP - dotACAB * dotABAP) * invDenom;
             float v = (dotACAC * dotABAP - dotACAB * dotACAP) * invDenom;
 
-            // Altered this slightly from the reference so that points on the vertices and edges
-            // are considered to be inside the triangle.
+            // Altered this slightly from the reference so that points on the 
+            // vertices and edges are considered to be inside the triangle.
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
         /// <summary>
-        /// The absolute value of the returned value is two times the area of the
+        /// The absolute value of the returned value is two times the area of 
+        /// the
         /// triangle ABC.
-        /// <para>A positive value indicates:</para>
+        /// <p>A positive value indicates:</p>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
+        /// </li>
         /// </ul>
-        /// <para>A negative value indicates:</para>
+        /// <p>A negative value indicates:</p>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
+        /// </li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or represent the same point.</para>
-        /// <para>This is a low cost operation.</para>
+        /// <p>A value of zero indicates that all points are collinear or 
+        /// represent the same point.</p>
+        /// <p>This is a low cost method.</p>
         /// </summary>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -97,31 +101,37 @@ namespace org.critterai.math.geom
         /// <param name="by">The y-value for vertex B in triangle ABC</param>
         /// <param name="cx">The x-value for vertex C in triangle ABC</param>
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <returns>The absolute value of the returned value is two times the area of the
-        /// triangle ABC.</returns>
-        public static float GetSignedAreaX2(float ax, float ay, float bx, float by, float cx, float cy)
+        /// <returns>The absolute value of the returned value is two times the 
+        /// area of the triangle ABC.</returns>
+        public static float GetSignedAreaX2(float ax, float ay
+            , float bx, float by
+            , float cx, float cy)
         {
             // References:
             // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm#Modern%20Triangles
-            // http://mathworld.wolfram.com/TriangleArea.html (Search for "signed".)
+            // http://mathworld.wolfram.com/TriangleArea.html 
+            // (Search for "signed".)
             return (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
         }
 
         /// <summary>
-        /// The absolute value of the returned value is two times the area of the
-        /// triangle ABC.
-        /// <para>A positive value indicates:</para>
+        /// The absolute value of the returned value is two times the area of 
+        /// the triangle ABC.
+        /// <p>A positive value indicates:</p>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
+        /// </li>
         /// </ul>
-        /// <para>A negative value indicates:</para>
+        /// <p>A negative value indicates:</p>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
+        /// </li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or represent the same point.</para>
-        /// <para>This is a low cost operation.</para>
+        /// <p>A value of zero indicates that all points are collinear or 
+        /// represent the same point.</p>
+        /// <p>This is a low cost method.</p>
         /// </summary>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -129,15 +139,17 @@ namespace org.critterai.math.geom
         /// <param name="by">The y-value for vertex B in triangle ABC</param>
         /// <param name="cx">The x-value for vertex C in triangle ABC</param>
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <returns>The absolute value of the returned value is two times the area of the
-        /// triangle ABC.</returns>
-        public static int GetSignedAreaX2(int ax, int ay, int bx, int by, int cx, int cy)
+        /// <returns>The absolute value of the returned value is two times the
+        /// area of the triangle ABC.</returns>
+        public static int GetSignedAreaX2(int ax, int ay
+            , int bx, int by
+            , int cx, int cy)
         {
             // References:
             // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm#Modern%20Triangles
-            // http://mathworld.wolfram.com/TriangleArea.html (Search for "signed".)
+            // http://mathworld.wolfram.com/TriangleArea.html 
+            // (Search for "signed".)
             return (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
         }
-
     }
 }
