@@ -25,22 +25,23 @@ using UnityEngine;
 namespace org.critterai.math
 {
     /// <summary>
-    /// Contains various static operations applicable to 3D vectors which are not provided
+    /// Provides various 3D vector utility methods which are not provided
     /// by the Unity3D vector class.
     /// </summary>
     /// <remarks>
-    /// <para>This class is optimized for speed.  To support this priority, no argument validation is
-    /// performed.  E.g. No null checks, no divide by zero checks, etc.</para>
-    /// <para>Static operations are thread safe.</para>
+    /// <p>This class is optimized for speed.  To support this priority, no 
+    /// argument validation is performed.  E.g. No null checks, no divide
+    /// by zero checks, etc.</p>
+    /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Vector3Util
     {
-
         /// <summary>
         /// Performs a vector "right-handed" Cross product. (u x v)
         /// The resulting vector will be perpendicular to the plane 
         /// containing the two provided vectors.
-        /// <para>Special Case: The result will be zero if the two vectors are parallel.</para>
+        /// <p>Special Case: The result will be zero if the two vectors are 
+        /// parallel.</p>
         /// </summary>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
@@ -59,7 +60,8 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Returns the square of the distance between the two provided points. (distance * distance)
+        /// Returns the square of the distance between the two provided 
+        /// points. (distance * distance)
         /// </summary>
         /// <param name="ax">The x-value of the point (ax, ay, az).</param>
         /// <param name="ay">The y-value of the point (ax, ay, az).</param>
@@ -67,7 +69,8 @@ namespace org.critterai.math
         /// <param name="bx">The x-value of the point (bx, by, bz).</param>
         /// <param name="by">The y-value of the point (bx, by, bz).</param>
         /// <param name="bz">The z-value of the point (bx, by, bz).</param>
-        /// <returns> The square of the distance between the two provided points.</returns>
+        /// <returns> The square of the distance between the two provided 
+        /// points.</returns>
         public static float GetDistanceSq(float ax, float ay, float az
                 , float bx, float by, float bz)
         {
@@ -106,8 +109,9 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors are equal within
-        /// the specified tolerance of each other.Each element of the vector is tested separately.
+        /// Determines whether or not the elements of the provided vectors 
+        /// are equal within the specified tolerance of each other. Each 
+        /// element of the vector is tested separately.
         /// </summary>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
@@ -116,9 +120,10 @@ namespace org.critterai.math
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the the associated elements of each vector are within the specified tolerance
-        /// of each other.  Otherwise FALSE.</returns>
-        public static Boolean SloppyEquals(float ux, float uy, float uz
+        /// <returns>TRUE if the the associated elements of each vector are 
+        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// </returns>
+        public static bool SloppyEquals(float ux, float uy, float uz
                 , float vx, float vy, float vz
                 , float tolerance)
         {
@@ -133,31 +138,37 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors are equal within
-        /// the specified tolerance of each other.Each element of the vector is tested separately.
+        /// Determines whether or not the elements of the provided vectors 
+        /// are equal within the specified tolerance of each other. Each 
+        /// element of the vector is tested separately.
         /// </summary>
         /// <param name="u">Vector u</param>
         /// <param name="v">Vector v</param>
-        /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the the associated elements of each vector are within the specified tolerance
-        /// of each other.  Otherwise FALSE.</returns>
-        public static Boolean SloppyEquals(Vector3 u, Vector3 v, float tolerance)
+        /// <param name="tolerance">The tolerance for the test.</param>
+        /// <returns>TRUE if the the associated elements of each vector are 
+        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// </returns>
+        public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
         {
             return SloppyEquals(u.x, u.y, u.z, v.x, v.y, v.z, tolerance);
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors are equal within
-        /// the specified tolerance of each other.Each element of the vector is tested separately.
+        /// Determines whether or not the elements of the provided vectors 
+        /// are equal within the specified tolerance of each other. Each 
+        /// element of the vector is tested separately.
         /// </summary>
         /// <param name="u">Vector u</param>
         /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the the associated elements of each vector are within the specified tolerance
-        /// of each other.  Otherwise FALSE.</returns>
-        public static Boolean SloppyEquals(Vector3 u, float vx, float vy, float vz, float tolerance)
+        /// <returns>TRUE if the the associated elements of each vector are 
+        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// </returns>
+        public static bool SloppyEquals(Vector3 u
+            , float vx, float vy, float vz
+            , float tolerance)
         {
             return SloppyEquals(u.x, u.y, u.z, vx, vy, vz, tolerance);
         }
@@ -167,10 +178,11 @@ namespace org.critterai.math
         /// distance between them.
         /// </summary>
         /// <remarks>
-        /// <para>Examples:</para>
-        /// <para>If the factor is 0.0, then the result will equal A.<br/>
-        /// If the factor is 0.5, then the result will be the midpoint between A and B.<br/>
-        /// If the factor is 1.0, then the result will equal B.<br/></para>
+        /// <p>Examples:</p>
+        /// <p>If the factor is 0.0, then the result will equal A.<br/>
+        /// If the factor is 0.5, then the result will be the midpoint 
+        /// between A and B.<br/>
+        /// If the factor is 1.0, then the result will equal B.<br/></p>
         /// </remarks>
         /// <param name="ax">The x-value of the point (ax, ay, az).</param>
         /// <param name="ay">The y-value of the point (ax, ay, az).</param>
@@ -178,9 +190,10 @@ namespace org.critterai.math
         /// <param name="bx">The x-value of the point (bx, by, bz).</param>
         /// <param name="by">The y-value of the point (bx, by, bz).</param>
         /// <param name="bz">The z-value of the point (bx, by, bz).</param>
-        /// <param name="factor">The factor which governs the distance the point is translated
-        /// from A toward B.</param>
-        /// <returns>The point translated toward point B from point A.</returns>
+        /// <param name="factor">The factor which governs the distance the 
+        /// point is translated from A toward B.</param>
+        /// <returns>The point translated toward point B from point A.
+        /// </returns>
         public static Vector3 TranslateToward(float ax, float ay, float az
                 , float bx, float by, float bz
                 , float factor)
@@ -191,7 +204,8 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Flattens the vector array into a float array in the form (x, y, z).
+        /// Flattens the vector array into a float array in the form 
+        /// (x, y, z).
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
         /// <returns>An array of flattened vectors.</returns>
@@ -205,6 +219,108 @@ namespace org.critterai.math
                 result[i * 3 + 2] = vectors[i].z;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Creates an array of vectors from an array of floats in the form
+        /// (x, y, z).
+        /// </summary>
+        /// <param name="flatVectors">An array of vectors in the form
+        /// (x, y, z).</param>
+        /// <returns>An array of vectors.</returns>
+        public static Vector3[] GetVectors(float[] flatVectors)
+        {
+            int count = flatVectors.Length / 3;
+            Vector3[] result = new Vector3[count];
+            for (int i = 0; i < count; i++)
+            {
+                int p = i * 3;
+                result[i] = new Vector3(flatVectors[p + 0]
+                    , flatVectors[p + 1]
+                    , flatVectors[p + 2]);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a vector from the values from a flattened vector array.
+        /// </summary>
+        /// <param name="vectors">An array of flattened values in the form
+        /// (x, y, z).</param>
+        /// <param name="index">The vector's index with the array. (Stride = 3)
+        /// </param>
+        /// <returns>A vector instance for the vector in the flattened
+        /// array.</returns>
+        public static Vector3 GetVector(float[] vectors, int index)
+        {
+            return new Vector3(vectors[index * 3 + 0]
+                , vectors[index * 3 + 1]
+                , vectors[index * 3 + 2]);
+        }
+
+        /// <summary>
+        /// Gets the minimum and maximum bounds of the AABB which contains the 
+        /// array of vectors.
+        /// </summary>
+        /// <param name="vectors">An array of vectors.</param>
+        /// <param name="minBounds">The mimimum bounds of the AABB.</param>
+        /// <param name="maxBounds">The maximum bounds of the AABB.</param>
+        public static void GetBounds(Vector3[] vectors
+            , out Vector3 minBounds
+            , out Vector3 maxBounds)
+        {
+            minBounds = vectors[0];
+            maxBounds = vectors[0];
+            for (int i = 1; i < vectors.Length; i++)
+            {
+                minBounds.x = Math.Min(minBounds.x, vectors[i].x);
+                minBounds.y = Math.Min(minBounds.y, vectors[i].y);
+                minBounds.z = Math.Min(minBounds.z, vectors[i].z);
+                maxBounds.x = Math.Max(maxBounds.x, vectors[i].x);
+                maxBounds.y = Math.Max(maxBounds.y, vectors[i].y);
+                maxBounds.z = Math.Max(maxBounds.z, vectors[i].z);
+            }
+        }
+
+        /// <summary>
+        /// Gets the minimum and maximum bounds of the AABB which contains the 
+        /// array of vectors.
+        /// </summary>
+        /// <param name="flatVectors">An flattened array of vectors in the form
+        /// (x, y, z).</param>
+        /// <param name="bounds">An array of length 6 to store the bounds 
+        /// result in. Form: (minX, minY, minZ, maxX, maxY, maxZ).
+        /// Can be null.
+        /// </param>
+        /// <returns>
+        /// The bounds in the form (minX, minY, minZ, maxX, maxY, maxZ).
+        /// Will be a reference to the bounds argument if one was provided.
+        /// </returns>
+        public static float[] GetBounds(float[] flatVectors
+            , float[] bounds)
+        {
+
+            if (bounds == null)
+                bounds = new float[6];
+
+            bounds[0] = flatVectors[0];
+            bounds[1] = flatVectors[1];
+            bounds[2] = flatVectors[2];
+            bounds[3] = flatVectors[0];
+            bounds[4] = flatVectors[1];
+            bounds[5] = flatVectors[2];  
+
+            for (int p = 3; p < flatVectors.Length; p += 3)
+            {
+                bounds[0] = Math.Min(bounds[0], flatVectors[p + 0]);
+                bounds[1] = Math.Min(bounds[1], flatVectors[p + 1]);
+                bounds[2] = Math.Min(bounds[2], flatVectors[p + 2]);
+                bounds[3] = Math.Max(bounds[3], flatVectors[p + 0]);
+                bounds[4] = Math.Max(bounds[4], flatVectors[p + 1]);
+                bounds[5] = Math.Max(bounds[5], flatVectors[p + 2]);
+            }
+
+            return bounds;
         }
     }
 }
