@@ -24,18 +24,20 @@ using System;
 namespace org.critterai.math
 {
     /// <summary>
-    /// Provides various math related utility operations.
+    /// Provides various math related utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>This class is optimized for speed.  To support this priority, no argument validation is
-    /// performed.  E.g. No null checks, no divide by zero checks, etc.</para>
-    /// <para>Static operations are thread safe.</para>
+    /// <p>This class is optimized for speed.  To support this priority, no 
+    /// argument validation is performed.  E.g. No null checks, no divide 
+    /// by zero checks, etc.</p>
+    /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class MathUtil 
     {
 
         /// <summary>
-        /// A standard epsilon value.  (Minimum positive value greater than zero.)
+        /// A standard epsilon value.  (Minimum positive value greater 
+        /// than zero.)
         /// </summary>
         public const float EPSILON_STD = 0.00001f;
 
@@ -48,12 +50,15 @@ namespace org.critterai.math
         /// Determines whether the values are within the specified tolerance
         /// of each other. 
         /// </summary>
-        /// <param name="a">The a-value to compare the b-value against.</param>
-        /// <param name="b">The b-value to compare against the a-value.</param>
-        /// <param name="tolerence">The tolerance to use for the comparison.</param>
+        /// <param name="a">The a-value to compare the b-value against.
+        /// </param>
+        /// <param name="b">The b-value to compare against the a-value.
+        /// </param>
+        /// <param name="tolerence">The tolerance to use for the comparison.
+        /// </param>
         /// <returns>TRUE if the values are within the specified tolerance
         /// of each other.  Otherwise FALSE.</returns>
-        public static Boolean SloppyEquals(float a, float b, float tolerence)
+        public static bool SloppyEquals(float a, float b, float tolerence)
         {
             return !(b < a - tolerence || b > a + tolerence);
         }
@@ -62,8 +67,8 @@ namespace org.critterai.math
         /// Clamps the value to a positive non-zero value.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>The value clamped to a minimum of the smallest possible positive value greater 
-        /// than zero.</returns>
+        /// <returns>The value clamped to a minimum of the smallest possible 
+        /// positive value greater  than zero.</returns>
         public static float ClampToPositiveNonZero(float value)
         {
             return Math.Max(float.Epsilon, value);
@@ -79,7 +84,8 @@ namespace org.critterai.math
         /// <returns>A value clamped to the specified range.</returns>
         public static int Clamp(int value, int minimum, int maximum)
         {
-            return (value < minimum ? minimum : (value > maximum ? maximum : value));
+            return (value < minimum ? minimum : 
+                (value > maximum ? maximum : value));
         }
         
         /// <summary>
