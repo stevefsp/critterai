@@ -21,7 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\cai-util-u3d.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -36,12 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Unity\Editor\Data\lib\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="mesh\TriangleMesh3Util.cs" />
+    <Compile Include="mesh\WrapDirection.cs" />
+    <Compile Include="math\geom\Circle.cs" />
     <Compile Include="math\geom\PointLineRelType.cs" />
     <Compile Include="math\geom\Line2.cs" />
     <Compile Include="math\geom\LineRelType.cs" />
@@ -52,8 +58,11 @@
     <Compile Include="math\MathUtil.cs" />
     <Compile Include="math\Vector2Util.cs" />
     <Compile Include="math\Vector3Util.cs" />
+    <Compile Include="mesh\BoundedMesh3.cs" />
+    <Compile Include="mesh\Mesh3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="util\QuickMesh.cs" />
+    <Compile Include="mesh\Wavefront.cs" />
+    <Compile Include="util\UIntPack4.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
