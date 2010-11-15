@@ -26,17 +26,11 @@ using System;
 
 namespace org.critterai.math
 {
-    /// <summary>
-    ///This is a test class for Vector2UtilTest and is intended
-    ///to contain all Vector2UtilTest Unit Tests
-    ///</summary>
     [TestClass()]
     public class Vector2UtilTest
     {
-
-        private TestContext testContextInstance;
-
-        private const float EPSILON = 0.000000001f;
+        private const float EPSILON = MathUtil.EPSILON_STD;
+        private const float TOLERANCE = MathUtil.TOLERANCE_STD;
 
         private const float AX = 1.5f;
         private const float AY = 8.0f;
@@ -48,22 +42,6 @@ namespace org.critterai.math
         private Vector2 mB1;
         private Vector2 mC1;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         [TestInitialize()]
         public void Setup()
         {
@@ -74,7 +52,7 @@ namespace org.critterai.math
         }
 
         [TestMethod()]
-        public void SloppyEqualsFloatTest()
+        public void TestStaticSloppyEqualsFloat()
         {
 
             /*
@@ -112,7 +90,7 @@ namespace org.critterai.math
         }
 
         [TestMethod()]
-        public void SloppyEqualsVectorTest()
+        public void TestStaticSloppyEqualsVector()
         {
             Vector2 v = new Vector2(AX, AY);
             Assert.IsTrue(Vector2Util.SloppyEquals(mA1, v, 0.0f));
@@ -139,7 +117,7 @@ namespace org.critterai.math
         }
 
         [TestMethod()]
-        public void SloppyEqualsVectorFloatTest()
+        public void TestStaticSloppyEqualsVectorFloat()
         {
             Vector2 v = new Vector2(AX, AY);
             Assert.IsTrue(Vector2Util.SloppyEquals(mA1, v.x, v.y, 0.0f));
@@ -166,14 +144,49 @@ namespace org.critterai.math
         }
 
         [TestMethod()]
-        public void DotTest()
+        public void TestStaticDot()
         {
             float expected = (AX * BX) + (AY * BY);
-            Assert.IsTrue(MathUtil.SloppyEquals(Vector2Util.Dot(AX, AY, BX, BY), expected, EPSILON));
+            Assert.IsTrue(MathUtil.SloppyEquals(
+                Vector2Util.Dot(AX, AY, BX, BY), expected, EPSILON));
         }
 
         [TestMethod()]
-        public void GetDistSqTest()
+        public void TestStaticGetDirectionAB()
+        {
+            Vector2 origin = new Vector2(4.4f, -2.2f);
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 target = Offset(origin, i);
+                Vector2 direction =
+                    Vector2Util.GetDirectionAB(origin.x, origin.y
+                        , target.x, target.y);
+                Assert.IsTrue(MathUtil.SloppyEquals(direction.magnitude
+                    , 1, TOLERANCE));
+                switch (i)
+                {
+                    case 0:
+                        Assert.IsTrue(MathUtil.SloppyEquals(direction.x
+                            , -1, TOLERANCE));
+                        break;
+                    case 1:
+                        Assert.IsTrue(MathUtil.SloppyEquals(direction.y
+                            , 1, TOLERANCE));
+                        break;
+                    case 2:
+                        Assert.IsTrue(MathUtil.SloppyEquals(direction.x
+                            , 1, TOLERANCE));
+                        break;
+                    case 3:
+                        Assert.IsTrue(MathUtil.SloppyEquals(direction.y
+                            , -1, TOLERANCE));
+                        break;
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void TestStaticGetDistSq()
         {
             float result = Vector2Util.GetDistanceSq(AX, AY, BX, BY);
             float deltaX = BX - AX;
@@ -183,7 +196,7 @@ namespace org.critterai.math
         }
 
         [TestMethod()]
-        public void NormalizeTest()
+        public void TestStaticNormalize()
         {
             Vector2 v = new Vector2(AX, AY);
             Vector2 u = Vector2Util.Normalize(AX, AY);
@@ -217,6 +230,60 @@ namespace org.critterai.math
             Assert.IsTrue(len > 14.999f && len < 15.001f);
             
             u = Vector2Util.ScaleTo(mA1, 0);
+            Assert.IsTrue(u.x == 0 && u.y == 0);
+        }
+
+        public Vector2 Offset(Vector2 v, int dir)
+        {
+            int ldir = (dir & 0x3);
+            switch (ldir)
+            {
+                case 0:
+                    return (v + new Vector2(-5.2f, 0));
+                case 1:
+                    return (v + new Vector2(0, 5.2f));
+                case 2:
+                    return (v + new Vector2(5.2f, 0));
+                case 3:
+                    return (v + new Vector2(0, -5.2f));
+                default:
+                    return v;
+            }
+        }
+
+        [TestMethod()]
+        public void TestStaticTruncateLengthFloat() 
+        {
+            // Can improve this test by checking for proper setting
+            // of both x and y.
+            Vector2 v = new Vector2(AX, AY);
+            Vector2 u = Vector2Util.TruncateLength(AX, AY, 15.0f);
+            Assert.IsTrue(u == v);
+            Assert.IsTrue(u.x == AX && u.y == AY);
+            
+            u = Vector2Util.TruncateLength(AX, AY, 5.0f);
+            float len = u.magnitude;
+            Assert.IsTrue(len > 4.999f && len < 5.001f);
+            
+            u = Vector2Util.TruncateLength(AX, AY, 0);
+            Assert.IsTrue(u.x == 0 && u.y == 0);
+        }
+
+        [TestMethod()]
+        public void TestStaticTruncateLengthVector2() 
+        {
+            // Can improve this test by checking for proper setting
+            // of both x and y.
+            Vector2 v = new Vector2(AX, AY);
+            Vector2 u = Vector2Util.TruncateLength(mA1, 15.0f);
+            Assert.IsTrue(u == v);
+            Assert.IsTrue(u.x == AX && u.y == AY);
+            
+            u = Vector2Util.TruncateLength(mA1, 5.0f);
+            float len = u.magnitude;
+            Assert.IsTrue(len > 4.999f && len < 5.001f);
+            
+            u = Vector2Util.TruncateLength(mA1, 0);
             Assert.IsTrue(u.x == 0 && u.y == 0);
         }
 

@@ -33,22 +33,29 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Unity\Editor\Data\lib\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="math\geom\CircleTests.cs" />
     <Compile Include="math\geom\Line2Test.cs" />
     <Compile Include="math\MathUtilTest.cs" />
     <Compile Include="math\geom\Polygon3Test.cs" />
+    <Compile Include="mesh\BoundedMesh3Tests.cs" />
+    <Compile Include="mesh\TriangleMesh3UtilTests.cs" />
+    <Compile Include="mesh\Mesh3Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="math\geom\Rectangle2Test.cs" />
     <Compile Include="math\geom\Triangle2Test.cs" />
     <Compile Include="math\geom\Triangle3Test.cs" />
     <Compile Include="math\Vector2UtilTest.cs" />
     <Compile Include="math\Vector3UtilTest.cs" />
-    <Compile Include="util\QuickMeshTest.cs" />
+    <Compile Include="mesh\WavefrontTests.cs" />
+    <Compile Include="util\UIntPack4Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\cai-util-u3d.accessor" />

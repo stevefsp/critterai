@@ -25,68 +25,45 @@ using UnityEngine;
 
 namespace org.critterai.math.geom
 {
-    /// <summary>
-    ///This is a test class for Polygon3Test and is intended
-    ///to contain all Polygon3Test Unit Tests
-    ///</summary>
     [TestClass()]
     public class Polygon3Test
     {
+        private const float AX = -2;
+        private const float AY = -2;
+        private const float AZ = 1;
+        private const float BX = -1;
+        private const float BY = 0;
+        private const float BZ = 2;
+        private const float CX = 0;
+        private const float CY = 2;
+        private const float CZ = 2;
+        private const float DX = 1;
+        private const float DY = 4;
+        private const float DZ = 1;
+        private const float EX = 1;
+        private const float EY = 4;
+        private const float EZ = 0;
+        private const float FX = 0;
+        private const float FY = 2;
+        private const float FZ = -1;
+        private const float GX = -1;
+        private const float GY = 0;
+        private const float GZ = -1;
+        private const float HX = -2;
+        private const float HY = -2;
+        private const float HZ = 0;
+        private const float JX = 2;
+        private const float JY = 6;
+        private const float JZ = 1;
+        private const float KX = -4;
+        private const float KY = 0;
+        private const float KZ = 2;
 
-        private TestContext testContextInstance;
+        private const float CENX = -0.5f;
+        private const float CENY = 1.0f;
+        private const float CENZ = 0.5f;
 
-    private const float AX = -2;
-    private const float AY = -2;
-    private const float AZ = 1;
-    private const float BX = -1;
-    private const float BY = 0;
-    private const float BZ = 2;
-    private const float CX = 0;
-    private const float CY = 2;
-    private const float CZ = 2;
-    private const float DX = 1;
-    private const float DY = 4;
-    private const float DZ = 1;
-    private const float EX = 1;
-    private const float EY = 4;
-    private const float EZ = 0;
-    private const float FX = 0;
-    private const float FY = 2;
-    private const float FZ = -1;
-    private const float GX = -1;
-    private const float GY = 0;
-    private const float GZ = -1;
-    private const float HX = -2;
-    private const float HY = -2;
-    private const float HZ = 0;
-    private const float JX = 2;
-    private const float JY = 6;
-    private const float JZ = 1;
-    private const float KX = -4;
-    private const float KY = 0;
-    private const float KZ = 2;
-    
-    private const float CENX = -0.5f;
-    private const float CENY = 1.0f;
-    private const float CENZ = 0.5f;
-    
-    private float[] mVerts;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        private float[] mVerts;
 
         [TestInitialize()]
         public void Setup()
@@ -125,20 +102,14 @@ namespace org.critterai.math.geom
 
         }
 
-        /// <summary>
-        ///A test for IsConvex
-        ///</summary>
         [TestMethod()]
-        public void IsConvexStandardTrueTest()
+        public void TestStaticIsConvexStandardTrue()
         {
             Assert.IsTrue(Polygon3.IsConvex(mVerts, 1, 8));
         }
 
-        /// <summary>
-        ///A test for IsConvex
-        ///</summary>
         [TestMethod()]
-        public void IsConvexStandardFalseTest()
+        public void TestStaticIsConvexStandardFalse()
         {
             mVerts[15] = JX;
             mVerts[16] = JY;
@@ -146,11 +117,8 @@ namespace org.critterai.math.geom
             Assert.IsFalse(Polygon3.IsConvex(mVerts, 1, 8));
         }
 
-        /// <summary>
-        ///A test for IsConvex
-        ///</summary>
         [TestMethod()]
-        public void IsConvexVerticalTrueTest()
+        public void TestStaticIsConvexVerticalTrue()
         {
             for (int p = 1; p < mVerts.Length; p += 3)
             {
@@ -160,11 +128,8 @@ namespace org.critterai.math.geom
             Assert.IsTrue(Polygon3.IsConvex(mVerts, 1, 8));
         }
 
-        /// <summary>
-        ///A test for IsConvex
-        ///</summary>
         [TestMethod()]
-        public void IsConvexVerticalFalseTest()
+        public void TestStaticIsConvexVerticalFalse()
         {
             mVerts[15] = JX;
             mVerts[16] = JY;
@@ -177,23 +142,18 @@ namespace org.critterai.math.geom
             Assert.IsFalse(Polygon3.IsConvex(mVerts, 1, 8));
         }
 
-        /// <summary>
-        ///A test for GetCentroid
-        ///</summary>
         [TestMethod()]
-        public void GetCentroidArrayTest()
+        public void TestStaticGetCentroidArray()
         {
-            Assert.IsTrue(mVerts == Polygon3.GetCentroid(mVerts, 1, 8, mVerts, 9));
+            Assert.IsTrue(mVerts == 
+                Polygon3.GetCentroid(mVerts, 1, 8, mVerts, 9));
             Assert.IsTrue(mVerts[27] == CENX);
             Assert.IsTrue(mVerts[28] == CENY);
             Assert.IsTrue(mVerts[29] == CENZ);
         }
 
-        /// <summary>
-        ///A test for GetCentroid
-        ///</summary>
         [TestMethod()]
-        public void GetCentroidVectorTest()
+        public void TestStaticGetCentroidVector()
         {
             Vector3 v = Polygon3.GetCentroid(mVerts, 1, 8);
             Assert.IsTrue(v.x == CENX);
@@ -201,11 +161,8 @@ namespace org.critterai.math.geom
             Assert.IsTrue(v.z == CENZ);
         }
 
-        /// <summary>
-        ///A test for GetCentroid
-        ///</summary>
         [TestMethod()]
-        public void GetCentroidFloatListTest()
+        public void TestStaticGetCentroidFloatList()
         {
             Vector3 v = Polygon3.GetCentroid(
                     AX, AY, AZ

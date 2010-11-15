@@ -26,14 +26,10 @@ using System;
 
 namespace org.critterai.math.geom
 {
-    /// <summary>
-    ///This is a test class for Triangle3Test and is intended
-    ///to contain all Triangle3Test Unit Tests
-    ///</summary>
     [TestClass()]
     public class Triangle3Test
     {
-        private TestContext testContextInstance;
+        private const float TOLERANCE = MathUtil.TOLERANCE_STD;
 
         // Clockwise wrapped
         private const float AX = 3;
@@ -46,65 +42,39 @@ namespace org.critterai.math.geom
         private const float CY = -1;
         private const float CZ = 0;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        [TestMethod()]
+        public void TestStaticGetArea()
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            float expected = GetHeronArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
+            float actual = 
+                Triangle3.GetArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
+            Assert.IsTrue(MathUtil.SloppyEquals(actual, expected, TOLERANCE));
         }
 
-        /// <summary>
-        ///A test for GetNormal
-        ///</summary>
         [TestMethod()]
-        public void GetArea()
+        public void TestStaticGetAreaComp()
         {
-            float expected = getHeronArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
-            float actual = Triangle3.GetArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
-            Assert.IsTrue(MathUtil.SloppyEquals(actual, expected, 0.0001f));
+            float expected = GetHeronArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
+            float actual = (float)Math.Sqrt(
+                Triangle3.GetAreaComp(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ)) / 2;
+            Assert.IsTrue(MathUtil.SloppyEquals(actual, expected, TOLERANCE));
         }
 
-        /// <summary>
-        ///A test for GetNormal
-        ///</summary>
         [TestMethod()]
-        public void GetAreaComp()
-        {
-            float expected = getHeronArea(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ);
-            float actual = (float)Math.Sqrt(Triangle3.GetAreaComp(AX, AY, AZ, BX, BY, BZ, CX, CY, CZ)) / 2;
-            Assert.IsTrue(MathUtil.SloppyEquals(actual, expected, 0.0001f));
-        }
-
-        /// <summary>
-        ///A test for GetAreaComp
-        ///</summary>
-        [TestMethod()]
-        public void GetNormalFloatVector3()
+        public void TestStaticGetNormalFloatVector3()
         {
             Vector3 v = Triangle3.GetNormal(AX, AY, 0, BX, BY, 0, CX, CY, 0);
-            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, 0, -1, 0.0001f));
+            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, 0, -1, TOLERANCE));
             v = Triangle3.GetNormal(AX, AY, 0, CX, CY, 0, BX, BY, 0);
-            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, 0, 1, 0.0001f));
+            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, 0, 1, TOLERANCE));
             v = Triangle3.GetNormal(AX, 0, AZ, BX, 0, BZ, CX, 0, CZ);
-            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, -1, 0, 0.0001f));
+            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, -1, 0, TOLERANCE));
             v = Triangle3.GetNormal(0, AY, AZ, 0, BY, BZ, 0, CY, CZ);
-            Assert.IsTrue(Vector3Util.SloppyEquals(v, 1, 0, 0, 0.0001f));
+            Assert.IsTrue(Vector3Util.SloppyEquals(v, 1, 0, 0, TOLERANCE));
         }
 
-        /// <summary>
-        ///A test for GetArea
-        ///</summary>
         [TestMethod()]
-        public void GetNormalArrayVector3()
+        public void TestStaticGetNormalArrayVector3()
         {
             float[] vertices = {
                 5, 5, 5
@@ -114,16 +84,19 @@ namespace org.critterai.math.geom
                 , 9, 9, 9
             };
             Vector3 v = Triangle3.GetNormal(vertices, 1);
-            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, -1, 0, 0.0001f));
+            Assert.IsTrue(Vector3Util.SloppyEquals(v, 0, -1, 0, TOLERANCE));
         }
 
-        private float getHeronArea(float ax, float ay, float az
+        private float GetHeronArea(float ax, float ay, float az
                 , float bx, float by, float bz
                 , float cx, float cy, float cz)
         {
-            double a = Math.Sqrt(Vector3Util.GetDistanceSq(AX, AY, AZ, BX, BY, BZ));
-            double b = Math.Sqrt(Vector3Util.GetDistanceSq(AX, AY, AZ, CX, CY, CZ));
-            double c = Math.Sqrt(Vector3Util.GetDistanceSq(CX, CY, CZ, BX, BY, BZ));
+            double a = Math.Sqrt(
+                Vector3Util.GetDistanceSq(AX, AY, AZ, BX, BY, BZ));
+            double b = Math.Sqrt(
+                Vector3Util.GetDistanceSq(AX, AY, AZ, CX, CY, CZ));
+            double c = Math.Sqrt(
+                Vector3Util.GetDistanceSq(CX, CY, CZ, BX, BY, BZ));
             double s = (a + b + c) / 2;
             return (float)Math.Sqrt(s * (s - a) * (s - b) * (s - c));
         }

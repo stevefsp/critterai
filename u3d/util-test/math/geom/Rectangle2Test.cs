@@ -19,21 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.math.geom;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace org.critterai.math.geom
 {
-    
-    
-    /// <summary>
-    ///This is a test class for Rectangle2Test and is intended
-    ///to contain all Rectangle2Test Unit Tests
-    ///</summary>
     [TestClass()]
     public class Rectangle2Test
     {
-        private TestContext testContextInstance;
-
         private const float XMIN = -3;
         private const float YMIN = 2;
         private const float XMAX = 2;
@@ -42,27 +34,8 @@ namespace org.critterai.math.geom
         private const float TOLERANCE = MathUtil.TOLERANCE_STD;
         private const float OFFSET = 1.5f;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        /// <summary>
-        ///A test for Rectangle2.IntersectsAABB
-        ///</summary>
         [TestMethod()]
-        public void IntersectsAABBTest()
+        public void TestStaticIntersectsAABB()
         {
             // Complete overlap
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
@@ -70,57 +43,81 @@ namespace org.critterai.math.geom
 
             // A fully Rectangle2.Contains B
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + TOLERANCE, YMIN + TOLERANCE, XMAX - TOLERANCE, YMAX - TOLERANCE));
+                    , XMIN + TOLERANCE
+                    , YMIN + TOLERANCE
+                    , XMAX - TOLERANCE
+                    , YMAX - TOLERANCE));
 
             // Wall tests
 
             // A xmin overlaps B xmax
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                                , XMIN - OFFSET, YMIN + OFFSET, XMIN, YMAX - OFFSET));
+                , XMIN - OFFSET, YMIN + OFFSET, XMIN, YMAX - OFFSET));
             // A xmax overlaps B xmin
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                                , XMAX, YMIN + OFFSET, XMAX + OFFSET, YMAX - OFFSET));
+                , XMAX, YMIN + OFFSET, XMAX + OFFSET, YMAX - OFFSET));
             // A ymin overlaps B ymax
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                                , XMIN + OFFSET, YMIN - OFFSET, XMAX - OFFSET, YMIN));
+                , XMIN + OFFSET, YMIN - OFFSET, XMAX - OFFSET, YMIN));
             // A ymax overlaps B ymin
             Assert.IsTrue(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                                , XMIN + OFFSET, YMAX, XMAX - OFFSET, YMAX + OFFSET));
+                , XMIN + OFFSET, YMAX, XMAX - OFFSET, YMAX + OFFSET));
 
             // A xmin above B xmax
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMIN + OFFSET, XMIN - TOLERANCE, YMAX - OFFSET));
+                , XMIN - OFFSET
+                , YMIN + OFFSET
+                , XMIN - TOLERANCE
+                , YMAX - OFFSET));
             // A xmax below B xmin
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMAX + TOLERANCE, YMIN + OFFSET, XMAX + OFFSET, YMAX - OFFSET));
+                , XMAX + TOLERANCE
+                , YMIN + OFFSET
+                , XMAX + OFFSET
+                , YMAX - OFFSET));
             // A ymin above B ymax
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN - OFFSET, XMAX - OFFSET, YMIN - TOLERANCE));
+                , XMIN + OFFSET
+                , YMIN - OFFSET
+                , XMAX - OFFSET
+                , YMIN - TOLERANCE));
             // A ymax below B ymin
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMAX + TOLERANCE, XMAX - OFFSET, YMAX + OFFSET));
+                , XMIN + OFFSET
+                , YMAX + TOLERANCE
+                , XMAX - OFFSET
+                , YMAX + OFFSET));
 
             // Corner tests.
 
             // B fully below A xmin and A ymin
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMIN - OFFSET, XMIN - TOLERANCE, YMIN - TOLERANCE));
+                , XMIN - OFFSET
+                , YMIN - OFFSET
+                , XMIN - TOLERANCE
+                , YMIN - TOLERANCE));
             // B fully above A xmax and A ymax
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMAX + TOLERANCE, YMAX + TOLERANCE, XMAX + OFFSET, YMAX + OFFSET));
+                , XMAX + TOLERANCE
+                , YMAX + TOLERANCE
+                , XMAX + OFFSET
+                , YMAX + OFFSET));
             // B above and to right of A
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMAX + TOLERANCE, XMIN - TOLERANCE, YMAX + OFFSET));
+                , XMIN - OFFSET
+                , YMAX + TOLERANCE
+                , XMIN - TOLERANCE
+                , YMAX + OFFSET));
             // B below and to the left of A
             Assert.IsFalse(Rectangle2.IntersectsAABB(XMIN, YMIN, XMAX, YMAX
-                    , XMAX + TOLERANCE, YMIN - OFFSET, XMAX + OFFSET, YMIN - TOLERANCE));
+                , XMAX + TOLERANCE
+                , YMIN - OFFSET
+                , XMAX + OFFSET
+                , YMIN - TOLERANCE));
         }
 
-        /// <summary>
-        ///A test for Rectangle2.Contains
-        ///</summary>
         [TestMethod()]
-        public void ContainsPointTest()
+        public void TestStaticContainsPoint()
         {
             // Wall tests.
 
@@ -212,60 +209,110 @@ namespace org.critterai.math.geom
                     , XMAX + TOLERANCE, YMIN - TOLERANCE));
         }
 
-        /// <summary>
-        ///A test for Rectangle2.Contains
-        ///</summary>
         [TestMethod()]
-        public void ContainsAABBTest()
+        public void TestStaticContainsAABB()
         {
             // A == B
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
                     , XMIN, YMIN, XMAX, YMAX));
             // B Rectangle2.Contains A
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - TOLERANCE, YMIN - TOLERANCE, XMAX + TOLERANCE, YMAX + TOLERANCE));
+                    , XMIN - TOLERANCE
+                    , YMIN - TOLERANCE
+                    , XMAX + TOLERANCE
+                    , YMAX + TOLERANCE));
             // B slightly smaller than A.
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + TOLERANCE, YMIN + TOLERANCE, XMAX - TOLERANCE, YMAX - TOLERANCE));
+                    , XMIN + TOLERANCE
+                    , YMIN + TOLERANCE
+                    , XMAX - TOLERANCE
+                    , YMAX - TOLERANCE));
 
             // X-axis wall tests
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN, YMIN + OFFSET, XMAX - TOLERANCE, YMAX - OFFSET));
+                    , XMIN
+                    , YMIN + OFFSET
+                    , XMAX - TOLERANCE
+                    , YMAX - OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN, YMIN + OFFSET, XMAX + TOLERANCE, YMAX - OFFSET));
+                    , XMIN
+                    , YMIN + OFFSET
+                    , XMAX + TOLERANCE
+                    , YMAX - OFFSET));
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + TOLERANCE, YMIN + OFFSET, XMAX, YMAX - OFFSET));
+                    , XMIN + TOLERANCE
+                    , YMIN + OFFSET
+                    , XMAX
+                    , YMAX - OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - TOLERANCE, YMIN + OFFSET, XMAX, YMAX - OFFSET));
+                    , XMIN - TOLERANCE
+                    , YMIN + OFFSET
+                    , XMAX
+                    , YMAX - OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMIN + OFFSET, XMIN + TOLERANCE, YMAX - OFFSET));
+                    , XMIN - OFFSET
+                    , YMIN + OFFSET
+                    , XMIN + TOLERANCE
+                    , YMAX - OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMAX + TOLERANCE, YMIN + OFFSET, XMAX + OFFSET, YMAX - OFFSET));
+                    , XMAX + TOLERANCE
+                    , YMIN + OFFSET
+                    , XMAX + OFFSET
+                    , YMAX - OFFSET));
 
             // Y-axis wall tests
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN, XMAX - OFFSET, YMAX - TOLERANCE));
+                    , XMIN + OFFSET
+                    , YMIN
+                    , XMAX - OFFSET
+                    , YMAX - TOLERANCE));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN, XMAX - OFFSET, YMAX + TOLERANCE));
+                    , XMIN + OFFSET
+                    , YMIN
+                    , XMAX - OFFSET
+                    , YMAX + TOLERANCE));
             Assert.IsTrue(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN + TOLERANCE, XMAX - OFFSET, YMAX));
+                    , XMIN + OFFSET
+                    , YMIN + TOLERANCE
+                    , XMAX - OFFSET
+                    , YMAX));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN - TOLERANCE, XMAX - OFFSET, YMAX));
+                    , XMIN + OFFSET
+                    , YMIN - TOLERANCE
+                    , XMAX - OFFSET
+                    , YMAX));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMIN - OFFSET, XMAX - OFFSET, YMIN + TOLERANCE));
+                    , XMIN + OFFSET
+                    , YMIN - OFFSET
+                    , XMAX - OFFSET
+                    , YMIN + TOLERANCE));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN + OFFSET, YMAX + TOLERANCE, XMAX - OFFSET, YMAX + OFFSET));
+                    , XMIN + OFFSET
+                    , YMAX + TOLERANCE
+                    , XMAX - OFFSET
+                    , YMAX + OFFSET));
 
             // Corner tests
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMIN - OFFSET, XMIN + TOLERANCE, YMIN + TOLERANCE));
+                    , XMIN - OFFSET
+                    , YMIN - OFFSET
+                    , XMIN + TOLERANCE
+                    , YMIN + TOLERANCE));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMIN - OFFSET, YMAX - TOLERANCE, XMIN + TOLERANCE, YMAX + OFFSET));
+                    , XMIN - OFFSET
+                    , YMAX - TOLERANCE
+                    , XMIN + TOLERANCE
+                    , YMAX + OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMAX - TOLERANCE, YMAX - TOLERANCE, XMAX + OFFSET, YMAX + OFFSET));
+                    , XMAX - TOLERANCE
+                    , YMAX - TOLERANCE
+                    , XMAX + OFFSET
+                    , YMAX + OFFSET));
             Assert.IsFalse(Rectangle2.Contains(XMIN, YMIN, XMAX, YMAX
-                    , XMAX - TOLERANCE, YMIN - OFFSET, XMAX + OFFSET, YMIN + TOLERANCE));
+                    , XMAX - TOLERANCE
+                    , YMIN - OFFSET
+                    , XMAX + OFFSET
+                    , YMIN + TOLERANCE));
         }
-
     }
 }
