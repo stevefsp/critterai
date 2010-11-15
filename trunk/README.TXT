@@ -1,3 +1,10 @@
+******************************************************************************
+ALERT 2010-11-14
+The respository is undergoing a transition from a language to a project based
+directory structure.  There will be a mixture of structures until this
+process is complete.
+******************************************************************************
+
 Each project has its own root directory which is located within a directory
 indicating its language or target platform.
 
