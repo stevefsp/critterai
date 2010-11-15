@@ -19,22 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.math;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
 
 namespace org.critterai.math
 {
-    /// <summary>
-    ///This is a test class for Vector3UtilTest and is intended
-    ///to contain all Vector3UtilTest Unit Tests
-    ///</summary>
     [TestClass()]
     public class Vector3UtilTest
     {
-        private TestContext testContextInstance;
-
-        private const float EPSILON = 0.000000001f;
+        private const float EPSILON = MathUtil.EPSILON_STD;
 
         private const float AX = 1.5f;
         private const float AY = 8.0f;
@@ -47,22 +40,6 @@ namespace org.critterai.math
         private Vector3 mB1;
         
         float[] mVectors;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
 
         [TestInitialize()]
         public void Setup()
@@ -78,17 +55,14 @@ namespace org.critterai.math
             mVectors[5] = BZ;   
         }
 
-        /// <summary>
-        ///A test for Vector3Util.SloppyEquals
-        ///</summary>
         [TestMethod()]
-        public void SloppyEqualsVectorTest()
+        public void TestStaticSloppyEqualsVector()
         {
 
             /*
              * Had to remove the edge cases.  They don't function correctly,
-             * even at only 2 decimal places.  
-             * E.g. Vector2Util.Vector3Util.SloppyEquals(AX, AY, AZ, AX+0.19, AY, AZ, 0.19f)
+             * even at only 2 decimal places.  E.g. 
+             * Vector3Util.SloppyEquals(AX, AY, AZ, AX+0.19, AY, AZ, 0.19f)
              * returns false.
              * This was not a problem in Java.
              * I compensated by increasing the resolution of the test from 3
@@ -130,125 +104,148 @@ namespace org.critterai.math
             Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v, 0.0020f));
         }
 
-        /// <summary>
-        ///A test for Vector3Util.SloppyEquals
-        ///</summary>
         [TestMethod()]
-        public void SloppyEqualsFloatTest()
+        public void TestStaticSloppyEqualsFloat()
         {
             Vector3 v = new Vector3(AX, AY, AZ);
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
 
             v = new Vector3(AX + 0.0019f, AY, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX - 0.0019f, AY, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY + 0.0019f, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY - 0.0019f, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY, AZ + 0.0019f);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY, AZ - 0.0019f);
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(AX, AY, AZ, v.x, v.y, v.z, 0.0020f));
         }
 
-        /// <summary>
-        ///A test for Vector3Util.SloppyEquals
-        ///</summary>
         [TestMethod()]
-        public void SloppyEqualsVectorFloatTest()
+        public void TestStaticSloppyEqualsVectorFloat()
         {
             Vector3 v = new Vector3(AX, AY, AZ);
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
 
             v = new Vector3(AX + 0.0019f, AY, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX - 0.0019f, AY, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY + 0.0019f, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY - 0.0019f, AZ);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY, AZ + 0.0019f);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
 
             v = new Vector3(AX, AY, AZ - 0.0019f);
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
-            Assert.IsFalse(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
-            Assert.IsTrue(Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.00f));
+            Assert.IsFalse(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0018f));
+            Assert.IsTrue(
+                Vector3Util.SloppyEquals(mA1, v.x, v.y, v.z, 0.0020f));
         }
 
-        /// <summary>
-        ///A test for GetLengthSq
-        ///</summary>
         [TestMethod()]
-        public void GetLengthSqTest()
+        public void TestStaticGetLengthSq()
         {
             float len = (AX * AX) + (AY * AY) + (AZ * AZ);
-            Assert.IsTrue(MathUtil.SloppyEquals(Vector3Util.GetLengthSq(AX, AY, AZ), len, EPSILON));
+            Assert.IsTrue(MathUtil.SloppyEquals(
+                Vector3Util.GetLengthSq(AX, AY, AZ), len, EPSILON));
         }
 
-        /// <summary>
-        ///A test for GetDistanceSq
-        ///</summary>
         [TestMethod()]
-        public void GetDistanceSqTest()
+        public void TestStaticGetDistanceSq()
         {
             float result = Vector3Util.GetDistanceSq(AX, AY, AZ, BX, BY, BZ);
             float deltaX = BX - AX;
             float deltaY = BY - AY;
             float deltaZ = BZ - AZ;
-            float expected = (deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ);
+            float expected = 
+                (deltaX * deltaX) + (deltaY * deltaY) + (deltaZ * deltaZ);
             Assert.IsTrue(MathUtil.SloppyEquals(result, expected, EPSILON));
         }
 
-        /// <summary>
-        ///A test for Dot
-        ///</summary>
         [TestMethod()]
-        public void DotTest()
+        public void TestStaticDot()
         {
             float expected = (AX * BX) + (AY * BY) + (AZ * BZ);
-            Assert.IsTrue(MathUtil.SloppyEquals(Vector3Util.Dot(AX, AY, AZ, BX, BY, BZ), expected, EPSILON));
+            Assert.IsTrue(MathUtil.SloppyEquals(
+                Vector3Util.Dot(AX, AY, AZ, BX, BY, BZ), expected, EPSILON));
         }
 
-        /// <summary>
-        ///A test for Cross
-        ///</summary>
         [TestMethod()]
-        public void CrossTest()
+        public void TestStaticCross()
         {
             float expectedX = AY * BZ - AZ * BY;
             float expectedY = -AX * BZ + AZ * BX;
@@ -266,7 +263,8 @@ namespace org.critterai.math
             float x = AX + (BX - AX) * factor;
             float y = AY + (BY - AY) * factor;
             float z = AZ + (BZ - AZ) * factor;
-            Vector3 u = Vector3Util.TranslateToward(AX, AY, AZ, BX, BY, BZ, factor);
+            Vector3 u = 
+                Vector3Util.TranslateToward(AX, AY, AZ, BX, BY, BZ, factor);
             Assert.IsTrue(u.x == x);
             Assert.IsTrue(u.y == y);
             Assert.IsTrue(u.z == z);
@@ -283,6 +281,63 @@ namespace org.critterai.math
             Assert.IsTrue(v[3] == AX);
             Assert.IsTrue(v[4] == AY);
             Assert.IsTrue(v[5] == AZ);
+        }
+
+        [TestMethod()]
+        public void TestStaticGetVectors()
+        {
+            float[] v = { BX, BY, BZ, AX, AY, AZ };
+            Vector3[] va = Vector3Util.GetVectors(v);
+            Assert.IsTrue(va[0] == mB1);
+            Assert.IsTrue(va[1] == mA1);
+        }
+
+        [TestMethod()]
+        public void TestStaticGetVectorFromArray()
+        {
+            float[] v = { BX, BY, BZ, AX, AY, AZ };
+            Assert.IsTrue(Vector3Util.GetVector(v, 0) 
+                == new Vector3(BX, BY, BZ));
+            Assert.IsTrue(Vector3Util.GetVector(v, 1)
+                == new Vector3(AX, AY, AZ));
+        }
+
+        [TestMethod()]
+        public void TestStaticGetBoundsVectorOut()
+        {
+            Vector3[] v = 
+            { 
+                 new Vector3(1, -2, -3)
+                 , new Vector3(5, 2, -9)
+                 , new Vector3(2, 1, -4)
+            };
+
+            Vector3 min, max;
+            Vector3Util.GetBounds(v, out min, out max);
+
+            Assert.IsTrue(min == new Vector3(1, -2, -9));
+            Assert.IsTrue(max == new Vector3(5, 2, -3));
+        }
+
+        [TestMethod()]
+        public void TestStaticGetBoundsArrayOut()
+        {
+            float[] v = 
+            { 
+                 1, -2, -3
+                 , 5, 2, -9 
+                 , 2, 1, -4
+            };
+
+            float[] bounds = new float[6];
+            Vector3Util.GetBounds(v, bounds);
+
+            Assert.IsTrue(bounds[0] == 1);
+            Assert.IsTrue(bounds[1] == -2);
+            Assert.IsTrue(bounds[2] == -9);
+            Assert.IsTrue(bounds[3] == 5);
+            Assert.IsTrue(bounds[4] == 2);
+            Assert.IsTrue(bounds[5] == -3);
         }
     }
 }
