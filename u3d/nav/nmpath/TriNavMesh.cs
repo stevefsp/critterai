@@ -44,6 +44,9 @@ namespace org.critterai.nav.nmpath
         private readonly float mOffsetScale;
         private readonly float mPlaneTolerance;
 
+        private readonly Vector3 mMinBounds;
+        private readonly Vector3 mMaxBounds;
+
         /// <summary>
         /// A value to use when offsetting waypoints from the edge of
         /// cells.
@@ -61,6 +64,16 @@ namespace org.critterai.nav.nmpath
         /// It does not have any side effects on the mesh.
         /// </remarks>
         public float PlaneTolerance { get { return mPlaneTolerance; } }
+
+        /// <summary>
+        /// The minimum bounds of the mesh's axis-aligned bounding box.
+        /// </summary>
+        public Vector3 MinimumBounds { get { return mMinBounds; } }
+
+        /// <summary>
+        /// The maximum bounds of the mesh's axis-aligned bounding box.
+        /// </summary>
+        public Vector3 MaximumBounds { get { return mMaxBounds; } }
 
         /// <summary>
         /// Constructor
@@ -81,13 +94,17 @@ namespace org.critterai.nav.nmpath
         /// cells. Values between 0.05 and 0.1 are normal. Values above 0.5 are not appropriate for normal
         /// pathfinding.  This information is for use by clients. It does not have any side effects
         /// on the mesh.</param>
-        private TriNavMesh(float minX, float minZ
-                , float maxX, float maxZ
+        private TriNavMesh(float minX, float minY, float minZ
+                , float maxX, float maxY, float maxZ
                 , int maxDepth
                 , float planeTolerance
                 , float offsetScale)
         {
-            mCells = new TriCellQuadTree(minX, minZ, maxX, maxZ, maxDepth);
+            mMinBounds = new Vector3(minX, minY, minZ);
+            mMaxBounds = new Vector3(maxX, maxY, maxZ);
+            mCells = new TriCellQuadTree(mMinBounds.x, mMinBounds.z
+                , mMaxBounds.x, mMaxBounds.z
+                , maxDepth);
             mPlaneTolerance = Math.Max(float.Epsilon, planeTolerance);
             mOffsetScale = Math.Max(0, offsetScale);
         }
@@ -176,24 +193,26 @@ namespace org.critterai.nav.nmpath
             
             float[] cverts = new float[verts.Length];
             Array.Copy(verts, 0, cverts, 0, verts.Length);
-            
+
             // Find the 2D AABB of the mesh.
             float minX = cverts[0];
+            float minY = cverts[1];
             float minZ = cverts[2];
             float maxX = cverts[0];
+            float maxY = cverts[1];
             float maxZ = cverts[2];
             for (int pVert = 3; pVert < verts.Length; pVert += 3)
             {
                 minX = Math.Min(minX, cverts[pVert]);
-                minZ = Math.Min(minZ, cverts[pVert+2]);
+                minY = Math.Min(minY, cverts[pVert + 1]);
+                minZ = Math.Min(minZ, cverts[pVert + 2]);
                 maxX = Math.Max(maxX, cverts[pVert]);
-                maxZ = Math.Max(maxZ, cverts[pVert+2]);
+                maxY = Math.Max(maxY, cverts[pVert + 1]);
+                maxZ = Math.Max(maxZ, cverts[pVert + 2]);
             }
             
-            TriNavMesh result = new TriNavMesh(minX
-                    , minZ
-                    , maxX
-                    , maxZ
+            TriNavMesh result = new TriNavMesh(minX, minY, minZ
+                    , maxX, maxY, maxZ
                     , spacialDepth
                     , planeTolerance
                     , offsetScale);

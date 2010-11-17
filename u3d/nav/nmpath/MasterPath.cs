@@ -682,9 +682,9 @@ namespace org.critterai.nav.nmpath
             for (int iCell = 0; iCell < mCells.Length - 1; iCell++)
             {
                 short exitWall = (short)mCells[iCell].GetLinkIndex(mCells[iCell+1]);
-                if (exitWall == NULL_INDEX)
-                    throw new ArgumentException("Invalid path.  No link from cell "
-                            + iCell + " to cell " + iCell+1);
+                //if (exitWall == NULL_INDEX)
+                //    throw new ArgumentException("Invalid path.  No link from cell "
+                //            + iCell + " to cell " + iCell+1);
                 mWallIndices[iCell] = exitWall;
             }
         }
@@ -714,7 +714,10 @@ namespace org.critterai.nav.nmpath
         /// <summary>
         /// Disposes of the path, marking it as no longer valid.
         /// </summary>
-        public void Dispose() { mIsDisposed = true; }
+        public void Dispose() 
+        { 
+            mIsDisposed = true; 
+        }
         
         /// <summary>
         /// Gets the requested Cell in the path.

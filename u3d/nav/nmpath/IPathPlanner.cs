@@ -28,7 +28,7 @@ namespace org.critterai.nav.nmpath
     /// <summary>
     /// Provides a means of making navigation requests to a navigator.
     /// </summary>
-    public interface INavigator
+    public interface IPathPlanner
     {
 
         /*

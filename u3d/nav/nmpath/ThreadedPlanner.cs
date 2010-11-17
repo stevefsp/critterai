@@ -21,7 +21,7 @@
  */
 using System;
 using System.Threading;
-using Navigator = org.critterai.nav.nmpath.MasterNavigator.Navigator;
+using Planner = org.critterai.nav.nmpath.MasterPlanner.Planner;
 
 namespace org.critterai.nav.nmpath
 {
@@ -36,7 +36,7 @@ namespace org.critterai.nav.nmpath
     /// MaxProcessingTimeslice</see> functionality
     /// of its <see cref="MasterNavigator">MasterNavigator</see> object.</para>
     /// </remarks>
-    public sealed class ThreadedNavigator
+    public sealed class ThreadedPlanner
     {
         /// <summary>
         /// This value is in ticks. I.e. DateTime.Ticks()
@@ -57,12 +57,12 @@ namespace org.critterai.nav.nmpath
 
         private Boolean mIsRunning = false;
 
-        private readonly MasterNavigator mRoot;
+        private readonly MasterPlanner mRoot;
 
         /// <summary>
         /// TRUE if the object has been disposed or is in the Process of being disposed.
         /// </summary>
-        public Boolean IsDisposed { get { return mRoot.IsDisposed; } }
+        public Boolean IsDisposed { get { return mIsDisposed; } }
 
         /// <summary>
         /// Indicates whether or not the navigator is running.  E.g. Accepting and
@@ -73,7 +73,7 @@ namespace org.critterai.nav.nmpath
         /// <summary>
         /// A Navigator for use by clients of the <see cref="MasterNavigator">MasterNavigator</see>.
         /// </summary>
-        public Navigator Nav { get { return mRoot.Nav; } }
+        public Planner PathPlanner { get { return mRoot.PathPlanner; } }
 
         /// <summary>
         /// Constructor
@@ -85,10 +85,10 @@ namespace org.critterai.nav.nmpath
         /// <param name="maintenanceFrequency">The frequency that maintenance operations
         /// should be performed.  The value should normally be less than 
         /// {@Link MasterNavigator#mMaxPathAge}.  In milliseconds.</param>
-        internal ThreadedNavigator(MasterNavigator navigator, int frameLength, long maintenanceFrequency)
+        internal ThreadedPlanner(MasterPlanner navigator, int frameLength, long maintenanceFrequency)
         {
-            if (navigator == null || navigator.IsDisposed)
-                throw new ArgumentException("Null or disposed navigator.");
+            //if (navigator == null || navigator.IsDisposed)
+            //    throw new ArgumentException("Null or disposed navigator.");
             mRoot = navigator;
             mMaintenanceFrequency = Math.Max(0, maintenanceFrequency);
             mFrameLength = Math.Max(0, frameLength);

@@ -266,8 +266,8 @@ namespace org.critterai.nav.nmpath
         public TriCell(float[] verts, int vertAIndex, int vertBIndex, int vertCIndex)
         {
             
-            if (verts == null)
-                throw new ArgumentNullException("verts", "Vertices argument is null");
+            //if (verts == null)
+            //    throw new ArgumentNullException("verts", "Vertices argument is null");
             
             mVerts = verts;
             
@@ -275,13 +275,13 @@ namespace org.critterai.nav.nmpath
             mVertPtr[VERTB] = vertBIndex*3;
             mVertPtr[VERTC] = vertCIndex*3;
             
-            if (mVertPtr[VERTA] < 0
-                    || mVertPtr[VERTA]+2 >= mVerts.Length
-                    || mVertPtr[VERTB] < 0
-                    || mVertPtr[VERTB]+2 >= mVerts.Length
-                    || mVertPtr[VERTC] < 0
-                    || mVertPtr[VERTC]+2 >= mVerts.Length)
-                throw new ArgumentOutOfRangeException("vertIndex", "One or more vertex indices are invalid.");
+            //if (mVertPtr[VERTA] < 0
+            //        || mVertPtr[VERTA]+2 >= mVerts.Length
+            //        || mVertPtr[VERTB] < 0
+            //        || mVertPtr[VERTB]+2 >= mVerts.Length
+            //        || mVertPtr[VERTC] < 0
+            //        || mVertPtr[VERTC]+2 >= mVerts.Length)
+            //    throw new ArgumentOutOfRangeException("vertIndex", "One or more vertex indices are invalid.");
             
             Vector3 workingVector3 = new Vector3();
             
