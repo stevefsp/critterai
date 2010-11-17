@@ -95,7 +95,7 @@
             windowtitle="CritterAI Utilities"
             overview="${local.misc.dir}/overview.html"
             failonerror="yes">
-            <link href="http://java.sun.com/javase/6/docs/api/" />
+            <link href="http://download.oracle.com/javase/6/docs/api/" />
             <bottom>
             <![CDATA[
                 <div align="center">
