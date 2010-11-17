@@ -47,9 +47,6 @@ namespace org.critterai.mesh
     /// </blockquote>
     /// <p> Only the vertex portions of the entries are recognized,  
     /// and only positive indices supported.</p>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. Minimal checks for poorly 
-    /// formed data.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Wavefront

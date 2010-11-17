@@ -27,9 +27,6 @@ namespace org.critterai.math.geom
     /// Provides 2D line and line segment utility methods.
     /// </summary>
     /// <remarks>
-    /// This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null checks, divide by zero 
-    /// checks only when needed by the algorithm, etc.
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Line2
@@ -47,7 +44,7 @@ namespace org.critterai.math.geom
         /// <param name="dx">The x-value for point D on line CD.</param>
         /// <param name="dy">The y-value for point D on line CD.</param>
         /// <returns>TRUE if the two lines are either collinear or intersect 
-        /// at one point. Otherwise FALSE.</returns>
+        /// at one point.</returns>
         public static bool LinesIntersect(int ax, int ay
                 , int bx, int by
                 , int cx, int cy
@@ -76,7 +73,7 @@ namespace org.critterai.math.geom
         /// <param name="dx">The x-value for point D on line CD.</param>
         /// <param name="dy">The y-value for point D on line CD.</param>
         /// <returns>TRUE if the two lines are either collinear or intersect 
-        /// at one point. Otherwise FALSE.</returns>
+        /// at one point.</returns>
         public static bool LinesIntersect(float ax, float ay
                 , float bx, float by
                 , float cx, float cy

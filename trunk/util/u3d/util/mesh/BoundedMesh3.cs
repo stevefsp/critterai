@@ -28,9 +28,6 @@ namespace org.critterai.mesh
     /// minimum and maximum bounds data.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null reference checks, 
-    /// minimal checks for poorly formed data.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public class BoundedMesh3

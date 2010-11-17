@@ -26,9 +26,6 @@ namespace org.critterai.math.geom
     /// Provides various 2D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No checks are performed to 
-    /// ensure the arguments represent a valid triangle.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Triangle2

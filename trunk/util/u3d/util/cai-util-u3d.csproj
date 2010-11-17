@@ -37,13 +37,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mesh\TriangleMesh3Util.cs" />
+    <Compile Include="math\geom\Axis.cs" />
     <Compile Include="mesh\WrapDirection.cs" />
     <Compile Include="math\geom\Circle.cs" />
     <Compile Include="math\geom\PointLineRelType.cs" />
