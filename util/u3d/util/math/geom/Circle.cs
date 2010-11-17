@@ -30,20 +30,11 @@ namespace org.critterai.math.geom
     /// </remarks>
     public static class Circle
     {
-        /*
-         * Design note:
-         * 
-         * No "This class is optimized" warning is needed for this class
-         * since it can't throw expections.
-         * 
-         */
-
         /// <summary>
         /// Determines whether or not two circles intersect eachother.
         /// </summary>
         /// <remarks>
         /// <p>Test is inclusive of the circle boundary.</p>
-        /// </p>
         /// <p>Containment of one circle by another is considered intersection.
         /// </p>
         /// </remarks>
@@ -65,7 +56,7 @@ namespace org.critterai.math.geom
         /// <param name="br">
         /// The radius of Circle B.
         /// </param>
-        /// <returns>TRUE if the circles intersect.  Otherwise FALSE.
+        /// <returns>TRUE if the circles intersect.
         /// </returns>
         public static bool Intersects(float ax, float ay, float ar
             , float bx, float by, float br)

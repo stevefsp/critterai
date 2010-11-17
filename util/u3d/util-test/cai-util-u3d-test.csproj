@@ -44,7 +44,6 @@
     <Compile Include="math\MathUtilTest.cs" />
     <Compile Include="math\geom\Polygon3Test.cs" />
     <Compile Include="mesh\BoundedMesh3Tests.cs" />
-    <Compile Include="mesh\TriangleMesh3UtilTests.cs" />
     <Compile Include="mesh\Mesh3Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="math\geom\Rectangle2Test.cs" />

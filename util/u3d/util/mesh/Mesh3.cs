@@ -20,18 +20,15 @@
  * THE SOFTWARE.
  */
 using System;
+using org.critterai.math.geom;
 
 namespace org.critterai.mesh
 {
     /// <summary>
     /// A data structure representing a simple 3D polygon mesh with
-    /// only vertex and index information. (No normals, uv, or other
-    /// extra data.)
+    /// vertex and index information.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null reference checks, 
-    /// minimal checks for poorly formed data.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public class Mesh3
@@ -90,17 +87,17 @@ namespace org.critterai.mesh
         /// </summary>
         /// <param name="vertexCount">The number of vertices that will be
         /// loaded into the mesh.</param>
-        /// <param name="indicesCount">The number of indices that will be
+        /// <param name="polyCount">The number of polygons that will be
         /// loaded into the mesh.</param>
         /// <param name="vertsPerPolygon">The number of vertices per
         /// polygon. Limited to a a minimum value of 3.</param>
         public Mesh3(int vertsPerPolygon
             , int vertexCount
-            , int indicesCount)
+            , int polyCount)
         {
             this.vertsPerPolygon = Math.Max(3, vertsPerPolygon);
             vertices = new float[vertexCount * 3];
-            indices = new int[indicesCount * this.vertsPerPolygon];
+            indices = new int[polyCount * this.vertsPerPolygon];
         }
 
         /// <summary>
@@ -121,6 +118,80 @@ namespace org.critterai.mesh
             this.vertsPerPolygon = Math.Max(3, vertsPerPolygon);
             this.vertices = vertices;
             this.indices = indices;
+        }
+
+        /// <summary>
+        /// Gets the triangle wrap statistics for the xz-plane.
+        /// </summary>
+        /// <remarks>
+        /// The triangles are projected onto the xz-plane then wrap direction
+        /// determined.
+        /// </remarks>
+        /// <param name="vertices">The mesh vertices in the form (x, y, z).
+        /// </param>
+        /// <param name="triangles">The mesh triangles in the form
+        /// (vertAIndex, vertBIndex, vertCIndex)</param>
+        /// <param name="cwCount">The number of triangles wrapped in the
+        /// clockwise direction.</param>
+        /// <param name="ccwCount">The number of triangles wrapped in the
+        /// counter-clockwise direction.</param>
+        /// <param name="vertical">The number of triangles that are verticle.
+        /// (I.e. Don't have a significant projection on the xz-plane.)</param>
+        public static void GetWrapStatisicsXZ(float[] vertices, int[] triangles
+            , out int cwCount, out int ccwCount, out int vertical)
+        {
+            const float tolerance = math.MathUtil.TOLERANCE_STD;
+            cwCount = 0;
+            ccwCount = 0;
+            vertical = 0;
+            int polyCount = triangles.Length / 3;
+            for (int iPoly = 0; iPoly < polyCount; iPoly++)
+            {
+                int pVertA = triangles[iPoly * 3 + 0] * 3;
+                int pVertB = triangles[iPoly * 3 + 1] * 3;
+                int pVertC = triangles[iPoly * 3 + 2] * 3;
+                float a = Triangle2.GetSignedAreaX2(
+                      vertices[pVertA + 0], vertices[pVertA + 2]
+                    , vertices[pVertB + 0], vertices[pVertB + 2]
+                    , vertices[pVertC + 0], vertices[pVertC + 2]);
+                if (a > tolerance)
+                    ccwCount++;
+                else if (a < -tolerance)
+                    cwCount++;
+                else
+                    vertical++;
+            }
+        }
+
+        /// <summary>
+        /// Reverses the current wrap direction of all triangles.
+        /// </summary>
+        /// <param name="triangles">The mesh triangle indices in the form
+        /// (vertAIndex, vertBIndex, vertCIndex).</param>
+        public static void ReverseWrapDirection(int[] triangles)
+        {
+            // Note that the pointer is starting at one.  So it is actually
+            // operating on the 2nd and 3rd vertices.
+            for (int p = 1; p < triangles.Length; p += 3)
+            {
+                int t = triangles[p];
+                triangles[p] = triangles[p + 1];
+                triangles[p + 1] = t;
+            }
+        }
+
+        /// <summary>
+        /// Inverts the axis of the vertices.
+        /// </summary>
+        /// <param name="invertAxis">The axis to invert.</param>
+        /// <param name="vertices">The mesh vertices in the form (x, y, z).
+        /// </param>
+        public static void InvertAxis(float[] vertices, Axis invertAxis)
+        {
+            for (int p = (int)invertAxis; p < vertices.Length; p += 3)
+            {
+                vertices[p] *= -1;
+            }
         }
     }
 }

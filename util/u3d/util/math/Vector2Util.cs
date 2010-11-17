@@ -29,9 +29,6 @@ namespace org.critterai.math
     /// by the Unity3D vector class.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null checks, no divide 
-    /// by zero checks, etc.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Vector2Util
@@ -105,7 +102,7 @@ namespace org.critterai.math
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The tolerance for the test.</param>
         /// <returns>TRUE if the the associated elements of each vector are 
-        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(float ux, float uy
             , float vx, float vy
@@ -125,7 +122,7 @@ namespace org.critterai.math
         /// <param name="v">Vector u</param>
         /// <param name="tolerance">The tolerance for the test. </param>
         /// <returns>TRUE if the the associated elements of each vector are
-        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(Vector2 u, Vector2 v, float tolerance)
         {
@@ -142,7 +139,7 @@ namespace org.critterai.math
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The tolerance for the test.</param>
         /// <returns>TRUE if the the associated elements of each vector are 
-        /// within the specified tolerance of each other.  Otherwise FALSE.
+        /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(Vector2 u, float vx, float vy, float tolerance)
         {

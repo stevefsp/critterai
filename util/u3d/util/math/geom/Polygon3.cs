@@ -29,9 +29,6 @@ namespace org.critterai.math.geom
     /// <remarks>
     /// <p>Unless otherwise noted, methods expect all polygon vertices to
     /// be co-planar.</p>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null checks, divide by zero 
-    /// checks only when needed by the algorithm, etc.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Polygon3 
@@ -53,7 +50,7 @@ namespace org.critterai.math.geom
         /// in the polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.
         /// </param>
-        /// <returns>TRUE if the polygon is convex.  Otherwise FALSE.</returns>
+        /// <returns>TRUE if the polygon is convex.</returns>
         public static bool IsConvex(float[] vertices
             , int startVertIndex
             , int vertCount)

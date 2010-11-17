@@ -31,9 +31,6 @@ namespace org.critterai.util
     /// value. The expected slot range is zero to seven with the zero slot
     /// being the lowest 4-bits.</p>
     /// <p>The range of values permitted for a slot is 0 through 15.</p>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No index or value range
-    /// checks.</p>
     /// <p>Static methods are thread safe.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>

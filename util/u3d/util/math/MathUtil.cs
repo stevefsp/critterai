@@ -27,9 +27,6 @@ namespace org.critterai.math
     /// Provides various math related utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No null checks, no divide 
-    /// by zero checks, etc.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class MathUtil 
@@ -57,7 +54,7 @@ namespace org.critterai.math
         /// <param name="tolerence">The tolerance to use for the comparison.
         /// </param>
         /// <returns>TRUE if the values are within the specified tolerance
-        /// of each other.  Otherwise FALSE.</returns>
+        /// of each other.</returns>
         public static bool SloppyEquals(float a, float b, float tolerence)
         {
             return !(b < a - tolerence || b > a + tolerence);

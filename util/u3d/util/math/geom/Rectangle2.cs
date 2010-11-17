@@ -26,9 +26,6 @@ namespace org.critterai.math.geom
     /// Provides various 2D rectangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>This class is optimized for speed.  To support this priority, no 
-    /// argument validation is performed.  E.g. No checks are performed to 
-    /// ensure that maximums are greater than minimums.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class Rectangle2
@@ -52,8 +49,7 @@ namespace org.critterai.math.geom
         /// </param>
         /// <param name="x">x-value of the point (x, y) to test.</param>
         /// <param name="y">y-value of the point (x, y) to test.</param>
-        /// <returns>TRUE if the point lies within the rectangle.  
-        /// Otherwise FALSE.</returns>
+        /// <returns>TRUE if the point lies within the rectangle.</returns>
         public static bool Contains(float minX, float minY
             , float maxX, float maxY
             , float x, float y)
@@ -85,7 +81,7 @@ namespace org.critterai.math.geom
         /// <param name="maxYB">The maximum y-axis bounds of rectangle B.
         /// </param>
         /// <returns>TRUE if rectangle B is fully contained by rectangle A.  
-        /// Otherwise FALSE.</returns>
+        /// </returns>
         public static bool Contains(float minXA, float minYA
             , float maxXA, float maxYA
             , float minXB, float minYB
@@ -120,7 +116,7 @@ namespace org.critterai.math.geom
         /// <param name="maxBY">The maximum y-axis bounds of rectangle B.
         /// </param>
         /// <returns>TRUE if the two rectangles intersect in any manner.  
-        /// Otherwise FALSE.</returns>
+        /// </returns>
         public static bool IntersectsAABB(float minAX, float minAY
             , float maxAX, float maxAY
             , float minBX, float minBY
