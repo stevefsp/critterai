@@ -1,36 +1,24 @@
-******************************************************************************
-ALERT 2010-11-14
-The respository is undergoing a transition from a language to a project based
-directory structure.  There will be a mixture of structures until this
-process is complete.
-******************************************************************************
-
-Each project has its own root directory which is located within a directory
-indicating its language or target platform.
+The main directory structure is broken down by project then platform/language.
 
 For example: 
 
-The java utility project is under /java/util.
-The Unity3D utility project is under /u3d/util.
+The java utility project is under util/java.
+The Unity3D utility project is under util/u3d.
 
-Java Projects
-
-For Java the standard project directory structure is as follows:
+Individual distributions are structured as follows:
 
 project directory
-    build files     : Ant
-    src directory   : Project source.
-    test directory  : Test source.
+    planform directory
+        src directory   : Project source.
+        test directory  : Test source.
 
-Visual Studio Based Projects
+Java Specific
 
-Visual Studio based projects are split into two directories,
-one for the main project source and another the test code.
+Ant for builds.
+JUnit for testing.
 
-E.g.  /u3d/util and /u3d/util-test.
+.NET Specific
 
-The test project references the base project.
-
-
-    
-
+No automatic builds or packaging.
+Visual Studio Test for testing.
+Sandcastle for documentation build.
