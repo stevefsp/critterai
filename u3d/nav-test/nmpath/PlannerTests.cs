@@ -26,7 +26,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using org.critterai.math;
 using org.critterai.math.geom;
 using UnityEngine;
-using Navigator = org.critterai.nav.nmpath.MasterNavigator.Navigator;
+using Navigator = org.critterai.nav.nmpath.MasterPlanner.Planner;
 using Path = org.critterai.nav.nmpath.MasterPath.Path;
 
 namespace org.critterai.nav.nmpath
@@ -113,13 +113,13 @@ namespace org.critterai.nav.nmpath
         {
             // Tests locations on the mesh surface or completely outside.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             MasterNavRequest<Boolean>.NavRequest req;
             MasterNavRequest<Boolean>.NavRequest req2;
             for (int iCell = 1; iCell < mCells.Length; iCell++)
@@ -163,13 +163,13 @@ namespace org.critterai.nav.nmpath
             // Note:  Can't test the exact edge due to floating point
             // errors.  Have to test just above and below the edge.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             MasterNavRequest<Boolean>.NavRequest req;
             for (int iCell = 1; iCell < mCells.Length; iCell++)
             {
@@ -210,13 +210,13 @@ namespace org.critterai.nav.nmpath
         {
             // Points are already internal to the mesh.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             MasterNavRequest<Vector3>.NavRequest req;
             MasterNavRequest<Vector3>.NavRequest req2;
             for (int iCell = 1; iCell < mCells.Length; iCell++)
@@ -254,13 +254,13 @@ namespace org.critterai.nav.nmpath
         {
             // Point is outside the mesh.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             MasterNavRequest<Vector3>.NavRequest req;
             float[] minPoint = mMesh.MinVertex;
             req = nav.GetNearestValidLocation(minPoint[0] - mMesh.Offset
@@ -288,13 +288,13 @@ namespace org.critterai.nav.nmpath
             // This test only tests that the functionality works
             // for one version of the Process operation.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             float[] pathPoints = null;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = new List<MasterNavRequest<Path>.NavRequest>();
@@ -345,13 +345,13 @@ namespace org.critterai.nav.nmpath
         public void TestGetPathStandardProcessOnce() 
         {
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             int maxProcessCalls = mMesh.PolyCount + 2; // The increment is arbitrary.
@@ -404,13 +404,13 @@ namespace org.critterai.nav.nmpath
         public void TestGetPathStandardProcessAll() 
         {
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs  
                     = RequestAllPaths(nav);
             List<MasterNavRequest<Path>.NavRequest> creqs 
@@ -457,13 +457,13 @@ namespace org.critterai.nav.nmpath
             // Only making sure that the processing can complete, not
             // that the throttling is functioning as expected.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             List<MasterNavRequest<Path>.NavRequest> creqs 
@@ -510,13 +510,13 @@ namespace org.critterai.nav.nmpath
             // Tests whether throttling can complete is forced
             // to single step.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , 1        // 1 nanosecond. <<<<<<<<<<<<<<<<<
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             int maxProcessCalls = mMesh.PolyCount + 2; // The increment is arbitrary.
@@ -569,13 +569,13 @@ namespace org.critterai.nav.nmpath
         public void TestGetPathFailure()
         {
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             MasterNavRequest<Path>.NavRequest reqInOut;
             MasterNavRequest<Path>.NavRequest reqOutIn;
             float[] minPoint = mMesh.MinVertex;
@@ -609,13 +609,13 @@ namespace org.critterai.nav.nmpath
         public void TestPathReuse()
         {
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             mnav.ProcessAll(false);
@@ -632,13 +632,13 @@ namespace org.critterai.nav.nmpath
         public void TestInternalPathPool() 
         {
             int poolSize = (int)(mMesh.GetPathCount + 1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             RequestAllPaths(nav);
             mnav.ProcessAll(false);
             Assert.IsTrue(mnav.PathSearchPoolSize == mMesh.GetPathCount);
@@ -654,13 +654,13 @@ namespace org.critterai.nav.nmpath
         public void TestInternalRepairPool() 
         {
             int poolSize = (int)(mMesh.GetPathCount + 1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
             mnav.ProcessAll(false);
@@ -690,8 +690,8 @@ namespace org.critterai.nav.nmpath
         {
             // Only a search mDepth of one from the original path.
             // Only one posible Link to original path.
-            MasterNavigator mnav = BuildRepairNavigator();
-            Navigator nav = mnav.Nav;
+            MasterPlanner mnav = BuildRepairNavigator();
+            Navigator nav = mnav.PathPlanner;
             Vector3 start = new Vector3(2.5f, 0, 0.2f);
             Vector3 goal = new Vector3(2.5f, 0, 1.8f);
             MasterNavRequest<Path>.NavRequest req = nav.GetPath(start.x, start.y, start.z
@@ -720,8 +720,8 @@ namespace org.critterai.nav.nmpath
         {
             // A search mDepth of two from the original path.
             // Two possible links to original path.
-            MasterNavigator mnav = BuildRepairNavigator();
-            Navigator nav = mnav.Nav;
+            MasterPlanner mnav = BuildRepairNavigator();
+            Navigator nav = mnav.PathPlanner;
             Vector3 start = new Vector3(2.5f, 0, 0.2f);
             Vector3 goal = new Vector3(2.5f, 0, 1.8f);
             MasterNavRequest<Path>.NavRequest req = nav.GetPath(start.x, start.y, start.z
@@ -747,8 +747,8 @@ namespace org.critterai.nav.nmpath
         {
             // A search mDepth of two from the original path.
             // Two possible links to original path.
-            MasterNavigator mnav = BuildRepairNavigator();
-            Navigator nav = mnav.Nav;
+            MasterPlanner mnav = BuildRepairNavigator();
+            Navigator nav = mnav.PathPlanner;
             Vector3 start = new Vector3(2.5f, 0, 0.2f);
             Vector3 goal = new Vector3(2.5f, 0, 1.8f);
             MasterNavRequest<Path>.NavRequest req = nav.GetPath(start.x, start.y, start.z
@@ -771,13 +771,13 @@ namespace org.critterai.nav.nmpath
         {
             // Validates that patch cache is cleared.
             int poolSize = (int)(mMesh.GetPathCount +1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 500            // Short Max age.
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             mnav.ProcessAll(false);
@@ -796,13 +796,13 @@ namespace org.critterai.nav.nmpath
             // Validates that patch cache is cleared.
             int maxAge = 250;
             int poolSize = (int)(mMesh.GetPathCount + 1);
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , maxAge            // Short Max age.
                     , SEARCH_DEPTH
                     , poolSize);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             List<MasterNavRequest<Path>.NavRequest> reqs 
                 = RequestAllPaths(nav);
             mnav.ProcessAll(false);
@@ -837,13 +837,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalPathRequests()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create path requests.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -859,13 +859,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalPathJobs()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create path jobs
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -882,13 +882,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalPaths()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create active paths.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -905,13 +905,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalRepairRequests()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create active paths.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -936,13 +936,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalRepairJobs()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create active paths.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -968,13 +968,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalKeepAliveRequests()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create active paths.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -990,13 +990,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalCancelRequests()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create active paths.
             List<MasterNavRequest<Path>.NavRequest> reqs = RequestAllPaths(nav);
@@ -1012,13 +1012,13 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestInternalImmediateRequests()
         {
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             
             // Create location requests (both types.
             MasterNavRequest<Boolean>.NavRequest validLocReq = nav.IsValidLocation(mCents[0].x
@@ -1042,13 +1042,13 @@ namespace org.critterai.nav.nmpath
         public void TestIsDisposed() 
         {
             // Tests locations on the mesh surface or completely outside.
-            MasterNavigator mnav = new MasterNavigator(mNavMesh
+            MasterPlanner mnav = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
                     , SEARCH_DEPTH
                     , 10);
-            Navigator nav = mnav.Nav;
+            Navigator nav = mnav.PathPlanner;
             Assert.IsTrue(nav.IsDisposed == false);
             mnav.Dispose();
             Assert.IsTrue(nav.IsDisposed);
@@ -1089,7 +1089,7 @@ namespace org.critterai.nav.nmpath
             return result;
         }
         
-        private MasterNavigator BuildRepairNavigator()
+        private MasterPlanner BuildRepairNavigator()
         {
             float[] verts = {
                     0, 0, 0        // 0
@@ -1113,7 +1113,7 @@ namespace org.critterai.nav.nmpath
                     , 7, 8, 6    // 7
             };
              TriNavMesh mesh = TriNavMesh.Build(verts, indices, 2, 0.5f, 0);
-            return new MasterNavigator(mesh
+            return new MasterPlanner(mesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , MAX_PATH_AGE
