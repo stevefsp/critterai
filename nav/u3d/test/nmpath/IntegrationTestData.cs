@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using org.critterai.util;
 using org.critterai.mesh;
+using org.critterai.math;
 using System.Reflection;
 using System.IO;
 
@@ -31,10 +32,11 @@ namespace org.critterai.nav.nmpath
 
         private static bool mResourcesExtracted = false;
 
+        private static string testResource;
+
         public readonly float[] sourceVerts;
         public readonly int[] sourceIndices;
         public readonly TriNavMesh navMesh;
-        // public readonly float[] samplePoints;
         public readonly Vector3 meshMin;
         public readonly Vector3 meshMax;
         public readonly TriCell[] cells;
@@ -49,16 +51,19 @@ namespace org.critterai.nav.nmpath
         public IntegrationTestData(bool mirrorMesh, int maxPathAge)
         {
             if (!mResourcesExtracted)
-                ExtractResources();
+                LostTestResource();
 
             this.maxPathAge = maxPathAge;
 
-            BaseMesh mesh = Wavefront.build(TEST_FILE_NAME, true);
-            sourceVerts = mesh.verts;
-            sourceIndices = mesh.indices;
-            meshMin = mesh.minBounds;
-            meshMax = mesh.maxBounds;
-            mesh = null;
+            float[] bounds = new float[6];
+
+            Wavefront.TranslateFrom(testResource
+                , bounds
+                , out sourceVerts
+                , out sourceIndices);
+
+            meshMin = Vector3Util.GetVector(bounds, 0);
+            meshMax = Vector3Util.GetVector(bounds, 1);
 
             if (mirrorMesh)
             {
@@ -88,36 +93,6 @@ namespace org.critterai.nav.nmpath
 
             samplePoints = new TriNavMeshSamples(navMesh, sampleDistance);
 
-            //samplePoints = new float[sampleCount * 3];
-
-            //System.Random r = new System.Random(89725);
-
-            //Vector3 loc;
-            //for (int p = 0; p < samplePoints.Length; p += 3)
-            //{
-            //    while (true)
-            //    {
-            //        float x = meshMin.x + (float)r.NextDouble() 
-            //            * (meshMax.x - meshMin.x);
-            //        float y = meshMin.y + (float)r.NextDouble() 
-            //            * (meshMax.y - meshMin.y);
-            //        float z = meshMin.z + (float)r.NextDouble() 
-            //            * (meshMax.z - meshMin.z);
-
-            //        if (navMesh.IsValidPosition(x, y, z, planeTolerance))
-            //        {
-            //            TriCell c = navMesh
-            //                .GetClosestCell(x, y, z, true, out loc);  // Snap y.
-            //            //if (p == 39)
-            //            //    Console.WriteLine(c);
-            //            samplePoints[p + 0] = loc.x;
-            //            samplePoints[p + 1] = loc.y;
-            //            samplePoints[p + 2] = loc.z;
-            //            break;
-            //        }
-            //    }
-            //}
-
             masterNavigator = PlannerUtil.GetThreadedPlanner(
                      this.sourceVerts
                      , this.sourceIndices
@@ -133,23 +108,15 @@ namespace org.critterai.nav.nmpath
                      , this.maintenanceFrequency);
         }
 
-        //public Vector3 GetSamplePoint(int index)
-        //{
-        //    return new Vector3(samplePoints[index * 3 + 0]
-        //        , samplePoints[index * 3 + 1]
-        //        , samplePoints[index * 3 + 2]);
-        //}
-
-        private static void ExtractResources()
+        private static void LostTestResource()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             StreamReader reader = new StreamReader(
                 asm.GetManifestResourceStream(TEST_FILE_NAME));
 
-            StreamWriter writer = new StreamWriter(TEST_FILE_NAME);
-            writer.Write(reader.ReadToEnd());
-            writer.Close();
-            mResourcesExtracted = true;
+            testResource = reader.ReadToEnd();
+
+            reader.Close();
         }
 
     }
