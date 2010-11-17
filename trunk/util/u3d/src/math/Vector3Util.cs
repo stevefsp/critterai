@@ -34,12 +34,16 @@ namespace org.critterai.math
     public static class Vector3Util
     {
         /// <summary>
-        /// Performs a vector "right-handed" Cross product. (u x v)
-        /// The resulting vector will be perpendicular to the plane 
-        /// containing the two provided vectors.
+        /// Performs a vector "right-handed"
+        /// <a href="http://en.wikipedia.org/wiki/Cross_product" 
+        /// target="_blank">cross product</a>. (u x v)
+        /// </summary>
+        /// <remarks>
+        /// <p>The resulting vector will be perpendicular to the plane 
+        /// containing the two provided vectors.</p>
         /// <p>Special Case: The result will be zero if the two vectors are 
         /// parallel.</p>
-        /// </summary>
+        /// </remarks>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
         /// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
@@ -58,7 +62,7 @@ namespace org.critterai.math
 
         /// <summary>
         /// Returns the square of the distance between the two provided 
-        /// points. (distance * distance)
+        /// points.
         /// </summary>
         /// <param name="ax">The x-value of the point (ax, ay, az).</param>
         /// <param name="ay">The y-value of the point (ax, ay, az).</param>
@@ -78,7 +82,7 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Returns the square of the length of the vector. (length * length)
+        /// Returns the square of the length of the vector.
         /// </summary>
         /// <param name="x">The x-value of the vector (x, y, z).</param>
         /// <param name="y">The y-value of the vector (x, y, z).</param>
@@ -90,7 +94,9 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Returns the dot product of the provided vectors.
+        /// Returns the
+        /// <a href="http://en.wikipedia.org/wiki/Dot_product" target="_blank">
+        /// dot product</a> of the provided vectors.
         /// </summary>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
@@ -107,8 +113,7 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other. Each 
-        /// element of the vector is tested separately.
+        /// are equal within the specified tolerance of each other.
         /// </summary>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
@@ -117,9 +122,8 @@ namespace org.critterai.math
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the the associated elements of each vector are 
-        /// within the specified tolerance of each other.
-        /// </returns>
+        /// <returns>TRUE if the associated elements are  within the 
+        /// specified tolerance of each other</returns>
         public static bool SloppyEquals(float ux, float uy, float uz
                 , float vx, float vy, float vz
                 , float tolerance)
@@ -136,15 +140,13 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other. Each 
-        /// element of the vector is tested separately.
+        /// are equal within the specified tolerance of each other. 
         /// </summary>
         /// <param name="u">Vector u</param>
         /// <param name="v">Vector v</param>
         /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if the the associated elements of each vector are 
-        /// within the specified tolerance of each other.
-        /// </returns>
+        /// <returns>TRUE if the associated elements are  within the 
+        /// specified tolerance of each other</returns>
         public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
         {
             return SloppyEquals(u.x, u.y, u.z, v.x, v.y, v.z, tolerance);
@@ -152,17 +154,15 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other. Each 
-        /// element of the vector is tested separately.
+        /// are equal within the specified tolerance of each other.
         /// </summary>
         /// <param name="u">Vector u</param>
         /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the the associated elements of each vector are 
-        /// within the specified tolerance of each other.
-        /// </returns>
+        /// <returns>TRUE if the associated elements are  within the 
+        /// specified tolerance of each other</returns>
         public static bool SloppyEquals(Vector3 u
             , float vx, float vy, float vz
             , float tolerance)
@@ -219,8 +219,8 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Creates an array of vectors from an array of floats in the form
-        /// (x, y, z).
+        /// Creates an array of vectors from a flattend array of vectors
+        /// in the form (x, y, z).
         /// </summary>
         /// <param name="flatVectors">An array of vectors in the form
         /// (x, y, z).</param>
@@ -240,7 +240,7 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Creates a vector from the values from a flattened vector array.
+        /// Creates a vector from the values in a flattened vector array.
         /// </summary>
         /// <param name="vectors">An array of flattened values in the form
         /// (x, y, z).</param>

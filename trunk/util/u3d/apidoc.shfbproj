@@ -21,7 +21,7 @@
     <FrameworkVersion>2.0.50727</FrameworkVersion>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightText>Copyright %28c%29 2010 Stephen A. Pratt</CopyrightText>
-    <HelpTitle>CritterAI Utilities Library %28C#/Unity3D%29</HelpTitle>
+    <HelpTitle>CritterAI Utilities Library %28.NET/Unity3D%29</HelpTitle>
     <IndentHtml>False</IndentHtml>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
     <DocumentationSources>
@@ -29,22 +29,23 @@
       <DocumentationSource sourceFile="bin\Release\cai-util-u3d.xml" xmlns="" />
     </DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="org.critterai.math" isDocumented="True">Provides math related functionality used by CritterAI projects.
-
-&lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
-&lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
-&lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.math.geom" isDocumented="True">Provides computational geometry related functionality used by CritterAI projects.
-
-&lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
-&lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
-&lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="org.critterai.math" isDocumented="True">Provides math related functionality used by CritterAI projects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.math.geom" isDocumented="True">Provides computational geometry related functionality used by CritterAI projects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.mesh" isDocumented="True">Provides basic mesh related functionality used by CritterAI projects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.util" isDocumented="True">Provides general utility functionality used by CritterAI projects.</NamespaceSummaryItem></NamespaceSummaries>
     <ProjectSummary>The CritterAI Utilities library provides support functionality for various CritterAI projects.
 
-Note:  This library requires &amp;lt%3ba href=&amp;quot%3bhttp://unity3d.com/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bUnity3D&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
+&amp;lt%3bp&amp;gt%3bThis library requires &amp;lt%3ba href=&amp;quot%3bhttp://unity3d.com/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bUnity3D&amp;lt%3b/a&amp;gt%3b.&amp;lt%3b/p&amp;gt%3b
+
+&amp;lt%3bp&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3bbr /&amp;gt%3b 
+&amp;lt%3b/a&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Source&amp;lt%3b/a&amp;gt%3b&amp;lt%3bbr /&amp;gt%3b 
+&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <CppCommentsFixup>False</CppCommentsFixup>
     <HeaderText>
     </HeaderText>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>CritterAI Utilities</RootNamespaceTitle>
+    <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

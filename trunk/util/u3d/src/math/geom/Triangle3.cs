@@ -34,11 +34,13 @@ namespace org.critterai.math.geom
     {
         /// <summary>
         /// Returns the area of the triangle ABC.
-        /// <p>WARNING: This is an costly method.  If the value is only 
-        /// needed for comparison with other triangles, then use 
-        /// <see cref="GetAreaComp">GetAreaComp</see> 
-        /// </p>
+        /// <p>WARNING: This is an costly method.</p>
         /// </summary>
+        /// <remarks>
+        /// <p>If the value is only needed for comparison with other triangles, 
+        /// then use  <see cref="GetAreaComp">GetAreaComp</see> instead. 
+        /// </p>
+        /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
         /// <param name="az">The z-value for vertex A in triangle ABC</param>
@@ -60,7 +62,7 @@ namespace org.critterai.math.geom
         
         /// <summary>
         /// Returns a value suitable for comparing the relative size of two 
-        /// triangles. E.g. Is triangleA larger than triangleB.  
+        /// triangles. (E.g. Is triangleA larger than triangleB.  )
         /// </summary>
         /// <remarks>
         /// <p>The value returned by this method can be converted to area as 
@@ -105,11 +107,15 @@ namespace org.critterai.math.geom
         }
         
         /// <summary>
-        /// Returns the normal for the  triangle.  (The vector perpendicular 
-        /// to the triangle's plane.)  The direction of the normal is 
-        /// determined by  the right-handed rule.
+        /// Returns the normal for the  triangle.
         /// <p>WARNING: This is a costly method.</p>
         /// </summary>
+        /// <remarks>
+        /// <p>The normal of a triangle is the vector perpendicular 
+        /// to the triangle's plane with the direction determined by the 
+        /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
+        /// target="_blank">right-handed rule</a>.</p>
+        /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
         /// <param name="az">The z-value for vertex A in triangle ABC</param>
@@ -138,13 +144,17 @@ namespace org.critterai.math.geom
             
             return result;
         }
-        
+
         /// <summary>
-        /// Returns the normal for the  triangle.  (The vector perpendicular 
-        /// to the triangle's plane.)  The direction of the normal is 
-        /// determined by  the right-handed rule.
+        /// Returns the normal for the  triangle.
         /// <p>WARNING: This is a costly method.</p>
         /// </summary>
+        /// <remarks>
+        /// <p>The normal of a triangle is the vector perpendicular 
+        /// to the triangle's plane with the direction determined by the 
+        /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
+        /// target="_blank">right-handed rule</a>.</p>
+        /// </remarks>
         /// <param name="vertices">An array of vertices which contains a 
         /// representation of triangles in the form 
         /// (ax, ay, az, bx, by, bz, cx, cy, cz).  The wrap direction is 

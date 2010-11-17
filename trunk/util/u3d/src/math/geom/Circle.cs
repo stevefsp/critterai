@@ -77,7 +77,8 @@ namespace org.critterai.math.geom
         /// <param name="cy">The y-value of the circle's center point (cx, cy).
         /// </param>
         /// <param name="cr">The radius of the circle.</param>
-        /// <returns></returns>
+        /// <returns>TRUE if the point is contained within the circle.
+        /// </returns>
         public static bool Contains(float px, float py
             , float cx, float cy
             , float cr)

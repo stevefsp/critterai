@@ -102,8 +102,9 @@ namespace org.critterai.mesh
         /// Translates a string in Wavefront format and loads the results
         /// into vertex and triangle arrays.
         /// </summary>
-        /// <param name="wavefrontText"></param>
-        /// <param name="bounds">An array of size 6 which will be loaed with 
+        /// <param name="wavefrontText">The wavefront format text defining
+        /// the vertices and indices.</param>
+        /// <param name="outBounds">An array of size 6 which will be loaed with 
         /// the AABB bounds of the resulting mesh in the form 
         /// (minX, minY, minZ, maxX, maxY, maxZ).  If null, the bounds will
         /// not be calculated.</param>
@@ -112,7 +113,7 @@ namespace org.critterai.mesh
         /// <param name="triangles">The triangles from the wavefront data.
         /// </param>
         public static void TranslateFrom(string wavefrontText
-            , float[] bounds
+            , float[] outBounds
             , out float[] vertices
             , out int[] triangles)
         {
@@ -161,8 +162,8 @@ namespace org.critterai.mesh
             vertices = lverts.ToArray();
             triangles = lindices.ToArray();
 
-            if (bounds != null)
-                Vector3Util.GetBounds(vertices, bounds);
+            if (outBounds != null)
+                Vector3Util.GetBounds(vertices, outBounds);
 
             return;
         }
