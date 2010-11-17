@@ -1,21 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nav-u3d-test", "cai-nav-u3d-test.csproj", "{333F54D3-4FE8-4320-B24D-A73FEC86E386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nav-u3d-test", ".\test\cai-nav-u3d-test.csproj", "{333F54D3-4FE8-4320-B24D-A73FEC86E386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nav-u3d", "..\nav\cai-nav-u3d.csproj", "{07219796-1BD2-4386-B5BA-2CCCA2458E63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cai-nav-u3d", ".\src\cai-nav-u3d.csproj", "{07219796-1BD2-4386-B5BA-2CCCA2458E63}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0732E9A0-B98D-4729-B5FA-9057F40AF015}"
 	ProjectSection(SolutionItems) = preProject
 		cai-nav-u3d-test.vsmdi = cai-nav-u3d-test.vsmdi
-		cai-nav-u3d-test1.vsmdi = cai-nav-u3d-test1.vsmdi
-		cai-nav-u3d-test2.vsmdi = cai-nav-u3d-test2.vsmdi
 		TestRunConfig.testrunconfig = TestRunConfig.testrunconfig
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = cai-nav-u3d-test2.vsmdi
+		CategoryFile = cai-nav-u3d-test1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
