@@ -19,13 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 namespace org.critterai.nav.nmpath
 {
     /// <summary>
     /// Provides utility operations related to navigation.
     /// </summary>
-    public static class NavUtil 
+    public static class PlannerUtil 
     {
         
         /// <summary>
@@ -61,7 +60,7 @@ namespace org.critterai.nav.nmpath
         /// Setting the value too low will decrease performance.  Generally, the value is Set
         /// to the average number of expected active searches.</param>
         /// <returns>A navigator for the navigation mesh.</returns>
-        public static MasterNavigator GetNavigator(float[] verts
+        public static MasterPlanner GetPlanner(float[] verts
                 , int[] indices
                 , int spacialDepth
                 , float planeTolerance
@@ -77,7 +76,7 @@ namespace org.critterai.nav.nmpath
                     , spacialDepth
                     , planeTolerance
                     , offsetScale);
-            return new MasterNavigator(mesh
+            return new MasterPlanner(mesh
                     , heuristic
                     , maxUpdateTimeslice
                     , maxPathAge
@@ -121,7 +120,7 @@ namespace org.critterai.nav.nmpath
         /// <param name="maintenanceFrequency">The frequency, in milliseconds, that maintenance operations
         /// should be performed.  The value should normally be less than MaxPathAge.</param>
         /// <returns>A navigator suitable for running on its own thread.</returns>
-        public static ThreadedNavigator GetThreadedNavigator(float[] verts
+        public static ThreadedPlanner GetThreadedPlanner(float[] verts
                 , int[] indices
                 , int spacialDepth
                 , float planeTolerance
@@ -139,13 +138,13 @@ namespace org.critterai.nav.nmpath
                     , spacialDepth
                     , planeTolerance
                     , offsetScale);
-            MasterNavigator navigator = new MasterNavigator(mesh
+            MasterPlanner navigator = new MasterPlanner(mesh
                     , heuristic
                     , maxFrameTimeslice
                     , maxPathAge
                     , repairSearchDepth
                     , searchPoolMax);
-            return new ThreadedNavigator(navigator, frameLength, maintenanceFrequency);
+            return new ThreadedPlanner(navigator, frameLength, maintenanceFrequency);
         }
         
     }

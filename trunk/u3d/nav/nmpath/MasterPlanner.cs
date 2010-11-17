@@ -58,7 +58,7 @@ namespace org.critterai.nav.nmpath
     /// obtained via <see cref="Nav">Nav</see>.</li> 
     /// </ul>
     /// </remarks>
-    public sealed class MasterNavigator
+    public sealed class MasterPlanner
     {
         /*
          * Design Notes:
@@ -96,14 +96,41 @@ namespace org.critterai.nav.nmpath
         /// <para>All operations are thread-safe as long as the MasterNavigator
         /// is handling in a thread-safe manner.</para>
         /// </remarks>
-        public class Navigator : INavigator
+        public class Planner : IPathPlanner
         {
 
-            private readonly MasterNavigator mRoot;
+            private readonly MasterPlanner mRoot;
             
-            internal Navigator(MasterNavigator root) 
+            internal Planner(MasterPlanner root) 
             {
                 mRoot = root;
+            }
+
+            /// <summary>
+            /// The tolerance to use when evaluating whether a point is on the
+            /// surface of the underlying navigation mesh.
+            /// </summary>
+            public float PlaneTolerance
+            {
+                get { return mRoot.mMesh.PlaneTolerance; }
+            }
+
+            /// <summary>
+            /// The minimum bounds of the underlying mesh's axis-aligned 
+            /// bounding box.
+            /// </summary>
+            public Vector3 MinimumBounds 
+            { 
+                get { return mRoot.mMesh.MinimumBounds; } 
+            }
+
+            /// <summary>
+            /// The maximum bounds of the underlying mesh's axis-aligned 
+            /// bounding box.
+            /// </summary>
+            public Vector3 MaximumBounds 
+            { 
+                get { return mRoot.mMesh.MaximumBounds; } 
             }
 
             /// <summary>
@@ -414,7 +441,7 @@ namespace org.critterai.nav.nmpath
         }
         
         private readonly DistanceHeuristicType mHeuristic;
-        private readonly int mMaxPathAge;
+        private readonly long mMaxPathAge;  // Must be long.
         private readonly long mMaxProcessingTimeslice;
         private readonly int mRepairSearchDepth;
 
@@ -465,7 +492,7 @@ namespace org.critterai.nav.nmpath
         /// </summary>
         private readonly TriNavMesh mMesh;
 
-        private readonly Navigator mNavigator;
+        private readonly Planner mNavigator;
         
         /// <summary>
         /// All active "nearest location" jobs.
@@ -549,7 +576,7 @@ namespace org.critterai.nav.nmpath
         /// </remarks>
         public int MaxPathAge
         {
-            get { return mMaxPathAge; }
+            get { return (int)mMaxPathAge; }
         }
 
         /// <summary>
@@ -601,7 +628,7 @@ namespace org.critterai.nav.nmpath
         /// <summary>
         /// The Navigator to distribute to clients needing services from this object.
         /// </summary>
-        public Navigator Nav { get { return mNavigator; } }
+        public Planner PathPlanner { get { return mNavigator; } }
 
         /// <summary>
         /// The number of pending "nearest location" requests.
@@ -685,24 +712,26 @@ namespace org.critterai.nav.nmpath
         /// allow re-use of search related objects.  Setting the value too high will waste memory.
         /// Setting the value too low will decrease performance.  Generally, the value is set
         /// to the average number of expected active searches.</param>
-        public MasterNavigator(TriNavMesh mesh
+        public MasterPlanner(TriNavMesh mesh
                 , DistanceHeuristicType heuristic
                 , long maxUpdateTimeslice
                 , int maxPathAge
                 , int repairSearchDepth
                 , int searchPoolMax)
         {
-            if (mesh == null)
-                throw new ArgumentNullException("mesh");
+            //if (mesh == null)
+            //    throw new ArgumentNullException("mesh");
             mMesh = mesh;
             this.mHeuristic = heuristic;
-            mNavigator = new Navigator(this);
+            mNavigator = new Planner(this);
 
             if (maxUpdateTimeslice <= 0)
                 this.mMaxProcessingTimeslice = 0;
             else
                 this.mMaxProcessingTimeslice = Math.Max(1, maxUpdateTimeslice);
             
+            // Dev note: Max age parameter should remain int, even though
+            // field is long.
             this.mMaxPathAge = Math.Max(0, maxPathAge);
             this.mRepairSearchDepth = Math.Max(1, repairSearchDepth);
             
@@ -887,7 +916,7 @@ namespace org.critterai.nav.nmpath
                     }
                 }
             }
-            long minAllowedTimestamp = DateTime.Now.Ticks - mMaxPathAge*10000;
+            long minAllowedTimestamp = DateTime.Now.Ticks - mMaxPathAge * 10000;
             // Maintain paths.
             // Dev Note: Since the oldest paths are more likely to be at the
             // beginning of the list, this is not going to be efficient.

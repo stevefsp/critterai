@@ -52,8 +52,8 @@ namespace org.critterai.nav.nmpath
         /// <param name="cell">The cell that backs the node.</param>
         public TriCellPathNode(TriCell cell)
         {
-            if (cell == null)
-                throw new ArgumentNullException("cell");
+            //if (cell == null)
+            //    throw new ArgumentNullException("cell");
             mCell = cell;
             mParent = null;
         }
@@ -127,8 +127,8 @@ namespace org.critterai.nav.nmpath
         /// <param name="startZ">The z-value of the path starting point. (startX, startY, startZ)</param>
         public TriCellPathNode(TriCell cell, TriCellPathNode parent, float startX, float startY, float startZ)
         {
-            if (cell == null || parent == null) 
-                throw new ArgumentNullException("cell and/or parent");
+            //if (cell == null || parent == null) 
+            //    throw new ArgumentNullException("cell and/or parent");
             mCell = cell;
             mParent = parent;
             mLocalG = CalculateLocalG(mParent, startX, startY, startZ);

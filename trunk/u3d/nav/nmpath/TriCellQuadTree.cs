@@ -125,8 +125,8 @@ namespace org.critterai.nav.nmpath
         public TriCellQuadTree(float minX, float minZ, float maxX, float maxZ, int maxDepth)
         {
 
-            if (minX >= maxX || minZ >= maxZ)
-                throw new ArgumentException("bounds", "Invalid bounds.");
+            //if (minX >= maxX || minZ >= maxZ)
+            //    throw new ArgumentException("bounds", "Invalid bounds.");
             
             this.mBoundsMinX = minX;
             this.mBoundsMinZ = minZ;
