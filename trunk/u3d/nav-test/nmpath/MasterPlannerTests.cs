@@ -78,7 +78,7 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestMasterNavigator() 
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , long.MaxValue
                     , 60000
@@ -93,20 +93,20 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestNavigator()
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 60000
                     , 4
                     , 2);
-            Assert.IsTrue(mn.Nav != null);
-            Assert.IsTrue(mn.Nav == mn.Nav); // Same reference across multiple calls.
+            Assert.IsTrue(mn.PathPlanner != null);
+            Assert.IsTrue(mn.PathPlanner == mn.PathPlanner); // Same reference across multiple calls.
         }
 
         [TestMethod]
         public void TestDispose() 
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 60000
@@ -118,7 +118,7 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestProcess() 
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 60000
@@ -136,7 +136,7 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestProcessOnce() 
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 60000
@@ -154,7 +154,7 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void TestProcessAll() 
         {
-            MasterNavigator mn = new MasterNavigator(mNavMesh
+            MasterPlanner mn = new MasterPlanner(mNavMesh
                     , DistanceHeuristicType.LongestAxis
                     , int.MaxValue
                     , 60000

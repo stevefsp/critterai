@@ -31,28 +31,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cai-util-u3d, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\cs\cai-util-u3d.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Unity\Editor\Data\lib\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcreteSimpleMover.cs" />
+    <Compile Include="nmpath\MasterPlannerTests.cs" />
+    <Compile Include="nmpath\PlannerTests.cs" />
+    <Compile Include="SimpleVelocityManagerTest.cs" />
+    <Compile Include="SimpleNMNavigatorTest.cs" />
+    <Compile Include="SimpleMoverTest.cs" />
+    <Compile Include="NavigationDataTest.cs" />
     <Compile Include="nmpath\AStarSearchTest.cs" />
+    <Compile Include="nmpath\ClientPathManagerTest.cs" />
     <Compile Include="nmpath\CorridorMesh.cs" />
     <Compile Include="nmpath\DijkstraSearchTest.cs" />
     <Compile Include="nmpath\DistanceHeuristicTest.cs" />
     <Compile Include="nmpath\IntegrationTests.cs" />
+    <Compile Include="nmpath\IntegrationTestData.cs" />
     <Compile Include="nmpath\ITestMesh.cs" />
-    <Compile Include="nmpath\MasterNavigatorTest.cs" />
     <Compile Include="nmpath\MasterNavRequestTest .cs" />
     <Compile Include="nmpath\MasterPathTest.cs" />
-    <Compile Include="nmpath\NavigatorTest.cs" />
     <Compile Include="nmpath\NavRequestTest.cs" />
     <Compile Include="nmpath\PathTest.cs" />
     <Compile Include="nmpath\TestUtil.cs" />
@@ -76,6 +81,10 @@
     <ProjectReference Include="..\nav\cai-nav-u3d.csproj">
       <Project>{07219796-1BD2-4386-B5BA-2CCCA2458E63}</Project>
       <Name>cai-nav-u3d</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\util\cai-util-u3d.csproj">
+      <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
+      <Name>cai-util-u3d</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

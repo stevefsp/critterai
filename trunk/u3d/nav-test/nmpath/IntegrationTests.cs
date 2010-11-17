@@ -26,10 +26,13 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
-using org.critterai.util;
+using org.critterai.mesh;
 
 namespace org.critterai.nav.nmpath
 {
+
+    // TODO: Need to convert to use the Integration test data.
+
     /// <summary>
     /// Performs long running stress tests on a moderately
     /// complex mesh.
@@ -39,154 +42,50 @@ namespace org.critterai.nav.nmpath
     [TestClass]
     public class IntegrationTests
     {
-        private const String TEST_FILE_NAME = "org.critterai.nav.assets.BISHomeGAS.obj";
-        private const int goalCount = 1000;
 
-        private const int spacialDepth = 8;
-        private const float planeTolerance = 0.5f;
-        private const float offsetScale = 0.1f;
-        private const DistanceHeuristicType heuristic = DistanceHeuristicType.LongestAxis;
-        private const int frameLength = 0;   // ticks (100ns)
-        private const long maxFrameTimeslice = 20000; // ticks (100ns)
-        private const int maxPathAge = 60000; // ms
-        private const int repairSearchDepth = 2;
-        private const int searchPoolMax = 40;
-        private const long maintenanceFrequency = 500; // ms
-
-        private Boolean mirrorMesh = false;
-
-        private float[] mSourceVerts;
-        private int[] mSourceIndices;
-        private TriNavMesh mNavMesh;
-        private float[] mMeshPoints;
-        private Vector3 mMeshMin;
-        private Vector3 mMeshMax;
-        private TriCell[] mCells;
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        [ClassInitialize()]
-        public static void SetupOnce(TestContext testContext)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            StreamReader reader = new StreamReader(
-                asm.GetManifestResourceStream(TEST_FILE_NAME));
-
-            StreamWriter writer = new StreamWriter(TEST_FILE_NAME);
-            writer.Write(reader.ReadToEnd());
-            writer.Close(); 
-        }
+        private IntegrationTestData testData;
+        private float[] samples;
 
         [TestInitialize()]
         public void Setup()
         {
-            QuickMesh mesh = new QuickMesh(TEST_FILE_NAME, true);
-            mSourceVerts = mesh.verts;
-            mSourceIndices = mesh.indices;
-            mMeshMin = mesh.minBounds;
-            mMeshMax = mesh.maxBounds;
-            mesh = null;
-
-            if (mirrorMesh)
-            {
-                for (int p = 0; p < mSourceVerts.Length; p += 3)
-                {
-                    mSourceVerts[p] *= -1;
-                }
-                for (int p = 0; p < mSourceIndices.Length; p += 3)
-                {
-                    int t = mSourceIndices[p + 1];
-                    mSourceIndices[p + 1] = mSourceIndices[p + 2];
-                    mSourceIndices[p + 2] = t;
-                }
-                float tmp = mMeshMin.x * -1;
-                mMeshMin.x = mMeshMax.x * -1;
-                mMeshMax.x = tmp;
-            }
-
-            mCells = TestUtil.GetAllCells(mSourceVerts, mSourceIndices);
-            TestUtil.LinkAllCells(mCells);
-
-            mNavMesh = TriNavMesh.Build(mSourceVerts
-                , mSourceIndices
-                , spacialDepth
-                , planeTolerance
-                , offsetScale);
-
-            mMeshPoints = new float[goalCount*3];
-
-            System.Random r = new System.Random(89725);
-
-            Vector3 loc;
-            for (int p = 0; p < mMeshPoints.Length; p += 3)
-            {
-                while (true)
-                {
-                    float x = mMeshMin.x + (float)r.NextDouble() * (mMeshMax.x - mMeshMin.x);
-                    float y = mMeshMin.y + (float)r.NextDouble() * (mMeshMax.y - mMeshMin.y);
-                    float z = mMeshMin.z + (float)r.NextDouble() * (mMeshMax.z - mMeshMin.z);
-
-                    if (mNavMesh.IsValidPosition(x, y, z, planeTolerance))
-                    {
-                        TriCell c = mNavMesh.GetClosestCell(x, y, z, true, out loc);  // Snap y.
-                        //if (p == 39)
-                        //    Console.WriteLine(c);
-                        mMeshPoints[p + 0] = loc.x;
-                        mMeshPoints[p + 1] = loc.y;
-                        mMeshPoints[p + 2] = loc.z;
-                        break;
-                    }
-                }
-            }
+            testData = new IntegrationTestData(false);
+            samples = testData.samplePoints.samples;
         }
 
         [TestMethod]
         public void IntegrationAStarSearchTest()
         {
-            AStarSearch search = new AStarSearch(heuristic);
+            AStarSearch search = new AStarSearch(testData.heuristic);
             Vector3 trashV;
-            for (int pStart = 0; pStart < mMeshPoints.Length; pStart += 3)
+            for (int pStart = 0; pStart < samples.Length; pStart += 3)
             {
                 // Dev Note: Purposely allowing start and goal to be the same.
-                for (int pGoal = pStart; pGoal < mMeshPoints.Length; pGoal += 3)
+                for (int pGoal = pStart; pGoal < samples.Length; pGoal += 3)
                 {
-                    TriCell startCell = mNavMesh.GetClosestCell(mMeshPoints[pStart]
-                        , mMeshPoints[pStart+1]
-                        , mMeshPoints[pStart+2]
+                    TriCell startCell = testData.navMesh.GetClosestCell(
+                        samples[pStart]
+                        , samples[pStart+1]
+                        , samples[pStart+2]
                         , true
                         , out trashV);
-                    TriCell goalCell = mNavMesh.GetClosestCell(mMeshPoints[pGoal]
-                        , mMeshPoints[pGoal + 1]
-                        , mMeshPoints[pGoal + 2]
+                    TriCell goalCell = testData.navMesh.GetClosestCell(
+                        samples[pGoal]
+                        , samples[pGoal + 1]
+                        , samples[pGoal + 2]
                         , true
                         , out trashV);
 
-                    search.Initialize(mMeshPoints[pStart]
-                        , mMeshPoints[pStart + 1]
-                        , mMeshPoints[pStart + 2]
-                        , mMeshPoints[pGoal]
-                        , mMeshPoints[pGoal + 1]
-                        , mMeshPoints[pGoal + 2]
+                    search.Initialize(samples[pStart]
+                        , samples[pStart + 1]
+                        , samples[pStart + 2]
+                        , samples[pGoal]
+                        , samples[pGoal + 1]
+                        , samples[pGoal + 2]
                         , startCell
                         , goalCell);
 
-                    int maxLoopCount = mSourceIndices.Length / 3 + 1;
+                    int maxLoopCount = testData.sourceIndices.Length / 3 + 1;
 
                     int loopCount = 0;
                     while (search.IsActive && loopCount < maxLoopCount)
@@ -196,21 +95,21 @@ namespace org.critterai.nav.nmpath
                     }
 
                     string state = "[" + pStart + ":" + pGoal + "]"
-                        + "(" + mMeshPoints[pStart]
-                        + ", " + mMeshPoints[pStart + 1]
-                        + ", " + mMeshPoints[pStart + 2]
-                        + ") -> (" + mMeshPoints[pGoal]
-                        + ", " + mMeshPoints[pGoal + 1]
-                        + ", " + mMeshPoints[pGoal + 2] + ")";
+                        + "(" + samples[pStart]
+                        + ", " + samples[pStart + 1]
+                        + ", " + samples[pStart + 2]
+                        + ") -> (" + samples[pGoal]
+                        + ", " + samples[pGoal + 1]
+                        + ", " + samples[pGoal + 2] + ")";
                     Assert.IsTrue(search.State == SearchState.Complete, state);
 
                     // Reverse points.
-                    search.Initialize(mMeshPoints[pGoal]
-                        , mMeshPoints[pGoal + 1]
-                        , mMeshPoints[pGoal + 2]
-                        , mMeshPoints[pStart]
-                        , mMeshPoints[pStart + 1]
-                        , mMeshPoints[pStart + 2]
+                    search.Initialize(samples[pGoal]
+                        , samples[pGoal + 1]
+                        , samples[pGoal + 2]
+                        , samples[pStart]
+                        , samples[pStart + 1]
+                        , samples[pStart + 2]
                         , goalCell
                         , startCell);
 
@@ -221,12 +120,12 @@ namespace org.critterai.nav.nmpath
                         loopCount++;
                     }
 
-                    state = "(" + mMeshPoints[pGoal]
-                        + ", " + mMeshPoints[pGoal + 1]
-                        + ", " + mMeshPoints[pGoal + 2]
-                        + ") -> (" + mMeshPoints[pStart]
-                        + ", " + mMeshPoints[pStart + 1]
-                        + ", " + mMeshPoints[pStart + 2];
+                    state = "(" + samples[pGoal]
+                        + ", " + samples[pGoal + 1]
+                        + ", " + samples[pGoal + 2]
+                        + ") -> (" + samples[pStart]
+                        + ", " + samples[pStart + 1]
+                        + ", " + samples[pStart + 2];
                     Assert.IsTrue(search.State == SearchState.Complete, state);
                 }
             } 
@@ -235,58 +134,60 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void IntegrationThreadedSearchTest()
         {
-            ThreadedNavigator masterNavigator = NavUtil.GetThreadedNavigator(
-                    mSourceVerts
-                    , mSourceIndices
-                    , spacialDepth
-                    , planeTolerance
-                    , offsetScale
-                    , heuristic
-                    , frameLength
-                    , maxFrameTimeslice
-                    , maxPathAge
-                    , repairSearchDepth
-                    , searchPoolMax
-                    , maintenanceFrequency);
+            ThreadedPlanner masterNavigator = PlannerUtil.GetThreadedPlanner(
+                    testData.sourceVerts
+                    , testData.sourceIndices
+                    , testData.spacialDepth
+                    , testData.planeTolerance
+                    , testData.offsetScale
+                    , testData.heuristic
+                    , testData.frameLength
+                    , testData.maxFrameTimeslice
+                    , testData.maxPathAge
+                    , testData.repairSearchDepth
+                    , testData.searchPoolMax
+                    , testData.maintenanceFrequency);
 
             masterNavigator.Start();
 
             Assert.IsTrue(masterNavigator.IsRunning);
 
             List<PathSearchInfo> searchInfo = new List<PathSearchInfo>(10000);
-            MasterNavigator.Navigator nav = masterNavigator.Nav;
+            MasterPlanner.Planner nav = masterNavigator.PathPlanner;
 
-            for (int pStart = 0; pStart < mMeshPoints.Length; pStart += 3)
+            for (int pStart = 0; pStart < samples.Length; pStart += 3)
             {
                 // Dev Note: Purposely allowing start and goal to be the same.
-                for (int pGoal = pStart; pGoal < mMeshPoints.Length; pGoal += 3)
+                for (int pGoal = pStart; pGoal < samples.Length; pGoal += 3)
                 {
 
-                    Vector3 start = new Vector3(mMeshPoints[pStart]
-                        , mMeshPoints[pStart + 1]
-                        , mMeshPoints[pStart + 2]);
+                    Vector3 start = new Vector3(samples[pStart]
+                        , samples[pStart + 1]
+                        , samples[pStart + 2]);
 
-                    Vector3 goal = new Vector3(mMeshPoints[pGoal]
-                        , mMeshPoints[pGoal + 1]
-                        , mMeshPoints[pGoal + 2]);
+                    Vector3 goal = new Vector3(samples[pGoal]
+                        , samples[pGoal + 1]
+                        , samples[pGoal + 2]);
 
                     PathSearchInfo si = new PathSearchInfo(start
                         , goal
-                        , nav.GetPath(start.x, start.y, start.z, goal.x, goal.y, goal.z));
+                        , nav.GetPath(start.x, start.y, start.z
+                            , goal.x, goal.y, goal.z));
 
                     searchInfo.Add(si);
 
-                    goal = new Vector3(mMeshPoints[pStart]
-                        , mMeshPoints[pStart + 1]
-                        , mMeshPoints[pStart + 2]);
+                    goal = new Vector3(samples[pStart]
+                        , samples[pStart + 1]
+                        , samples[pStart + 2]);
 
-                    start = new Vector3(mMeshPoints[pGoal]
-                        , mMeshPoints[pGoal + 1]
-                        , mMeshPoints[pGoal + 2]);
+                    start = new Vector3(samples[pGoal]
+                        , samples[pGoal + 1]
+                        , samples[pGoal + 2]);
 
                     si = new PathSearchInfo(start
                         , goal
-                        , nav.GetPath(start.x, start.y, start.z, goal.x, goal.y, goal.z));
+                        , nav.GetPath(start.x, start.y, start.z
+                            , goal.x, goal.y, goal.z));
 
                     searchInfo.Add(si);
                 }
@@ -303,7 +204,8 @@ namespace org.critterai.nav.nmpath
                     if (si.pathRequest.IsFinished)
                     {
                         string state = si.start + " -> " + si.goal;
-                        Assert.IsTrue(si.pathRequest.State == NavRequestState.Complete, state);
+                        Assert.IsTrue(si.pathRequest.State == 
+                            NavRequestState.Complete, state);
                         searchInfo.RemoveAt(i);
                     }
                 }
@@ -316,33 +218,36 @@ namespace org.critterai.nav.nmpath
         [TestMethod]
         public void IntegrationMeshConnectivityTest()
         {
-            Vector3[] centroids = new Vector3[mCells.Length];
-            for (int iCell = 0; iCell < mCells.Length; iCell++)
+            Vector3[] centroids = new Vector3[testData.cells.Length];
+            for (int iCell = 0; iCell < testData.cells.Length; iCell++)
             {
-                TriCell cell = mCells[iCell];
-                centroids[iCell] = new Vector3(cell.CentroidX, cell.CentroidY, cell.CentroidZ);
+                TriCell cell = testData.cells[iCell];
+                centroids[iCell] = new Vector3(cell.CentroidX
+                    , cell.CentroidY
+                    , cell.CentroidZ);
             }
 
-            ThreadedNavigator masterNavigator = NavUtil.GetThreadedNavigator(
-                    mSourceVerts
-                    , mSourceIndices
-                    , spacialDepth
-                    , planeTolerance
-                    , offsetScale
-                    , heuristic
-                    , frameLength
-                    , maxFrameTimeslice
-                    , maxPathAge
-                    , repairSearchDepth
-                    , searchPoolMax
-                    , maintenanceFrequency);
+            ThreadedPlanner masterNavigator = PlannerUtil.GetThreadedPlanner(
+                    testData.sourceVerts
+                    , testData.sourceIndices
+                    , testData.spacialDepth
+                    , testData.planeTolerance
+                    , testData.offsetScale
+                    , testData.heuristic
+                    , testData.frameLength
+                    , testData.maxFrameTimeslice
+                    , testData.maxPathAge
+                    , testData.repairSearchDepth
+                    , testData.searchPoolMax
+                    , testData.maintenanceFrequency);
 
             masterNavigator.Start();
 
             Assert.IsTrue(masterNavigator.IsRunning);
 
-            List<PathSearchInfo> searchInfo = new List<PathSearchInfo>(centroids.Length*2);
-            MasterNavigator.Navigator nav = masterNavigator.Nav;
+            List<PathSearchInfo> searchInfo = 
+                new List<PathSearchInfo>(centroids.Length*2);
+            MasterPlanner.Planner nav = masterNavigator.PathPlanner;
 
             for (int pStart = 0; pStart < centroids.Length; pStart++)
             {
@@ -354,7 +259,8 @@ namespace org.critterai.nav.nmpath
 
                     PathSearchInfo si = new PathSearchInfo(start
                         , goal
-                        , nav.GetPath(start.x, start.y, start.z, goal.x, goal.y, goal.z));
+                        , nav.GetPath(start.x, start.y, start.z
+                            , goal.x, goal.y, goal.z));
 
                     searchInfo.Add(si);
 
@@ -363,7 +269,8 @@ namespace org.critterai.nav.nmpath
 
                     si = new PathSearchInfo(start
                         , goal
-                        , nav.GetPath(start.x, start.y, start.z, goal.x, goal.y, goal.z));
+                        , nav.GetPath(start.x, start.y, start.z
+                            , goal.x, goal.y, goal.z));
 
                     searchInfo.Add(si);
                 }
@@ -380,7 +287,8 @@ namespace org.critterai.nav.nmpath
                     if (si.pathRequest.IsFinished)
                     {
                         string state = si.start + " -> " + si.goal;
-                        Assert.IsTrue(si.pathRequest.State == NavRequestState.Complete, state);
+                        Assert.IsTrue(si.pathRequest.State == 
+                            NavRequestState.Complete, state);
                         searchInfo.RemoveAt(i);
                     }
                 }
