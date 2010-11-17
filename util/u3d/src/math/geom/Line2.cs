@@ -202,12 +202,15 @@ namespace org.critterai.math.geom
         }
         
         /// <summary>
-        /// Returns the normalized vector that is perpendicular to line AB, or 
-        /// a zero length vector if points A and B do not form a line.
-        /// <p>The direction of the vector will be to the right when viewed 
-        /// from point A to point B along the line.</p>
+        /// Returns the normalized vector that is perpendicular to line AB.
         /// <p>WARNING: This is an expensive method.</p>
         /// </summary>
+        /// <remarks>
+        /// <p>The direction of the vector will be to the right when viewed 
+        /// from point A to point B along the line.</p>
+        /// <p>Special Case: A zero length vector will be returned if points 
+        /// A and B do not form a line.</p>
+        /// </remarks>
         /// <param name="ax">The x-value of point A on line AB.</param>
         /// <param name="ay">The y-value of point A on line AB.</param>
         /// <param name="bx">The x-value of point B on line AB.</param>
@@ -218,7 +221,8 @@ namespace org.critterai.math.geom
         public static Vector2 GetNormalAB(float ax, float ay
                 , float bx, float by)
         {
-            if (ax == bx && ay == by)
+            if (Vector2Util.SloppyEquals(
+                    ax, ay, bx, by, MathUtil.TOLERANCE_STD))
                 // Points do not form a line.
                 return new Vector2();
             Vector2 result = Vector2Util.GetDirectionAB(ax, ay, bx, by);

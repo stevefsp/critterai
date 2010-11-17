@@ -32,9 +32,12 @@ namespace org.critterai.math.geom
     {
         /// <summary>
         /// Returns TRUE if the point (px, py) is contained by the triangle.
+        /// (Inclusive)
+        /// </summary>
+        /// <remarks>
         /// <p>The test is inclusive.  So points on the vertices or edges
         /// of the triangle are considered to be contained by the triangle.</p>
-        /// </summary>
+        /// </remarks>
         /// <param name="px">The x-value for the point to test. (px, py)</param>
         /// <param name="py">The y-value for the poitn to test. (px, py)</param>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
@@ -74,9 +77,10 @@ namespace org.critterai.math.geom
 
         /// <summary>
         /// The absolute value of the returned value is two times the area of 
-        /// the
-        /// triangle ABC.
-        /// <p>A positive value indicates:</p>
+        /// the triangle ABC.
+        /// </summary>
+        /// <remarks>
+        /// <p>A positive return value indicates:</p>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.
@@ -91,7 +95,7 @@ namespace org.critterai.math.geom
         /// <p>A value of zero indicates that all points are collinear or 
         /// represent the same point.</p>
         /// <p>This is a low cost method.</p>
-        /// </summary>
+        /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
         /// <param name="bx">The x-value for vertex B in triangle ABC</param>
@@ -114,7 +118,9 @@ namespace org.critterai.math.geom
         /// <summary>
         /// The absolute value of the returned value is two times the area of 
         /// the triangle ABC.
-        /// <p>A positive value indicates:</p>
+        /// </summary>
+        /// <remarks>
+        /// <p>A positive return value indicates:</p>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.
@@ -129,7 +135,7 @@ namespace org.critterai.math.geom
         /// <p>A value of zero indicates that all points are collinear or 
         /// represent the same point.</p>
         /// <p>This is a low cost method.</p>
-        /// </summary>
+        /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
         /// <param name="bx">The x-value for vertex B in triangle ABC</param>

@@ -37,12 +37,10 @@ namespace org.critterai.math
         private const float EPSILON_STD = MathUtil.EPSILON_STD;
 
         /// <summary>
-        /// Returns the dot product of the provided vectors.
-        /// See: 
+        /// Returns the
         /// <a href="http://en.wikipedia.org/wiki/Dot_product" target="_blank">
-        /// Wikipedia- Dot Product</a>
+        /// dot product</a> of the provided vectors.
         /// </summary>
-        /// <remarks></remarks>
         /// <param name="ux">The x-value of the vector (ux, uy).</param>
         /// <param name="uy">The y-value of the vector (ux, uy).</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
@@ -54,8 +52,8 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Derives the normalized direction vector for the vector pointing 
-        /// from point A (ax, ay) to point B (bx, by).
+        /// Derives the normalized direction vector from point A (ax, ay) 
+        /// to point B (bx, by).
         /// <p>WARNING: This is a costly method.</p>
         /// </summary>
         /// <param name="ax">The x-value for the starting point A (ax, ay).
@@ -93,15 +91,14 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.  Each element of the 
-        /// vector is tested separately.
+        /// are equal within the specified tolerance.
         /// </summary>
         /// <param name="ux">The x-value of the vector (ux, uy).</param>
         /// <param name="uy">The y-value of the vector (ux, uy).</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if the the associated elements of each vector are 
+        /// <returns>TRUE if each of the associated elements are 
         /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(float ux, float uy
@@ -115,13 +112,12 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.  Each element of the 
-        /// vector is tested separately.
+        /// are equal within the specified tolerance.
         /// </summary>
         /// <param name="u">Vector v</param>
         /// <param name="v">Vector u</param>
         /// <param name="tolerance">The tolerance for the test. </param>
-        /// <returns>TRUE if the the associated elements of each vector are
+        /// <returns>TRUE if each of the associated elements are
         /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(Vector2 u, Vector2 v, float tolerance)
@@ -131,14 +127,13 @@ namespace org.critterai.math
 
         /// <summary>
         /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.  Each element of the 
-        /// vector is tested separately.
+        /// are equal within the specified tolerance.
         /// </summary>
         /// <param name="u">Vector v</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if the the associated elements of each vector are 
+        /// <returns>TRUE if each of the associated elements are 
         /// within the specified tolerance of each other.
         /// </returns>
         public static bool SloppyEquals(Vector2 u, float vx, float vy, float tolerance)
@@ -148,7 +143,7 @@ namespace org.critterai.math
 
         /// <summary>
         /// Returns the square of the distance between the two provided 
-        /// points. (distance * distance)
+        /// points.
         /// </summary>
         /// <param name="ax">The x-value of the point (ax, ay).</param>
         /// <param name="ay">The y-value of the point (ax, ay).</param>
@@ -206,8 +201,7 @@ namespace org.critterai.math
         }
 
         /// <summary>
-        /// Scales the vector to the provided length. Returns a new vector. 
-        /// The original vector is not mutated.
+        /// Scales the vector to the provided length.
         /// <p>WARNING: This is a costly method.</p>
         /// </summary>
         /// <param name="v">The vector to scale.</param>

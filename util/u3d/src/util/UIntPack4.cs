@@ -27,11 +27,10 @@ namespace org.critterai.util
     /// packed unsigned integers.
     /// </summary>
     /// <remarks>
-    /// <p>A slot is the zero-based index location of a packed 4-bit 
-    /// value. The expected slot range is zero to seven with the zero slot
-    /// being the lowest 4-bits.</p>
+    /// <p>A 'slot' represents the location of a packed 4-bit 
+    /// value. The range is from 0 through 7 with zero representing the lowest 
+    /// 4-bits.</p>
     /// <p>The range of values permitted for a slot is 0 through 15.</p>
-    /// <p>Static methods are thread safe.</p>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
     public static class UIntPack4
@@ -114,8 +113,8 @@ namespace org.critterai.util
         }
 
         /// <summary>
-        /// Removes the first slot value and shifts the content of all
-        /// other slots one slow lower. (Mutates the target.)
+        /// Removes the zero slot value and shifts the content of all
+        /// other slots one slot lower. (Mutates the target.)
         /// </summary>
         /// <param name="target">The packed integer to update.</param>
         public static void RemoveFirst(ref uint target)

@@ -143,7 +143,9 @@ namespace org.critterai.math.geom
         }
         
         /// <summary>
-        /// Returns the centroid of a convex polygon.
+        /// Returns the 
+        /// <a href="http://en.wikipedia.org/wiki/Centroid" target="_blank">
+        /// centroid</a> of a convex polygon.
         /// </summary>
         /// <remarks>
         /// <p>Behavior is undefined if the polygon is not convex.</p>
@@ -164,8 +166,6 @@ namespace org.critterai.math.geom
         /// to store the result in.  (The stride is expected to be three.  
         /// So the insertion point will be outVectorIndex*3.)</param>
         /// <returns>A reference to the result argument.</returns>
-        /// <seealso><a href="http://en.wikipedia.org/wiki/Centroid">
-        /// Centroid</a></seealso>
         public static float[] GetCentroid(float[] vertices
                 , int startVertIndex
                 , int vertCount
@@ -195,7 +195,9 @@ namespace org.critterai.math.geom
         }
         
         /// <summary>
-        /// Returns the centroid of a convex polygon.
+        /// Returns the 
+        /// <a href="http://en.wikipedia.org/wiki/Centroid" target="_blank">
+        /// centroid</a> of a convex polygon.
         /// </summary>
         /// <param name="vertices">An array of vertices which contains a 
         /// representation of a polygon with an arbitrary number of sides in 
@@ -206,9 +208,6 @@ namespace org.critterai.math.geom
         /// <param name="vertCount">The number of vertices in the polygon.
         /// </param>
         /// <returns>The centroid of a polygon.</returns>
-        /// <seealso>
-        /// <a href="http://en.wikipedia.org/wiki/Centroid">Centroid</a>
-        /// </seealso>
         public static Vector3 GetCentroid(float[] vertices
                 , int startVertIndex
                 , int vertCount)
@@ -233,15 +232,14 @@ namespace org.critterai.math.geom
         }
         
         /// <summary>
-        /// Returns the centroid of a convex polygon.
+        /// Returns the 
+        /// <a href="http://en.wikipedia.org/wiki/Centroid" target="_blank">
+        /// centroid</a> of a convex polygon.
         /// </summary>
         /// <param name="vertices">An list of vertices which represent a 
         /// polygon with an  arbitrary number of sides in the form 
         /// (x1, y1, z1, x2, y2, z2, ..., xn, yn, zn).</param>
         /// <returns>The centroid of a convex polygon.</returns>
-        /// <seealso>
-        /// <a href="http://en.wikipedia.org/wiki/Centroid">Centroid</a>
-        /// </seealso>
         public static Vector3 GetCentroid(params float[] vertices)
         {
             // Reference: 
