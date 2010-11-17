@@ -106,7 +106,7 @@
                  <pathelement location="${util.lib}-${util.version}.jar" />
             </classpath>
             <link href="http://www.critterai.org/projects/util/docs/api/" />
-            <link href="http://java.sun.com/javase/6/docs/api/" />
+            <link href="http://download.oracle.com/javase/6/docs/api/" />
             <bottom>
             <![CDATA[
                 <div align="center">
