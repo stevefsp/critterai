@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OrderedTest name="alltests" storage="c:\dev\cai-working\nmgen\cpp\test-cli\alltests.orderedtest" id="52296292-0ca4-4a33-913d-91972647b84f" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <Css projectStructure="" iteration="" />
+  <Execution timeOut="2147483647" />
+  <Owners>
+    <Owner name="" />
+  </Owners>
+  <TestLinks>
+    <TestLink id="86d233fd-c73b-e0c5-fb8a-6bb020bcb2c7" name="ConstructionTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="7e79ab84-3dae-27ee-4461-9dbcaec90719" name="ConstructionTests" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="775dab13-68b1-1394-3fc2-46aa7aaa8298" name="GetVerticesFailTests" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="d4256afc-35d1-e040-4a64-e7659719175c" name="GetVerticesTests" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="e0484535-4cf8-85d2-df85-1ca7cbddbad9" name="LowerLimitTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="72426953-cdc6-622b-c7c1-d3fc54de5ea1" name="LowerLimitTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="f4d69f6a-aa43-fbba-60c6-836d810b118a" name="UpperLimitTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="3729809c-46e9-ef5f-d733-99f8b8756a47" name="UpperLimitTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="9e6e2167-0925-3081-d4be-4bd9d047e6a6" name="SmokeTest" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="e764f254-6b57-c5ec-2b06-687c4c1c6c0b" name="SmokeTestBuild" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="461e1968-6c16-bcb7-14e5-fd6b26b6db4a" name="SmokeTestNullMessageArray" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="fd933df7-db0c-178a-e194-0f9092f543b1" name="SmokeTestMemLeak" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="0f73cdeb-ef79-906d-6dfd-357215178129" name="SmokeTestMemLeak" storage="..\bin\debug\cai-nmgen-test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestLinks>
+</OrderedTest>
