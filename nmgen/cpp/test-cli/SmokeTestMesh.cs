@@ -22,7 +22,7 @@
 
 namespace org.critterai.nmgen
 {
-    public static class SmokeTestMesh
+    internal static class SmokeTestMesh
     {
         /*
          * Design note:
@@ -33,15 +33,15 @@ namespace org.critterai.nmgen
          * flattened results should look like.
          */
 
-        private const float yResolution = 0.1f;
-        private const float xzResolution = 0.2f;
+        private const float yCellSize = 0.1f;
+        private const float xzCellSize = 0.2f;
         private const float minTraversableHeight = 2.1f;
         private const float maxTraversableStep = 0.5f;
         private const float maxTraversableSlope = 48.0f;
         private const bool clipLedges = false;
         private const float traversableAreaBorderSize = 0.3f;
         private const int smoothingThreshold = 2;
-        private const int minUnconnectedRegionSize = 10;
+        private const int minIslandRegionSize = 10;
         private const int mergeRegionSize = 50;
         private const float maxEdgeLength = 5.0f;
         private const float edgeMaxDeviation = 0.4f;
@@ -52,8 +52,8 @@ namespace org.critterai.nmgen
 
         public static BuildConfig GetStandardBuildConfig()
         {
-            return new BuildConfig(xzResolution
-                , yResolution
+            return new BuildConfig(xzCellSize
+                , yCellSize
                 , minTraversableHeight
                 , maxTraversableStep
                 , maxTraversableSlope
@@ -61,7 +61,7 @@ namespace org.critterai.nmgen
                 , traversableAreaBorderSize
                 , heightfieldBoarderSize
                 , smoothingThreshold
-                , minUnconnectedRegionSize
+                , minIslandRegionSize
                 , mergeRegionSize
                 , maxEdgeLength
                 , edgeMaxDeviation
@@ -73,15 +73,15 @@ namespace org.critterai.nmgen
         public static Configuration GetStandardConfig()
         {
             Configuration config = new Configuration();
-            config.xzResolution = xzResolution;
-            config.yResolution = yResolution;
+            config.xzCellSize = xzCellSize;
+            config.yCellSize = yCellSize;
             config.minTraversableHeight = minTraversableHeight;
             config.maxTraversableStep = maxTraversableStep;
             config.maxTraversableSlope = maxTraversableSlope;
             config.clipLedges = clipLedges;
             config.traversableAreaBorderSize = traversableAreaBorderSize;
             config.smoothingThreshold = smoothingThreshold;
-            config.minUnconnectedRegionSize = minUnconnectedRegionSize;
+            config.minIslandRegionSize = minIslandRegionSize;
             config.mergeRegionSize = mergeRegionSize;
             config.maxEdgeLength = maxEdgeLength;
             config.edgeMaxDeviation = edgeMaxDeviation;

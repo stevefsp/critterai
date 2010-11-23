@@ -48,8 +48,8 @@ namespace nmgen
     {
         // Design Note: Don't change the order without good reason.
         // Interop implementations depend on this order.
-        float xzResolution;
-        float yResolution;
+        float xzCellSize;
+        float yCellSize;
         float minTraversableHeight;
         float maxTraversableStep;
         float maxTraversableSlope;
@@ -60,7 +60,7 @@ namespace nmgen
         float contourSampleDistance;
         float contourMaxDeviation;
         int smoothingThreshold;
-        int minUnconnectedRegionSize;
+        int minIslandRegionSize;
         int mergeRegionSize;
         int maxVertsPerPoly;
         bool clipLedges;
@@ -71,8 +71,8 @@ namespace nmgen
         */
         void applyLimits()
         {
-            xzResolution = rcMax(EPSILON, xzResolution);
-            yResolution = rcMax(EPSILON, yResolution);
+            xzCellSize = rcMax(EPSILON, xzCellSize);
+            yCellSize = rcMax(EPSILON, yCellSize);
             minTraversableHeight = rcMax(EPSILON, minTraversableHeight);
             maxTraversableStep = rcMax(0.0f, maxTraversableStep);
             maxTraversableSlope = 
@@ -80,7 +80,7 @@ namespace nmgen
             traversableAreaBorderSize = rcMax(0.0f, traversableAreaBorderSize);
             smoothingThreshold = 
                 rcMin(MAX_SMOOTHING, rcMax(0, smoothingThreshold));
-            minUnconnectedRegionSize = rcMax(1, minUnconnectedRegionSize);
+            minIslandRegionSize = rcMax(1, minIslandRegionSize);
             mergeRegionSize = rcMax(0, mergeRegionSize) ;
             maxEdgeLength = rcMax(0.0f, maxEdgeLength);
             edgeMaxDeviation = rcMax(0.0f, edgeMaxDeviation);

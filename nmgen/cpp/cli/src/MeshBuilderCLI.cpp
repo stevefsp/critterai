@@ -66,15 +66,15 @@ namespace nmgen
         // Transfer configuration data to native configuration 
         // structure.
         Configuration rcc;
-        rcc.xzResolution = config->XZResolution;
-	    rcc.yResolution = config->YResolution;
+        rcc.xzCellSize = config->XZCellSize;
+	    rcc.yCellSize = config->YCellSize;
         rcc.maxTraversableSlope = config->MaxTraversableSlope;
         rcc.minTraversableHeight = config->MinTraversableHeight;
         rcc.maxTraversableStep = config->MaxTraversableStep;
         rcc.traversableAreaBorderSize = config->TraversableAreaBorderSize;
         rcc.maxEdgeLength = config->MaxEdgeLength;
         rcc.edgeMaxDeviation = config->EdgeMaxDeviation;
-        rcc.minUnconnectedRegionSize = config->MinUnconnectedRegionSize;
+        rcc.minIslandRegionSize = config->MinIslandRegionSize;
         rcc.mergeRegionSize = config->MergeRegionSize;
 	    rcc.maxVertsPerPoly = config->MaxVertsPerPoly;
         rcc.contourSampleDistance = config->ContourSampleDistance;

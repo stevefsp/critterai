@@ -29,25 +29,6 @@ namespace org.critterai.nmgen
     [TestClass]
     public sealed class NMGenBuildTests
     {
-
-        [DllImport("cai-nmgen-cli")]
-        public static extern bool buildSimpleMesh(Configuration config
-            , float[] sourceVerts
-            , int sourceVertsLength
-            , int[] sourceTriangles
-            , int sourceTrianglesLength
-            , ref IntPtr ptrResultVerts
-            , ref int resultVertLength
-            , ref IntPtr ptrResultTriangles
-            , ref int resultTrianglesLength
-            , [In, Out] char[] messages
-            , int  messagesSize
-            , int messageDetail);
-
-        [DllImport("cai-nmgen-cli")]
-        public static extern void freeMesh(ref IntPtr ptrVertices
-            , ref IntPtr ptrTriangles);
-
         [TestMethod]
         public void SmokeTestBuild()
         {
@@ -63,7 +44,7 @@ namespace org.critterai.nmgen
 
             char[] charMsgArray = new char[10000];
 
-            bool success = buildSimpleMesh(config
+            bool success = Extern.buildSimpleMesh(config
                 , sourceVertices
                 , sourceVertices.Length
                 , sourceTriangles
@@ -96,7 +77,7 @@ namespace org.critterai.nmgen
             int[] resultTriangles = new int[resultTrianglesLength];
             Marshal.Copy(ptrResultTriangles, resultTriangles, 0, resultTrianglesLength);
 
-            freeMesh(ref ptrResultVerts, ref ptrResultTriangles);
+            Extern.freeMesh(ref ptrResultVerts, ref ptrResultTriangles);
 
             Assert.IsTrue(
                 SmokeTestMesh.PartialResultVertCheckOK(resultVertices));
@@ -105,7 +86,6 @@ namespace org.critterai.nmgen
 
             Assert.IsTrue(ptrResultVerts == IntPtr.Zero);
             Assert.IsTrue(ptrResultTriangles == IntPtr.Zero);
-
         }
 
         [TestMethod]
@@ -124,7 +104,7 @@ namespace org.critterai.nmgen
             int resultVertLength = 0;
             int resultTrianglesLength = 0;
 
-            bool success = buildSimpleMesh(config
+            bool success = Extern.buildSimpleMesh(config
                 , sourceVertices
                 , sourceVertices.Length
                 , sourceTriangles
@@ -157,7 +137,7 @@ namespace org.critterai.nmgen
 
             for (int i = 0; i < 10000; i++)
             {
-                if (buildSimpleMesh(config
+                if (Extern.buildSimpleMesh(config
                     , sourceVertices
                     , sourceVertices.Length
                     , sourceTriangles
@@ -170,16 +150,13 @@ namespace org.critterai.nmgen
                     , charMsgArray.Length
                     , 3))
                 {
-                    freeMesh(ref ptrResultVerts, ref ptrResultTriangles);
+                    Extern.freeMesh(ref ptrResultVerts, ref ptrResultTriangles);
                 }
                 else
                     Assert.Fail("Build fail on loop {0}", i);
                 if (i % 1000 == 0)
                     Debug.WriteLine("Iteration: " + i);
             }
-
         }
-
     }
-
 }

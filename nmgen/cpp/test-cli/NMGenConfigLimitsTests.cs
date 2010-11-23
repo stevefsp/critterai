@@ -40,10 +40,10 @@ namespace org.critterai.nmgen
 
             applyStandardLimits(ref config);
 
-            Assert.IsTrue(config.yResolution
-                == expected.YResolution);
-            Assert.IsTrue(config.xzResolution
-                == expected.XZResolution);
+            Assert.IsTrue(config.yCellSize
+                == expected.YCellSize);
+            Assert.IsTrue(config.xzCellSize
+                == expected.XZCellSize);
             Assert.IsTrue(config.contourMaxDeviation
                 == expected.ContourMaxDeviation);
             Assert.IsTrue(config.contourSampleDistance
@@ -62,8 +62,8 @@ namespace org.critterai.nmgen
                 == expected.MergeRegionSize);
             Assert.IsTrue(config.minTraversableHeight
                 == expected.MinTraversableHeight);
-            Assert.IsTrue(config.minUnconnectedRegionSize
-                == expected.MinUnconnectedRegionSize);
+            Assert.IsTrue(config.minIslandRegionSize
+                == expected.MinIslandRegionSize);
             Assert.IsTrue(config.smoothingThreshold
                 == expected.SmoothingThreshold);
             Assert.IsTrue(config.traversableAreaBorderSize
@@ -80,10 +80,10 @@ namespace org.critterai.nmgen
 
             applyStandardLimits(ref config);
 
-            Assert.IsTrue(config.yResolution
-                == expected.YResolution);
-            Assert.IsTrue(config.xzResolution
-                == expected.XZResolution);
+            Assert.IsTrue(config.yCellSize
+                == expected.YCellSize);
+            Assert.IsTrue(config.xzCellSize
+                == expected.XZCellSize);
             Assert.IsTrue(config.contourMaxDeviation
                 == expected.ContourMaxDeviation);
             Assert.IsTrue(config.contourSampleDistance
@@ -102,8 +102,8 @@ namespace org.critterai.nmgen
                 == expected.MergeRegionSize);
             Assert.IsTrue(config.minTraversableHeight
                 == expected.MinTraversableHeight);
-            Assert.IsTrue(config.minUnconnectedRegionSize
-                == expected.MinUnconnectedRegionSize);
+            Assert.IsTrue(config.minIslandRegionSize
+                == expected.MinIslandRegionSize);
             Assert.IsTrue(config.smoothingThreshold
                 == expected.SmoothingThreshold);
             Assert.IsTrue(config.traversableAreaBorderSize

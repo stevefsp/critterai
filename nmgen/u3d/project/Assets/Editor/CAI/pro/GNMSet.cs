@@ -101,7 +101,7 @@ public static class GNMSet
     // getting enough warnings, then you can lower them.
 
     /// <summary>
-    /// Constrols the point at which the resolution warning dialog is
+    /// Constrols the point at which the cell size warning dialog is
     /// displayed.
     /// </summary>
     /// <remarks>
@@ -110,7 +110,7 @@ public static class GNMSet
     /// <p>The value is the number of cells which will be needed
     /// during the generation.</p>
     /// </remarks>
-    public static int ResolutionWarningThreshold = 500000;
+    public static int CellSizeWarningThreshold = 1500000;
 
     /// <summary>
     /// Constrols the point at which the contour sampling warning dialog is
@@ -135,27 +135,27 @@ public static class GNMSet
     // Definitions for primary configuration foldout.
 
     /// <summary>
-    /// The GUIContent for the <see cref="NavmeshConfig.xzResolution"/>
+    /// The GUIContent for the <see cref="NavmeshConfig.xzCellSize"/>
     /// configuration setting.
     /// </summary>
-    public static GUIContent XZResolutionText = new GUIContent(
-        "XZ-resolution"
-        , "The xz-plane resolution to use when sampling the source geometry.");
+    public static GUIContent XZCellSizeText = new GUIContent(
+        "XZ Cell Size"
+        , "The xz-plane voxel size to use when sampling the source geometry.");
 
     /// <summary>
-    /// The GUIContent for the <see cref="NavmeshConfig.yResolution"/>
+    /// The GUIContent for the <see cref="NavmeshConfig.yCellSize"/>
     /// configuration setting.
     /// </summary>
-    public static GUIContent YResolutionText = new GUIContent(
-        "Y-resolution"
-        , "The y-axis resolution to use when sampling the source geometry.");
+    public static GUIContent YCellSizeText = new GUIContent(
+        "Y Cell Size"
+        , "The y-axis voxel size to use when sampling the source geometry.");
 
     /// <summary>
     /// The GUIContent for the <see cref="NavmeshConfig.minTraversableHeight"/>
     /// configuration setting.
     /// </summary>
     public static GUIContent MinHeightText = new GUIContent(
-        "Maximum Agent Height"
+        "Maximum Client Height"
         , "Minimum floor to ceiling height that will still allow the"
             + " floor area to be considered traversable.");
 
@@ -164,7 +164,7 @@ public static class GNMSet
     /// configuration setting.
     /// </summary>
     public static GUIContent MaxStepText = new GUIContent(
-        "Maximum Agent Step"
+        "Maximum Client Step"
         , "Maximum ledge height that is considered to still be traversable."
             + " Allows the mesh to flow over curbs and up/down stairways.");
 
@@ -182,10 +182,9 @@ public static class GNMSet
     /// setting.
     /// </summary>
     public static GUIContent BorderSizeText = new GUIContent(
-        "Agent Radius"
+        "Client Radius"
         , "Represents the closest any part of a mesh can get to an"
-            + " obstruction in the source geometry."
-            + " (Usually the agent radius.)");
+            + " obstruction in the source geometry.");
 
     /// <summary>
     /// The GUIContent for the <see cref="NavmeshConfig.maxEdgeLength"/>
@@ -203,8 +202,7 @@ public static class GNMSet
     public static GUIContent EdgeDeviationText = new GUIContent(
         "Edge Max Deviation"
         , "The maximum distance the edges of the mesh may deviate from"
-            + " the source geometry. (Beware of setting this value"
-            + " to low.)");
+            + " the source geometry.");
 
     /// <summary>
     /// The GUIContent for the <see cref="NavmeshConfig.contourSampleDistance"/>
@@ -213,8 +211,7 @@ public static class GNMSet
     public static GUIContent ContourSampleText = new GUIContent(
         "Contour Sample Dist"
         , "Sets the sampling distance to use when matching the"
-            + " mesh surface to the source geometry. (Beware of"
-            + " setting too low.)");
+            + " mesh surface to the source geometry.");
 
     /// <summary>
     /// The GUIContent for the <see cref="NavmeshConfig.contourMaxDeviation"/>
@@ -232,7 +229,7 @@ public static class GNMSet
     /// </summary>
     public static GUIContent IslandRegionText = new GUIContent(
         "Min Island Mesh Size"
-        , "The minimum size allowed for isolated island meshes. (XZ cells.)"
+        , "The minimum area size allowed for isolated island meshes."
             + " (Prevents the formation of meshes that are too small to be"
             + " of use.)");
 
@@ -271,8 +268,8 @@ public static class GNMSet
     /// </summary>
     public static GUIContent MergeSizeText = new GUIContent(
         "Merge Region Size"
-        , "Any regions smaller than this size will, if possible, be"
-            + " merged with larger regions. (XZ cells.)");
+        , "Any regions smaller than this area size will, if possible, be"
+            + " merged with larger regions.");
 
     /// <summary>
     /// The GUIContent for the <see cref="NavmeshConfig.clipLedges"/>

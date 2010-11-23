@@ -22,7 +22,7 @@
 
 namespace org.critterai.nmgen
 {
-    public static class StandardConfig
+    internal static class StandardConfig
     {
 
         /*
@@ -40,15 +40,15 @@ namespace org.critterai.nmgen
 
         // Design note: There should be no duplicate values
         // in these constants.
-        public const float yResolution = 0.1f;
-        public const float xzResolution = 0.2f;
+        public const float yCellSize = 0.1f;
+        public const float xzCellSize = 0.2f;
         public const float minTraversableHeight = 2.1f;
         public const float maxTraversableStep = 0.5f;
         public const float maxTraversableSlope = 48.0f;
         public const bool clipLedges = true;
         public const float traversableAreaBorderSize = 0.3f;
         public const int smoothingThreshold = 2;
-        public const int minUnconnectedRegionSize = 1000;
+        public const int minIslandRegionSize = 1000;
         public const int mergeRegionSize = 2000;
         public const float maxEdgeLength = 5.0f;
         public const float edgeMaxDeviation = 0.8f;
@@ -59,8 +59,8 @@ namespace org.critterai.nmgen
 
         public static BuildConfig GetCLIValidConfig()
         {
-            return new BuildConfig(xzResolution
-                , yResolution
+            return new BuildConfig(xzCellSize
+                , yCellSize
                 , minTraversableHeight
                 , maxTraversableStep
                 , maxTraversableSlope
@@ -68,7 +68,7 @@ namespace org.critterai.nmgen
                 , traversableAreaBorderSize
                 , heightfieldBoarderSize
                 , smoothingThreshold
-                , minUnconnectedRegionSize
+                , minIslandRegionSize
                 , mergeRegionSize
                 , maxEdgeLength
                 , edgeMaxDeviation
@@ -99,8 +99,8 @@ namespace org.critterai.nmgen
 
         public static BuildConfig GetCLIUpperLimitConfig()
         {
-            return new BuildConfig(xzResolution
-                , yResolution
+            return new BuildConfig(xzCellSize
+                , yCellSize
                 , minTraversableHeight
                 , maxTraversableStep
                 , BuildConfig.MaxAllowedSlope + 0.1f
@@ -108,7 +108,7 @@ namespace org.critterai.nmgen
                 , traversableAreaBorderSize
                 , heightfieldBoarderSize
                 , BuildConfig.MaxSmoothing + 1
-                , minUnconnectedRegionSize
+                , minIslandRegionSize
                 , mergeRegionSize
                 , maxEdgeLength
                 , edgeMaxDeviation
@@ -139,8 +139,8 @@ namespace org.critterai.nmgen
 
         public static BuildConfig GetExpectedUpperLimits()
         {
-            return new BuildConfig(xzResolution
-                , yResolution
+            return new BuildConfig(xzCellSize
+                , yCellSize
                 , minTraversableHeight
                 , maxTraversableStep
                 , BuildConfig.MaxAllowedSlope
@@ -148,7 +148,7 @@ namespace org.critterai.nmgen
                 , traversableAreaBorderSize
                 , heightfieldBoarderSize
                 , BuildConfig.MaxSmoothing
-                , minUnconnectedRegionSize
+                , minIslandRegionSize
                 , mergeRegionSize
                 , maxEdgeLength
                 , edgeMaxDeviation
@@ -170,8 +170,8 @@ namespace org.critterai.nmgen
         private static Configuration Translate(BuildConfig config)
         {
             Configuration result = new Configuration();
-            result.xzResolution = config.XZResolution;
-            result.yResolution = config.YResolution;
+            result.xzCellSize = config.XZCellSize;
+            result.yCellSize = config.YCellSize;
             result.minTraversableHeight = config.MinTraversableHeight;
             result.maxTraversableStep = config.MaxTraversableStep;
             result.maxTraversableSlope = config.MaxTraversableSlope;
@@ -179,7 +179,7 @@ namespace org.critterai.nmgen
             result.traversableAreaBorderSize = config.TraversableAreaBorderSize;
             result.heightfieldBorderSize = config.HeightfieldBorderSize;
             result.smoothingThreshold = config.SmoothingThreshold;
-            result.minUnconnectedRegionSize = config.MinUnconnectedRegionSize;
+            result.minIslandRegionSize = config.MinIslandRegionSize;
             result.mergeRegionSize = config.MergeRegionSize;
             result.maxEdgeLength = config.MaxEdgeLength;
             result.edgeMaxDeviation = config.EdgeMaxDeviation;

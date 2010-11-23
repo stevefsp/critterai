@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildConfigTestsCLI.cs" />
+    <Compile Include="Extern.cs" />
+    <Compile Include="TroubleshootingTests.cs" />
     <Compile Include="NMGenConfigLimitsTests.cs" />
     <Compile Include="StandardConfig.cs" />
     <Compile Include="Configuration.cs" />

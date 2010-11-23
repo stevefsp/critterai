@@ -16,7 +16,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-// "CMARKER" indicates a change to the original Recast code.
+// Changes to the original Recast code are taged with "CMARKER" begin
+// and end comments.
 
 #include <float.h>
 #define _USE_MATH_DEFINES
@@ -48,11 +49,11 @@ void rcContext::log(const rcLogCategory category, const char* format, ...)
 #if _MSC_VER    // TRUE for Microsoft compiler.
 	int len = vsnprintf_s(msg, MSG_SIZE, _TRUNCATE, format, ap);
 #else
-	int len = vsnprintf(msg, MSG_SIZE, _TRUNCATE, format, ap);
+	int len = vsnprintf(msg, MSG_SIZE, format, ap);
 	if (len >= MSG_SIZE)
 	{
-	    len = MSG_SIZE-1;
-	    msg[MSG_SIZE-1] = '\0';
+		len = MSG_SIZE-1;
+		msg[MSG_SIZE-1] = '\0';
 	}
 #endif
     // CMARKER: END

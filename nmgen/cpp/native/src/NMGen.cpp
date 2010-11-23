@@ -285,19 +285,19 @@ namespace nmgen
         int height, width;
 
         deriveBounds(sourceVerts, sourceVertsLength, bounds);
-	    rcCalcGridSize(&bounds[0], &bounds[3], config.xzResolution
+	    rcCalcGridSize(&bounds[0], &bounds[3], config.xzCellSize
             , &width, &height);
 
         int vxMaxTraversableStep = 
-            (int)floorf(config.maxTraversableStep / config.yResolution);
+            (int)floorf(config.maxTraversableStep / config.yCellSize);
         int vxMinTraversableHeight =
-            (int)ceilf(config.minTraversableHeight / config.yResolution);
+            (int)ceilf(config.minTraversableHeight / config.yCellSize);
         int vxTraversableAreaBorderSize= (int)ceilf(
-            config.traversableAreaBorderSize / config.xzResolution);
+            config.traversableAreaBorderSize / config.xzCellSize);
         int vxHeightfieldBorderSize= (int)ceilf(
-            config.heightfieldBorderSize / config.xzResolution);
+            config.heightfieldBorderSize / config.xzCellSize);
         int vxMaxEdgeLength = (int)ceilf(
-            config.maxEdgeLength / config.xzResolution);
+            config.maxEdgeLength / config.xzCellSize);
 
         // Log configuration related messages.
 
@@ -317,11 +317,11 @@ namespace nmgen
                             , bounds[0], bounds[1], bounds[2]
                             , bounds[3], bounds[4], bounds[5]);
             context->log(RC_LOG_PROGRESS
-                , "Config: xzResolution: %.3f wu"
-                , config.xzResolution);
+                , "Config: xzCellSize: %.3f wu"
+                , config.xzCellSize);
             context->log(RC_LOG_PROGRESS
-                , "Config: yResolution: %.3f wu"
-                , config.yResolution);
+                , "Config: yCellSize: %.3f wu"
+                , config.yCellSize);
              context->log(RC_LOG_PROGRESS
                 , "Config: maxTraversableSlop: %.2f degrees"
                 , config.maxTraversableSlope);             
@@ -344,8 +344,8 @@ namespace nmgen
                 , "Config: mergeRegionSize: %d"
                 , config.mergeRegionSize);
              context->log(RC_LOG_PROGRESS
-                , "Config: minUnconnectedRegionSize: %d"
-                , config.minUnconnectedRegionSize);
+                , "Config: minIslandRegionSize: %d"
+                , config.minIslandRegionSize);
             context->log(RC_LOG_PROGRESS
                 , "Config: maxEdgeLength: %d vx"
                 , vxMaxEdgeLength);
@@ -384,8 +384,8 @@ namespace nmgen
             , height
             , &bounds[0]
             , &bounds[3]
-            , config.xzResolution
-            , config.yResolution))
+            , config.xzCellSize
+            , config.yCellSize))
 	    {
             rcFreeHeightField(solidHeightfield);
 		    context->log(RC_LOG_ERROR
@@ -415,7 +415,9 @@ namespace nmgen
                 , "Out of memory: triangleAreas (%d).", triangleCount);
 		    return false;
 	    }
-    	
+
+    	memset(triangleAreas, 0, sizeof(unsigned char) * triangleCount);
+
 	    // Mark triangles which are walkable based on their slope
 	    rcMarkWalkableTriangles(context
             , config.maxTraversableSlope
@@ -426,7 +428,8 @@ namespace nmgen
 	    rcRasterizeTriangles(context
             , sourceVerts, vertCount
             , sourceTriangles, triangleAreas, triangleCount
-            , *solidHeightfield);
+            , *solidHeightfield
+            , vxMaxTraversableStep);
 
         delete[] triangleAreas;
         triangleAreas = 0;
@@ -528,7 +531,7 @@ namespace nmgen
 	    if (!rcBuildRegions(context
             , *compactHeightfield
             , vxHeightfieldBorderSize
-            , config.minUnconnectedRegionSize
+            , config.minIslandRegionSize
             , config.mergeRegionSize))
 	    {
             rcFreeCompactHeightfield(compactHeightfield);
