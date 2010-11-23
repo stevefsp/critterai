@@ -29,15 +29,15 @@
       <DocumentationSource sourceFile="bin\Release\cai-nmgen-cli.xml" />
     </DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">NMGen takes an arbitrary triangle mesh as input and generates a triangle mesh representing the traversable surface of the source mesh.
+      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">&lt;p&gt;This documentation covers the .NET API of NMGen's core  library.  NMGen takes an arbitrary triangle mesh as input and generates a triangle mesh representing the traversable surface of the source mesh.
 
 &lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
 &lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
 &lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;The library provides both .NET and  interop (C) interfaces.  This documentation only covers the .NET API&lt;/p&gt;
-
 &lt;p&gt;The core functionality of this libary is provided by &lt;a href="http://code.google.com/p/recastnavigation/" target="_blank"&gt;Recast&lt;/a&gt;, a C++ navigation mesh construction toolset created by Mikko Mononen and released under the MIT license.&lt;/p&gt;
+
+&lt;p&gt;WARNING:  Because the core of this library is native C++, the .NET API cannot be used within &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt;  in any way.  Attempting to use the .NET API within Unity will cause Unity v2.6 to crash, and Unity 3.x to throw a security exception to the console.  This is a technical limitation of Unity.&lt;/p&gt; 
 
 &lt;p&gt;&lt;img height="465" src="http://www.critterai.org/projects/nmgen/images/stage_detail_mesh.jpg" width="620" /&gt;&lt;/p&gt;</NamespaceSummaryItem>
 <NamespaceSummaryItem name="(global)" isDocumented="False" /></NamespaceSummaries>

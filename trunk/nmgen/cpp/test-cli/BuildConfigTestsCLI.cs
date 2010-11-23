@@ -31,10 +31,10 @@ namespace org.critterai.nmgen
         {
             BuildConfig config = StandardConfig.GetCLIValidConfig();
 
-            Assert.IsTrue(config.YResolution 
-                == StandardConfig.yResolution);
-            Assert.IsTrue(config.XZResolution 
-                == StandardConfig.xzResolution);
+            Assert.IsTrue(config.YCellSize 
+                == StandardConfig.yCellSize);
+            Assert.IsTrue(config.XZCellSize 
+                == StandardConfig.xzCellSize);
             Assert.IsTrue(config.ClipLedges 
                 == StandardConfig.clipLedges);
             Assert.IsTrue(config.ContourMaxDeviation
@@ -55,8 +55,8 @@ namespace org.critterai.nmgen
                 == StandardConfig.mergeRegionSize);
             Assert.IsTrue(config.MinTraversableHeight 
                 == StandardConfig.minTraversableHeight);
-            Assert.IsTrue(config.MinUnconnectedRegionSize
-                == StandardConfig.minUnconnectedRegionSize);
+            Assert.IsTrue(config.MinIslandRegionSize
+                == StandardConfig.minIslandRegionSize);
             Assert.IsTrue(config.SmoothingThreshold 
                 == StandardConfig.smoothingThreshold);
             Assert.IsTrue(config.TraversableAreaBorderSize 
@@ -73,10 +73,10 @@ namespace org.critterai.nmgen
 
             config.ApplyLimits();
             
-            Assert.IsTrue(config.YResolution 
-                == expected.YResolution);
-            Assert.IsTrue(config.XZResolution 
-                == expected.XZResolution);
+            Assert.IsTrue(config.YCellSize 
+                == expected.YCellSize);
+            Assert.IsTrue(config.XZCellSize 
+                == expected.XZCellSize);
             Assert.IsTrue(config.ContourMaxDeviation 
                 == expected.ContourMaxDeviation);
             Assert.IsTrue(config.ContourSampleDistance 
@@ -95,8 +95,8 @@ namespace org.critterai.nmgen
                 == expected.MergeRegionSize);
             Assert.IsTrue(config.MinTraversableHeight 
                 == expected.MinTraversableHeight);
-            Assert.IsTrue(config.MinUnconnectedRegionSize 
-                == expected.MinUnconnectedRegionSize);
+            Assert.IsTrue(config.MinIslandRegionSize 
+                == expected.MinIslandRegionSize);
             Assert.IsTrue(config.SmoothingThreshold 
                 == expected.SmoothingThreshold);
             Assert.IsTrue(config.TraversableAreaBorderSize 
@@ -113,10 +113,10 @@ namespace org.critterai.nmgen
 
             config.ApplyLimits();
 
-            Assert.IsTrue(config.YResolution
-                == expected.YResolution);
-            Assert.IsTrue(config.XZResolution
-                == expected.XZResolution);
+            Assert.IsTrue(config.YCellSize
+                == expected.YCellSize);
+            Assert.IsTrue(config.XZCellSize
+                == expected.XZCellSize);
             Assert.IsTrue(config.ContourMaxDeviation
                 == expected.ContourMaxDeviation);
             Assert.IsTrue(config.ContourSampleDistance
@@ -135,8 +135,8 @@ namespace org.critterai.nmgen
                 == expected.MergeRegionSize);
             Assert.IsTrue(config.MinTraversableHeight
                 == expected.MinTraversableHeight);
-            Assert.IsTrue(config.MinUnconnectedRegionSize
-                == expected.MinUnconnectedRegionSize);
+            Assert.IsTrue(config.MinIslandRegionSize
+                == expected.MinIslandRegionSize);
             Assert.IsTrue(config.SmoothingThreshold
                 == expected.SmoothingThreshold);
             Assert.IsTrue(config.TraversableAreaBorderSize

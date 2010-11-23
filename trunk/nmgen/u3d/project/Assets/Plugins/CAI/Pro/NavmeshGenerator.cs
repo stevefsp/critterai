@@ -21,6 +21,7 @@
  */
 using System.Runtime.InteropServices;
 using IntPtr = System.IntPtr;
+using Math = System.Math;
 
 /// <summary>
 /// Provides methods for building static triangle navigation meshes.
@@ -102,8 +103,8 @@ public static class NavmeshGenerator
     /// This method is useful as an initial validation pass.  But that is 
     /// all. Since extreme edge cases are supported by buildSimpleMesh(), 
     /// more validation is likely needed.  For example: A negative 
-    /// xzResolution is never valid.  So this method will fix that.  But 
-    /// in a tiny number of cases, an xzResolution of 0.01 is valid.  So 
+    /// xzCellSize is never valid.  So this method will fix that.  But 
+    /// in a tiny number of cases, an xzCellSize of 0.01 is valid.  So 
     /// this operation won't fix that, even though in 99.99% of the cases
     /// 0.01 is not valid.
     /// <p>See <see cref="NavmeshConfig"/> for an example of strict validations.
@@ -133,10 +134,13 @@ public static class NavmeshGenerator
          * External clients use NMGenConfig.
          * 
          * See the NMGenConfig class for API documentation on the fields.
+         * The only difference is that the region size fields in this
+         * structure are cell counts (int), while in NMGenConfig they are area
+         * sizes (float)
          * 
          */
-        public float xzResolution;
-        public float yResolution;
+        public float xzCellSize;
+        public float yCellSize;
         public float minTraversableHeight;
         public float maxTraversableStep;
         public float maxTraversableSlope;
@@ -151,7 +155,6 @@ public static class NavmeshGenerator
         public int mergeRegionSize;
         public int maxVertsPerPoly;
         public bool clipLedges;
-
     }
 
     /// <summary>
@@ -257,9 +260,9 @@ public static class NavmeshGenerator
     /// <remarks>
     /// This method is useful as an initial validation pass.  But that is all.
     /// Since extreme edge cases are supported by buildSimpleMesh(), more 
-    /// validation is likely needed.  For example: A negative xzResolution
+    /// validation is likely needed.  For example: A negative xzCellSize
     /// is never valid.  So this method will fix that.  But in a tiny number
-    /// of cases, an xzResolution of 0.01 is valid.  So this method won't fix
+    /// of cases, an xzCellSize of 0.01 is valid.  So this method won't fix
     /// that, even though in 99.99% of the cases 0.01 is not valid.
     /// See <see cref="NavmeshConfig"/> for an example of a more strict final 
     /// validation.
@@ -337,14 +340,17 @@ public static class NavmeshGenerator
         toConfig.maxTraversableSlope = fromConfig.maxTraversableSlope;
         toConfig.maxTraversableStep = fromConfig.maxTraversableStep;
         toConfig.maxVertsPerPoly = fromConfig.maxVertsPerPoly;
-        toConfig.mergeRegionSize = fromConfig.mergeRegionSize;
-        toConfig.minIslandRegionSize = fromConfig.minIslandRegionSize;
         toConfig.minTraversableHeight = fromConfig.minTraversableHeight;
         toConfig.smoothingThreshold = fromConfig.smoothingThreshold;
         toConfig.traversableAreaBorderSize = 
             fromConfig.traversableAreaBorderSize;
-        toConfig.xzResolution = fromConfig.xzResolution;
-        toConfig.yResolution = fromConfig.yResolution;
+        toConfig.xzCellSize = fromConfig.xzCellSize;
+        toConfig.yCellSize = fromConfig.yCellSize;
+
+        // Convert from cells to area.
+        float csq = (toConfig.xzCellSize * toConfig.xzCellSize);
+        toConfig.mergeRegionSize = fromConfig.mergeRegionSize * csq;
+        toConfig.minIslandRegionSize = fromConfig.minIslandRegionSize * csq;
     }
 
     /// <summary>
@@ -367,14 +373,19 @@ public static class NavmeshGenerator
         result.maxTraversableSlope = config.maxTraversableSlope;
         result.maxTraversableStep = config.maxTraversableStep;
         result.maxVertsPerPoly = config.maxVertsPerPoly;
-        result.mergeRegionSize = config.mergeRegionSize;
-        result.minIslandRegionSize = config.minIslandRegionSize;
         result.minTraversableHeight = config.minTraversableHeight;
         result.smoothingThreshold = config.smoothingThreshold;
         result.traversableAreaBorderSize = config.traversableAreaBorderSize;
-        result.xzResolution = config.xzResolution;
-        result.yResolution = config.yResolution;
+        result.xzCellSize = config.xzCellSize;
+        result.yCellSize = config.yCellSize;
+
+        // Convert from area to cells.
+        float factor = 1 / (result.xzCellSize * result.xzCellSize);
+        result.mergeRegionSize = 
+            (int)Math.Ceiling(config.mergeRegionSize * factor);
+        result.minIslandRegionSize = 
+            (int)Math.Ceiling(config.minIslandRegionSize * factor);
+
         return result;
     }
-
 }

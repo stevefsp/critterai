@@ -68,11 +68,11 @@ namespace nmgen
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="xzResolution">
-        /// The xz-plane resolution to use when sampling the source geometry.
+        /// <param name="xzCellSize">
+        /// The xz-plane voxel size to use when sampling the source geometry.
         /// </param>
-        /// <param name="yResolution">
-        /// The y-axis resolution to use when sampling the source geometry.
+        /// <param name="yCellSize">
+        /// The y-axis voxel size to use when sampling the source geometry.
         /// </param>
         /// <param name="minTraversableHeight">
         /// Minimum floor to ceiling height that will still allow the
@@ -102,7 +102,7 @@ namespace nmgen
         /// The amount of smoothing to be performed when generating the
         /// distance field used for deriving regions.
         /// </param>
-        /// <param name="minUnconnectedRegionSize">
+        /// <param name="minIslandRegionSize">
         /// The minimum size allowed for isolated island meshes. (XZ cells.)
         /// (Prevents the formation of meshes that are too small to be"
         /// of use.)
@@ -131,8 +131,8 @@ namespace nmgen
         /// The maximum distance the mesh surface can deviate from the
         /// surface of the source geometry. 
         /// </param>
-        BuildConfig(float xzResolution
-            , float yResolution
+        BuildConfig(float xzCellSize
+            , float yCellSize
             , float minTraversableHeight
             , float maxTraversableStep
             , float maxTraversableSlope
@@ -140,7 +140,7 @@ namespace nmgen
             , float traversableAreaBorderSize
             , float heightfieldBorderSize
             , int smoothingThreshold
-            , int minUnconnectedRegionSize
+            , int minIslandRegionSize
             , int mergeRegionSize
             , float maxEdgeLength
             , float edgeMaxDeviation
@@ -149,8 +149,8 @@ namespace nmgen
             , float contourMaxDeviation)
         {
             pConfig = new Configuration();
-            pConfig->xzResolution = xzResolution;
-            pConfig->yResolution = yResolution;
+            pConfig->xzCellSize = xzCellSize;
+            pConfig->yCellSize = yCellSize;
             pConfig->minTraversableHeight = minTraversableHeight;
             pConfig->maxTraversableStep = maxTraversableStep;
             pConfig->maxTraversableSlope = maxTraversableSlope;
@@ -161,7 +161,7 @@ namespace nmgen
             pConfig->contourSampleDistance = contourSampleDistance;
             pConfig->contourMaxDeviation = contourMaxDeviation;
             pConfig->smoothingThreshold = smoothingThreshold;
-            pConfig->minUnconnectedRegionSize = minUnconnectedRegionSize;
+            pConfig->minIslandRegionSize = minIslandRegionSize;
             pConfig->mergeRegionSize = mergeRegionSize;
             pConfig->maxVertsPerPoly = maxVertsPerPoly;
             pConfig->clipLedges = clipLedges;
@@ -179,19 +179,19 @@ namespace nmgen
         };
 
         /// <summary>
-        /// The xz-plane resolution to use when sampling the source geometry.
+        /// The xz-plane voxel size to use when sampling the source geometry.
         /// </summary>
-        property float XZResolution 
+        property float XZCellSize 
         { 
-            float get() { return pConfig->xzResolution; } 
+            float get() { return pConfig->xzCellSize; } 
         };
 
         /// <summary>
-        /// The y-axis resolution to use when sampling the source geometry.
+        /// The y-axis voxel size to use when sampling the source geometry.
         /// </summary>
-        property float YResolution 
+        property float YCellSize 
         { 
-            float get() { return pConfig->yResolution; } 
+            float get() { return pConfig->yCellSize; } 
         };
 
         /// <summary>
@@ -290,9 +290,9 @@ namespace nmgen
         /// (Prevents the formation of meshes that are too small to be"
         /// of use.)
         /// </summary>
-        property int MinUnconnectedRegionSize 
+        property int MinIslandRegionSize 
         { 
-            int get() { return pConfig->minUnconnectedRegionSize; } 
+            int get() { return pConfig->minIslandRegionSize; } 
         };
 
         /// <summary>
@@ -330,8 +330,8 @@ namespace nmgen
         /// <p>This method is useful as an initial validation pass.  But that is 
         /// all. Since extreme edge cases are supported by by NMGen, 
         /// more validation is likely needed.  For example: A negative 
-        /// xzResolution is never valid.  So this method will fix that.  But 
-        /// in a tiny number of cases, an xzResolution of 0.01 is valid.  So 
+        /// xzCellSize is never valid.  So this method will fix that.  But 
+        /// in a tiny number of cases, an xzCellSize of 0.01 is valid.  So 
         /// this operation won't fix that, even though in 99.99% of the cases
         /// 0.01 is not valid.</p>
         /// </remarks>

@@ -24,10 +24,10 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nmgen
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Configuration
+    internal struct Configuration
     {
-        public float xzResolution;
-        public float yResolution;
+        public float xzCellSize;
+        public float yCellSize;
         public float minTraversableHeight;
         public float maxTraversableStep;
         public float maxTraversableSlope;
@@ -38,7 +38,7 @@ namespace org.critterai.nmgen
         public float contourSampleDistance;
         public float contourMaxDeviation;
         public int smoothingThreshold;
-        public int minUnconnectedRegionSize;
+        public int minIslandRegionSize;
         public int mergeRegionSize;
         public int maxVertsPerPoly;
         public bool clipLedges;

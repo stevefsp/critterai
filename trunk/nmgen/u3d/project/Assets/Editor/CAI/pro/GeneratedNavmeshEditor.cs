@@ -106,7 +106,7 @@ public class GeneratedNavmeshEditor
         if (GUI.changed || mForceDirty)
         {
             nm.planeTolerance = Mathf.Min(nm.config.minTraversableHeight / 2
-                , nm.config.yResolution * 2);
+                , nm.config.yCellSize * 2);
             EditorUtility.SetDirty(target);
             mForceDirty = false;
         }
@@ -207,13 +207,13 @@ public class GeneratedNavmeshEditor
                 , 0
                 , 85.5f);
 
-            nm.config.xzResolution = EditorGUILayout.FloatField(
-                GNMSet.XZResolutionText
-                , nm.config.xzResolution);
+            nm.config.xzCellSize = EditorGUILayout.FloatField(
+                GNMSet.XZCellSizeText
+                , nm.config.xzCellSize);
 
-            nm.config.yResolution = EditorGUILayout.FloatField(
-                GNMSet.YResolutionText
-                , nm.config.yResolution);
+            nm.config.yCellSize = EditorGUILayout.FloatField(
+                GNMSet.YCellSizeText
+                , nm.config.yCellSize);
 
             nm.config.maxEdgeLength = EditorGUILayout.FloatField(
                 GNMSet.MaxEdgeText
@@ -231,7 +231,7 @@ public class GeneratedNavmeshEditor
                 GNMSet.ContourDevText
                 , nm.config.contourMaxDeviation);
 
-            nm.config.minIslandRegionSize = EditorGUILayout.IntField(
+            nm.config.minIslandRegionSize = EditorGUILayout.FloatField(
                 GNMSet.IslandRegionText
                 , nm.config.minIslandRegionSize);
 
@@ -269,7 +269,7 @@ public class GeneratedNavmeshEditor
                 GNMSet.HFBorderText
                 , nm.config.heightfieldBorderSize);
 
-            nm.config.mergeRegionSize = EditorGUILayout.IntField(
+            nm.config.mergeRegionSize = EditorGUILayout.FloatField(
                 GNMSet.MergeSizeText
                 , nm.config.mergeRegionSize);
 
@@ -417,20 +417,20 @@ public class GeneratedNavmeshEditor
 
         long startTickAll = System.DateTime.Now.Ticks;
 
-        if (nm.config.yResolution * 2.49f > nm.config.maxTraversableStep)
+        if (nm.config.yCellSize * 2.49f > nm.config.maxTraversableStep)
         {
             PostMessage(PrefixGen, WarnMarker, true
-                , "The y-resolution is close to or greater than"
+                , "The y-cellSize is close to or greater than"
                 + " the maximum traversable step.  Some valid steps may be"
-                + " lost. For best results, the y-resolution should be <="
+                + " lost. For best results, the y-cellsize should be <="
                 + " (max traversable step / 2.5).");
         }
-        if (nm.config.yResolution * 1.99f >= nm.config.minTraversableHeight)
+        if (nm.config.yCellSize * 1.99f >= nm.config.minTraversableHeight)
         {
             PostMessage(PrefixGen, WarnMarker, true 
-                , "The y-resolution and minimum traversable"
+                , "The y-cellsize and minimum traversable"
                 + " height combination may result in a bad mesh. The"
-                + " y-resolution should be <="
+                + " y-cellsize should be <="
                 + " (min traversable height / 2).");
         }
 
@@ -444,14 +444,14 @@ public class GeneratedNavmeshEditor
         }
 
         int width = (int)((sourceMesh.bounds[3] - sourceMesh.bounds[0])
-            / nm.config.xzResolution * 0.5f);
+            / nm.config.xzCellSize);
         int depth = (int)((sourceMesh.bounds[5] - sourceMesh.bounds[2])
-            / nm.config.xzResolution * 0.5f);
+            / nm.config.xzCellSize);
 
-        if (width * depth > GNMSet.ResolutionWarningThreshold)
+        if (width * depth > GNMSet.CellSizeWarningThreshold)
         {
             if (!EditorUtility.DisplayDialog("Are you sure?"
-                    , "Your xzResolution will result in quite a"
+                    , "Your xz-cellsize will result in quite a"
                         + " high resolution build. (" + width + " x "
                         + depth + " cells.) This may take a while."
                         + " Are you sure you are ready?"
@@ -768,5 +768,4 @@ public class GeneratedNavmeshEditor
         // http://forum.unity3d.com/threads/43565-Problem-creating-EditorWindow-from-Inspector
         GUIUtility.ExitGUI();
     }
-
 }
