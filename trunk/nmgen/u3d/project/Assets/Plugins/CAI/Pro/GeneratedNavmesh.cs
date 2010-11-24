@@ -22,23 +22,26 @@
 using UnityEngine;
 
 /// <summary>
-/// Represents a triangle based navigation mesh generated from all MeshFilter
-/// data in the attached source geometry. (Unity Pro Only)
+/// Represents a triangle based navigation mesh generated from all MeshFilter's
+/// attached to one or more GameObjects. (Unity Pro Only)
 /// </summary>
 /// <remarks>
-/// <p>Notes on use within Unity</p>
+/// <p>Notes for use within Unity</p>
 /// <ul>
-/// <li>The functionality provided by this class can only be used within 
-/// Unity Pro.  It will not function within the free version of Unity.</li>
+/// <li>The navigation mesh build functionality provided by this class can 
+/// only be used within Unity Pro.  Builds cannot be performed using the free 
+/// version of Unity.</li>
 /// <li>It is safe to attach instances of this class to scene objects that
-/// will be used in Unity Web Player deployments.  It does not contain
-/// any references to <see cref="NavmeshGenerator"/></li>
+/// will be used at runtime on any platform, including the Unity Web Player.
+/// </li>
 /// </ul>
-/// <p>The mesh build is performed by the <see cref="GeneratedNavmeshEditor"/>
-/// class via the inspector.</p>
-/// <p>The planeTolerance field is auto-set based on the configuration of the 
-/// generator.</p>
+/// <p>See <a href="http://www.critterai.org/nmgen_unitypro" target="_parent">
+/// Getting Started with Unity Pro</a> for information on how to use this
+/// class.</p>
+/// <p>The <see cref="Navmesh.planeTolerance"/> field is auto-set based on the 
+/// configuration of the generator.</p>
 /// </remarks>
+/// <seealso cref="GeneratedNavmeshEditor"/>
 [System.Serializable]
 [AddComponentMenu("CAI/Navmesh (Generated)")]
 public sealed class GeneratedNavmesh
@@ -53,13 +56,13 @@ public sealed class GeneratedNavmesh
      */
 
     /// <summary>
-    /// The configuration to use when building the mesh.
+    /// The configuration to use when building the navigation mesh.
     /// </summary>
     public NavmeshConfig config = 
         NavmeshConfig.GetDefault();
 
     /// <summary>
-    /// The source which will provide the geometry used to build the
+    /// The GameObjects which will provide the geometry used to build the
     /// navigation mesh.
     /// </summary>
     public CAISource sourceGeometry = null;

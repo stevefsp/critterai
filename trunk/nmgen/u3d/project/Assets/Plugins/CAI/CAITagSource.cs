@@ -23,13 +23,17 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides a list of GameObject sources based on a tag search.
+/// Provides a list of GameObject's based on the result of a tag search.
 /// </summary>
 /// <remarks>
-/// One or more tags are assiged to the <see cref="sourceTags"/>
+/// <p>One or more tags are assiged to the <see cref="sourceTags"/>
 /// array.  Whenever <see cref="GetSources"/> is called a search is
-/// performed and all GameObjects assigned the tag(s) will be returned.
+/// performed and all GameObjects assigned the tag(s) will be returned.</p>
+/// <p>See <a href="http://www.critterai.org/nmgen_unitypro" target="_parent">
+/// Getting Started with Unity Pro</a> for information on how to use this
+/// class.</p>
 /// </remarks>
+/// <seealso cref="CAITagSourceEditor"/>
 [System.Serializable]
 [AddComponentMenu("CAI/Tag Source")]
 public sealed class CAITagSource
@@ -44,18 +48,18 @@ public sealed class CAITagSource
      */
 
     /// <summary>
-    /// The tags to search for when gathering sources.
+    /// One or more tags to base the search on.
     /// </summary>
     public string[] sourceTags = new string[1];
 
     /// <summary>
-    /// Rerturns an array of GameObjects searched for by tag.
+    /// Rerturns an array of GameObjects based on a tag search.
     /// </summary>
     /// <remarks>
     /// The return value may be null, but the array will never contain null 
     /// values.
     /// </remarks>
-    /// <returns>An array of GameObjects searched for by tag.</returns>
+    /// <returns>An array of GameObjects based on a tag search.</returns>
     public override GameObject[] GetSources()
     {
         if (sourceTags == null)

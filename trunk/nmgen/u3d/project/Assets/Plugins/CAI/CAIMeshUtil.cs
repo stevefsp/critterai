@@ -23,7 +23,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// Provides mesh related utilities.
+/// Provides mesh related utility methods.
 /// </summary>
 public static class CAIMeshUtil
 {
@@ -38,20 +38,21 @@ public static class CAIMeshUtil
      */
 
     /// <summary>
-    /// Combines the vertices and triangles from all mesh filters
-    /// in the sources.  (Vertices will be in world space coordinates.)
+    /// Combines the vertices and triangles from all MeshFilters attached to
+    ///the provided GameObjects (including children).  
+    ///(Vertices will be in world space coordinates.)
     /// </summary>
     /// <remarks>
     /// <p>The output parameters will be null if the method return value is 
     /// FALSE.</p>
     /// </remarks>
-    /// <param name="sources">An array of GameObjects whose mesh filters are to
+    /// <param name="sources">An array of GameObjects cointaining the meshes to
     /// be combined.</param>
     /// <param name="vertices">The combined vertices in the form (x, y, z).
     /// </param>
     /// <param name="triangles">The combined triangles in the form
     /// (vertAIndex, vertBIndex, vertCIndex).</param>
-    /// <returns>TRUE if triangles were found within the sources.</returns>
+    /// <returns>TRUE if any triangles were found in the GameObjects.</returns>
     public static bool CombineMeshFilters(GameObject[] sources
         , out float[] vertices, out int[] triangles)
     {
@@ -86,14 +87,14 @@ public static class CAIMeshUtil
     }
 
     /// <summary>
-    /// Returns an array of MeshFilters contained by the GameObjects.
+    /// Returns an array of MeshFilters contained by the provided GameObjects.
     /// </summary>
     /// <remarks>All returned MeshFilters are guarenteed to contain meshes
     /// with a triangle count > 0.</remarks>
     /// <param name="sources">An array of game objects to be searched.</param>
-    /// <param name="vertexCount">The total number of vertices in the
+    /// <param name="vertexCount">The total number of vertices found in the
     /// MeshFilters.</param>
-    /// <param name="triangleCount">The total number of indices in the
+    /// <param name="triangleCount">The total number of triangles found in the
     /// MeshFilters.</param>
     /// <returns>TRUE if any valid MeshFilters were found.</returns>
     private static MeshFilter[] GetMeshFilters(GameObject[] sources
@@ -135,7 +136,7 @@ public static class CAIMeshUtil
     }
 
     /// <summary>
-    /// Combines all meshes in the provided filters into a single mesh.
+    /// Combines all meshes in the provided MeshFilters into a single mesh.
     /// </summary>
     /// <param name="filters">The filters to combine. (All filters must
     /// have meshes attached.)</param>

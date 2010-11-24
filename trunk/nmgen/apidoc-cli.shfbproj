@@ -14,35 +14,38 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\apidoc\cli\</OutputPath>
-    <HtmlHelpName>cai-nmgen-cli-help</HtmlHelpName>
+    <OutputPath>.\apidoc\</OutputPath>
+    <HtmlHelpName>cai-nmgen</HtmlHelpName>
     <Language>en-US</Language>
-    <BuildLogFile>bin\apidoc.log</BuildLogFile>
+    <BuildLogFile>apidoc.log</BuildLogFile>
     <FrameworkVersion>2.0.50727</FrameworkVersion>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightText>Copyright %28c%29 2010 Stephen A. Pratt.</CopyrightText>
-    <HelpTitle>CritterAI NMGen Library %28.NET Interface%29</HelpTitle>
+    <HelpTitle>CritterAI NMGen API%27s</HelpTitle>
     <IndentHtml>False</IndentHtml>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
     <DocumentationSources>
-      <DocumentationSource sourceFile="bin\Release\cai-nmgen-cli.dll" />
-      <DocumentationSource sourceFile="bin\Release\cai-nmgen-cli.xml" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="cpp\bin\Release\cai-nmgen-cli.dll" />
+<DocumentationSource sourceFile="cpp\bin\Release\cai-nmgen-cli.xml" />
+<DocumentationSource sourceFile="u3d\prodoc\bin\Unity3DProDoc.dll" />
+<DocumentationSource sourceFile="u3d\prodoc\bin\Unity3DProDoc.xml" /></DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">&lt;p&gt;This documentation covers the .NET API of NMGen's core  library.  NMGen takes an arbitrary triangle mesh as input and generates a triangle mesh representing the traversable surface of the source mesh.
+      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">&lt;p&gt;The .NET API for NMGen's core  library.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href="http://www.critterai.org/" target="_parent"&gt;Project Home&lt;br /&gt; 
-&lt;/a&gt;&lt;a href="http://code.google.com/p/critterai/" target="_parent"&gt;Project Source&lt;/a&gt;&lt;br /&gt; 
-&lt;a href="http://www.critterai.org/cailic" target="_parent"&gt;License&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;WARNING:  Because the core of this library contains native C++, the .NET API cannot be used within &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt;  in any way.  Attempting to use the .NET API within Unity will cause Unity v2.6 to crash, and Unity 3.x to throw a security exception to the console.  This is a technical limitation of Unity.&lt;/p&gt;</NamespaceSummaryItem>
+<NamespaceSummaryItem name="(global)" isDocumented="True">The scripts and supporting classes included in the NMGen package for &lt;a href="http://unity3d.com/"&gt;Unity Pro&lt;/a&gt;.
 
-&lt;p&gt;The core functionality of this libary is provided by &lt;a href="http://code.google.com/p/recastnavigation/" target="_blank"&gt;Recast&lt;/a&gt;, a C++ navigation mesh construction toolset created by Mikko Mononen and released under the MIT license.&lt;/p&gt;
+&lt;p&gt;See &lt;a href="http://www.critterai.org/nmgen_unitypro" target="_parent"&gt;Getting Started with Unity Pro&lt;/a&gt; for details on how these classes are used in the Unity Editor.&lt;/p&gt;</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Unity3DProDoc" isDocumented="False" /></NamespaceSummaries>
+    <ProjectSummary>&amp;lt%3bp&amp;gt%3bNMGen takes an arbitrary triangle mesh as input and generates a triangle mesh representing the traversable surface of the source mesh.&amp;lt%3b/p&amp;gt%3b
 
-&lt;p&gt;WARNING:  Because the core of this library is native C++, the .NET API cannot be used within &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt;  in any way.  Attempting to use the .NET API within Unity will cause Unity v2.6 to crash, and Unity 3.x to throw a security exception to the console.  This is a technical limitation of Unity.&lt;/p&gt; 
+&amp;lt%3bp&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3bbr /&amp;gt%3b 
+&amp;lt%3b/a&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Source&amp;lt%3b/a&amp;gt%3b&amp;lt%3bbr /&amp;gt%3b 
+&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/p&amp;gt%3b
 
-&lt;p&gt;&lt;img height="465" src="http://www.critterai.org/projects/nmgen/images/stage_detail_mesh.jpg" width="620" /&gt;&lt;/p&gt;</NamespaceSummaryItem>
-<NamespaceSummaryItem name="(global)" isDocumented="False" /></NamespaceSummaries>
-    <ProjectSummary>
-    </ProjectSummary>
+&amp;lt%3bp&amp;gt%3bThe core functionality of NMGen is provided by &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/recastnavigation/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bRecast&amp;lt%3b/a&amp;gt%3b, a C++ navigation mesh construction toolset created by Mikko Mononen and released under the MIT license.&amp;lt%3b/p&amp;gt%3b
+
+&amp;lt%3bp&amp;gt%3b&amp;lt%3bimg alt=&amp;quot%3bNMGen Interior Example&amp;quot%3b height=&amp;quot%3b322&amp;quot%3b src=&amp;quot%3bhttp://www.critterai.org/projects/nmgen/images/NMGenInteriorExample.jpg&amp;quot%3b width=&amp;quot%3b620&amp;quot%3b/&amp;gt%3b&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <CppCommentsFixup>True</CppCommentsFixup>
     <HeaderText>
     </HeaderText>
@@ -51,6 +54,9 @@
     </ApiFilter>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, Protected, SealedProtected</VisibleItems>
     <NamingMethod>Guid</NamingMethod>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>CritterAI NMGen API%27s</RootNamespaceTitle>
+    <SyntaxFilters>CSharp, JavaScript</SyntaxFilters>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

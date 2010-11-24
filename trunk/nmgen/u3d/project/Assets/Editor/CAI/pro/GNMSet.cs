@@ -22,7 +22,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Holds configuration settings and state that are shared between all 
+/// Provides configuration settings and state shared by all 
 /// instances of <see cref="GeneratedNavmeshEditor"/>.  (Unity Pro Only)
 /// </summary>
 /// <remarks>

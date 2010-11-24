@@ -38,8 +38,9 @@ namespace nmgen
      */
 
     /// <summary>
-    /// The <a href="http://www.critterai.org/nmgen_settings" target="_parent">
-    /// configuration</a> to use when building a navigation mesh.
+    /// Provides the 
+    /// <a href="http://www.critterai.org/nmgen_settings" target="_parent">
+    /// configuration</a> settings to use when building a navigation mesh.
     /// </summary>
     /// <remarks>
     /// <a href="http://www.critterai.org/nmgen_settings" target="_parent">
@@ -342,7 +343,7 @@ namespace nmgen
     };
 
     /// <summary>
-    /// Data representing a triangle mesh.
+    /// Represents a simple triangle mesh.
     /// </summary>
     public ref class TriangleMesh sealed
     {
@@ -378,7 +379,7 @@ namespace nmgen
     };
 
     /// <summary>
-    /// Provides methods for generating navigation meshes.
+    /// Provides methods used to generate navigation meshes.
     /// </summary>
     public ref class MeshBuilder
     {
