@@ -27,8 +27,8 @@ using org.critterai.math;
 using System.IO;
 
 /// <summary>
-/// Provides custom inspector and navigation mesh build functionality for
-/// <see cref="GeneratedNavmesh"/>.  (Unity Pro Only)
+/// Provides a custom inspector for <see cref="GeneratedNavmesh"/>, including
+/// the ability to generate the navigation mesh.  (Unity Pro Only)
 /// </summary>
 /// <remarks>
 /// <p>Customize this inspector to meet your needs by changing

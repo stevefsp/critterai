@@ -23,26 +23,19 @@ using UnityEngine;
 using org.critterai.math;
 
 /// <summary>
-/// Provides a simple method of viewing navigation meshes, both in-game and
-/// in-editor.
+/// Provides a simple way to view navigation meshes, both in the Unity
+/// Editor and at runtime.
 /// </summary>
 /// <remarks>
 /// <p>Used primarily for debug purposes.</p>
-/// <p>Can be added to the scene using several different menus:</p>
-/// <ul>
-/// <li>GameObject > Create Other > Generated Navmesh: Adds both
-/// the navigation mesh and viewer in a single object.</li>
-/// <li>GameObject > Create Other > Navmesh Viewer.</li>
-/// <li>Component > CAI > Navmesh Viewer.</li>
-/// </ul>
-/// <p>Once a navigation mesh is assigned to the viewer, it will automatically 
-/// monitored and update its mesh to match the navigation mesh. But sometimes 
-/// the Unity Editor can get finicky.  When it does, you can use the 
-/// Force Rebuild button.
+/// <p>See <a href="http://www.critterai.org/nmgen_unitypro" target="_parent">
+/// Getting Started with Unity Pro</a> for information on how to use this
+/// class.</p>
+/// <p>Once a navigation mesh is assigned to an instance of this class it will 
+/// be automatically monitored for changes, even in the Unity Editor.
 /// </p>
-/// <p>The inspector also contains a "Display Mesh" toggle that allows you to
-/// turn on and off the navigation mesh's display.</p>
 /// </remarks>
+/// <seealso cref="NavmeshViewEditor"/>
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [ExecuteInEditMode]

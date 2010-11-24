@@ -22,14 +22,14 @@
 using UnityEngine;
 
 /// <summary>
-/// Provides a standard API for requesting GameObjects sources.
+/// Provides a standard API for generating a list of GameObjects.
 /// </summary>
 /// <remarks>
-/// <p>A source is a generic term referring to GameObjects that are
-/// used as a source of information.  The concrete class my use any
-/// number of methods to derive the sources it provides.</p>
-/// <p>This class provides a way of querying GameObjects without the
-/// client class having any idea how the source list is derived.</p>
+/// <p>A 'source' is a generic term referring to GameObjects that are
+/// used as a source of information.  The concrete class may use any
+/// number of methods to derive the list of sources it provides.</p>
+/// <p>This class provides a way of getting a list of GameObjects without the
+/// client class having any idea how the list is derived.</p>
 /// </remarks>
 [System.Serializable]
 public abstract class CAISource
@@ -44,7 +44,7 @@ public abstract class CAISource
      */
 
     /// <summary>
-    /// Returns a list of GameObjects used as sources.
+    /// Returns a list of GameObjects to be used as sources.
     /// </summary>
     /// <remarks>
     /// The return value may be null, and the returned array may contain

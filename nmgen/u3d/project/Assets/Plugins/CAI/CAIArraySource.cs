@@ -22,13 +22,17 @@
 using UnityEngine;
 
 /// <summary>
-/// Provides a list of GameObject sources based on a stored array.
+/// Provides a list of GameObjects based on an array.
 /// </summary>
 /// <remarks>
-/// One or more GameObject's are directly to the <see cref="sources"/>
-/// array.  Then a reference to the array is returned when 
-/// <see cref="GetSources"/> is called.
+/// <p>One or more GameObject's are assigned directly to the <see cref="sources"/>
+/// array.  Then a reference to the array is returned by
+/// <see cref="GetSources"/>.</p>
+/// <p>See <a href="http://www.critterai.org/nmgen_unitypro" target="_parent">
+/// Getting Started with Unity Pro</a> for information on how to use this
+/// class.</p>
 /// </remarks>
+/// <seealso cref="CAIArraySourceEditor"/>
 [System.Serializable]
 [AddComponentMenu("CAI/Array Source")]
 public sealed class CAIArraySource
@@ -43,7 +47,7 @@ public sealed class CAIArraySource
      */
 
     /// <summary>
-    /// The source GameObjects to be returned by the <see cref="GetSources"/>
+    /// The GameObjects to be returned by the <see cref="GetSources"/>
     /// method.
     /// </summary>
     public GameObject[] sources = new GameObject[1];

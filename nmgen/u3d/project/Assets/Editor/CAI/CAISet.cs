@@ -21,12 +21,12 @@
  */
 
 /// <summary>
-/// Provides editor settings common to multiple CAI classes.
+/// Provides editor settings shared between CAI classes.
 /// </summary>
-public class CAISet 
+public static class CAISet 
 {
     /// <summary>
-    /// The default editor label with.
+    /// The default label with to use for custom editors.
     /// </summary>
     public const int DefaultLabelWidth = 150;
 

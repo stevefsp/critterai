@@ -28,7 +28,8 @@ using Math = System.Math;
 ///  (Unity Pro Only)
 /// </summary>
 /// <remarks>
-/// This class handles all interop marshalling to/from the cai-nmgen-cli libary.
+/// This class handles all interop marshalling to/from the cor cai-nmgen-cli 
+/// libary.
 /// <p>Notes on use within Unity</p>
 /// <ul>
 /// <li>The functionality provided by this class can only be used within 
@@ -101,12 +102,12 @@ public static class NavmeshGenerator
     /// </summary>
     /// <remarks>
     /// This method is useful as an initial validation pass.  But that is 
-    /// all. Since extreme edge cases are supported by buildSimpleMesh(), 
+    /// all. Since extreme edge cases are supported by NMGen, 
     /// more validation is likely needed.  For example: A negative 
-    /// xzCellSize is never valid.  So this method will fix that.  But 
-    /// in a tiny number of cases, an xzCellSize of 0.01 is valid.  So 
-    /// this operation won't fix that, even though in 99.99% of the cases
-    /// 0.01 is not valid.
+    /// <see cref="NavmeshConfig.xzCellSize"/> is never valid.  So this method 
+    /// will fix that.  But an <see cref="NavmeshConfig.xzCellSize"/> of 0.01 
+    /// is technically valid.  So this operation won't fix that, even though it
+    /// is not valid in 99.99% of the cases.
     /// <p>See <see cref="NavmeshConfig"/> for an example of strict validations.
     /// </p>
     /// </remarks>
@@ -172,8 +173,8 @@ public static class NavmeshGenerator
     /// fails.</param>
     /// <param name="messages">Messages from the build process.  Will
     /// be null if the message style disables messages.</param>
-    /// <param name="messageStyle">The message style for the messages 
-    /// argument.</param>
+    /// <param name="messageStyle">The level of detail for the
+    /// build messages.</param>
     /// <returns>TRUE if mesh creation was successful.
     /// </returns>
     public static bool BuildMesh(NavmeshConfig config
@@ -254,18 +255,20 @@ public static class NavmeshGenerator
     }
 
     /// <summary>
-    /// Applies the mandatory configuration limits required by the
-    /// <see cref="BuildMesh"/>method.
+    /// Applies the mandatory configuration limits required by 
+    /// <see cref="BuildMesh">BuildMesh</see>.
     /// </summary>
     /// <remarks>
-    /// This method is useful as an initial validation pass.  But that is all.
-    /// Since extreme edge cases are supported by buildSimpleMesh(), more 
-    /// validation is likely needed.  For example: A negative xzCellSize
-    /// is never valid.  So this method will fix that.  But in a tiny number
-    /// of cases, an xzCellSize of 0.01 is valid.  So this method won't fix
-    /// that, even though in 99.99% of the cases 0.01 is not valid.
-    /// See <see cref="NavmeshConfig"/> for an example of a more strict final 
-    /// validation.
+    /// <p>This method is useful as an initial validation pass.  But that is 
+    /// all. More validation is likely needed since extreme edge cases are 
+    /// supported by NMGen.</p>
+    /// <p>For example: A negative <see cref="NavmeshConfig.xzCellSize"/> is 
+    /// never valid.  So this method will fix that.  But an 
+    /// <see cref="NavmeshConfig.xzCellSize"/> of 0.01  is technically valid.  
+    /// So this operation won't fix that, even though it is not valid in 
+    /// 99.99% of the cases.</p>
+    /// <p>See <see cref="NavmeshConfig"/> for an example of strict validations.
+    /// </p>
     /// </remarks>
     /// <param name="config">The configuration to check and update.</param>
     public static void ApplyMandatoryLimits(NavmeshConfig config)

@@ -87,7 +87,8 @@ public class Navmesh
     public float planeTolerance = 0.5f;
 
     /// <summary>
-    /// Clears all mesh information, setting the vertices and triangles to null.
+    /// Clears the mesh information, setting <see cref="vertices"/>  and 
+    /// <see cref="triangles"/> to null.
     /// </summary>
     /// <remarks>
     /// Calling this method will increment the revision field.
@@ -102,7 +103,7 @@ public class Navmesh
     }
 
     /// <summary>
-    /// Derives the AABB bounds based on the mesh'es vertices.
+    /// Derives the AABB bounds of the mesh based on the mesh's vertices.
     /// </summary>
     /// <remarks>
     /// Calling this method will increment the revision field.

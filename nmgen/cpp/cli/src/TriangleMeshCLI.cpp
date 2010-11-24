@@ -70,6 +70,12 @@ namespace nmgen
         return result;
     }
 
+    /*
+     * Documentation note:  The document generator does not like 
+     * comments attached to the implementation of properties.  Have to put 
+     * the comments in the header file.
+     */
+
     int TriangleMesh::TriangleCount::get()
     {
         return (triangles == nullptr ? 0 : triangles->Length / 3);

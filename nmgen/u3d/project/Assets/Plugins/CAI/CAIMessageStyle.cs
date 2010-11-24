@@ -21,7 +21,7 @@
  */
 
 /// <summary>
-/// Console message styles.
+/// Defines the detail to use when generating Unity Editor debug messages.
 /// </summary>
 public enum CAIMessageStyle
 {
@@ -39,7 +39,7 @@ public enum CAIMessageStyle
 
     /// <summary>
     /// Send only minimal messages, usually only errors and warnings,
-    /// should be sent to the console.
+    /// to the console.
     /// </summary>
     Brief = 1, 
 

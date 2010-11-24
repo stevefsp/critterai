@@ -21,7 +21,8 @@
  */
 
 /// <summary>
-/// Provides various constants and utility methods for CAI classes.
+/// Provides various constants and utility methods shared between CAI 
+/// classes.
 /// </summary>
 public static class CAIUtil
 {
