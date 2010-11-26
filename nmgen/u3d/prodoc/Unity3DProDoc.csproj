@@ -39,11 +39,11 @@
     </Reference>
     <Reference Include="cai-nmgen-cli, Version=0.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\project\Assets\Plugins\cai-nmgen-cli.dll</HintPath>
+      <HintPath>..\..\cpp\bin\Release\cai-nmgen-cli.dll</HintPath>
     </Reference>
-    <Reference Include="cai-util-u3d, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="cai-util-u3d, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\project\Assets\Plugins\cai-util-u3d.dll</HintPath>
+      <HintPath>..\..\..\lib\dotNet\cai-util-u3d.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
