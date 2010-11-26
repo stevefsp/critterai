@@ -27,6 +27,8 @@ namespace org
 {
 namespace critterai
 {
+namespace nav
+{
 namespace nmgen
 {
         /// <summary>
@@ -158,6 +160,8 @@ namespace nmgen
 
         return finalMesh;
     }
+
+}
 }
 }
 }

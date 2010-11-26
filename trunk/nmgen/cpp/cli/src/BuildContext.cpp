@@ -26,6 +26,8 @@ namespace org
 {
 namespace critterai
 {
+namespace nav
+{
 namespace nmgen
 {
     BuildContext::BuildContext()
@@ -80,6 +82,8 @@ namespace nmgen
 
     int BuildContext::getMessagePoolLength() const { return mTextPoolSize; }
     const char* BuildContext::getMessagePool() const { return mTextPool; }
+
+}
 }
 }
 }

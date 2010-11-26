@@ -21,7 +21,7 @@
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     [TestClass]
     public sealed class BuildConfigTestsCLI
