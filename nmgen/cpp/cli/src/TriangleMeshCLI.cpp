@@ -25,6 +25,8 @@ namespace org
 {
 namespace critterai
 {
+namespace nav
+{
 namespace nmgen
 {
     /// <summary>
@@ -85,6 +87,7 @@ namespace nmgen
     {
         return (vertices == nullptr ? 0 : vertices->Length / 3);
     }
+}
 }
 }
 }

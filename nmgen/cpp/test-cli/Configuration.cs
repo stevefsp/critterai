@@ -21,7 +21,7 @@
  */
 using System.Runtime.InteropServices;
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct Configuration

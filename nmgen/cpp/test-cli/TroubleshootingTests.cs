@@ -27,7 +27,7 @@ using System.IO;
 using org.critterai.mesh;
 using org.critterai.math;
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     /*
      * This test class does not contain any real tests.  It is used to aid

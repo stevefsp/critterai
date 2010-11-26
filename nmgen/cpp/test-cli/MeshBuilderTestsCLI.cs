@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     [TestClass]
     public sealed class MeshBuilderTestsCLI

@@ -32,6 +32,8 @@ namespace org
 {
 namespace critterai
 {
+namespace nav
+{
 namespace nmgen
 {
     /*
@@ -150,6 +152,7 @@ extern "C"
 
 }
 
+}
 }
 }
 }

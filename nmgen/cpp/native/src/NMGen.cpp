@@ -27,6 +27,8 @@ namespace org
 {
 namespace critterai
 {
+namespace nav
+{
 namespace nmgen
 {
 
@@ -709,6 +711,7 @@ namespace nmgen
 
         return true;
     }
+}
 }
 }
 }

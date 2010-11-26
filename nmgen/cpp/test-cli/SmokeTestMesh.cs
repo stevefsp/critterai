@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     internal static class SmokeTestMesh
     {

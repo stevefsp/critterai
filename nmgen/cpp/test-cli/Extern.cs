@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace org.critterai.nmgen
+namespace org.critterai.nav.nmgen
 {
     static class Extern
     {
