@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.math.geom;
+using org.critterai.geom;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     [TestClass()]
     public class Polygon3Test

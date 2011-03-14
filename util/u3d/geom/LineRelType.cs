@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     /// <summary>
     /// Specifies the relationship between two lines.

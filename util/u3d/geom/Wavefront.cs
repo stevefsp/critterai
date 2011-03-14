@@ -22,9 +22,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
-using org.critterai.math;
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     /// <summary>
     /// Provides some simple Wavefront utility methods.

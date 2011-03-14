@@ -22,7 +22,7 @@
 using System;
 using UnityEngine;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     /// <summary>
     /// Provides various 3D vector utility methods which are not provided

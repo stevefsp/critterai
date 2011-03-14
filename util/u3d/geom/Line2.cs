@@ -21,7 +21,7 @@
  */
 using UnityEngine;
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     /// <summary>
     /// Provides 2D line and line segment utility methods.

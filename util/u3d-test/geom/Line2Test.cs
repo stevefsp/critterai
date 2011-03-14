@@ -22,7 +22,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     [TestClass()]
     public class Line2Test

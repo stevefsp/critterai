@@ -22,7 +22,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     [TestClass()]
     public class Vector3UtilTest

@@ -24,7 +24,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     [TestClass]
     public sealed class WavefrontTests

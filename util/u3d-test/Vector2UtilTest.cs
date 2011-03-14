@@ -19,12 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.math;
+using org.critterai.geom;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnityEngine;
 using System;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     [TestClass()]
     public class Vector2UtilTest
