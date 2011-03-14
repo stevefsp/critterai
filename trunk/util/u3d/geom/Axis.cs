@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     /// <summary>
     /// Represents a euclidean axis.

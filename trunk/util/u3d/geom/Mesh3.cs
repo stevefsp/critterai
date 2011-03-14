@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 using System;
-using org.critterai.math.geom;
+using org.critterai.geom;
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     /// <summary>
     /// A data structure representing a simple 3D polygon mesh with
@@ -140,7 +140,7 @@ namespace org.critterai.mesh
         public static void GetWrapStatisicsXZ(float[] vertices, int[] triangles
             , out int cwCount, out int ccwCount, out int vertical)
         {
-            const float tolerance = math.MathUtil.TOLERANCE_STD;
+            const float tolerance = MathUtil.TOLERANCE_STD;
             cwCount = 0;
             ccwCount = 0;
             vertical = 0;

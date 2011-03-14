@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.util
+namespace org.critterai
 {
     /// <summary>
     /// Provides utility methods useful for reading and mutating 4-bit 

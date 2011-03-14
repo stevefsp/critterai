@@ -22,7 +22,7 @@
 using System;
 using UnityEngine;
 
-namespace org.critterai.math.geom
+namespace org.critterai.geom
 {
     /// <summary>
     /// Provides various 3D triangle utility methods.

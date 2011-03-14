@@ -22,7 +22,7 @@
 using System;
 using UnityEngine;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     /// <summary>
     /// Provides various 2D vector utility methods which are not provided
@@ -33,7 +33,6 @@ namespace org.critterai.math
     /// </remarks>
     public static class Vector2Util
     {
-
         private const float EPSILON_STD = MathUtil.EPSILON_STD;
 
         /// <summary>

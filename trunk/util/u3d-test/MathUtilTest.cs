@@ -21,7 +21,7 @@
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     [TestClass()]
     public class MathUtilTest

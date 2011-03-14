@@ -21,7 +21,7 @@
  */
 using System;
 
-namespace org.critterai.math
+namespace org.critterai
 {
     /// <summary>
     /// Provides various math related utility methods.

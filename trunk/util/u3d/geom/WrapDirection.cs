@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     /// <summary>
     /// Indicates the wrap direction of a polygon when projected onto a 2D

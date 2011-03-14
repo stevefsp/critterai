@@ -21,7 +21,7 @@
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     [TestClass]
     public sealed class BaseMesh3Tests

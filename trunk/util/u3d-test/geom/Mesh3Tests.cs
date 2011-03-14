@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using org.critterai.math.geom;
+using org.critterai.geom;
 
-namespace org.critterai.mesh
+namespace org.critterai.geom
 {
     [TestClass]
     public sealed class Mesh3Tests

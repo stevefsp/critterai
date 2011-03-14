@@ -21,7 +21,7 @@
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace org.critterai.util
+namespace org.critterai
 {
     [TestClass()]
     public class UIntPack4Test
