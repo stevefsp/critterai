@@ -58,7 +58,7 @@
     <Shadow Include="Test References\cai-util-u3d.accessor" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\cai-util-u3d.csproj">
+    <ProjectReference Include="..\u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
