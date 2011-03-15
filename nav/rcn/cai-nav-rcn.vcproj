@@ -241,7 +241,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="RCNNativeHeaders"
+			Name="RCNHeaders"
 			>
 			<File
 				RelativePath="include\DetourNavMeshEx.h"
@@ -309,7 +309,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="RCNNativeSource"
+			Name="RCNSource"
 			>
 			<File
 				RelativePath="src\BuildBaseRCNavMesh.cpp"
