@@ -42,24 +42,26 @@ namespace org.critterai.geom
 
         /// <summary>
         /// Combines the vertices and triangles from all MeshFilters attached to
-        ///the provided GameObjects (including children).  
-        ///(Vertices will be in world space coordinates.)
+        /// the provided GameObjects (including children).  
         /// </summary>
         /// <remarks>
         /// <p>The output parameters will be null if the method return value is 
         /// FALSE.</p>
+        /// <p>Vertices will be in world space coordinates.</p>
         /// </remarks>
-        /// <param name="sources">An array of GameObjects cointaining the meshes to
-        /// be combined.</param>
+        /// <param name="sources">An array of GameObjects cointaining the 
+        /// meshes to be combined.</param>
         /// <param name="vertices">The combined vertices in the form (x, y, z).
         /// </param>
         /// <param name="triangles">The combined triangles in the form
         /// (vertAIndex, vertBIndex, vertCIndex).</param>
-        /// <returns>TRUE if any triangles were found in the GameObjects.</returns>
+        /// <returns>TRUE if any triangles were found in the GameObjects.
+        /// Otherwise FALSE.
+        /// </returns>
         public static bool CombineMeshFilters(GameObject[] sources
             , out float[] vertices, out int[] triangles)
         {
-            if (sources == null)
+            if (sources == null || sources.Length == 0)
             {
                 vertices = null;
                 triangles = null;
@@ -108,6 +110,7 @@ namespace org.critterai.geom
             vertexCount = 0;
             triangleCount = 0;
 
+            // Design note: Don't need to do a length check.
             if (sources == null)
                 return null;
 

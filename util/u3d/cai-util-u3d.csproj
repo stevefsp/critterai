@@ -37,13 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrayUtil.cs" />
     <Compile Include="ColorUtil.cs" />
+    <Compile Include="ValidationState.cs" />
     <Compile Include="geom\Axis.cs" />
     <Compile Include="geom\MeshUtil.cs" />
     <Compile Include="geom\WrapDirection.cs" />
@@ -55,7 +59,10 @@
     <Compile Include="geom\Rectangle2.cs" />
     <Compile Include="geom\Triangle2.cs" />
     <Compile Include="geom\Triangle3.cs" />
+    <Compile Include="GLUtil.cs" />
     <Compile Include="MathUtil.cs" />
+    <Compile Include="TextUtil.cs" />
+    <Compile Include="U3DUtil.cs" />
     <Compile Include="Vector2Util.cs" />
     <Compile Include="Vector3Util.cs" />
     <Compile Include="geom\BoundedMesh3.cs" />
