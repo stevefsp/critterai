@@ -73,5 +73,91 @@ namespace org.critterai
             Assert.IsTrue(MathUtil.Clamp(6, 4, 6) == 6);
             Assert.IsTrue(MathUtil.Clamp(7, 4, 6) == 6);
         }
+
+        [TestMethod]
+        public void CleanFlagsULong()
+        {
+            ulong flag = 0xffffffff;
+
+            ulong expected = 0x00000000000fffff;
+            ulong actual = MathUtil.CleanBits(flag, 20);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xffffffffffffffff;
+            expected = flag;
+            actual = MathUtil.CleanBits(flag, 64);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xffffff0fffffffff;
+            expected = flag;
+            actual = MathUtil.CleanBits(flag, 68);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xffffffffffffffff;
+            expected = 0;
+            actual = MathUtil.CleanBits(flag, -1);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xffffffffffffffff;
+            expected = 0;
+            actual = MathUtil.CleanBits(flag, 0);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xffffffffffffffff;
+            expected = 3;
+            actual = MathUtil.CleanBits(flag, 2);
+            Assert.IsTrue(actual == expected);
+        }
+
+        [TestMethod]
+        public void CleanFlagsUInt()
+        {
+            // Not performing full tests based on knowledge that
+            // this function calls the ulong version.
+
+            uint flag = 0xffffffff;
+            uint expected = 0x00ffffff;
+            uint actual = MathUtil.CleanBits(flag, 24);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xfffff0ff;
+            expected = flag;
+            actual = MathUtil.CleanBits(flag, 33);
+            Assert.IsTrue(actual == expected);
+        }
+
+        [TestMethod]
+        public void CleanFlagsUShort()
+        {
+            // Not performing full tests based on knowledge that
+            // this function calls the ulong version.
+
+            ushort flag = 0xffff;
+            ushort expected = 0x0fff;
+            ushort actual = MathUtil.CleanBits(flag, 12);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xf0ff;
+            expected = flag;
+            actual = MathUtil.CleanBits(flag, 17);
+            Assert.IsTrue(actual == expected);
+        }
+
+        [TestMethod]
+        public void CleanFlagsByte()
+        {
+            // Not performing full tests based on knowledge that
+            // this function calls the ulong version.
+
+            byte flag = 0xff;
+            byte expected = 0x0f;
+            byte actual = MathUtil.CleanBits(flag, 4);
+            Assert.IsTrue(actual == expected);
+
+            flag = 0xf7;
+            expected = flag;
+            actual = MathUtil.CleanBits(flag, 9);
+            Assert.IsTrue(actual == expected);
+        }
     }
 }
