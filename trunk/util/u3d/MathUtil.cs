@@ -110,5 +110,31 @@ namespace org.critterai
                 result = Math.Min(result, values[i]);
             return result;
         }
+
+        public static byte CleanBits(byte flag, int limit)
+        {
+            return (byte)CleanBits((ulong)flag, Math.Min(8, limit));
+        }
+
+        public static ushort CleanBits(ushort flag, int limit)
+        {
+            return (ushort)CleanBits((ulong)flag, Math.Min(16, limit));
+        }
+
+        public static uint CleanBits(uint flag, int limit)
+        {
+            return (uint)CleanBits((ulong)flag, Math.Min(32, limit));
+        }
+
+        public static ulong CleanBits(ulong flag, int limit)
+        {
+            limit = Math.Max(0, Math.Min(64, limit));
+            ulong mask = 0;
+            for (int i = 0; i < (int)limit; i++)
+            {
+                mask = (mask | (1UL << i));
+            }
+            return (flag & mask);
+        }
     }
 }
