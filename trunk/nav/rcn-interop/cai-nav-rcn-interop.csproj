@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E86A77DF-D270-4A68-9BFE-E5690440921F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>org.critterai</RootNamespace>
+    <AssemblyName>cai-nav-rcn-interop</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="nav\rcn\Builders.cs" />
+    <Compile Include="nav\rcn\StraightPathFlag.cs" />
+    <Compile Include="nav\rcn\DTPolyType.cs" />
+    <Compile Include="nav\rcn\DTUtil.cs" />
+    <Compile Include="nav\rcn\DTNavmesh.cs" />
+    <Compile Include="nav\rcn\DTNavmeshQuery.cs" />
+    <Compile Include="nav\rcn\DTStatus.cs" />
+    <Compile Include="nav\rcn\externs\BuildersEx.cs" />
+    <Compile Include="nav\rcn\DTTileInfo.cs" />
+    <Compile Include="nav\rcn\externs\DTNavmeshEx.cs" />
+    <Compile Include="nav\rcn\DTNavMeshParams.cs" />
+    <Compile Include="nav\rcn\externs\DTNavmeshQueryEx.cs" />
+    <Compile Include="nav\rcn\DTPolyInfo.cs" />
+    <Compile Include="nav\rcn\externs\DTQueryFilterEx.cs" />
+    <Compile Include="nav\rcn\externs\MessageBufferEx.cs" />
+    <Compile Include="nav\rcn\externs\RCNNavWaypointsEx.cs" />
+    <Compile Include="nav\rcn\externs\RCConfigEx.cs" />
+    <Compile Include="nav\rcn\externs\RCPolyMeshDetailEx.cs" />
+    <Compile Include="nav\rcn\externs\RCPolyMeshEx.cs" />
+    <Compile Include="nav\rcn\externs\TriMesh3Ex.cs" />
+    <Compile Include="nav\rcn\externs\UtilEx.cs" />
+    <Compile Include="nav\rcn\RCNNavWaypointData.cs" />
+    <Compile Include="nav\rcn\RCNNavWaypoints.cs" />
+    <Compile Include="nav\rcn\RCConfig.cs" />
+    <Compile Include="nav\rcn\RCPolyMesh.cs" />
+    <Compile Include="nav\rcn\RCPolyMeshData.cs" />
+    <Compile Include="nav\rcn\RCPolyMeshDetail.cs" />
+    <Compile Include="nav\rcn\DTQueryFilter.cs" />
+    <Compile Include="nav\rcn\RCPolyMeshDetailData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\util\u3d\cai-util-u3d.csproj">
+      <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
+      <Name>cai-util-u3d</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\rcn\cai-nav-rcn.vcproj">
+      <Project>{319D361B-147F-45AC-854E-50C06FCA3393}</Project>
+      <Name>cai-nav-rcn</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
