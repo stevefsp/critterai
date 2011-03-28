@@ -60,106 +60,39 @@ extern "C"
 
     EXPORT_API void dtnqFree(dtNavMeshQuery** pNavQuery);
 
+	EXPORT_API dtStatus dtqGetPolyWallSegments(dtNavMeshQuery* query 
+        , const dtPolyRef ref
+        , const dtQueryFilter* filter
+	    , float* segments
+        , int* segmentCount
+        , const int maxSegments);
+
 	EXPORT_API dtStatus dtqFindNearestPoly(dtNavMeshQuery* query
         , const float* center
         , const float* extents
 		, const dtQueryFilter* filter
 		, dtPolyRef* nearestRef
         , float* nearestPt);
-	
+
     EXPORT_API dtStatus dtqQueryPolygons(dtNavMeshQuery* query 
-        , const float* center
-        , const float* extents
-		, const dtQueryFilter* filter
-		, dtPolyRef* polys
-        , int* polyCount
-        , const int maxPolys);
+            , const float* center
+            , const float* extents
+		    , const dtQueryFilter* filter
+		    , dtPolyRef* polyIds
+            , int* polyCount
+            , const int maxPolys);
 
-	EXPORT_API dtStatus dtqFindPath(dtNavMeshQuery* query 
-        , dtPolyRef startRef
-        , dtPolyRef endRef
-		, const float* startPos
-        , const float* endPos
-		, const dtQueryFilter* filter
-		, dtPolyRef* path
-        , int* pathCount
-        , const int maxPath);
-
-	EXPORT_API dtStatus dtqInitSlicedFindPath(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , dtPolyRef endRef
-		, const float* startPos
-        , const float* endPos
-		, const dtQueryFilter* filter);
-
-	EXPORT_API dtStatus dtqUpdateSlicedFindPath(dtNavMeshQuery* query
-        , const int maxIter
-        , int* doneIters);
-
-	EXPORT_API dtStatus dtqFinalizeSlicedFindPath(dtNavMeshQuery* query
-        , dtPolyRef* path
-        , int* pathCount
-        , const int maxPath);
-
-	EXPORT_API dtStatus dtqFinalizeSlicedFindPathPartial(dtNavMeshQuery* query 
-        , const dtPolyRef* existing
-        , const int existingSize
-	    , dtPolyRef* path
-        , int* pathCount
-        , const int maxPath);
-	
-	EXPORT_API dtStatus dtqFindStraightPath(dtNavMeshQuery* query
-        , const float* startPos
-        , const float* endPos
-		, const dtPolyRef* path
-        , const int pathSize
-	    , float* straightPath
-        , unsigned char* straightPathFlags
-        , dtPolyRef* straightPathRefs
-	    , int* straightPathCount
-        , const int maxStraightPath);
-	
-	EXPORT_API dtStatus dtqMoveAlongSurface(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* startPos
-        , const float* endPos
-	    , const dtQueryFilter* filter
-	    , float* resultPos
-        , dtPolyRef* visited
-        , int* visitedCount
-        , const int maxVisitedSize);
-	
-	EXPORT_API dtStatus dtqRaycast(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* startPos
-        , const float* endPos
-	    , const dtQueryFilter* filter
-	    , float* t
-        , float* hitNormal
-        , dtPolyRef* path
-        , int* pathCount
-        , const int maxPath);
-	
-	EXPORT_API dtStatus dtqFindDistanceToWall(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* centerPos
-        , const float maxRadius
-	    , const dtQueryFilter* filter
-	    , float* hitDist
-        , float* hitPos
-        , float* hitNormal);
-	
 	EXPORT_API dtStatus dtqFindPolysAroundCircle(dtNavMeshQuery* query 
         , dtPolyRef startRef
         , const float* centerPos
         , const float radius
 	    , const dtQueryFilter* filter
-	    , dtPolyRef* resultRef
-        , dtPolyRef* resultParent
-        , float* resultCost
+	    , dtPolyRef* resultPolyRefs
+        , dtPolyRef* resultParentRefs
+        , float* resultCosts
 	    , int* resultCount
         , const int maxResult);
-	
+
 	EXPORT_API dtStatus dtqFindPolysAroundShape(dtNavMeshQuery* query 
         , dtPolyRef startRef
         , const float* verts
@@ -180,31 +113,92 @@ extern "C"
         , dtPolyRef* resultParent
 	    , int* resultCount
         , const int maxResult);
-	
-	EXPORT_API dtStatus dtqGetPolyWallSegments(dtNavMeshQuery* query 
-        , dtPolyRef ref
-        , const dtQueryFilter* filter
-	    , float* segments
-        , int* segmentCount
-        , const int maxSegments);
-	
+
 	EXPORT_API dtStatus dtqClosestPointOnPoly(dtNavMeshQuery* query 
         , dtPolyRef ref
         , const float* pos
         , float* closest);
-	
+
 	EXPORT_API dtStatus dtqClosestPointOnPolyBoundary(dtNavMeshQuery* query 
         , dtPolyRef ref
         , const float* pos
         , float* closest);
-	
+
 	EXPORT_API dtStatus dtqGetPolyHeight(dtNavMeshQuery* query
         , dtPolyRef ref
         , const float* pos
         , float* height);
 
-	EXPORT_API bool dtqIsInClosedList(dtNavMeshQuery* query
-        , dtPolyRef ref);
+	EXPORT_API dtStatus dtqFindDistanceToWall(dtNavMeshQuery* query
+        , dtPolyRef startRef
+        , const float* centerPos
+        , const float maxRadius
+	    , const dtQueryFilter* filter
+	    , float* hitDist
+        , float* hitPos
+        , float* hitNormal);
+    
+	EXPORT_API dtStatus dtqFindPath(dtNavMeshQuery* query 
+        , dtPolyRef startRef
+        , dtPolyRef endRef
+		, const float* startPos
+        , const float* endPos
+		, const dtQueryFilter* filter
+		, dtPolyRef* path
+        , int* pathCount
+        , const int maxPath);
+
+    EXPORT_API bool dtqIsInClosedList(dtNavMeshQuery* query
+            , dtPolyRef ref);
+	
+	EXPORT_API dtStatus dtqRaycast(dtNavMeshQuery* query
+        , dtPolyRef startRef
+        , const float* startPos
+        , const float* endPos
+	    , const dtQueryFilter* filter
+	    , float* t
+        , float* hitNormal
+        , dtPolyRef* path
+        , int* pathCount
+        , const int maxPath);
+
+
+	EXPORT_API dtStatus dtqFindStraightPath(dtNavMeshQuery* query
+        , const float* startPos
+        , const float* endPos
+		, const dtPolyRef* path
+        , const int pathSize
+	    , float* straightPath
+        , unsigned char* straightPathFlags
+        , dtPolyRef* straightPathRefs
+	    , int* straightPathCount
+        , const int maxStraightPath);
+	
+	EXPORT_API dtStatus dtqMoveAlongSurface(dtNavMeshQuery* query
+        , dtPolyRef startRef
+        , const float* startPos
+        , const float* endPos
+	    , const dtQueryFilter* filter
+	    , float* resultPos
+        , dtPolyRef* visited
+        , int* visitedCount
+        , const int maxVisitedSize);
+
+    EXPORT_API dtStatus dtqInitSlicedFindPath(dtNavMeshQuery* query
+        , dtPolyRef startRef
+        , dtPolyRef endRef
+        , const float* startPos
+        , const float* endPos
+        , const dtQueryFilter* filter);
+
+    EXPORT_API dtStatus dtqUpdateSlicedFindPath(dtNavMeshQuery* query
+        , const int maxIter
+        , int* doneIters);
+
+    EXPORT_API dtStatus dtqFinalizeSlicedFindPath(dtNavMeshQuery* query
+        , dtPolyRef* path
+        , int* pathCount
+        , const int maxPath);
 }
 
 #endif

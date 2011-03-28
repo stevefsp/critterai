@@ -30,9 +30,87 @@
 #define EXPORT_API // Otherwise don't define.
 #endif
 
+struct rcnTileInfo
+{
+    // Design notes:
+    //
+    // This is a summary of dtMeshHeader and fields should be kept
+    // in the same order.
+    // Custom fields should be added to the end.
+
+	// int magic;								// Magic number, used to identify the data.
+	// int version;							// Data version number.
+	int x, y;								// Location of the time on the grid.
+	// unsigned int userId;					// User ID of the tile.
+	int polyCount;							// Number of polygons in the tile.
+	int vertCount;							// Number of vertices in the tile.
+	// int maxLinkCount;						// Number of allocated links.
+	// int detailMeshCount;					// Number of detail meshes.
+	// int detailVertCount;					// Number of detail vertices.
+	// int detailTriCount;						// Number of detail triangles.
+	// int bvNodeCount;						// Number of BVtree nodes.
+	// int offMeshConCount;					// Number of Off-Mesh links.
+	// int offMeshBase;						// Index to first polygon which is Off-Mesh link.
+	float walkableHeight;					// Height of the agent.
+	float walkableRadius;					// Radius of the agent
+	float walkableClimb;					// Max climb height of the agent.
+	float bmin[3], bmax[3];					// Bounding box of the tile.
+	// float bvQuantFactor;					// BVtree quantization factor (world to bvnode coords)
+
+    // Begin custom fields.
+    dtPolyRef basePolyRef;
+};
+
+struct rcnPolyInfo
+{
+	float verts[DT_VERTS_PER_POLYGON*3];	// 
+	unsigned short flags;						// Flags (see dtPolyFlags).
+	unsigned char vertCount;					// Number of vertices.
+	unsigned char areaAndtype;					// Bit packed: Area ID of the polygon, and Polygon type.
+};
+
 extern "C"
 {
     EXPORT_API void freeDTNavMesh(dtNavMesh** pNavMesh);
+
+    EXPORT_API void dtnmGetParams(const dtNavMesh* pNavMesh
+        , dtNavMeshParams* params);
+
+    EXPORT_API int dtnmGetMaxTiles(const dtNavMesh* pNavMesh);
+
+    EXPORT_API bool dtnmIsValidPolyRef(const dtNavMesh* pNavMesh
+        , const dtPolyRef polyRef);
+
+    //EXPORT_API dtStatus dtnmGetOffMeshConnectionPolyEndPoints(
+    //    const dtNavMesh* pNavMesh
+    //    , const dtPolyRef prevRef
+    //    , const dtPolyRef polyRef
+    //    , float* startPos
+    //    , float* endPos);
+       
+    EXPORT_API dtStatus dtnmGetPolyInfo(const dtNavMesh* pNavMesh
+            , const dtPolyRef polyRef
+            , rcnPolyInfo* polyInfo);
+
+    EXPORT_API dtStatus dtnmGetTileInfo(const dtNavMesh* pNavMesh
+            , const int tileIndex
+            , rcnTileInfo* tileInfo);
+
+    EXPORT_API dtStatus dtnmGetPolyFlags(const dtNavMesh* pNavMesh
+            , const dtPolyRef polyRef
+            , unsigned short* flags);
+
+    EXPORT_API dtStatus dtnmSetPolyFlags(dtNavMesh* pNavMesh
+        , const dtPolyRef polyRef
+        , unsigned short flags);
+
+    EXPORT_API dtStatus dtnmGetPolyArea(const dtNavMesh* pNavMesh
+        , const dtPolyRef polyRef
+        , unsigned char* area);
+
+    EXPORT_API dtStatus dtnmSetPolyArea(dtNavMesh* pNavMesh
+        , const dtPolyRef polyRef
+        , unsigned char area);
 }
 
 #endif
