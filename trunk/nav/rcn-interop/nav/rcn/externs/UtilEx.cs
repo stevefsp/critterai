@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn.externs
@@ -160,18 +159,5 @@ namespace org.critterai.nav.rcn.externs
             byte[] tmp = new byte[size];
             Marshal.Copy(tmp, 0, target, size);
         }
-
-        public static void ZeroMemory(float[] target)
-        {
-            for (int i = 0; i < target.Length; i++)
-            {
-                target[i] = 0;
-            }
-        }
-
-        [DllImport("cai-nav-rcn", EntryPoint = "rcnFlattenDetailMesh")]
-        public static extern bool FlattenDetailMesh(
-            ref RCPolyMeshDetailEx detailMesh
-            , ref TriMesh3Ex resultMesh);
     }
 }

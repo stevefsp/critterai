@@ -21,13 +21,7 @@
 
 #include "DetourAlloc.h"
 
-// Bfsp
-// Contains the source data and settings used to geneate Detour navmesh data.
-// See Also: dtCreateNavMeshData.
-// Notes:
-//   Can dealocate after the navmesh has been created. (RMV - Unsure since
-//   don't see any dealocation in the sample code.)
-// Efsp
+
 // The units of the parameters are specified in parenthesis as follows:
 // (vx) voxels, (wu) world units
 struct dtNavMeshCreateParams
@@ -57,7 +51,7 @@ struct dtNavMeshCreateParams
 	int offMeshConCount;					// Number of off-mesh connections
 	// Tile location
 	unsigned int userId;					// User ID bound to the tile.
-	int tileX, tileY;						// Tile location (tile coords).
+	int tileX, tileY, tileLayer;			// Tile location (tile coords).
 	float bmin[3], bmax[3];					// Tile bounds (wu).
 	// Settings
 	float walkableHeight;					// Agent height (wu).
@@ -65,22 +59,13 @@ struct dtNavMeshCreateParams
 	float walkableClimb;					// Agent max climb (wu).
 	float cs;								// Cell size (xz) (wu).
 	float ch;								// Cell height (y) (wu).
-	int tileSize;							// Tile size (width & height) (vx).
+	bool buildBvTree;						// Flag indicating if BVTree for polygon query should be build.
 };
 
 // Build navmesh data from given input data.
-// Bfsp
-// Generates navmesh data from the input parameters.  
-// Notes:
-//    The output data is used by dtNavMesh.
-//    If the output data is assigned to an instance of dtNavMesh, the dtNavmesh assumes some
-//    responsibility for memory deallocation.  See the dtNavMesh documentation 
-//    for information details.
-// Efsp
 bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData, int* outDataSize);
 
 // Swaps endianess of navmesh header.
-// http://en.wikipedia.org/wiki/Endianness
 bool dtNavMeshHeaderSwapEndian(unsigned char* data, const int dataSize);
 
 // Swaps endianess of the navmesh data. This function assumes that the header is in correct

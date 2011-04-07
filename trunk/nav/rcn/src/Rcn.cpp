@@ -121,6 +121,7 @@ extern "C"
 
     EXPORT_API bool rcnBuildRCNavMesh(RCNNavMeshConfig config
         , RCNMesh3* pSourceMesh
+        , unsigned char* pAreas
         , RCNMessageBuffer* pMessages
         , rcPolyMesh* pPolyMesh
         , rcPolyMeshDetail* pDetailMesh)
@@ -143,39 +144,11 @@ extern "C"
         if (messageDetail > MDETAIL_BRIEF)
             pContext->log(RC_LOG_PROGRESS, "Building mesh: Static Detour");
 
-        // Allocate the poly and poly detail structures.
-
-     //   rcPolyMesh* pPolyMesh = rcAllocPolyMesh();
-	    //if (!pPolyMesh)
-	    //{
-     //       pContext->log(RC_LOG_ERROR
-     //           , "Out of memory: Poly mesh.");
-     //       if (messageDetail > MDETAIL_NONE)
-     //           rcnTransferMessages(*pContext, *pMessages);
-     //       return false;
-	    //}
-
-     //   if (messageDetail > MDETAIL_SUMMARY)
-     //       pContext->log(RC_LOG_PROGRESS, "Allocated Recast Poly Mesh.");
-
-     //   rcPolyMeshDetail* pDetailMesh = rcAllocPolyMeshDetail();
-	    //if (!pDetailMesh)
-	    //{
-		   // pContext->log(RC_LOG_ERROR
-     //           , "Out of memory: Detail mesh.");
-     //       rcFreePolyMesh(pPolyMesh);
-     //       if (messageDetail > MDETAIL_NONE)
-     //           rcnTransferMessages(*pContext, *pMessages);
-     //       return false;
-	    //}
-
-     //   if (messageDetail > MDETAIL_SUMMARY)
-     //       pContext->log(RC_LOG_PROGRESS, "Allocated Recast Detail Mesh.");
-
         // Build the mesh.
 
         if (!rcnBuildBaseRCNavMesh(config
             , pSourceMesh
+            , pAreas
             , pContext
             , *pPolyMesh
             , *pDetailMesh))
@@ -241,6 +214,9 @@ extern "C"
         params.walkableClimb = walkableClimb;
         params.cs = pPolyMesh->cs;
         params.ch = pPolyMesh->ch;
+
+        // Miscellany
+        params.buildBvTree = true;  // One big tile.  So need the tree.
 
         if (pOffMeshConnections && pOffMeshConnections->count > 0)
         {

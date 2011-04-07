@@ -29,16 +29,18 @@ extern "C"
         dtFreeNavMeshQuery(*pNavQuery);
     }
 
-	EXPORT_API dtStatus dtqGetPolyWallSegments(dtNavMeshQuery* query 
-        , const dtPolyRef ref
+EXPORT_API dtStatus dtqGetPolyWallSegments(dtNavMeshQuery* query
+        , dtPolyRef ref
         , const dtQueryFilter* filter
-	    , float* segments
+        , float* segmentVerts
+        , dtPolyRef* segmentRefs
         , int* segmentCount
         , const int maxSegments)
     {
         return query->getPolyWallSegments(ref
             , filter
-            , segments
+            , segmentVerts
+            , segmentRefs
             , segmentCount
             , maxSegments);
     }
