@@ -109,6 +109,7 @@ int getTraversableSpanCount(const rcCompactHeightfield& chf)
 
 bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
     , RCNMesh3* pSourceMesh
+    , unsigned char* pAreas
     , RCNBuildContext* pContext
     , rcPolyMesh& polyMesh
     , rcPolyMeshDetail& detailMesh)
@@ -259,8 +260,8 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         pContext->log(RC_LOG_PROGRESS
             , "Initialized solid heightfield.");
 
-    // Allocate array that can hold triangle area information.
-    unsigned char* triangleAreas = new unsigned char[triangleCount];
+    unsigned char* triangleAreas = 
+        (pAreas ? pAreas : new unsigned char[triangleCount]);
     if (!triangleAreas)
     {
 	    pContext->log(RC_LOG_ERROR
@@ -283,7 +284,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         , *solidHeightfield
         , vxMaxTraversableStep);
 
-    delete[] triangleAreas;
+    if (!pAreas)
+        // Triangles was allocated locally.
+        delete[] triangleAreas;
     triangleAreas = 0;
 	
     if (messageDetail > MDETAIL_SUMMARY)

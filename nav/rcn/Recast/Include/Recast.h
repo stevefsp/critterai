@@ -34,7 +34,6 @@ enum rcTimerLabel
 	RC_TIMER_TOTAL,
 	RC_TIMER_TEMP,
 	RC_TIMER_RASTERIZE_TRIANGLES,
-	RC_TIMER_BUILD_LEANHEIGHTFIELD,
 	RC_TIMER_BUILD_COMPACTHEIGHTFIELD,
 	RC_TIMER_BUILD_CONTOURS,
 	RC_TIMER_BUILD_CONTOURS_TRACE,
@@ -57,6 +56,7 @@ enum rcTimerLabel
 	RC_TIMER_BUILD_REGIONS_EXPAND,
 	RC_TIMER_BUILD_REGIONS_FLOOD,
 	RC_TIMER_BUILD_REGIONS_FILTER,
+	RC_TIMER_BUILD_LAYERS,
 	RC_TIMER_BUILD_POLYMESHDETAIL,
 	RC_TIMER_MERGE_POLYMESHDETAIL,
 	RC_MAX_TIMERS
@@ -183,6 +183,7 @@ struct rcCompactHeightfield
 	int width, height;					// Width and height of the heightfield.
 	int spanCount;						// Number of spans in the heightfield.
 	int walkableHeight, walkableClimb;	// Agent properties.
+	int borderSize;						// Border size of the heighfield.
 	unsigned short maxDistance;			// Maximum distance value stored in heightfield.
 	unsigned short maxRegions;			// Maximum Region Id stored in heightfield.
 	float bmin[3], bmax[3];				// Bounding box of the heightfield.
@@ -197,27 +198,28 @@ rcCompactHeightfield* rcAllocCompactHeightfield();
 void rcFreeCompactHeightfield(rcCompactHeightfield* chf);
 
 
-// Lean heightfield stores minimal information to create rcCompactNeighfield
-// in one continuous chunk of memory. The header and data are both laid out
-// in the memory one after each other. The data is accessed as follows:
-//		const int headerSize = rcAlign4(sizeof(rcLeanHeightfield));
-//		const int countsSize = rcAlign4(sizeof(unsigned char)*lhf.width*lhf.height);
-//		const int floorsSize = rcAlign4(sizeof(unsigned short)*lhf.spanCount);
-//		const unsigned char* data = (const unsigned char*)&lhf;
-//		const unsigned char* counts = (const unsigned char*)&data[headerSize];
-//		const unsigned short* floors = (const unsigned short*)&data[headerSize+countsSize];
-//		const unsigned char* areas = (const unsigned char*)&data[headerSize+countsSize+floorsSize];
-// This allows the heighfield to be read and written or compressed as one chunk, i.e.:
-//		fwrite(lhf, lhf->size, 1, fp);
-// Use rcFree() to free the memory occupied by rcLeanHeightfield.
-struct rcLeanHeightfield
+
+struct rcHeightfieldLayer
 {
-	int width, height;					// Width and height of the heightfield.
-	int spanCount;						// Number of spans in the heightfield.
 	float bmin[3], bmax[3];				// Bounding box of the heightfield.
 	float cs, ch;						// Cell size and height.
-	int size;							// Memory required by the heighfield.
+	int width, height;					// Width and height of the layer.
+	int minx,maxx,miny,maxy;			// Bounding box of usable data.
+	int hmin, hmax;						// Height min/max
+	unsigned char* heights;				// Heighfield.
+	unsigned char* areas;				// Area types.
+	unsigned char* cons;				// Connections.
 };
+
+struct rcHeightfieldLayerSet
+{
+	rcHeightfieldLayer* layers;			// Pointer to layers.
+	int nlayers;						// Number of layers.
+};
+
+rcHeightfieldLayerSet* rcAllocHeightfieldLayerSet();
+void rcFreeHeightfieldLayerSet(rcHeightfieldLayerSet* lset);
+
 
 
 struct rcContour
@@ -236,6 +238,8 @@ struct rcContourSet
 	int nconts;				// Number of contours.
 	float bmin[3], bmax[3];	// Bounding box of the heightfield.
 	float cs, ch;			// Cell size and height.
+	int width, height;		// Region where the contours were build.
+	int borderSize;			// Border size of the heighfield where the contours were build from.
 };
 
 rcContourSet* rcAllocContourSet();
@@ -266,6 +270,7 @@ struct rcPolyMesh
 	int nvp;				// Max number of vertices per polygon.
 	float bmin[3], bmax[3];	// Bounding box of the mesh.
 	float cs, ch;			// Cell size and height.
+	int borderSize;			// Border size of the heighfield where the mesh was build from.
 };
 
 rcPolyMesh* rcAllocPolyMesh();
@@ -593,13 +598,6 @@ void rcFilterWalkableLowHeightSpans(rcContext* ctx, int walkableHeight, rcHeight
 // Returns number of spans.
 int rcGetHeightFieldSpanCount(rcContext* ctx, rcHeightfield& hf);
 
-// Builds minimal representation of the heighfield.
-// Params:
-//	hf - (in) heightfield to be compacted
-//	chf - (out) lean heightfield representing the open space.
-// Returns pointer to the created lean heighfield.
-rcLeanHeightfield* rcBuildLeanHeightfield(rcContext* ctx, rcHeightfield& hf, const int walkableHeight);
-
 // Builds compact representation of the heightfield.
 // Params:
 //	walkableHeight - (in) minimum height where the agent can still walk
@@ -609,16 +607,6 @@ rcLeanHeightfield* rcBuildLeanHeightfield(rcContext* ctx, rcHeightfield& hf, con
 // Returns false if operation ran out of memory.
 bool rcBuildCompactHeightfield(rcContext* ctx, const int walkableHeight, const int walkableClimb,
 							   rcHeightfield& hf, rcCompactHeightfield& chf);
-
-// Builds compact representation of the heightfield from lean data.
-// Params:
-//	walkableHeight - (in) minimum height where the agent can still walk
-//	walkableClimb - (in) maximum height between grid cells the agent can climb
-//	lhf - (in) lean heightfield to be used as input
-//	chf - (out) compact heightfield representing the open space.
-// Returns false if operation ran out of memory.
-bool rcBuildCompactHeightfield(rcContext* ctx, const int walkableHeight, const int walkableClimb,
-							   rcLeanHeightfield& lhf, rcCompactHeightfield& chf);
 
 // Erodes walkable area.
 // Params:
@@ -679,6 +667,7 @@ bool rcBuildDistanceField(rcContext* ctx, rcCompactHeightfield& chf);
 // Here area means the count of spans in an area.
 // Params:
 //	chf - (in/out) compact heightfield representing the open space.
+//  borderSize - (in) Non-navigable Border around the heightfield.
 //	minRegionArea - (in) the smallest allowed region area.
 //	maxMergeRegionArea - (in) the largest allowed region area which can be merged.
 // Returns false if operation ran out of memory.
@@ -695,11 +684,23 @@ bool rcBuildRegions(rcContext* ctx, rcCompactHeightfield& chf,
 // Here area means the count of spans in an area.
 // Params:
 //	chf - (in/out) compact heightfield representing the open space.
+//  borderSize - (in) Non-navigable Border around the heightfield.
 //	minRegionArea - (in) the smallest allowed regions size.
 //	maxMergeRegionArea - (in) the largest allowed regions size which can be merged.
 // Returns false if operation ran out of memory.
 bool rcBuildRegionsMonotone(rcContext* ctx, rcCompactHeightfield& chf,
 							const int borderSize, const int minRegionArea, const int mergeRegionArea);
+
+// Builds 2D layer representation of a heighfield.
+// Params:
+//  chf - (in) compact heightfield representing the open space.
+//  borderSize - (in) Non-navigable Border around the heightfield.
+//	walkableHeight - (in) minimum height where the agent can still walk.
+//  lset - (out) set of 2D heighfield layers.
+// Returns false if operation ran out of memory.
+bool rcBuildHeightfieldLayers(rcContext* ctx, rcCompactHeightfield& chf, 
+							  const int borderSize, const int walkableHeight,
+							  rcHeightfieldLayerSet& lset);
 
 // Builds simplified contours from the regions outlines.
 // Params:
@@ -719,7 +720,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 //	nvp - (in) maximum number of vertices per polygon.
 //	mesh - (out) poly mesh.
 // Returns false if operation ran out of memory.
-bool rcBuildPolyMesh(rcContext* ctx, rcContourSet& cset, int nvp, rcPolyMesh& mesh);
+bool rcBuildPolyMesh(rcContext* ctx, rcContourSet& cset, const int nvp, rcPolyMesh& mesh);
 
 bool rcMergePolyMeshes(rcContext* ctx, rcPolyMesh** meshes, const int nmeshes, rcPolyMesh& mesh);
 
@@ -736,6 +737,7 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 						   rcPolyMeshDetail& dmesh);
 
 bool rcMergePolyMeshDetails(rcContext* ctx, rcPolyMeshDetail** meshes, const int nmeshes, rcPolyMeshDetail& mesh);
+
 
 
 #endif // RECAST_H

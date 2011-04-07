@@ -32,33 +32,45 @@
 
 struct rcnTileInfo
 {
-    // Design notes:
-    //
-    // This is a summary of dtMeshHeader and fields should be kept
-    // in the same order.
-    // Custom fields should be added to the end.
+    // Ease of maintenance takes precidence over storage efficiency 
+    // for this structure. So Order as follows:
+    //    1. dtMeshHeader fields.
+    //    2. dtMeshTile fields with pointers removed.
+    //    3. Any other custom fields.
 
-	// int magic;								// Magic number, used to identify the data.
-	// int version;							// Data version number.
-	int x, y;								// Location of the time on the grid.
-	// unsigned int userId;					// User ID of the tile.
+    // dtMeshHeader fields.
+	int magic;								// Magic number, used to identify the data.
+	int version;							// Data version number.
+	int x, y, layer;						// Location of the tile on the grid.
+	unsigned int userId;					// User ID of the tile.
 	int polyCount;							// Number of polygons in the tile.
 	int vertCount;							// Number of vertices in the tile.
-	// int maxLinkCount;						// Number of allocated links.
-	// int detailMeshCount;					// Number of detail meshes.
-	// int detailVertCount;					// Number of detail vertices.
-	// int detailTriCount;						// Number of detail triangles.
-	// int bvNodeCount;						// Number of BVtree nodes.
-	// int offMeshConCount;					// Number of Off-Mesh links.
-	// int offMeshBase;						// Index to first polygon which is Off-Mesh link.
+	int maxLinkCount;						// Number of allocated links.
+	int detailMeshCount;					// Number of detail meshes.
+	int detailVertCount;					// Number of detail vertices.
+	int detailTriCount;						// Number of detail triangles.
+	int bvNodeCount;						// Number of BVtree nodes.
+	int offMeshConCount;					// Number of Off-Mesh links.
+	int offMeshBase;						// Index to first polygon which is Off-Mesh link.
 	float walkableHeight;					// Height of the agent.
 	float walkableRadius;					// Radius of the agent
 	float walkableClimb;					// Max climb height of the agent.
 	float bmin[3], bmax[3];					// Bounding box of the tile.
-	// float bvQuantFactor;					// BVtree quantization factor (world to bvnode coords)
+	float bvQuantFactor;					// BVtree quantization factor (world to bvnode coords)
 
-    // Begin custom fields.
-    dtPolyRef basePolyRef;
+    // dtMeshTile fields.
+	unsigned int salt;						// Counter describing modifications to the tile.
+	unsigned int linksFreeList;				// Index to next free link.
+	int dataSize;							// Size of the tile data.
+	int flags;								// Tile flags, see dtTileFlags.
+
+    // Extra fields.
+    int index;
+    unsigned int basePolyRef;
+
+    bool load(const int tileIndex
+        , const dtMeshTile* tile
+        , const dtNavMesh* mesh);
 };
 
 struct rcnPolyInfo
@@ -81,17 +93,6 @@ extern "C"
     EXPORT_API bool dtnmIsValidPolyRef(const dtNavMesh* pNavMesh
         , const dtPolyRef polyRef);
 
-    //EXPORT_API dtStatus dtnmGetOffMeshConnectionPolyEndPoints(
-    //    const dtNavMesh* pNavMesh
-    //    , const dtPolyRef prevRef
-    //    , const dtPolyRef polyRef
-    //    , float* startPos
-    //    , float* endPos);
-       
-    EXPORT_API dtStatus dtnmGetPolyInfo(const dtNavMesh* pNavMesh
-            , const dtPolyRef polyRef
-            , rcnPolyInfo* polyInfo);
-
     EXPORT_API dtStatus dtnmGetTileInfo(const dtNavMesh* pNavMesh
             , const int tileIndex
             , rcnTileInfo* tileInfo);
@@ -111,6 +112,54 @@ extern "C"
     EXPORT_API dtStatus dtnmSetPolyArea(dtNavMesh* pNavMesh
         , const dtPolyRef polyRef
         , unsigned char area);
+
+    EXPORT_API dtStatus dtnmGetTilePolys(const dtNavMesh* mesh
+        , const int tileIndex
+        , dtPoly* polys
+        , const int polySize);
+
+    EXPORT_API dtStatus dtnmGetTileLinks(const dtNavMesh* mesh
+        , const int tileIndex
+        , dtLink* links
+        , const int linkSize);
+
+    EXPORT_API dtStatus dtnmGetTileVerts(const dtNavMesh* mesh
+        , const int tileIndex
+        , float* verts
+        , const int vertsSize);
+
+    EXPORT_API dtStatus dtnmGetTileDetailMeshes(const dtNavMesh* mesh
+        , const int tileIndex
+        , dtPolyDetail* meshes
+        , const int meshesSize);
+
+    EXPORT_API dtStatus dtnmGetTileDetailVerts(const dtNavMesh* mesh
+        , const int tileIndex
+        , float* verts
+        , const int vertsSize);
+
+    EXPORT_API dtStatus dtnmGetTileDetailTris(const dtNavMesh* mesh
+        , const int tileIndex
+        , unsigned char* tris
+        , const int trisSize);
+
+    EXPORT_API dtStatus dtnmGetTileBVTree(const dtNavMesh* mesh
+        , const int tileIndex
+        , dtBVNode* nodes
+        , const int nodeSize);
+
+    EXPORT_API dtStatus dtnmGetTileConnections(const dtNavMesh* mesh
+        , const int tileIndex
+        , dtOffMeshConnection* conns
+        , const int connsSize);
+
+    EXPORT_API dtStatus dtnmGetConnectionEndPoints(
+        const dtNavMesh* pNavMesh
+        , const dtPolyRef prevRef
+        , const dtPolyRef polyRef
+        , float* startPos
+        , float* endPos);
 }
+
 
 #endif

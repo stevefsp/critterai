@@ -159,6 +159,7 @@ template<class T> inline bool rcnSloppyEquals(T a, T b)
 
 bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         , RCNMesh3* sourceMesh
+        , unsigned char* pAreas
         , RCNBuildContext* context
         , rcPolyMesh& polyMesh
         , rcPolyMeshDetail& detailMesh);
@@ -171,6 +172,7 @@ extern "C"
 
     EXPORT_API bool rcnBuildRCNavMesh(RCNNavMeshConfig config
         , RCNMesh3* pSourceMesh
+        , unsigned char* pAreas
         , RCNMessageBuffer* pMessages
         , rcPolyMesh* pPolyMesh
         , rcPolyMeshDetail* pDetailMesh);
