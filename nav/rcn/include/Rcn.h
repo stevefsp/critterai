@@ -35,24 +35,24 @@
 static const float RCN_EPSILON = 0.00001f;
 static const float RCN_TOLERANCE = 0.0001f;
 
-static const int MDETAIL_NONE = 0;
-static const int MDETAIL_BRIEF = 1;
-static const int MDETAIL_SUMMARY = 2;
-static const int MDETAIL_TRACE = 4;
-
-struct RCNMessageBuffer
-{
-    int messageDetail;
-    int size;
-    char* buffer;
-};
-
 struct RCNMesh3
 {
     int vertCount;
     int polyCount;
     float* vertices;
     int* indices;
+};
+
+struct RCNNavConnections
+{
+    static const int MAX_CONNECTIONS = 256;
+    int count;
+    float verts[6*MAX_CONNECTIONS];
+    float radii[MAX_CONNECTIONS];
+    unsigned char dirs[MAX_CONNECTIONS];
+    unsigned char areas[MAX_CONNECTIONS];
+    unsigned short flags[MAX_CONNECTIONS];
+    unsigned int ids[MAX_CONNECTIONS];
 };
 
 struct RCNOffMeshConnections
@@ -133,8 +133,6 @@ public:
 
     bool getLogEnabled() const { return m_logEnabled; }
 
-    int messageDetail;
-
 protected:
     virtual void doResetLog();
     virtual void doLog(const rcLogCategory category
@@ -149,8 +147,9 @@ private:
     int mTextPoolSize;
 };
 
-void rcnTransferMessages(RCNBuildContext& context
-    , RCNMessageBuffer& messages);
+//void rcnTransferMessages(RCNBuildContext& context
+//    , byte* messageBuffer
+//    , int messageBufferSize);
 
 template<class T> inline bool rcnSloppyEquals(T a, T b) 
 { 
@@ -166,23 +165,23 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
 
 extern "C"
 {
-    EXPORT_API void rcnFreeMessageBuffer(RCNMessageBuffer* pMessages);
     EXPORT_API void rcnApplyNavMeshConfigLimits(RCNNavMeshConfig* pConfig);
     EXPORT_API void rcnFreeMesh3(RCNMesh3* pMesh);
 
     EXPORT_API bool rcnBuildRCNavMesh(RCNNavMeshConfig config
         , RCNMesh3* pSourceMesh
         , unsigned char* pAreas
-        , RCNMessageBuffer* pMessages
         , rcPolyMesh* pPolyMesh
-        , rcPolyMeshDetail* pDetailMesh);
+        , rcPolyMeshDetail* pDetailMesh
+        , unsigned char* messageBugger
+        , int messageBufferSize);
 
     EXPORT_API dtStatus rcnBuildStaticDTNavMesh(rcPolyMesh* pPolyMesh
         , rcPolyMeshDetail* pDetailMesh
         , float walkableHeight
         , float walkableRadius
         , float walkableClimb
-        , RCNOffMeshConnections* pOffMeshConnections
+        , RCNNavConnections* pOffMeshConnections
         , dtNavMesh** ppNavMesh);
 
     EXPORT_API dtStatus rcnBuildDTNavQuery(dtNavMesh* pNavMesh
