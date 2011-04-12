@@ -23,8 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+// TODO: Rename source file to match enum name.
+
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Indicates how an object's unmanaged resources have been allocated and
+    /// are managed.
+    /// </summary>
     public enum AllocType : byte
     {
         /// <summary>
@@ -46,7 +52,7 @@ namespace org.critterai.nav.rcn
         /// </summary>
         /// <remarks>
         /// Objects of this type are usually allocated and owned by another
-        /// unmanaged object.  So this object is freed by its owner
+        /// unmanaged object.  So its resources are freed by its owner
         /// when its owner is freed.
         /// </remarks>
         ExternallyManaged

@@ -19,9 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
@@ -31,22 +28,39 @@ namespace org.critterai.nav.rcn
     /// </summary>
     public abstract class ManagedObject
     {
-        protected readonly AllocType resourceType;
+        /// <summary>
+        /// The type of unmanaged resource in the object.
+        /// </summary>
+        private readonly AllocType mResourceType;
 
+        /// <summary>
+        /// The type of unmanaged resources within the object.
+        /// </summary>
+        public AllocType resourceType { get { return mResourceType; } }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="resourceType">The type of unmanaged resource.</param>
         public ManagedObject(AllocType resourceType)
         {
-            this.resourceType = resourceType;
+            this.mResourceType = resourceType;
         }
 
         /// <summary>
         /// Request all unmanaged resources controlled by the object be 
-        /// immediately freed.
+        /// immediately freed and the object marked as disposed.
         /// </summary>
         /// <remarks>
-        /// Whether or not the resources are actually freed depends on whether
-        /// the resources are owned by the current object.
+        /// Whether or not unmanaged resources are actually freed depends 
+        /// on whether the resources are owned by the object.  In some cases
+        /// the only action is to mark the object as disposed.
         /// </remarks>
         public abstract void RequestDisposal();
+
+        /// <summary>
+        /// Indicates whether or not the object can be used.
+        /// </summary>
         public abstract bool IsDisposed { get; }
     }
 }

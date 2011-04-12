@@ -20,34 +20,126 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Crowd agent configuration parameters.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CrowdAgentParams
     {
+        /// <summary>
+        /// Agent radius. (>=0)
+        /// </summary>
 	    public float radius;
-        public float height;
-        public float maxAcceleration;
-        public float maxSpeed;
-        public float collisionQueryRange;
-        public float pathOptimizationRange;
-        public float separationWeight;
-        public DTCrowdUpdateFlags updateFlags;
 
         /// <summary>
-        /// The crowd's obstacle avoidance parameter set to use for the agent.
-        /// (See DTCrowd.GetObstacleAvoidanceParams.)
+        /// Agent height. (>0)
         /// </summary>
-        public byte obstacleAvoidanceType;
+        public float height;
 
-        // Must exist for marshalling.  But not currently used.
+        /// <summary>
+        /// Maximum allowed acceleration. (>=0)
+        /// </summary>
+        public float maxAcceleration;
+
+        /// <summary>
+        /// Maximum allowed speed. (>=0)
+        /// </summary>
+        public float maxSpeed;
+
+        /// <summary>
+        /// Defines how close a neighbor must be before it is considered
+        /// in steering behaviors. (>0)
+        /// </summary>
+        /// <remarks>
+        /// The value is often based on the agent radius and/or
+        /// and maximum speed.  E.g. radius * 8</remarks>
+        public float collisionQueryRange;
+
+        /// <summary>
+        /// TODO: Needs documentation. (Including in constructor.)
+        /// </summary>
+        /// <remarks>
+        /// This value is often based on the agent radius. E.g. radius * 30
+        /// </remarks>
+        public float pathOptimizationRange;
+
+        /// <summary>
+        /// How aggresive the agent manager should be at avoiding
+        /// collisions with this agent.
+        /// </summary>
+        /// <remarks>
+        /// A higher value will result in agents trying to stay farther away 
+        /// from eachother, at the cost of more difficult steering in tight
+        /// spaces.</remarks>
+        public float separationWeight;
+
+        /// <summary>
+        /// Flags that impact steering behavior.
+        /// </summary>
+        public CrowdUpdateFlags updateFlags;
+
+        /// <summary>
+        /// The index of the avoidance parameters to use for the agent.
+        /// </summary>
+        /// <remarks>
+        /// <p>The <see cref="CrowdManager"/> permits agents to use different
+        /// avoidance configurations.  (See 
+        /// <see cref="CrowManager.SetObstacleAvoidanceParams"/>.)  This value
+        /// is the index of the configuration to use.</p>
+        /// </remarks>
+        /// <seealso cref="CrowdAvoidanceParams"/>
+        public byte avoidanceType;
+
+        // Must exist for marshalling.  Not used on managed side of boundary.
         // This is a void pointer for custom user data on the navtive side.
 	    private IntPtr userData;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="radius">Agent radius (>=0)</param>
+        /// <param name="height">Agent height (>0)</param>
+        /// <param name="maxAcceleration">Maximum allowed acceleration. (>=0)
+        /// </param>
+        /// <param name="maxSpeed">Maximum allowed speed (>=0)</param>
+        /// <param name="collisionQueryRange">Defines how close a neighbor must 
+        /// be before it is considered in steering behaviors. (>0)</param>
+        /// <param name="pathOptimizationRange">TODO: Need documentation</param>
+        /// <param name="separationWeight">How aggresive the agent manager 
+        /// should be at avoiding collisions with this agent.</param>
+        /// <param name="updateFlags">Flags that impact steering behavior.
+        /// </param>
+        /// <param name="obstacleAvoidanceType">The index of the avoidance 
+        /// parameters to use for the agent.</param>
+        public CrowdAgentParams(float radius
+            , float height
+            , float maxAcceleration
+            , float maxSpeed
+            , float collisionQueryRange
+            , float pathOptimizationRange
+            , float separationWeight
+            , CrowdUpdateFlags updateFlags
+            , byte avoidanceType)
+        {
+            this.radius = radius;
+            this.height = height;
+            this.maxAcceleration = maxAcceleration;
+            this.maxSpeed = maxSpeed;
+            this.collisionQueryRange = collisionQueryRange;
+            this.pathOptimizationRange = pathOptimizationRange;
+            this.separationWeight = separationWeight;
+            this.updateFlags = updateFlags;
+            this.avoidanceType = avoidanceType;
+            userData = IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// Resets all values to zero.
+        /// </summary>
         public void Reset()
         {
             radius = 0;
@@ -58,29 +150,7 @@ namespace org.critterai.nav.rcn
             pathOptimizationRange = 0;
             separationWeight = 0;
             updateFlags = 0;
-            obstacleAvoidanceType = 0;
-            userData = IntPtr.Zero;
-        }
-
-        public CrowdAgentParams(float radius
-            , float height
-            , float maxAcceleration
-            , float maxSpeed
-            , float collisionQueryRange
-            , float pathOptimizationRange
-            , float separationWeight
-            , DTCrowdUpdateFlags updateFlags
-            , byte obstacleAvoidanceType)
-        {
-            this.radius = radius;
-            this.height = height;
-            this.maxAcceleration = maxAcceleration;
-            this.maxSpeed = maxSpeed;
-            this.collisionQueryRange = collisionQueryRange;
-            this.pathOptimizationRange = pathOptimizationRange;
-            this.separationWeight = separationWeight;
-            this.updateFlags = updateFlags;
-            this.obstacleAvoidanceType = obstacleAvoidanceType;
+            avoidanceType = 0;
             userData = IntPtr.Zero;
         }
     }

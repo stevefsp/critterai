@@ -20,14 +20,38 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using org.critterai.nav.rcn.externs;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// <p>The triangle array contains both indices and the triangle flags.
+    /// So its stride is 4: (vertA, vertB, vertC, flags).</p>
+    /// <p>The flags indicate whether edges are internal or external where 1
+    /// indicates an external edge.
+    /// Internal edges connect to other triangles within the mesh.
+    /// External edges represent portals to other meshes or the null region.
+    /// </p>
+    /// <p>
+    /// Each flag is stored in a 2-bit position.  Where position 0 is the
+    /// lowest 2 bits.  The hightest 2 bits is not used:</p>
+    /// <p>
+    /// Position 0: Edge AB (>> 0)<br/>
+    /// Position 1: Edge BC (>> 2)<br/>
+    /// Position 2: Edge CA (>> 4)<br/>
+    /// Position 4: Unused  (>> 6)<br/>
+    /// </p>
+    /// Example:  
+    /// 
+    /// if (((flag >> 2) & 0x3) == 0)
+    /// {
+    ///     // Edge BC is an external edge.
+    /// }
+    /// </remarks>
     [Serializable]
     public sealed class PolyMeshDetail
         : IDisposable, ISerializable

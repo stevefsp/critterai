@@ -19,40 +19,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
     /// <summary>
-    /// Provides information on the neighbors of agents managed by a
-    /// crowd manager.
+    /// Provides utilities related to navigation.
     /// </summary>
-    /// <remarks>
-    /// <p>This data is provided for debug purposes.</p>
-    /// </remarks>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CrowdNeighbor
+    public static class NavUtil
     {
-
-        // Test Note: There are not unit tests for this class.
-
         /// <summary>
-        /// The index of the neighbor.
+        /// Returns TRUE if the status includes the success flag.
         /// </summary>
-        public int index;
-
-        /// <summary>
-        /// The distance to the neighbor.
-        /// </summary>
-        public float distance;
-
-        /// <summary>
-        /// Resets all field values to zero.
-        /// </summary>
-        public void Reset()
+        /// <param name="status">The status to check.</param>
+        /// <returns>TRUE if the status includes the success flag.</returns>
+        public static bool Succeeded(NavStatus status)
         {
-            index = 0;
-            distance = 0;
+            return (status & NavStatus.Sucess) != 0;
+        }
+
+        /// <summary>
+        /// Returns TRUE if the status includes the failure flag.
+        /// </summary>
+        /// <param name="status">The status to check.</param>
+        /// <returns>TRUE if the status includes the failure flag.</returns>
+        public static bool Failed(NavStatus status)
+        {
+            return (status & NavStatus.Failure) != 0;
+        }
+
+        /// <summary>
+        /// Returns TRUE if the status includes the in-progress flag.
+        /// </summary>
+        /// <param name="status">The status to check.</param>
+        /// <returns>TRUE if the status includes the in-progress flag.
+        /// </returns>
+        public static bool IsInProgress(NavStatus status)
+        {
+            return (status & NavStatus.InProgress) != 0;
         }
     }
 }

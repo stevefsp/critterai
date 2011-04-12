@@ -19,36 +19,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Bounding volumn node.
+    /// </summary>
+    /// <remarks>
+    /// <p>Must be initialized before use.</p>
+    /// <p>This data is provided for debug purposes.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct BVNode
     {
+        /// <summary>
+        /// Minimimum bounds of the node's AABB in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public ushort[] bmin;
+        public ushort[] boundsMin;
 
+        /// <summary>
+        /// Maximum bounds of the node's AABB in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public ushort[] bmax;		                    // BVnode bounds
+        public ushort[] boundsMax;		                    
 
-	    public int i;									// Index to item or if negative, escape index.
+        /// <summary>
+        /// The node's index.  (Negative for escape indices.)
+        /// </summary>
+	    public int i;									
 
+        /// <summary>
+        /// Initializes the structure before its first use.
+        /// </summary>
+        /// <remarks>
+        /// Existing references are released and replaced.
+        /// </remarks>
         public void Initialize()
         {
-            bmin = new ushort[3];
-            bmax = new ushort[3];
+            boundsMin = new ushort[3];
+            boundsMax = new ushort[3];
             i = 0;
         }
 
-        public static BVNode[] GetInitializedArray(int size)
+        /// <summary>
+        /// Rerturns an array of fully initialized nodes.
+        /// </summary>
+        /// <param name="length">The length of the array. (>0)</param>
+        /// <returns>An array of fully initialized structures.</returns>
+        public static BVNode[] GetInitializedArray(int length)
         {
-            BVNode[] result = new BVNode[size];
-            foreach (BVNode item in result)
-                item.Initialize();
+            BVNode[] result = new BVNode[length];
+            for (int i = 0; i < length; i++)
+                result[i].Initialize();
             return result;
         }
     }

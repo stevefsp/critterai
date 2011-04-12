@@ -26,12 +26,12 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+
+    // TODO: Document
+
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshLink
     {
-        public const ushort ExternalLink = 0x8000;
-        public const uint NullLink = 0xffffffff;
-
 	    public uint polyRef;							// Neighbour reference.
         public uint next;						// Index to next link.
         public byte edge;						// Index to polygon edge which owns this link. 

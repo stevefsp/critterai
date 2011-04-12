@@ -25,37 +25,81 @@ using org.critterai.nav.rcn.externs;
 namespace org.critterai.nav.rcn
 {
     /// <summary>
-    /// 
+    /// A navigation mesh based on convex polygons.
     /// </summary>
     /// <remarks>
-    /// This class is not directly serializable.  If you need serialization,
-    /// then you'll need to save the the source's used to create the mesh.
-    /// E.g. The RCPolyMesh and RCPolyMeshDetail.
+    /// <p>The navigation mesh supports polygons that vary in number of 
+    /// sides and overlap.
+    /// </p>
+    /// <p>While various methods refer to tiling, the tile functionality is
+    /// not currently exposed.  So there is only one tile for the entire
+    /// mesh.</p>
+    /// <p>There are no asynchronous methods for this class.  So all methods
+    /// will return a <see cref="NavStatus"/> including success or failure.</p>
+    /// <p>Instances of this class are not serializable.  
+    /// If you need serialization, then save the the source data used to create 
+    /// the mesh.</p>
+    /// <p>Behavior is undefined if objects of this type are used after 
+    /// disposal.</p>
     /// </remarks>
-    public sealed class Navmesh 
-        : IDisposable
+    public sealed class Navmesh
+        : ManagedObject
     {
+        /// <summary>
+        /// A flag that indicates a link is external.  (Context dependant.)
+        /// </summary>
+        public const ushort ExternalLink = NavmeshEx.ExternalLink;
+
+        /// <summary>
+        /// Indicates that a link is null. (Does not link to anything.)
+        /// </summary>
+        public const uint NullLink = NavmeshEx.ExternalLink;
+
+        /// <summary>
+        /// The maximum vertices per polygon.
+        /// </summary>
         public const int MaxVertsPerPolygon = NavmeshEx.MaxVertsPerPolygon;
+
+        /// <summary>
+        /// The maximum supported number of areas.
+        /// </summary>
         public const int MaxAreas = NavmeshEx.MaxAreas;
 
+        /// <summary>
+        /// A pointer to the unmanaged dtNavMesh object.
+        /// </summary>
         internal IntPtr root;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="mesh">A pointer to an unmanaged dtNavMesh object.
+        /// </param>
         internal Navmesh(IntPtr mesh)
+            : base(AllocType.External)
         {
             root = mesh;
         }
 
         ~Navmesh()
         {
-            Dispose();
+            RequestDisposal();
         }
 
-        public bool IsDisposed
+        /// <summary>
+        /// Indicates whether or not the resources held by the object have
+        /// been released.
+        /// </summary>
+        public override bool IsDisposed
         {
             get { return (root == IntPtr.Zero); }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Immediately releases all unmanaged resources controlled by the 
+        /// object.
+        /// </summary>
+        public override void RequestDisposal()
         {
             if (root != IntPtr.Zero)
             {
@@ -64,209 +108,354 @@ namespace org.critterai.nav.rcn
             }
         }
 
+        /// <summary>
+        /// Returns the configuration parameters used to initialize the
+        /// navigation mesh.
+        /// </summary>
+        /// <returns>The configuration parameters used to initialize the
+        /// navigation mesh.</returns>
         public NavmeshParams GetParams()
         {
-            NavmeshParams result = NavmeshParams.Initialized;
+            NavmeshParams result = new NavmeshParams();
+
             NavmeshEx.GetParams(root, ref result);
             return result;
         }
 
+        /// <summary>
+        /// The maximum number of tiles supported by the navigation mesh.
+        /// </summary>
+        /// <returns>The maximum number of tiles supported by the navigation 
+        /// mesh.</returns>
         public int GetMaxTiles()
         {
             return NavmeshEx.GetMaxTiles(root);
         }
 
+        /// <summary>
+        /// Indicates whether or not the specified polygon id is valid for
+        /// the navigation mesh.
+        /// </summary>
+        /// <param name="polyId">The polygon id to check.</param>
+        /// <returns>TRUE if the provided polygon id is valid.</returns>
         public bool IsValidPolyId(uint polyId)
         {
             return NavmeshEx.IsValidPolyId(root, polyId);
         }
 
-        public NavmeshStatus GetTileInfo(int tileIndex, out NavmeshTileData info)
+        /// <summary>
+        /// Returns information for the specified tile.
+        /// </summary>
+        /// <param name="tileIndex">The zero based tile index.</param>
+        /// <param name="info">The tile information.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileInfo(int tileIndex
+            , out NavmeshTileData info)
         {
-            info = NavmeshTileData.Initialized;
+            info = new NavmeshTileData();
+            info.Initialize();
             return NavmeshEx.GetTileInfo(root, tileIndex, ref info);
         }
 
-        public NavmeshStatus GetTilePolys(NavmeshTileData tile, out NavmeshPoly[] polys)
+        /// <summary>
+        /// Returns the polygon information for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="polys">The polygon information.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTilePolys(NavmeshTileData tile
+            , out NavmeshPoly[] polys)
         {
             polys = NavmeshPoly.GetInitializedArray(tile.polygonCount);
 
-            NavmeshStatus status = NavmeshEx.GetTilePolys(root
+            NavStatus status = NavmeshEx.GetTilePolys(root
                 , tile.tileIndex
                 , polys
                 , polys.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 polys = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileVerts(NavmeshTileData tile, out float[] verts)
+        /// <summary>
+        /// Returns the polygon vertices for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="verts">The polygon tile vertices.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileVerts(NavmeshTileData tile
+            , out float[] verts)
         {
             verts = new float[tile.vertexCount * 3];
 
-            NavmeshStatus status = NavmeshEx.GetTileVerts(root
+            NavStatus status = NavmeshEx.GetTileVerts(root
                 , tile.tileIndex
                 , verts
                 , verts.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 verts = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileDetailVerts(NavmeshTileData tile, out float[] verts)
+        /// <summary>
+        /// Returns the detail polygon vertices for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="verts">The detail polygon vertices in the form
+        /// (x, y, z).</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileDetailVerts(NavmeshTileData tile
+            , out float[] verts)
         {
             verts = new float[tile.detailVertCount * 3];
 
-            NavmeshStatus status = NavmeshEx.GetTileDetailVerts(root
+            NavStatus status = NavmeshEx.GetTileDetailVerts(root
                 , tile.tileIndex
                 , verts
                 , verts.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 verts = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileDetailTris(NavmeshTileData tile, out byte[] triangles)
+        /// <summary>
+        /// Returns the indices and flags of the detail triangles for a tile.
+        /// </summary>
+        /// <remarks>See the <see cref="PolyMeshDetail"/> class description
+        /// for information on triangle flags.</remarks>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="triangles">The indices for the detail triangles
+        /// in the form (vertAIndex, vertBIndex, vertCIndex, flags).</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileDetailTris(NavmeshTileData tile
+            , out byte[] triangles)
         {
             triangles = new byte[tile.detailTriCount * 4];
 
-            NavmeshStatus status = NavmeshEx.GetTileDetailTris(root
+            NavStatus status = NavmeshEx.GetTileDetailTris(root
                 , tile.tileIndex
                 , triangles
                 , triangles.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 triangles = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileLinks(NavmeshTileData tile, out NavmeshLink[] links)
+        /// <summary>
+        /// Returns link data for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="links">The link information.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileLinks(NavmeshTileData tile
+            , out NavmeshLink[] links)
         {
             links = new NavmeshLink[tile.maxLinkCount];
 
-            NavmeshStatus status = NavmeshEx.GetTileLinks(root
+            NavStatus status = NavmeshEx.GetTileLinks(root
                 , tile.tileIndex
                 , links
                 , links.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 links = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileBVTree(NavmeshTileData tile, out BVNode[] nodes)
+        /// <summary>
+        /// Returns bounding volume node information for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="nodes">The bounding volume nodes.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileBVTree(NavmeshTileData tile
+            , out BVNode[] nodes)
         {
             nodes = BVNode.GetInitializedArray(tile.bvNodeCount);
 
-            NavmeshStatus status = NavmeshEx.GetTileBVTree(root
+            NavStatus status = NavmeshEx.GetTileBVTree(root
                 , tile.tileIndex
                 , nodes
                 , nodes.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 nodes = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileOffMeshCons(NavmeshTileData tile
-            , out NavmeshConnection[] nodes)
+        /// <summary>
+        /// Returns off-mesh connection information for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="connections">The connection information.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileOffMeshCons(NavmeshTileData tile
+            , out NavmeshConnection[] connections)
         {
-            nodes = 
+            connections = 
                 NavmeshConnection.GetInitializedArray(tile.offMeshConCount);
 
-            NavmeshStatus status = NavmeshEx.GetTileOffMeshCons(root
+            NavStatus status = NavmeshEx.GetTileOffMeshCons(root
                 , tile.tileIndex
-                , nodes
-                , nodes.Length);
+                , connections
+                , connections.Length);
 
-            if (NavmeshUtil.Failed(status))
-                nodes = null;
+            if (NavUtil.Failed(status))
+                connections = null;
 
             return status;
         }
 
-        public NavmeshStatus GetTileDetailMeshes(NavmeshTileData tile
+        /// <summary>
+        /// Returns the detail mesh information for a tile.
+        /// </summary>
+        /// <param name="tile">The tile information.</param>
+        /// <param name="detailMeshes">The detail mesh information.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetTileDetailMeshes(NavmeshTileData tile
             , out NavmeshPolyDetail[] detailMeshes)
         {
             detailMeshes = new NavmeshPolyDetail[tile.detailMeshCount];
 
-            NavmeshStatus status = NavmeshEx.GetTileDetailMeshes(root
+            NavStatus status = NavmeshEx.GetTileDetailMeshes(root
                 , tile.tileIndex
                 , detailMeshes
                 , detailMeshes.Length);
 
-            if (NavmeshUtil.Failed(status))
+            if (NavUtil.Failed(status))
                 detailMeshes = null;
 
             return status;
         }
 
-        public NavmeshStatus GetPolyFlags(uint polyId, out ushort flags)
+        /// <summary>
+        /// Returns the flags for the specified polygon.
+        /// </summary>
+        /// <param name="polyId">The polygon id.</param>
+        /// <param name="flags">The polygon's flags.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetPolyFlags(uint polyId, out ushort flags)
         {
             flags = 0;
             return NavmeshEx.GetPolyFlags(root, polyId, ref flags);
         }
 
-        public NavmeshStatus SetPolyFlags(uint polyId, ushort flags)
+        /// <summary>
+        /// Sets the flags for the specified polygon.
+        /// </summary>
+        /// <param name="polyId">The polyon id.</param>
+        /// <param name="flags">The polygon's flags.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus SetPolyFlags(uint polyId, ushort flags)
         {
             return NavmeshEx.SetPolyFlags(root, polyId, flags);
         }
 
-        public NavmeshStatus GetPolyArea(uint polyId, out byte flags)
+        /// <summary>
+        /// Returns the area id of the specified polygon.
+        /// </summary>
+        /// <param name="polyId">The polyon id.</param>
+        /// <param name="areaId">The polygon's area id.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetPolyAreaId(uint polyId, out byte areaId)
         {
-            flags = 0;
-            return NavmeshEx.GetPolyArea(root, polyId, ref flags);
+            areaId = 0;
+            return NavmeshEx.GetPolyArea(root, polyId, ref areaId);
         }
 
-        public NavmeshStatus SetPolyArea(uint polyId, byte flags)
+        /// <summary>
+        /// Sets the area id of the specified polygon.
+        /// </summary>
+        /// <param name="polyId">The polyon id.</param>
+        /// <param name="areaId">The polygon's area id.</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus SetPolyAreaId(uint polyId, byte areaId)
         {
-            return NavmeshEx.SetPolyArea(root, polyId, flags);
+            return NavmeshEx.SetPolyArea(root, polyId, areaId);
         }
 
-        public NavmeshStatus GetOffMeshConnEndpoints(uint previousPolyId
-            , uint polyId
+        /// <summary>
+        /// Gets the endpoints for an off-mesh connection, ordered by
+        /// "direction of travel".
+        /// </summary>
+        /// <remarks>
+        /// <p>Off-mesh connections are stored in the navigation mesh as
+        /// special 2-vertex polygons with a single edge.  At least one of the
+        /// vertices is expected to be inside a normal polygon. So an off-mesh
+        /// connection is "entered" from a normal polygon at one of its 
+        /// endpoints. This is the polygon identified by startPolyId.</p>
+        /// </remarks>
+        /// <param name="startPolyId">The polygon id in which the
+        /// start endpoint lies.</param>
+        /// <param name="connectionPolyId">The off-mesh connection's polyon 
+        /// id.</param>
+        /// <param name="startPosition">The start position in the form
+        /// (x, y, z).</param>
+        /// <param name="endPosition">The end position in the form
+        /// (x, y, z).</param>
+        /// <returns>The status flags for the request.</returns>
+        public NavStatus GetOffMeshConnEndpoints(uint startPolyId
+            , uint connectionPolyId
             , float[] startPosition
             , float[] endPosition)
         {
             return NavmeshEx.GetOffMeshConEndpoints(root
-                , previousPolyId
-                , polyId
+                , startPolyId
+                , connectionPolyId
                 , startPosition
                 , endPosition);
         }
 
+        /// <summary>
+        /// Gets the polygon id based on its polygon index within a tile.
+        /// </summary>
+        /// <param name="tileInfo">The tile information.</param>
+        /// <param name="polyIndex">The polygon's index within the tile.</param>
+        /// <returns>The status flags for the request.</returns>
         public static uint GetPolyId(NavmeshTileData tileInfo
             , int polyIndex)
         {
             return (tileInfo.basePolyId | (uint)polyIndex);
         }
 
-        public static NavmeshStatus BuildStaticMesh(PolyMesh polyMesh
+        /// <summary>
+        /// Builds a static, single tile navigation mesh from the provided
+        /// data.
+        /// </summary>
+        /// <param name="polyMesh">Polygon mesh data.</param>
+        /// <param name="detailMesh">Detail polygon mesh data. (Optional)
+        /// </param>
+        /// <param name="offMeshConnections">Off-mesh connection data.
+        /// (Optional)</param>
+        /// <param name="resultMesh">The resulting navigation mesh..</param>
+        /// <returns>The status flags for the request.</returns>
+        public static NavStatus BuildStaticMesh(PolyMesh polyMesh
             , PolyMeshDetail detailMesh
-            , NavWaypoints offMeshConnections
+            , ref NavConnections offMeshConnections
             , out Navmesh resultMesh)
         {
             IntPtr navMesh = IntPtr.Zero;
 
-            NavmeshStatus status = NavmeshEx.BuildMesh(
+            NavStatus status = NavmeshEx.BuildMesh(
                 ref polyMesh.root
                 , ref detailMesh.root
                 , polyMesh.MinTraversableHeight
                 , polyMesh.TraversableAreaBorderSize
                 , polyMesh.MaxTraversableStep
-                , ref offMeshConnections.root
+                , ref offMeshConnections
                 , ref navMesh);
 
-            if (NavmeshUtil.Succeeded(status))
+            if (NavUtil.Succeeded(status))
                 resultMesh = new Navmesh(navMesh);
             else
                 resultMesh = null;

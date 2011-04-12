@@ -19,15 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// The type of navmesh polygon an agent is associated with.
+    /// </summary>
     public enum CrowdAgentState : byte
     {
+        /// <summary>
+        /// The agent is traversing a normal navmesh polygon.
+        /// </summary>
         Walking,
+
+        /// <summary>
+        /// The agent is traversing an off-mesh connection.
+        /// </summary>
         OffMesh
     }
 }

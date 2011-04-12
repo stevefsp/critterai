@@ -26,29 +26,79 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// A navigation mesh off-mesh connection.
+    /// </summary>
+    /// <remarks>This structure must be initialized before use.</remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshConnection
     {
+        /// <summary>
+        /// The flag that indicates the connection is bi-directional.
+        /// </summary>
         public const uint BiDirectionalFlag = 0x01;
 
+        /// <summary>
+        /// The endpoints of the connection in the form 
+        /// (ax, ay, az, bx, by, bz).
+        /// </summary>
+        /// <remarks>For a properly built navigation mesh, vertexA
+        /// will always be within the bounds of the mesh.
+        /// vertexB may or may not be within the bounds of the mesh.
+        /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-	    public float[] endpoints;							// Both end point locations.
+	    public float[] endpoints;
 
-        public float radius;								// Link connection radius.
-        public ushort polyId;					// Poly Id
+        /// <summary>
+        /// The radius of the endpoints. (>=0)
+        /// </summary>
+        public float radius;
+
+        /// <summary>
+        /// The polygon id of the connection.
+        /// </summary>
+        /// <remarks>All connections are stored as 2-vertex polygons within
+        /// the navigation mesh.</remarks>
+        public ushort polyId;
         
-        // Note: These are not the off-mesh connection user flags.  Those
-        // are assigned to the connections poly.  These flags are used
-        // for internal purposes.
-        public byte flags;					// Link flags
-        public byte side;						// End point side.
-        public uint userId;					// User ID to identify this connection.
 
+        /// <summary>
+        /// Link flags.
+        /// </summary>
+        /// <remarks>
+        /// These are not the off-mesh connection user flags.  Those
+        /// are assigned to the connection's polygon.  These are link flags 
+        /// used for internal purposes.
+        /// </remarks>
+        public byte flags;
+
+        /// <summary>
+        /// TODO: Document.
+        /// </summary>
+        public byte side;						// End point side.
+
+        /// <summary>
+        /// The id of the offmesh connection. (User assigned when the
+        /// navmesh is built.)
+        /// </summary>
+        public uint userId;
+
+        /// <summary>
+        /// TRUE if the traversal of the connection can start from either 
+        /// endpoint.  FALSE if the connection can only be travered only from
+        /// vertexA to vertexB.
+        /// </summary>
         public bool IsBiDirectional
         {
             get { return (flags & BiDirectionalFlag) != 0; }
         }
 
+        /// <summary>
+        /// Initializes the structure before its first use.
+        /// </summary>
+        /// <remarks>
+        /// Existing references are released and replaced.
+        /// </remarks>
         public void Initialize()
         {
             endpoints = new float[6];
@@ -59,11 +109,16 @@ namespace org.critterai.nav.rcn
             userId = 0;
         }
 
-        public static NavmeshConnection[] GetInitializedArray(int size)
+        /// <summary>
+        /// Rerturns an array of fully initialized nodes.
+        /// </summary>
+        /// <param name="length">The length of the array. (>0)</param>
+        /// <returns>An array of fully initialized connections.</returns>
+        public static NavmeshConnection[] GetInitializedArray(int length)
         {
-            NavmeshConnection[] result = new NavmeshConnection[size];
-            foreach (NavmeshConnection item in result)
-                item.Initialize();
+            NavmeshConnection[] result = new NavmeshConnection[length];
+            for (int i = 0; i < result.Length; i++)
+                result[i].Initialize();
             return result;
         }
     }

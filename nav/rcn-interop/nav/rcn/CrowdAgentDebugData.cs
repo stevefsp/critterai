@@ -20,70 +20,162 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
-using org.critterai.nav.rcn.externs;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Provides debug information related to agents managed by 
+    /// a <see cref="CrowdManager"/> object.
+    /// </summary>
+    /// <remarks>
+    /// <p>Must be initialized before use.</p>
+    /// <p>This data is provided for debug purposes. The purpose of various
+    /// fields is this structue is undocumented, but still provided for
+    /// advanced users.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct DTCrowdAgentDebugData
+    public struct CrowdAgentDebugData
     {
+        /// <summary>
+        /// The maximum number of corners the corner fields
+        /// can hold.
+        /// </summary>
         public const int MaxCorners = 4;
+
+        /// <summary>
+        /// The maximum number of agent neighbors the neighbor fields
+        /// can hold.
+        /// </summary>
         public const int MaxNeighbors = 6;
 
+        /// <summary>
+        /// Whether or not the agent is being actively managed by its
+        /// manager. (1 = active, 0 = inactive.)
+        /// </summary>
 	    public byte active;
+
+        /// <summary>
+        /// The state of the agent.
+        /// </summary>
         public CrowdAgentState state;
 
+        /// <summary>
+        /// Current path information.
+        /// </summary>
 	    public PathCorridorData corridor;
+
+        /// <summary>
+        /// Local boundary segments. (Content is not documented.)
+        /// </summary>
+        /// <remarks>This data is used internally by 
+        /// <see cref="CrowdManager"/>.  It's content is not currently
+        /// documented.</remarks>
         public CrowdLocalBoundaryData boundary;
 
-        public float t;
-        public float var;
+        /// <summary>
+        /// t-value. (Not documented.)
+        /// </summary>
+        private float t;
 
-        public float topologyOptTime;
+        /// <summary>
+        /// var-value. (Not documented.)
+        /// </summary>
+        private float var;
+
+        /// <summary>
+        /// topologyOptTime-value. (Not documented.)
+        /// </summary>
+        private float topologyOptTime;
     	
+        /// <summary>
+        /// The agent id's of all detected neighbors of the current agent.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxNeighbors)]
-	    CrowdNeighbor[] neighbors;
+	    public CrowdNeighbor[] neighbors;
+
+        /// <summary>
+        /// The number of neighbors.
+        /// </summary>
 	    public int neighborCount;
 
+        /// <summary>
+        /// The desired speed of the agent.
+        /// </summary>
         public float desiredSpeed;
 
+        /// <summary>
+        /// The curent position of the agent in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] position;
 
+        /// <summary>
+        /// disp-value. (Not documented.)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] disp;
+        private float[] disp;
 
+        /// <summary>
+        /// The desired velocity of the agent in the form (x, y, z)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] desiredVelocity;
 
+        /// <summary>
+        /// nvel-value. (Not documented.)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] nvel;
 
+        /// <summary>
+        /// The velocity of the agent in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] velocity;
 
+        /// <summary>
+        /// The agent parameters.
+        /// </summary>
         public CrowdAgentParams agentParams;
 
+        /// <summary>
+        /// The corner vertices of the agent's local path.  (Not documented.)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * MaxCorners)]
         public float[] cornerVerts;
 
+        /// <summary>
+        /// The corner flags of the agent's local path.  (Not documented.)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
         public byte[] cornerFlags;
 
+        /// <summary>
+        /// The polygon ids of the agent's local path. (Not documented.)
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
         public uint[] cornerPolyIds;
 
+        /// <summary>
+        /// The number of corners in the agent's local path.  (Not documented.)
+        /// </summary>
         public int cornerCount;
 
+        /// <summary>
+        /// Initializes the structure before its first use.
+        /// </summary>
+        /// <remarks>
+        /// Existing references are released and replaced.
+        /// </remarks>
         public void Initialize()
         {
             active = 0;
             state = CrowdAgentState.Walking;
-            corridor = PathCorridorData.Initialized;
-            boundary = CrowdLocalBoundaryData.Initialized;
+            corridor = new PathCorridorData();
+            corridor.Initialize();
+            boundary = new CrowdLocalBoundaryData();
+            boundary.Initialize();
             t = 0;
             var = 0;
             topologyOptTime = 0;
@@ -104,6 +196,14 @@ namespace org.critterai.nav.rcn
             cornerCount = 0;
         }
 
+        /// <summary>
+        /// Resets the structure's fields to their initialized state.
+        /// </summary>
+        /// <remarks>
+        /// <p>Unlike the <see cref="Initialize"/> method, all references are 
+        /// kept. (E.g. The content of existing arrays are zeroed.)</p>
+        /// <p>The structure must be initialized before using this method.</p>
+        /// </remarks>
         public void Reset()
         {
             active = 0;
@@ -113,8 +213,10 @@ namespace org.critterai.nav.rcn
             t = 0;
             var = 0;
             topologyOptTime = 0;
-            foreach (CrowdNeighbor n in neighbors)
-                n.Reset();
+            for (int i = 0; i < neighbors.Length; i++)
+            {
+                neighbors[i].Reset();
+            }
             neighborCount = 0;
             desiredSpeed = 0;
             Array.Clear(position, 0, position.Length);
@@ -130,16 +232,5 @@ namespace org.critterai.nav.rcn
             Array.Clear(cornerPolyIds, 0, cornerPolyIds.Length);
             cornerCount = 0;
         }
-
-        public static DTCrowdAgentDebugData Initialized
-        {
-            get 
-            {
-                DTCrowdAgentDebugData data = new DTCrowdAgentDebugData();
-                data.Initialize();
-                return data;
-            }
-        }
-
     }
 }

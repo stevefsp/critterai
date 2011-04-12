@@ -28,17 +28,20 @@ namespace org.critterai.nav.rcn.externs
     {
         // Source interface: DetourNavmeshEx.h
 
+        public const ushort ExternalLink = 0x8000;
+        public const uint NullLink = 0xffffffff;
+
         public const int MaxAreas = 64;
         public const int MaxVertsPerPolygon = 6;
 
         [DllImport("cai-nav-rcn", EntryPoint = "rcnBuildStaticDTNavMesh")]
-        public static extern NavmeshStatus BuildMesh(
+        public static extern NavStatus BuildMesh(
             ref PolyMeshEx polyMesh
             , ref PolyMeshDetailEx detailMesh
             , float walkableHeight
             , float walkableRadius
             , float walkableClimb
-            , ref NavWaypointsEx offMeshConnections
+            , ref NavConnections offMeshConnections
             , ref IntPtr resultMesh);
 
         [DllImport("cai-nav-rcn", EntryPoint = "freeDTNavMesh")]
@@ -56,80 +59,80 @@ namespace org.critterai.nav.rcn.externs
             , uint polyId);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileInfo")]
-        public static extern NavmeshStatus GetTileInfo(IntPtr mesh
+        public static extern NavStatus GetTileInfo(IntPtr mesh
             , int tileIndex
             , ref NavmeshTileData tileInfo);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTilePolys")]
-        public static extern NavmeshStatus GetTilePolys(IntPtr mesh
+        public static extern NavStatus GetTilePolys(IntPtr mesh
             , int tileIndex
             , [In, Out] NavmeshPoly[] result
             , int resultSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileLinks")]
-        public static extern NavmeshStatus GetTileLinks(IntPtr mesh
+        public static extern NavStatus GetTileLinks(IntPtr mesh
             , int tileIndex
             , [In, Out] NavmeshLink[] links
             , int linkSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetPolyFlags")]
-        public static extern NavmeshStatus GetPolyFlags(IntPtr mesh
+        public static extern NavStatus GetPolyFlags(IntPtr mesh
             , uint polyId
             , ref ushort flags);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmSetPolyFlags")]
-        public static extern NavmeshStatus SetPolyFlags(IntPtr mesh
+        public static extern NavStatus SetPolyFlags(IntPtr mesh
             , uint polyId
             , ushort flags);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetPolyArea")]
-        public static extern NavmeshStatus GetPolyArea(IntPtr mesh
+        public static extern NavStatus GetPolyArea(IntPtr mesh
             , uint polyRef
             , ref byte area);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmSetPolyArea")]
-        public static extern NavmeshStatus SetPolyArea(IntPtr mesh
+        public static extern NavStatus SetPolyArea(IntPtr mesh
             , uint polyRef
             , byte area);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileVerts")]
-        public static extern NavmeshStatus GetTileVerts(IntPtr mesh
+        public static extern NavStatus GetTileVerts(IntPtr mesh
             , int tileIndex
             , [In, Out] float[] verts
             , int vertsSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailMeshes")]
-        public static extern NavmeshStatus GetTileDetailMeshes(IntPtr mesh
+        public static extern NavStatus GetTileDetailMeshes(IntPtr mesh
             , int tileIndex
             , [In, Out] NavmeshPolyDetail[] detailMeshes
             , int meshesSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailVerts")]
-        public static extern NavmeshStatus GetTileDetailVerts(IntPtr mesh
+        public static extern NavStatus GetTileDetailVerts(IntPtr mesh
             , int tileIndex
             , [In, Out] float[] verts
             , int vertsSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailTris")]
-        public static extern NavmeshStatus GetTileDetailTris(IntPtr mesh
+        public static extern NavStatus GetTileDetailTris(IntPtr mesh
             , int tileIndex
             , [In, Out] byte[] tris
             , int trisSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileBVTree")]
-        public static extern NavmeshStatus GetTileBVTree(IntPtr mesh
+        public static extern NavStatus GetTileBVTree(IntPtr mesh
             , int tileIndex
             , [In, Out] BVNode[] nodes
             , int nodesSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileConnections")]
-        public static extern NavmeshStatus GetTileOffMeshCons(IntPtr mesh
+        public static extern NavStatus GetTileOffMeshCons(IntPtr mesh
             , int tileIndex
             , [In, Out] NavmeshConnection[] conns
             , int connsSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetConnectionEndPoints")]
-        public static extern NavmeshStatus GetOffMeshConEndpoints(
+        public static extern NavStatus GetOffMeshConEndpoints(
             IntPtr mesh
             , uint previousPolyId
             , uint polyId

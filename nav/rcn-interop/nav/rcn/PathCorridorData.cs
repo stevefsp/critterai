@@ -26,21 +26,50 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Path corridor data.
+    /// </summary>
+    /// <remarks>
+    /// <p>Must be initialized before use.</p>
+    /// <p>This data is provided for debug purposes.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct PathCorridorData
     {
+        /// <summary>
+        /// The size of the path buffer.
+        /// </summary>
         public const int MaxPathSize = 256;
 
+        /// <summary>
+        /// The current position within the path corridor in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] position;
 
+        /// <summary>
+        /// The target position within the path corridor in the form (x, y, z).
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] target;
 
+        /// <summary>
+        /// An ordered list of polygon ids representing the corridor.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxPathSize)]
         public uint[] path;
+
+        /// <summary>
+        /// The number of polygons in the path.
+        /// </summary>
         public int pathCount;
 
+        /// <summary>
+        /// Initializes the structure before its first use.
+        /// </summary>
+        /// <remarks>
+        /// Existing references are released and replaced.
+        /// </remarks>
         public void Initialize()
         {
             position = new float[3];
@@ -49,22 +78,20 @@ namespace org.critterai.nav.rcn
             pathCount = 0;
         }
 
+        /// <summary>
+        /// Resets the structure's fields to their initialized state.
+        /// </summary>
+        /// <remarks>
+        /// <p>Unlike the <see cref="Initialize"/> method, all references are 
+        /// kept. (E.g. The content of existing arrays are zeroed.)</p>
+        /// <p>The structure must be initialized before using this method.</p>
+        /// </remarks>
         public void Reset()
         {
             Array.Clear(position, 0, position.Length);
             Array.Clear(target, 0, target.Length);
             Array.Clear(path, 0, path.Length);
             pathCount = 0;
-        }
-
-        public static PathCorridorData Initialized
-        {
-            get
-            {
-                PathCorridorData result = new PathCorridorData();
-                result.Initialize();
-                return result;
-            }
         }
     }
 }
