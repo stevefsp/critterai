@@ -128,7 +128,6 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
     // Some convenience variables.
     const int vertCount = pSourceMesh->vertCount;
     const int triangleCount = pSourceMesh->polyCount;
-    const int messageDetail = pContext->messageDetail;
 
     config.applyLimits();
 
@@ -156,7 +155,7 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
 
     // Log configuration related messages.
 
-    if (messageDetail > MDETAIL_BRIEF)
+    if (pContext->getLogEnabled())
     {
         pContext->log(RC_LOG_PROGRESS
             , "Source: %d vertices, %d triangles"
@@ -164,9 +163,7 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
             , triangleCount);
         pContext->log(RC_LOG_PROGRESS, "Source: %d x %d cells"
             , width, height);
-    }
-    if (messageDetail > MDETAIL_SUMMARY)
-    {
+
         pContext->log(RC_LOG_PROGRESS
             , "Source: Min:(%.3f, %.3f, %.3f) to Max:(%.3f, %.3f, %.3f)"
                         , bounds[0], bounds[1], bounds[2]
@@ -220,7 +217,7 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
             , "Config: clipLedges: %d"
             , config.clipLedges);
     }
-	
+
     /**********************************************************************
      * Build solid heightfield.
      *********************************************************************/
@@ -256,9 +253,8 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         return false;
     }
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Initialized solid heightfield.");
+    pContext->log(RC_LOG_PROGRESS
+        , "Initialized solid heightfield.");
 
     unsigned char* triangleAreas = 
         (pAreas ? pAreas : new unsigned char[triangleCount]);
@@ -289,10 +285,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         delete[] triangleAreas;
     triangleAreas = 0;
 	
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built solid heightfield: %d spans."
-            , getSolidSpanCount(*solidHeightfield));
+    pContext->log(RC_LOG_PROGRESS
+        , "Built solid heightfield: %d spans."
+        , getSolidSpanCount(*solidHeightfield));
 
     // Apply various filters.
     rcFilterLowHangingWalkableObstacles(pContext
@@ -306,10 +301,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         , vxMinTraversableHeight
         , *solidHeightfield);
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Applied solid heightfield filters: %d remaining spans."
-            , getTraversableSpanCount(*solidHeightfield));
+    pContext->log(RC_LOG_PROGRESS
+        , "Applied solid heightfield filters: %d remaining spans."
+        , getTraversableSpanCount(*solidHeightfield));
 
     /**********************************************************************
      * Build compact (open) heightfield and regions.
@@ -342,11 +336,10 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         return false;
     }
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built compact heightfield: %d of %d traversable spans."
-            , getTraversableSpanCount(*compactHeightfield)
-            , compactHeightfield->spanCount);
+    pContext->log(RC_LOG_PROGRESS
+        , "Built compact heightfield: %d of %d traversable spans."
+        , getTraversableSpanCount(*compactHeightfield)
+        , compactHeightfield->spanCount);
 
     // Create border around traversable surface.
     if (!rcErodeWalkableArea(pContext
@@ -359,11 +352,10 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         return false;
     }
 	
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Applied border: %d of %d tranversable spans."
-            , getTraversableSpanCount(*compactHeightfield)
-            , compactHeightfield->spanCount);
+    pContext->log(RC_LOG_PROGRESS
+        , "Applied border: %d of %d tranversable spans."
+        , getTraversableSpanCount(*compactHeightfield)
+        , compactHeightfield->spanCount);
 
     // Build distance field.
     if (!rcBuildDistanceField(pContext, *compactHeightfield))
@@ -374,10 +366,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
 	    return false;
     }
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built distance field: %d max distance."
-            , compactHeightfield->maxDistance);
+    pContext->log(RC_LOG_PROGRESS
+        , "Built distance field: %d max distance."
+        , compactHeightfield->maxDistance);
 
     // Build regions.
     if (!rcBuildRegions(pContext
@@ -392,16 +383,13 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
 	    return false;
     }
 	
-    if (messageDetail > MDETAIL_SUMMARY)
-    {
-        pContext->log(RC_LOG_PROGRESS
-            , "Built regions: %d regions."
-            , compactHeightfield->maxRegions);
-        pContext->log(RC_LOG_PROGRESS
-            , "Compact final: %d of %d traversable spans."
-            , getTraversableSpanCount(*compactHeightfield)
-            , compactHeightfield->spanCount);
-    }
+    pContext->log(RC_LOG_PROGRESS
+        , "Built regions: %d regions."
+        , compactHeightfield->maxRegions);
+    pContext->log(RC_LOG_PROGRESS
+        , "Compact final: %d of %d traversable spans."
+        , getTraversableSpanCount(*compactHeightfield)
+        , compactHeightfield->spanCount);
 
     /**********************************************************************
      * Build contours.
@@ -432,10 +420,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         return false;
     }
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built contours: %d contours."
-            , contourSet->nconts);
+    pContext->log(RC_LOG_PROGRESS
+        , "Built contours: %d contours."
+        , contourSet->nconts);
 
     /**********************************************************************
      * Build polygon mesh.
@@ -460,10 +447,9 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
         return false;
     }
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built poly mesh: %d polygons."
-            , polyMesh.maxpolys);
+    pContext->log(RC_LOG_PROGRESS
+        , "Built poly mesh: %d polygons."
+        , polyMesh.maxpolys);
 
     /**********************************************************************
      * Build detail mesh.
@@ -487,12 +473,11 @@ bool rcnBuildBaseRCNavMesh(RCNNavMeshConfig config
     if (failed)
         return false;
 
-    if (messageDetail > MDETAIL_SUMMARY)
-        pContext->log(RC_LOG_PROGRESS
-            , "Built detail mesh: %d submeshes, %d vertices, %d triangles"
-            , detailMesh.nmeshes
-            , detailMesh.nverts
-            , detailMesh.ntris);
+    pContext->log(RC_LOG_PROGRESS
+        , "Built detail mesh: %d submeshes, %d vertices, %d triangles"
+        , detailMesh.nmeshes
+        , detailMesh.nverts
+        , detailMesh.ntris);
 
     if (detailMesh.nverts == 0)
     {

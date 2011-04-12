@@ -81,13 +81,14 @@ int removeDuplicateVerts(int vertCount
 };
 
 void rcnTransferMessages(RCNBuildContext& context
-    , RCNMessageBuffer& messages)
+    , unsigned char* messageBuffer
+    , int messageBufferSize)
 {
     if (context.getLogEnabled())
     {
-        messages.size = context.getMessagePoolLength();
-        messages.buffer = new char[messages.size];
-        memcpy(messages.buffer, context.getMessagePool(), messages.size);
+        int size = (messageBufferSize < context.getMessagePoolLength()
+            ? messageBufferSize : context.getMessagePoolLength());
+        memcpy(messageBuffer, context.getMessagePool(), size);
     }
 }
 
@@ -107,12 +108,12 @@ extern "C"
         }
     }
 
-    // Deletes memory allocated to all pointers within the buffer.
-    EXPORT_API void rcnFreeMessageBuffer(RCNMessageBuffer* messages)
-    {
-        if (messages)
-            delete [] messages->buffer;
-    }
+    //// Deletes memory allocated to all pointers within the buffer.
+    //EXPORT_API void rcnFreeMessageBuffer(RCNMessageBuffer* messages)
+    //{
+    //    if (messages)
+    //        delete [] messages->buffer;
+    //}
 
     EXPORT_API void rcnApplyNavMeshConfigLimits(RCNNavMeshConfig* config)
     {
@@ -122,27 +123,24 @@ extern "C"
     EXPORT_API bool rcnBuildRCNavMesh(RCNNavMeshConfig config
         , RCNMesh3* pSourceMesh
         , unsigned char* pAreas
-        , RCNMessageBuffer* pMessages
         , rcPolyMesh* pPolyMesh
-        , rcPolyMeshDetail* pDetailMesh)
+        , rcPolyMeshDetail* pDetailMesh
+        , unsigned char* messageBuffer
+        , int messageBufferSize)
     {
 
          // Initialize the build context.
 
-        int messageDetail = 
-            (!pMessages || pMessages->messageDetail <= MDETAIL_NONE) 
-                ? MDETAIL_NONE : pMessages->messageDetail;
+        messageBufferSize = (messageBuffer ? messageBufferSize : 0);
         RCNBuildContext* pContext = new RCNBuildContext();
-        pContext->messageDetail = messageDetail;
-        pContext->enableLog(messageDetail != MDETAIL_NONE);
+        pContext->enableLog(messageBufferSize != 0);
 
 	    // Prepare timer and make initial log entry.
         // Design Note: This isn't really doing anything since timer is not 
         // implemented by the current pContext class.
 	    pContext->resetTimers();
 	    pContext->startTimer(RC_TIMER_TOTAL);
-        if (messageDetail > MDETAIL_BRIEF)
-            pContext->log(RC_LOG_PROGRESS, "Building mesh: Static Detour");
+        pContext->log(RC_LOG_PROGRESS, "Building mesh: Static Detour");
 
         // Build the mesh.
 
@@ -157,16 +155,16 @@ extern "C"
                 , "Failed static mesh build.");
             rcFreePolyMesh(pPolyMesh);
             rcFreePolyMeshDetail(pDetailMesh);
-            if (messageDetail > MDETAIL_NONE)
-                rcnTransferMessages(*pContext, *pMessages);
+            if (messageBufferSize > 0)
+                rcnTransferMessages(*pContext
+                , messageBuffer
+                , messageBufferSize);
             return false;
         }
 
-        if (messageDetail > MDETAIL_NONE)
-        {
-            pContext->log(RC_LOG_PROGRESS, "Built Recast Meshes.");
-            rcnTransferMessages(*pContext, *pMessages);
-        }
+        pContext->log(RC_LOG_PROGRESS, "Built Recast Meshes.");
+        if (messageBufferSize > 0)
+            rcnTransferMessages(*pContext, messageBuffer, messageBufferSize);
 
         return true;
 
@@ -177,7 +175,7 @@ extern "C"
         , float walkableHeight
         , float walkableRadius
         , float walkableClimb
-        , RCNOffMeshConnections* pOffMeshConnections
+        , RCNNavConnections* pOffMeshConnections
         , dtNavMesh** ppNavMesh)
     {
 
@@ -224,12 +222,12 @@ extern "C"
             // to the memory used by pOffMeshConnections.  So it is OK for
             // the data to be directly referenced by params during the build.
             params.offMeshConCount = pOffMeshConnections->count;
-            params.offMeshConVerts = pOffMeshConnections->verts;
-            params.offMeshConRad = pOffMeshConnections->radii;
-            params.offMeshConDir = pOffMeshConnections->dirs;
-            params.offMeshConAreas = pOffMeshConnections->areas;
-            params.offMeshConFlags = pOffMeshConnections->flags;
-            params.offMeshConUserID = pOffMeshConnections->ids;
+            params.offMeshConVerts = &pOffMeshConnections->verts[0];
+            params.offMeshConRad = &pOffMeshConnections->radii[0];
+            params.offMeshConDir = &pOffMeshConnections->dirs[0];
+            params.offMeshConAreas = &pOffMeshConnections->areas[0];
+            params.offMeshConFlags = &pOffMeshConnections->flags[0];
+            params.offMeshConUserID = &pOffMeshConnections->ids[0];
         }
         else
             params.offMeshConCount = 0;

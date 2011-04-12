@@ -23,7 +23,7 @@
 #include "Rcn.h"
 
 RCNBuildContext::RCNBuildContext()
-    : rcContext(false), mMessageCount(0), mTextPoolSize(0), messageDetail(1)
+    : rcContext(false), mMessageCount(0), mTextPoolSize(0)
 {
     m_logEnabled = true;
 }
