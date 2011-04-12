@@ -26,19 +26,43 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    // TODO: Doc
+
+    /// <summary>
+    /// Crowd agent local boundary data.
+    /// </summary>
+    /// <remarks>
+    /// <p>Must be initialized before use.</p>
+    /// <p>This data is provided for debug purposes.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct CrowdLocalBoundaryData
     {
         public const int MaxSegments = 8;
 
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] center;
 
+        /// <summary>
+        /// Undocumented
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6 * MaxSegments)]
         public float[] segments;
 
+        /// <summary>
+        /// Undocumented
+        /// </summary>
         public int segmentCount;
 
+        /// <summary>
+        /// Initializes the structure before its first use.
+        /// </summary>
+        /// <remarks>
+        /// Existing references are released and replaced.
+        /// </remarks>
         public void Initialize()
         {
             center = new float[3];
@@ -46,21 +70,14 @@ namespace org.critterai.nav.rcn
             segmentCount = 0;
         }
 
+        /// <summary>
+        /// Resets all values to zero.
+        /// </summary>
         public void Reset()
         {
             segmentCount = 0;
             Array.Clear(center, 0, center.Length);
             Array.Clear(segments, 0, segments.Length);
-        }
-
-        public static CrowdLocalBoundaryData Initialized
-        {
-            get
-            {
-                CrowdLocalBoundaryData data = new CrowdLocalBoundaryData();
-                data.Initialize();
-                return data;
-            }
         }
     }
 }

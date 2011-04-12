@@ -19,19 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Data for a polygon's detailed mesh. (Within a navigation mesh tile.)
+    /// </summary>
+    /// <remarks>
+    /// <p>This data is provided for debug purposes.</p>
+    /// <p>All indices refer to the vertex and triangle data in the
+    /// polygon's <see cref="NavmeshTileData">tile</see>.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshPolyDetail
     {
-	    public uint vertBase;						// Offset to detail vertex array.
-        public uint triBase;						// Offset to detail triangle array.
-        public byte vertCount;					// Number of vertices in the detail mesh.
-        public byte triCount;						// Number of triangles.
+
+        /// <summary>
+        /// The index of the base vertex for the detail mesh.
+        /// </summary>
+	    public uint vertexBase;
+
+        /// <summary>
+        /// The index of the base triangle for the detail mesh.
+        /// </summary>
+        public uint triangleBase;
+		
+		/// <summary>
+		/// The number of vertices in the detail mesh.
+		/// </summary>
+        public byte vertexCount;
+		
+		/// <summary>
+		/// The number of triangles in the detail mesh.
+		/// </summary>
+        public byte triangleCount;
     }
 }

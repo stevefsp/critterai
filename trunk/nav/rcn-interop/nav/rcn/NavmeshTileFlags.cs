@@ -20,14 +20,19 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Ownership flags for a navigation mesh tile.
+    /// </summary>
     [Flags]
     public enum NavmeshTileFlags
     {
+        /// <summary>
+        /// The tile is owned by the navigation mesh, which is responsible
+        /// for freeing its resources.
+        /// </summary>
         OwnedByNavmesh = 0x01,
     }
 }

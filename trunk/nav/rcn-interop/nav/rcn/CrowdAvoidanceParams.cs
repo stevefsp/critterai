@@ -26,19 +26,33 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Configuration parameters that define steering behaviors for agents
+    /// managed by a crowd manager.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CrowdAvoidanceParams
     {
+
+        // TODO: Doc
+
+        /// <summary>
+        /// 
+        /// </summary>
 	    public float velocityBias;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public float weightDesiredVelocity;
         public float weightCurrentVelocity;
         public float weightSide;
         public float weightToi;
         public float horizontalTime;
-        public byte gridSize;	// grid
-        public byte adaptiveDivisions;	// adaptive
-        public byte adaptiveRings;	// adaptive
-        public byte adaptiveDepth;	// adaptive
+        public byte gridSize;
+        public byte adaptiveDivisions;
+        public byte adaptiveRings;
+        public byte adaptiveDepth;
 
         public CrowdAvoidanceParams(float velocityBias
             , float weightDesiredVelocity

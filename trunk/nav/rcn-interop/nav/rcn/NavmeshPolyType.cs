@@ -25,9 +25,20 @@ using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Navigation polygon type.
+    /// </summary>
     public enum NavmeshPolyType
     {
-        Ground = 0,
+        /// <summary>
+        /// The polygon is a standard convex polygon that is part of the
+        /// surface of the navigation mesh.
+        /// </summary>
+        Standard = 0,
+
+        /// <summary>
+        /// The polygon is an off-mesh connection.
+        /// </summary>
         OffMeshConnection = 1
     }
 }

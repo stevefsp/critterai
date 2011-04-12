@@ -20,38 +20,28 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
     /// <summary>
-    /// 
+    /// The type of path points returned by <see cref="NavmeshQuery"/>.
     /// </summary>
-    public static class NavmeshUtil
+    [Flags]
+    public enum WaypointFlag : byte
     {
-        // Returns true of status is success.
-        public static bool Succeeded(NavmeshStatus status)
-        {
-            return (status & NavmeshStatus.Sucess) != 0;
-        }
+        /// <summary>
+        /// The point is the start point in the path.
+        /// </summary>
+        Start = 1,
 
-        // Returns true of status is failure.
-        public static bool Failed(NavmeshStatus status)
-        {
-            return (status & NavmeshStatus.Failure) != 0;
-        }
+        /// <summary>
+        /// The point is the end point in the path.
+        /// </summary>
+        End = 2,
 
-        // Returns true of status is in progress.
-        public static bool IsInProgress(NavmeshStatus status)
-        {
-            return (status & NavmeshStatus.InProgress) != 0;
-        }
-
-        // Returns true if specific detail is set.
-        public static bool HasStatus(NavmeshStatus status, NavmeshStatus flagsToCheck)
-        {
-            return (status & flagsToCheck) != 0;
-        }
+        /// <summary>
+        /// The point is the start of an off-mesh connection.
+        /// </summary>
+        OffMesh = 4
     }
 }

@@ -33,17 +33,34 @@ namespace org.critterai.nav.rcn.externs
     /// initialized and ready to use instance of the Detour navigation mesh 
     /// query class.</p>
     /// <p>Many of the methods in this class require valid polygon ids.
-    /// See <see cref="DTNavmeshEx"/> for information on polygon ids.</p>
+    /// See <see cref="NavmeshEx"/> for information on polygon ids.</p>
     /// </remarks>
     public static class NavmeshQueryEx
     {
 
         // Source header: DetourNavmeshQueryEx.h
 
+        /// <summary>
+        /// Creates a navigation mesh query for a navigation mesh.
+        /// </summary>
+        /// <remarks>
+        /// <p>Any dtNavMesh query created by this method must be freed
+        /// using <see cref="FreeEx"/></p>
+        /// </remarks>
+        /// <param name="dtNavMesh">A pointer to a fully initialized
+        /// dtNavMesh object.</param>
+        /// <param name="maxNodes">The maximum number of nodes
+        /// allowed when performing searches.</param>
+        /// <param name="dtQuery">A pointer to a dtNavMeshQuery 
+        /// object.
+        /// </param>
+        /// <returns>The <see cref="NavStatus" /> flags for the build
+        /// request.
+        /// </returns>
         [DllImport("cai-nav-rcn", EntryPoint = "rcnBuildDTNavQuery")]
-        public static extern NavmeshStatus BuildNavmeshQuery(IntPtr dtNavMesh
+        public static extern NavStatus BuildNavmeshQuery(IntPtr navmesh
             , int maxNodes
-            , ref IntPtr dtQuery);
+            , ref IntPtr resultQuery);
 
         /// <summary>
         /// Free the unmanaged memory allocated during creation of a Detour
@@ -59,14 +76,14 @@ namespace org.critterai.nav.rcn.externs
         public static extern void FreeEx(ref IntPtr query);
 
         /// <summary>
-        /// Returns the wall segments of the specified polygon.
+        /// Returns the segments for the specified polygon.
         /// </summary>
         /// <remarks>
         /// <p>If the segmentPolyIds parameter is provided, then all polygon
-        /// walls will be returned.  If the parameter is ommited, then only 
-        /// the impassible walls arereturn.</p>
+        /// segments will be returned.  If the parameter is ommited, then only 
+        /// the impassable walls are returned.</p>
         /// <p>
-        /// A portal wall will be returns as impassible if the filter argument
+        /// A portal wall will be returned as impassable if the filter argument
         /// results in the wall's neighbor polygon being marked as excluded.</p>
         /// <p>The wall segments of the polygon can be used for simple 2D
         /// collision detection.</p>
@@ -88,9 +105,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="maxSegments">The maximum number of segments that
         /// can be returned.
         /// </param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqGetPolyWallSegments")]
-        public static extern NavmeshStatus GetPolyWallSegments(IntPtr query
+        public static extern NavStatus GetPolyWallSegments(IntPtr query
             , uint polyId
             , IntPtr filter
             , [In, Out] float[] segmentVerts
@@ -105,16 +122,16 @@ namespace org.critterai.nav.rcn.externs
         /// mesh query.
         /// </param>
         /// <param name="position">The center of the search location.</param>
-        /// <param name="extents">The distance to search from the 
-        /// position along each axis (x, y, z).</param>
+        /// <param name="extents">The search distance along each axis in the
+        /// form (x, y, z).</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="nearestPolyId">The id of the nearest polygon. Or
         /// zero if none could be found within the query box. (Out)</param>
-        /// <param name="nearestPoint">The nearest point on the polygon.
-        /// (Optional Out)</param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="nearestPoint">The nearest point on the polygon
+        /// in the form (x, y, z). (Optional Out)</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindNearestPoly")]
-        public static extern NavmeshStatus GetNearestPoly(IntPtr query
+        public static extern NavStatus GetNearestPoly(IntPtr query
             , [In] float[] position
             , [In] float[] extents
 		    , IntPtr filter
@@ -135,9 +152,9 @@ namespace org.critterai.nav.rcn.externs
         /// (x, y, z).</param>
         /// <param name="resultPoint">The closest point found in the form 
         /// (x, y, z) (Out)</param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqClosestPointOnPoly")]
-        public static extern NavmeshStatus GetNearestPoint(IntPtr query
+        public static extern NavStatus GetNearestPoint(IntPtr query
             , uint polyId
             , [In] float[] position
             , [In, Out] float[] resultPoint);
@@ -158,9 +175,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="position">The point to check in the form (x, y, z).
         /// </param>
         /// <param name="resultPoint">The closest point. (Out)</param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqClosestPointOnPolyBoundary")]
-        public static extern NavmeshStatus GetNearestBoundaryPoint(IntPtr query 
+        public static extern NavStatus GetNearestBoundaryPoint(IntPtr query 
             , uint polyId
             , [In] float[] position
             , [In, Out] float[] resultPoint);
@@ -182,9 +199,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="maxResult">The maximum number of polygons to
         /// return.  (Must be less than or equal to the length of
         /// the result array.)</param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqQueryPolygons")]
-        public static extern NavmeshStatus GetPolygons(IntPtr query
+        public static extern NavStatus GetPolygons(IntPtr query
                 , [In] float[] position
                 , [In] float[] extents
                 , IntPtr filter
@@ -219,9 +236,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="maxResult">The maximum polygons to return.
         /// (Must be less than or equal to the length of the result array.)
         /// </param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPolysAroundCircle")]
-        public static extern NavmeshStatus FindPolygons(IntPtr query
+        public static extern NavStatus FindPolygons(IntPtr query
                 , uint startPolyId
                 , [In] float[] position
                 , float radius
@@ -257,9 +274,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="maxResult">The maximum polygons to return.
         /// (Must be less than or equal to the length of the result array.)
         /// </param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPolysAroundShape")]
-        public static extern NavmeshStatus FindPolygons(IntPtr query 
+        public static extern NavStatus FindPolygons(IntPtr query 
             , uint startPolyId
             , [In] float[] vertices
             , int vertexCount
@@ -295,9 +312,9 @@ namespace org.critterai.nav.rcn.externs
         /// <param name="maxResult">The maximum polygons to return.
         /// (Must be less than or equal to the length of the result array.)
         /// </param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqFindLocalNeighbourhood")]
-        public static extern NavmeshStatus GetPolygonsLocal(IntPtr query
+        public static extern NavStatus GetPolygonsLocal(IntPtr query
             , uint startPolyId
             , [In] float[] position
             , float radius
@@ -308,62 +325,81 @@ namespace org.critterai.nav.rcn.externs
             , int maxResult);
 
         /// <summary>
-        /// 
+        /// Returns the height of the polygon at the specified point.
         /// </summary>
+        /// <remarks>
+        /// <p>This method uses the detail mesh when it is available.</p>
+        /// TODO: Need to determine if this even works without a detail mesh.
+        /// <p>TODO: Add doc on how off mesh connections are handled.</p>
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
         /// <param name="polyId">The id of the polygon.</param>
-        /// <param name="position"></param>
-        /// <param name="height"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="position">The position within the column of the
+        /// polygon.  (Within the xz-bounds.)</param>
+        /// <param name="height">The heigth (y-value) on the surface of
+        /// the polygon.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqGetPolyHeight")]
-        public static extern NavmeshStatus GetPolyHeight(IntPtr query
+        public static extern NavStatus GetPolyHeight(IntPtr query
             , uint polyId
             , [In] float[] position
             , ref float height);
 
         /// <summary>
-        /// 
+        /// Returns the distance from the specified position to the nearest
+        /// polygon wall.
         /// </summary>
+        /// <remarks>TODO: Confirm that wall refers to solid segment.</remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
         /// <param name="polyId">The id of the polygon.</param>
-        /// <param name="position"></param>
-        /// <param name="searchRadius"></param>
+        /// <param name="position">The center of the search query circle.
+        /// </param>
+        /// <param name="searchRadius">The radius of the query circle.</param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="hitDistance"></param>
-        /// <param name="hitPosition"></param>
-        /// <param name="hitNormal"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="distance">Distance to nearest wall.</param>
+        /// <param name="closestPoint">The nearest point on the wall.</param>
+        /// <param name="normal">The normal of the ray from the 
+        /// query position through the closest point on the wall.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindDistanceToWall")]
-        public static extern NavmeshStatus FindDistanceToWall(IntPtr query
+        public static extern NavStatus FindDistanceToWall(IntPtr query
             , uint polyId
             , [In] float[] position
             , float searchRadius
 	        , IntPtr filter
-	        , ref float hitDistance
-            , [In, Out] float[] hitPosition
-            , [In, Out] float[] hitNormal);
+	        , ref float distance
+            , [In, Out] float[] closestPoint
+            , [In, Out] float[] normal);
 
         /// <summary>
-        /// 
+        /// Finds the polygon path from the start to the end polygon.
         /// </summary>
+        /// <remarks>
+        /// <p>If the end polygon cannot be reached, then the last polygon
+        /// is the nearest to the end polygon.</p>
+        /// <p>The start and end positions are used to properly calculate
+        /// traversal costs.</p>
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="startPolyId"></param>
-        /// <param name="endPolyId"></param>
-        /// <param name="startPosition"></param>
-        /// <param name="endPosition"></param>
+        /// <param name="startPolyId">The id of the start polygon.</param>
+        /// <param name="endPolyId">The id of the end polygon.</param>
+        /// <param name="startPosition">A position within the start polygon.
+        /// </param>
+        /// <param name="endPosition">A position within the end polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPath"></param>
-        /// <param name="pathCount"></param>
-        /// <param name="maxPath"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="resultPath">An ordered list of polygon ids in the
+        /// path. (Start to end.)</param>
+        /// <param name="pathCount">The number of polygons in the path.</param>
+        /// <param name="maxPath">The maximum length of the path.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPath")]
-        public static extern NavmeshStatus FindPath(IntPtr query 
+        public static extern NavStatus FindPath(IntPtr query 
             , uint startPolyId
             , uint endPolyId
 		    , [In] float[] startPosition
@@ -376,95 +412,133 @@ namespace org.critterai.nav.rcn.externs
         /// <summary>
         /// Returns TRUE if the polygon is in the current closed list.
         /// </summary>
-        /// <param name="query">A pointer to an initialized Detour navigation 
-        /// mesh query.
-        /// </param>
-        /// <param name="polyId">The id of the polygon.</param>
-        /// <returns></returns>
         /// <remarks>
         /// <p>The closed list is the list of polygons that were fully evaluated
         /// during a find operation.</p>
         /// <p>All methods prefixed with "Find" and all sliced path methods are
-        /// operations that can impact the closed list.  The content of the 
+        /// operations that can generate a closed list.  The content of the 
         /// list will persist until the next find operation is performed.</p>
         /// </remarks>
+        /// <param name="query">A pointer to an initialized Detour navigation 
+        /// mesh query.
+        /// </param>
+        /// <param name="polyId">The id of the polygon.</param>
+        /// <returns>TRUE if the polgyon is in the current closed list.
+        /// </returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqIsInClosedList")]
         public static extern bool IsInClosedList(IntPtr query
             , uint polyId);
 	
         /// <summary>
-        /// 
+        /// Casts a 'walkability' ray along the surface of the navigation mesh
+        /// from the start position toward the end position.
         /// </summary>
+        /// <remarks>
+        /// TODO: Add more information on the hit parameter.
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="startPolyId"></param>
-        /// <param name="startPosition"></param>
-        /// <param name="endPosition"></param>
+        /// <param name="startPolyId">The id of the start polygon.</param>
+        /// <param name="startPosition">A position within the start polygon
+        /// representing the start of the ray.</param>
+        /// <param name="endPosition">The position to cast the ray toward.
+        /// </param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="hitParameter"></param>
-        /// <param name="hitNormal"></param>
-        /// <param name="path"></param>
-        /// <param name="pathCount"></param>
-        /// <param name="maxPath"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="hitParameter">The hit parameter.  (Will be > 1E38
+        /// if there was no hit.)</param>
+        /// <param name="hitNormal">The normal of the nearest hit.</param>
+        /// <param name="path">The ids of the visited polygons. (Optional)
+        /// </param>
+        /// <param name="pathCount">The number of visited polygons.</param>
+        /// <param name="maxPath">The length of the path array.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqRaycast")]
-        public static extern NavmeshStatus Raycast(IntPtr query
+        public static extern NavStatus Raycast(IntPtr query
             , uint startPolyId
             , [In] float[] startPosition
             , [In] float[] endPosition
 	        , IntPtr filter
-	        , ref float hitParameter  // Very high number (> 1E38) if no hit.
+	        , ref float hitParameter 
             , [In, Out] float[] hitNormal
             , [In, Out] uint[] path
             , ref int pathCount
             , int maxPath);
 
         /// <summary>
-        /// 
+        /// Returns the staight path from the start to the end locations
+        /// within the polygon corridor.
         /// </summary>
+        /// <remarks>
+        /// <p>Start and end positions will be clamped to the corridor.</p>
+        /// <p>The returned polygon ids represent the id of the polygon
+        /// that is entered at the associated path point.  The id associated
+        /// to end point will always be zero.</p>
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="startPosition"></param>
-        /// <param name="endPosition"></param>
-        /// <param name="path"></param>
-        /// <param name="pathSize"></param>
-        /// <param name="straightPathPoints"></param>
-        /// <param name="straightPathFlags"></param>
-        /// <param name="straightPathIds"></param>
-        /// <param name="straightPathCount"></param>
-        /// <param name="maxStraightPath"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="startPosition">The start position.</param>
+        /// <param name="endPosition">The end position.</param>
+        /// <param name="path">The list of polygon ids that represent the
+        /// path corridor.</param>
+        /// <param name="pathSize">The length of the path within the path
+        /// array.</param>
+        /// <param name="straightPathPoints">Points describing the straight
+        /// path in the form (x, y, z).</param>
+        /// <param name="straightPathFlags">Flags describing each point.
+        /// (Optional)</param>
+        /// <param name="straightPathIds">The id of the polygon that
+        /// is being entered at the point position.</param>
+        /// <param name="straightPathCount">The number of points in the
+        /// straight path.</param>
+        /// <param name="maxStraightPath">The maximum length of the straight
+        /// path.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
 	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindStraightPath")]
-        public static extern NavmeshStatus GetStraightPath(IntPtr query
+        public static extern NavStatus GetStraightPath(IntPtr query
             , [In] float[] startPosition
             , [In] float[] endPosition
 		    , [In] uint[] path
             , int pathSize
 	        , [In, Out] float[] straightPathPoints
-            , [In, Out] byte[] straightPathFlags
+            , [In, Out] WaypointFlag[] straightPathFlags
             , [In, Out] uint[] straightPathIds
 	        , ref int straightPathCount
             , int maxStraightPath);
 
         /// <summary>
-        /// 
+        /// Moves from the start position to the end position constrained to
+        /// the navigation mesh.
         /// </summary>
+        /// <remarks>
+        /// <p>The result position will equal the end position if the end position
+        /// is reachable.</p>
+        /// <p>This method is optimized for small delta movement and a small
+        /// number of polygons.</p>
+        /// <p>The result position is not projected to the surface of the
+        /// navigation mesh.  If that is needed, use 
+        /// <see cref="GetPolyHeight"/>.</p>
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="startPolyId"></param>
-        /// <param name="startPosition"></param>
-        /// <param name="endPosition"></param>
+        /// <param name="startPolyId">The id of the start polygon.</param>
+        /// <param name="startPosition">A position within the start
+        /// polygon.</param>
+        /// <param name="endPosition">The end position.</param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPosition"></param>
-        /// <param name="visitedPolyIds"></param>
-        /// <param name="visitedCount"></param>
-        /// <param name="maxVisited"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="resultPosition">The result of the move in the
+        /// form (x, y, z).</param>
+        /// <param name="visitedPolyIds">The ids of the polygons
+        /// visited during the move.</param>
+        /// <param name="visitedCount">The number of polygons visited during
+        /// the move.</param>
+        /// <param name="maxVisited">The length of the visitedPolyIds array.
+        /// </param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqMoveAlongSurface")]
-        public static extern NavmeshStatus MoveAlongSurface(IntPtr query
+        public static extern NavStatus MoveAlongSurface(IntPtr query
             , uint startPolyId
             , [In] float[] startPosition
             , [In] float[] endPosition
@@ -475,19 +549,34 @@ namespace org.critterai.nav.rcn.externs
             , int maxVisited);
 
         /// <summary>
-        /// 
+        /// Initializes a sliced path find query.
         /// </summary>
+        /// <remarks>
+        /// <p>WARNING: Calling any other query methods besides the other
+        /// sliced path methods before finalizing this query may result
+        /// in corrupted data.</p>
+        /// <p>The filter is stored and used for the duration of the query.</p>
+        /// <p>The standard use case:</p>
+        /// <ol>
+        /// <li>Initialize the sliced path query</li>
+        /// <li>Call <see cref="UpdateSlicedFindPath"/> until its status
+        /// returns complete.</li>
+        /// <li>Call <see cref="FinalizeSlicedFindPath"/> to get the path.</li>
+        /// </ol>
+        /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="startPolyId"></param>
-        /// <param name="endPolyId"></param>
-        /// <param name="startPosition"></param>
-        /// <param name="endPosition"></param>
+        /// <param name="startPolyId">The id of the start polygon.</param>
+        /// <param name="endPolyId">The id of the end polygon.</param>
+        /// <param name="startPosition">A position within the start polygon.
+        /// </param>
+        /// <param name="endPosition">A position within the end polygon.
+        /// </param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqInitSlicedFindPath")]
-        public static extern NavmeshStatus InitSlicedFindPath(IntPtr query
+        public static extern NavStatus InitSlicedFindPath(IntPtr query
             , uint startPolyId
             , uint endPolyId
             , [In] float[] startPosition
@@ -495,31 +584,35 @@ namespace org.critterai.nav.rcn.externs
             , IntPtr filter);
 
         /// <summary>
-        /// 
+        /// Continues a sliced path find query.
         /// </summary>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="maxIterations"></param>
-        /// <param name="actualIterations"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="maxIterations">The maximum number of iterations
+        /// to perform.</param>
+        /// <param name="actualIterations">The actual number of iterations
+        /// performed.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqUpdateSlicedFindPath")]
-        public static extern NavmeshStatus UpdateSlicedFindPath(IntPtr query
+        public static extern NavStatus UpdateSlicedFindPath(IntPtr query
             , int maxIterations
             , ref int actualIterations);
 
         /// <summary>
-        /// 
+        /// Finalizes and returns the results of the sliced path query.
         /// </summary>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.
         /// </param>
-        /// <param name="path"></param>
-        /// <param name="pathCount"></param>
-        /// <param name="maxPath"></param>
-        /// <returns>The <see cref="DTStatus" /> flags for the query.</returns>
+        /// <param name="path">An ordered list of polygons representing the
+        /// path.</param>
+        /// <param name="pathCount">The number of polygons in the path.</param>
+        /// <param name="maxPath">The maximum allowed path length.
+        /// </param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         [DllImport("cai-nav-rcn", EntryPoint = "dtqFinalizeSlicedFindPath")]
-        public static extern NavmeshStatus FinalizeSlicedFindPath(IntPtr query
+        public static extern NavStatus FinalizeSlicedFindPath(IntPtr query
             , [In, Out] uint[] path
             , ref int pathCount
             , int maxPath);

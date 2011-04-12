@@ -20,8 +20,6 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn.externs

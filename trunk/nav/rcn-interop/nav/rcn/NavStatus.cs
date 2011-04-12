@@ -19,40 +19,66 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System.Runtime.InteropServices;
+using System;
 
 namespace org.critterai.nav.rcn
 {
     /// <summary>
-    /// Provides information on the neighbors of agents managed by a
-    /// crowd manager.
+    /// Navigation status flags.
     /// </summary>
-    /// <remarks>
-    /// <p>This data is provided for debug purposes.</p>
-    /// </remarks>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CrowdNeighbor
+    [Flags]
+    public enum NavStatus : uint
     {
-
-        // Test Note: There are not unit tests for this class.
+        /// <summary>
+        /// The operation has failed.  (Completion status.)
+        /// </summary>
+        Failure = 1u << 31,
 
         /// <summary>
-        /// The index of the neighbor.
+        /// The operation has succeeded. (Completion status.)
         /// </summary>
-        public int index;
+        Sucess = 1u << 30,
 
         /// <summary>
-        /// The distance to the neighbor.
+        /// The operation is in progress. (Incomplete)
         /// </summary>
-        public float distance;
+        InProgress = 1u << 29,
 
         /// <summary>
-        /// Resets all field values to zero.
+        /// Input data was not recognized.
         /// </summary>
-        public void Reset()
-        {
-            index = 0;
-            distance = 0;
-        }
+        WrongMagic = 1 << 0,
+
+        /// <summary>
+        /// Input data was wrong version.
+        /// </summary>
+        WrongVersion = 1 << 1,
+
+        /// <summary>
+        /// Operation ran out of memory.
+        /// </summary>
+        OutOfMemory = 1 << 2,
+
+        /// <summary>
+        /// An input parameter was invalid.
+        /// </summary>
+        InvalidParam = 1 << 3,
+
+        /// <summary>
+        /// Result buffer for the operation was too small to store all the
+        /// results.
+        /// </summary>
+        BufferTooSmall = 1 << 4,
+
+        /// <summary>
+        /// The navigation query ran out of nodes during the search.
+        /// </summary>
+        OutOfNodes = 1 << 5,
+
+        /// <summary>
+        /// The navigation query did not reach the end location.  The result
+        /// is a best guess.
+        /// </summary>
+        PartialResult = 1 << 6
     }
 }

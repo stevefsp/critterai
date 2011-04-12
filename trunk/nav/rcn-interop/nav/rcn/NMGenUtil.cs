@@ -26,30 +26,87 @@ using org.critterai.nav.rcn.externs;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Provides utilities related to generating navigation meshes.
+    /// </summary>
     public static class NMGenUtil
     {
+        private static string[] mTraceMessages = null;
+        private static byte[] mMessageBuffer = null;
+        private static bool mTraceMessagesEnabled = false;
+
+        public static string[] TraceMessages { get { return mTraceMessages; } }
+
+        public static bool TraceMessagesEnabled
+        {
+            get { return mTraceMessagesEnabled; }
+            set { mTraceMessagesEnabled = value; }
+        }
+
+        public static void ClearTraceMessages()
+        {
+            mTraceMessages = null;
+            mMessageBuffer = null;
+        }
+
+        private static void InitializeMessageBuffer()
+        {
+            if (mTraceMessagesEnabled)
+                mMessageBuffer = new byte[10000];
+        }
+
+        private static void PostSingleMessage(string message)
+        {
+            if (mTraceMessagesEnabled)
+            {
+                mTraceMessages = new string[1];
+                mTraceMessages[0] = message;
+            }
+        }
+
+        private static void TransferMessages()
+        {
+            if (mTraceMessagesEnabled)
+            {
+                string aggregateMsg =
+                    ASCIIEncoding.ASCII.GetString(mMessageBuffer);
+                char[] delim = { '\0' };
+                mTraceMessages = aggregateMsg.Split(delim
+                    , StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
+        /// <summary>
+        /// Generates navigation mesh data that can be used to create
+        /// a <see cref="Navmesh"/> object.
+        /// </summary>
+        /// <param name="config">The configuration parameters to use
+        /// during the build.</param>
+        /// <param name="sourceVertices">The source geometry vertices in the
+        /// form (x, y, z).</param>
+        /// <param name="sourceTriangles">The source geometry triangles
+        /// in the form (vertAIndex, vertBIndex, vertCIndex).</param>
+        /// <param name="triangleAreas">The area ids for the source
+        /// geometry triangles.  (Optional)</param>
+        /// <param name="resultPolyMesh">The resulting polygon mesh,
+        /// or null if the build failed.</param>
+        /// <param name="resultDetailMesh">The resulting detail mesh, or
+        /// null if the build failed.</param>
+        /// <returns>TRUE if the build succeeded.</returns>
         public static bool BuildMesh(NMGenParams config
             , float[] sourceVertices
-            , int[] sourceIndices
+            , int[] sourceTriangles
             , byte[] triangleAreas
-            , MessageStyle messageStyle
-            , List<string> resultMessages
             , out PolyMesh resultPolyMesh
             , out PolyMeshDetail resultDetailMesh)
         {
-            if (resultMessages == null)
-                messageStyle = MessageStyle.None;
-            else
-                resultMessages.Clear();
-
             TriMesh3Ex sourceMesh =
-                new TriMesh3Ex(sourceVertices, sourceIndices);
+                new TriMesh3Ex(sourceVertices, sourceTriangles);
             if (sourceMesh.triangleCount < 1)
             {
                 resultPolyMesh = null;
                 resultDetailMesh = null;
-                if (messageStyle != MessageStyle.None)
-                    resultMessages.Add("Invalid source mesh data.");
+                PostSingleMessage("Invalid source mesh data.");
                 TriMesh3Ex.Free(ref sourceMesh);
                 return false;
             }
@@ -59,30 +116,27 @@ namespace org.critterai.nav.rcn
             {
                 resultPolyMesh = null;
                 resultDetailMesh = null;
-                if (messageStyle != MessageStyle.None)
-                    resultMessages.Add("Triangle area array is too small.");
+                PostSingleMessage("Triangle area array is too small.");
                 TriMesh3Ex.Free(ref sourceMesh);
                 return false;
             }
 
-            // RCConfigEx rcConfig = Utils.ToConfigStructure(config);
-            MessageBufferEx messageBuffer =
-                new MessageBufferEx((int)messageStyle);
+
+            InitializeMessageBuffer();
             PolyMeshEx polyMesh = new PolyMeshEx();
             PolyMeshDetailEx detailMesh = new PolyMeshDetailEx();
 
             bool success = NMGenUtilEx.BuildMesh(config.root
                 , ref sourceMesh
                 , triangleAreas
-                , ref messageBuffer
                 , ref polyMesh
-                , ref detailMesh);
+                , ref detailMesh
+                , mMessageBuffer
+                , (mMessageBuffer == null ? 0 : mMessageBuffer.Length));
 
             TriMesh3Ex.Free(ref sourceMesh);
 
-            if (messageStyle != MessageStyle.None)
-                resultMessages.AddRange(messageBuffer.GetMessages());
-            MessageBufferEx.FreeEx(ref messageBuffer);
+            TransferMessages();
 
             if (success)
             {
@@ -101,49 +155,53 @@ namespace org.critterai.nav.rcn
             return success;
         }
 
+        /// <summary>
+        /// Generates a triangle navigation mesh data from the source geometry.
+        /// </summary>
+        /// <param name="config">The configuration parameters to use
+        /// during the build.</param>
+        /// <param name="sourceVertices">The source geometry vertices in the
+        /// form (x, y, z).</param>
+        /// <param name="sourceTriangles">The source geometry triangles
+        /// in the form (vertAIndex, vertBIndex, vertCIndex).</param>
+        /// <param name="resultVertices">The result vertices in the form
+        /// (x, y, z), or null if the build failed.</param>
+        /// <param name="resultTriangles">The result triangles in the form
+        /// (vertAIndex, vertBIndex, vertCIndex), or null if the build
+        /// failed.</param>
+        /// <returns>TRUE if the build succeeded.</returns>
         public static bool BuildMesh(NMGenParams config
             , float[] sourceVertices
-            , int[] sourceIndices
-            , MessageStyle messageStyle
-            , List<string> resultMessages
+            , int[] sourceTriangles
             , out float[] resultVertices
             , out int[] resultTriangles)
         {
-            if (resultMessages == null)
-                messageStyle = MessageStyle.None;
-            else
-                resultMessages.Clear();
-
             TriMesh3Ex sourceMesh =
-                new TriMesh3Ex(sourceVertices, sourceIndices);
+                new TriMesh3Ex(sourceVertices, sourceTriangles);
             if (sourceMesh.triangleCount < 1)
             {
                 resultVertices = null;
                 resultTriangles = null;
-                if (messageStyle != MessageStyle.None)
-                    resultMessages.Add("Invalid source mesh data.");
+                PostSingleMessage("Invalid source mesh data.");
                 TriMesh3Ex.Free(ref sourceMesh);
                 return false;
             }
 
-            // RCConfigEx rcConfig = Utils.ToConfigStructure(config);
-            MessageBufferEx messageBuffer =
-                new MessageBufferEx((int)messageStyle);
+            InitializeMessageBuffer();
             PolyMeshEx polyMesh = new PolyMeshEx();
             PolyMeshDetailEx detailMesh = new PolyMeshDetailEx();
 
             bool success = NMGenUtilEx.BuildMesh(config.root
                 , ref sourceMesh
                 , null
-                , ref messageBuffer
                 , ref polyMesh
-                , ref detailMesh);
+                , ref detailMesh
+                , mMessageBuffer
+                , (mMessageBuffer == null ? 0 : mMessageBuffer.Length));
 
             TriMesh3Ex.Free(ref sourceMesh);
 
-            if (messageStyle != MessageStyle.None)
-                resultMessages.AddRange(messageBuffer.GetMessages());
-            MessageBufferEx.FreeEx(ref messageBuffer);
+            TransferMessages();
 
             if (!success)
             {
@@ -170,8 +228,6 @@ namespace org.critterai.nav.rcn
             {
                 resultVertices = null;
                 resultTriangles = null;
-                if (messageStyle != MessageStyle.None)
-                    resultMessages.Add("Failure while flattening detail mesh.");
             }
 
             return success;

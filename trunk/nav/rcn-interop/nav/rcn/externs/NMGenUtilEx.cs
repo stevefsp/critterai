@@ -30,9 +30,10 @@ namespace org.critterai.nav.rcn.externs
         public static extern bool BuildMesh(NMGenParamsEx config
             , ref TriMesh3Ex sourceMesh
             , [In] byte[] areas
-            , ref MessageBufferEx pMessages
             , ref PolyMeshEx polyMesh
-            , ref PolyMeshDetailEx detailMesh);
+            , ref PolyMeshDetailEx detailMesh
+            , [In, Out] byte[] messageBuffer
+            , int messageBufferSize);
 
         [DllImport("cai-nav-rcn", EntryPoint = "rcnFlattenDetailMesh")]
         public static extern bool FlattenDetailMesh(

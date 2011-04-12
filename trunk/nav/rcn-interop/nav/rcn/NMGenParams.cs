@@ -20,10 +20,7 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using org.critterai.nav.rcn.externs;
-using System.Runtime.Serialization;
 
 namespace org.critterai.nav.rcn
 {

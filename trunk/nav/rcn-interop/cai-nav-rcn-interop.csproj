@@ -60,12 +60,11 @@
     <Compile Include="nav\rcn\NavmeshTileFlags.cs" />
     <Compile Include="nav\rcn\AllocState.cs" />
     <Compile Include="nav\rcn\ManagedObject.cs" />
-    <Compile Include="nav\rcn\NavmeshStraightPathFlag.cs" />
     <Compile Include="nav\rcn\NavmeshPolyType.cs" />
-    <Compile Include="nav\rcn\NavmeshUtil.cs" />
+    <Compile Include="nav\rcn\NavUtil.cs" />
     <Compile Include="nav\rcn\Navmesh.cs" />
     <Compile Include="nav\rcn\NavmeshQuery.cs" />
-    <Compile Include="nav\rcn\NavmeshStatus.cs" />
+    <Compile Include="nav\rcn\NavStatus.cs" />
     <Compile Include="nav\rcn\externs\NMGenUtilEx.cs" />
     <Compile Include="nav\rcn\NavmeshTileData.cs" />
     <Compile Include="nav\rcn\externs\NavmeshEx.cs" />
@@ -73,28 +72,22 @@
     <Compile Include="nav\rcn\externs\NavmeshQueryEx.cs" />
     <Compile Include="nav\rcn\NavmeshPoly.cs" />
     <Compile Include="nav\rcn\externs\NavmeshQueryFilterEx.cs" />
-    <Compile Include="nav\rcn\externs\MessageBufferEx.cs" />
-    <Compile Include="nav\rcn\externs\NavWaypointsEx.cs" />
     <Compile Include="nav\rcn\externs\NMGenParamsEx.cs" />
     <Compile Include="nav\rcn\externs\PolyMeshDetailEx.cs" />
     <Compile Include="nav\rcn\externs\PolyMeshEx.cs" />
     <Compile Include="nav\rcn\externs\TriMesh3Ex.cs" />
     <Compile Include="nav\rcn\externs\UtilEx.cs" />
-    <Compile Include="nav\rcn\NavWaypointData.cs" />
-    <Compile Include="nav\rcn\NavWaypoints.cs" />
+    <Compile Include="nav\rcn\NavConnections.cs" />
     <Compile Include="nav\rcn\NMGenParams.cs" />
     <Compile Include="nav\rcn\PolyMesh.cs" />
     <Compile Include="nav\rcn\PolyMeshData.cs" />
     <Compile Include="nav\rcn\PolyMeshDetail.cs" />
     <Compile Include="nav\rcn\NavmeshQueryFilter.cs" />
     <Compile Include="nav\rcn\PolyMeshDetailData.cs" />
+    <Compile Include="nav\rcn\WaypointFlag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\util\u3d\cai-util-u3d.csproj">
-      <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
-      <Name>cai-util-u3d</Name>
-    </ProjectReference>
     <ProjectReference Include="..\rcn\cai-nav-rcn.vcproj">
       <Project>{319D361B-147F-45AC-854E-50C06FCA3393}</Project>
       <Name>cai-nav-rcn</Name>

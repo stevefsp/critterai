@@ -20,22 +20,24 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using org.critterai.nav.rcn.externs;
 
 namespace org.critterai.nav.rcn
 {
     /// <summary>
-    /// Provides access to detailed debug data for DTCrowdManger agents.
+    /// Provides access to detailed debug data for agents that are part of
+    /// a <see cref="CrowdManager"/>.
     /// </summary>
     /// <remarks>
-    /// This class is opaque since its primarily purpose is to get debug data
-    /// for an agent.
-    /// <p>Use the bulk data retrieval methods on the DTCrowdManager class
-    /// for normal agent data access.</p>
+    /// <p>This class can only be constructed by <see cref="CrowdManager"/>
+    /// objects.  It is opaque since its purpose is to provide debug data
+    /// for an agent.</p>
+    /// <p>Use the bulk data retrieval methods provided by 
+    /// <see cref="CrowdManager"/> for normal access to agent data.</p>
+    /// <p>Behavior is undefined if objects of this type are used after 
+    /// disposal.</p>
     /// </remarks>
+    /// <seealso cref="CrowdManager"/>
     public sealed class CrowdAgent
     {
         /*
@@ -45,10 +47,19 @@ namespace org.critterai.nav.rcn
          * entirely by the owner object in the external library.  
          * So no need to free it here.
          * 
+         * Disposal is provided to allow the owner to indicate it has
+         * disposed of the native object.
+         * 
          */
 
         private IntPtr root;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="agent">A pointer to an allocated native 
+        /// dtCrowdAgent object.
+        /// </param>
         internal CrowdAgent(IntPtr agent)
         {
             root = agent;
@@ -59,17 +70,30 @@ namespace org.critterai.nav.rcn
             Dispose();
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Marks the agent as disposed.
+        /// </summary>
+        internal void Dispose()
         {
             root = IntPtr.Zero;
         }
 
+        /// <summary>
+        /// Indicates whether the object's resources have been disposed.
+        /// </summary>
         public bool IsDisposed
         {
             get { return (root == IntPtr.Zero); }
         }
 
-        public void GetDebugData(ref DTCrowdAgentDebugData data)
+        /// <summary>
+        /// Gets the current agent state.
+        /// </summary>
+        /// <remarks>Behavior of this method is undefined if it is called
+        /// after the object is disposed.</remarks>
+        /// <param name="data">An <b>initialized</b> data structure to load
+        /// the state into.</param>
+        public void GetDebugData(ref CrowdAgentDebugData data)
         {
             CrowdManagerEx.GetAgentDebugData(root, ref data);
         }

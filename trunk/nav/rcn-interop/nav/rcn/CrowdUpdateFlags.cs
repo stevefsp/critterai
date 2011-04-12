@@ -20,13 +20,14 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+
+    // TODO: Document
+
     [Flags]
-    public enum DTCrowdUpdateFlags : byte
+    public enum CrowdUpdateFlags : byte
     {
         AnticipateTurns = 1,
         ObstacleAvoidance = 2,
