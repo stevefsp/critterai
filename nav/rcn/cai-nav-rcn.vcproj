@@ -260,10 +260,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DetourPathCorridorEx.h"
-				>
-			</File>
-			<File
 				RelativePath="include\Rcn.h"
 				>
 			</File>
