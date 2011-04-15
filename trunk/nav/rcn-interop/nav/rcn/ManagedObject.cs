@@ -36,7 +36,7 @@ namespace org.critterai.nav.rcn
         /// <summary>
         /// The type of unmanaged resources within the object.
         /// </summary>
-        public AllocType resourceType { get { return mResourceType; } }
+        public AllocType ResourceType { get { return mResourceType; } }
 
         /// <summary>
         /// Constructor
@@ -59,7 +59,7 @@ namespace org.critterai.nav.rcn
         public abstract void RequestDisposal();
 
         /// <summary>
-        /// Indicates whether or not the object can be used.
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
         public abstract bool IsDisposed { get; }
     }

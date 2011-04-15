@@ -20,20 +20,43 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn.externs
 {
+    /// <summary>
+    /// A structure used for marshalling triangle mesh data across the
+    /// native interop boundary.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct TriMesh3Ex
     {
+        /// <summary>
+        /// The number of vertices in the mesh.
+        /// </summary>
         public int vertexCount;
+
+        /// <summary>
+        /// The number of triangles in the mesh.
+        /// </summary>
         public int triangleCount;
+
+        /// <summary>
+        /// A pointer to the unmanged vertex array. (float) 
+        /// (Size: 3 * vertexCount)
+        /// </summary>
         public IntPtr vertices;
+
+        /// <summary>
+        /// A pointer to the unmanaged triangle array. (int)
+        /// (Size: 3 * triangleCount)
+        /// </summary>
         public IntPtr triangles;
 
+        /// <summary>
+        /// Gets a copy of the vertices. (x, y, z) * vertexCount
+        /// </summary>
+        /// <returns>A copy of the vertices.</returns>
         public float[] GetVertices()
         {
             if (vertexCount <= 0 || vertices == IntPtr.Zero)
@@ -43,6 +66,11 @@ namespace org.critterai.nav.rcn.externs
             return result;
         }
 
+        /// <summary>
+        /// Gets a copy of the triangle indices.  
+        /// (vertAIndex, vertBIndex, vertCIndex) * triangleCount
+        /// </summary>
+        /// <returns>A copy of the triangle indices.</returns>
         public int[] GetTriangles()
         {
             if (triangleCount <= 0 || triangles == IntPtr.Zero)
@@ -52,14 +80,24 @@ namespace org.critterai.nav.rcn.externs
             return result;
         }
 
-        public TriMesh3Ex(float[] vertices, int[] indices)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// Any mesh constructed using a non-default constructor must be freed
+        /// using the <see cref="Free"/> method.  Otherwise a memory leak will
+        /// occur.</remarks>
+        /// <param name="vertices">The mesh vertices. (x, y, z) * vertexCount
+        /// </param>
+        /// <param name="triangles">The mesh triangles.
+        /// (vertAIndex, vertBIndex, vertCIndex) * triangleCount</param>
+        public TriMesh3Ex(float[] vertices, int[] triangles)
         {
             if (vertices == null
                 || vertices.Length < 3
                 || vertices.Length % 3 != 0
-                || indices == null
-                || indices.Length < 3
-                || indices.Length % 3 != 0)
+                || triangles == null
+                || triangles.Length < 3
+                || triangles.Length % 3 != 0)
             {
                 this.vertexCount = 0;
                 this.triangleCount = 0;
@@ -72,12 +110,23 @@ namespace org.critterai.nav.rcn.externs
                 UtilEx.GetFilledBuffer(vertices, vertices.Length);
 
             this.triangles =
-                UtilEx.GetFilledBuffer(indices, indices.Length);
+                UtilEx.GetFilledBuffer(triangles, triangles.Length);
 
             this.vertexCount = vertices.Length / 3;
-            this.triangleCount = indices.Length / 3;
+            this.triangleCount = triangles.Length / 3;
         }
 
+        /// <summary>
+        /// Frees the unmanaged resources for a mesh created using a local
+        /// non-default constructor.
+        /// </summary>
+        /// <remarks>
+        /// <p>This method does not have to be called if the mesh was created
+        /// using the default constructor.</p>
+        /// <p>Behavior is undefined if this method is used on
+        /// a mesh created by an interop method.</p>
+        /// </remarks>
+        /// <param name="detailMesh">The mesh to free.</param>
         public static void Free(ref TriMesh3Ex mesh)
         {
             Marshal.FreeHGlobal(mesh.vertices);
@@ -88,6 +137,14 @@ namespace org.critterai.nav.rcn.externs
             mesh.triangles = IntPtr.Zero;
         }
 
+        /// <summary>
+        /// Frees the unmanaged resources for a mesh created using an
+        /// native interop method.
+        /// </summary>
+        /// <remarks>
+        /// Behavior is undefined if this method is called on a
+        /// mesh created by a local constructor.</remarks>
+        /// <param name="detailMesh">The mesh to free.</param>
         [DllImport("cai-nav-rcn", EntryPoint = "rcnFreeMesh3")]
         public static extern void FreeEx(ref TriMesh3Ex mesh);
     };

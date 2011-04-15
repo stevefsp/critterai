@@ -19,19 +19,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Represents data for a <see cref="PolyMeshDetail"/> object.
+    /// </summary>
+    /// <remarks>
+    /// For information on the data within this structure, see the 
+    /// documentation for <see cref="PolyMeshDetail"/>.
+    /// </remarks>
+    /// <seealso cref="PolyMeshDetail"/>
     public struct PolyMeshDetailData
     {
+        /// <summary>
+        /// The sub-mesh information.
+        /// </summary>
         public uint[] meshes;
+
+        /// <summary>
+        /// The mesh vertices.
+        /// </summary>
         public float[] vertices;
+
+        /// <summary>
+        /// The mesh triangles.
+        /// </summary>
         public byte[] triangles;
+
+        /// <summary>
+        /// The sub-mesh count.
+        /// </summary>
         public int meshCount;
+
+        /// <summary>
+        /// The vertex count.
+        /// </summary>
         public int vertexCount;
+
+        /// <summary>
+        /// The triangle count.
+        /// </summary>
         public int triangleCount;
     }
 }

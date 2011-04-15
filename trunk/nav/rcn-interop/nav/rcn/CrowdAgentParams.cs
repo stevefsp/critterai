@@ -60,7 +60,7 @@ namespace org.critterai.nav.rcn
         public float collisionQueryRange;
 
         /// <summary>
-        /// TODO: Needs documentation. (Including in constructor.)
+        /// TODO: DOC (Including in constructor.)
         /// </summary>
         /// <remarks>
         /// This value is often based on the agent radius. E.g. radius * 30

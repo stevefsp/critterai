@@ -34,7 +34,7 @@ namespace org.critterai.nav.rcn
     public struct CrowdAvoidanceParams
     {
 
-        // TODO: Doc
+        // TODO: DOC
 
         /// <summary>
         /// 

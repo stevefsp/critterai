@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav.rcn
 {
 
-    // TODO: Document
+    // TODO: DOC
 
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshLink

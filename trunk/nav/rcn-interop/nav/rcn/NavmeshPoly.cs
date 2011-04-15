@@ -95,7 +95,7 @@ namespace org.critterai.nav.rcn
         /// <summary>
         /// The polygon's area id.
         /// </summary>
-        public byte AreaId
+        public byte Area
         {
             get { return (byte)(mAreaAndType & 0x3f); }
         }

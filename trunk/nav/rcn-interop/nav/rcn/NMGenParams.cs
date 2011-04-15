@@ -21,6 +21,7 @@
  */
 using System;
 using org.critterai.nav.rcn.externs;
+using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
@@ -28,23 +29,70 @@ namespace org.critterai.nav.rcn
     /// Specifies a configuration to use when building navigation meshes.
     /// </summary>
     /// <remarks>
+    /// <p>There is no such thing as a 'zero' configuration.  Use the 
+    /// <see cref="GetDefault"/> method to get a new instance with the default
+    /// settings.</p>
     /// <p>The values of various configuration settings can have significant 
     /// side effects on eachother.  See 
     /// <a href="http://www.critterai.org/nmgen_settings" target="_parent">
     /// Understanding Configuration Settings</a> for some helpful tips.</p>
-    /// <p>There is no such thing as a 'zero' configuration.  Use the 
-    /// <see cref="GetDefault"/> method to get a new instance with the default
-    /// settings.</p>
     /// </remarks>
-    [Serializable]
-    public sealed class NMGenParams
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NMGenParams
     {
         /// <summary>
         /// The prefix tag for all machine configuration strings.
         /// </summary>
-        /// <seealso cref="GetMachineString"/>
-        /// <seealso cref="GetFromMachineString"/>
+        /// <seealso cref="ToMachineString"/>
+        /// <seealso cref="FromMachineString"/>
         public const string MachineTag = "NMGC:";
+
+        /// <summary>
+        /// The maximum allowed value for <see cref="MaxTraversableSlope"/>.
+        /// </summary>
+        public const float MaxAllowedSlope = 85.0f;
+
+        /// <summary>
+        /// The maximum allowed value for <see cref="SmoothingThreshold"/>.
+        /// </summary>
+        public const int MaxAllowedSmoothing = 4;
+
+        /// <summary>
+        /// The maximum allowed value for <see cref="MaxVertsPerPoly"/>.
+        /// </summary>
+        public const int MaxAllowedVertsPerPoly = 6;
+
+        /// <summary>
+        /// The minimum allowed value for <see cref="XZCellSize"/> and 
+        /// <see cref="YCellSize"/>.
+        /// </summary>
+        public const float MinCellSize = 0.01f;
+
+        /// <summary>
+        /// The absolute minimum allowed value for 
+        /// <see cref="MinTraversableHeight"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dependancies between parameters may limit the minimum value 
+        /// to a higher value.
+        /// </remarks>
+        public const float LimitTraversableHeight = 3 * MinCellSize;
+
+        /// <summary>
+        /// The absolute mininum value allowed value for 
+        /// <see cref="MaxTraversableStep"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dependancies between parameters may limit the minimum value 
+        /// to a higher value.
+        /// </remarks>
+        public const float LimitTraversableStep = 3 * MinCellSize;
+
+        /// <summary>
+        /// The minimum allowed value for 
+        /// <see cref="TraversableAreaBorderSize"/> .
+        /// </summary>
+        public const float MinBorderSize = 0;
 
         // Default values.  (Only available for non-derived settings.)
         // See GetDefault() for other values.
@@ -57,38 +105,48 @@ namespace org.critterai.nav.rcn
         private const int DefaultMaxVertsPerPoly = 6;
         private const bool DefaultClipLedges = false;
         private const float DefaultMaxEdgeLength = 0;
-        
-        public const float MinCellSize = 0.01f;
-        public const float LimitTraversableHeight = 3 * MinCellSize;
-        public const float LimitTraversableStep = 3 * MinCellSize;
-        public const float LimitBorderSize = 0;
 
-        internal NMGenParamsEx root;
-
-        private float mMinIslandRegionSize;
-        private float mMergeRegionSize;
+        private float mXZCellSize;
+        private float mYCellSize;
+        private float mMinTraversableHeight;
+        private float mMaxTraversableStep;
+        private float mMaxTraversableSlope;
+        private float mTraversableAreaBorderSize;
+        private float mHeightfieldBorderSize;
+        private float mMaxEdgeLength;
+        private float mEdgeMaxDeviation;
+        private float mContourSampleDistance;
+        private float mContourMaxDeviation;
+        private int mSmoothingThreshold;
+        private int mMinIslandRegionSize;
+        private int mMergeRegionSize;
+        private int mMaxVertsPerPoly;
+        private bool mClipLedges;
 
         /// <summary>
         /// The xz-plane voxel size to use when sampling the source geometry.
+        /// (>= <see cref="MinCellSize"/>)
         /// </summary>
         public float XZCellSize
         {
-            get { return root.xzCellSize; }
-            set { root.xzCellSize = Math.Max(MinCellSize, value); }
+            get { return mXZCellSize; }
+            set { mXZCellSize = Math.Max(MinCellSize, value); }
         }
 
         /// <summary>
         /// The y-axis voxel size to use when sampling the source geometry.
+        /// (>= <see cref="MinCellSize"/>)
         /// </summary>
         public float YCellSize
         {
-            get { return root.yCellSize; }
-            set { root.yCellSize = Math.Max(MinCellSize, value); }
+            get { return mYCellSize; }
+            set { mYCellSize = Math.Max(MinCellSize, value); }
         }
 
         /// <summary>
         /// Minimum floor to 'ceiling' height that will still allow the
         /// floor area to be considered traversable.
+        /// (>= 3 * <see cref="YCellSize"/>)
         /// </summary>
         /// <remarks>
         /// <p>Permits detection of overhangs in the source geometry that make 
@@ -96,19 +154,20 @@ namespace org.critterai.nav.rcn
         /// <p>Usually the maximum client height.</p></remarks>
         public float MinTraversableHeight
         {
-            get { return root.minTraversableHeight; }
+            get { return mMinTraversableHeight; }
             set 
             {
                 // Must be >= 3 times the yCellSize.
-                root.minTraversableHeight = 
-                    Math.Max(Math.Max(LimitTraversableHeight
-                        , 3 * root.yCellSize), value); 
+                mMinTraversableHeight = Math.Max(Math.Max(LimitTraversableHeight
+                        , 3 * mYCellSize)
+                        , value); 
             }
         }
 
         /// <summary>
         /// Maximum ledge height that is considered to still be
-        /// traversable.  
+        /// traversable.
+        /// (>= <see cref="LimitTraversableStep"/>)
         /// </summary>
         /// <remarks>
         /// <p>Allows the mesh to flow over curbs and up/down
@@ -117,186 +176,221 @@ namespace org.critterai.nav.rcn
         /// </remarks>
         public float MaxTraversableStep
         {
-            get { return root.maxTraversableStep; }
-            set { root.maxTraversableStep = 
-                Math.Max(LimitTraversableStep, value); }
+            get { return mMaxTraversableStep; }
+            set { mMaxTraversableStep = Math.Max(LimitTraversableStep, value); }
         }
 
         /// <summary>
         /// The maximum slope that is considered traversable. (In degrees.)
+        /// (0 &lt;= value &lt;= <see cref="MaxAllowedSlope"/>)
         /// </summary>
         public float MaxTraversableSlope
         {
-            get { return root.maxTraversableSlope; }
+            get { return mMaxTraversableSlope; }
             set
             {
-                root.maxTraversableSlope =
-                    Math.Max(0, Math.Min(NMGenParamsEx.MaxAllowedSlope, value));
+                mMaxTraversableSlope = 
+                    Math.Max(0, Math.Min(MaxAllowedSlope, value));
             }
         }
 
         /// <summary>
         /// Represents the closest any part of a mesh should get to an
-        /// obstruction in the source geometry. (Usually the client radius.)
+        /// obstruction in the source geometry.
+        /// (>= <see cref="MinBorderSize"/>)
         /// </summary>
+        /// <remarks>
+        ///  Usually the client radius.
+        /// </remarks>
         public float TraversableAreaBorderSize
         {
-            get { return root.traversableAreaBorderSize; }
-            set { root.traversableAreaBorderSize = 
-                Math.Max(LimitBorderSize, value); }
+            get { return mTraversableAreaBorderSize; }
+            set 
+            { 
+                mTraversableAreaBorderSize =  Math.Max(MinBorderSize, value); 
+            }
         }
 
         /// <summary>
         /// The closest the mesh should come to the xz-plane's AABB of the
         /// source geometry.
+        /// (>= 0)
         /// </summary>
         public float HeightfieldBorderSize
         {
-            get { return root.heightfieldBorderSize; }
-            set { root.heightfieldBorderSize = Math.Max(0, value); }
+            get { return mHeightfieldBorderSize; }
+            set { mHeightfieldBorderSize = Math.Max(0, value); }
         }
 
         /// <summary>
-        /// The maximum allowed length of triangles edges on the border of the
-        /// mesh. (Extra vertices will be inserted if needed.)
+        /// The maximum allowed length of triangle edges on the border of the
+        /// mesh. (0 or >= <see cref="XZCellSize"/>)
         /// </summary>
         /// <remarks>
-        /// A value of zero disabled this feature.</remarks>
+        /// <p>Extra vertices will be inserted if needed.</p>
+        /// <p>A value of zero disabled this feature.</p>
+        /// </remarks>
         public float MaxEdgeLength
         {
-            get { return root.maxEdgeLength; }
+            get { return mMaxEdgeLength; }
             set 
             { 
                 // Any value less than the xzCell size is irrelavant.  In
                 // such cases, disabled feature by snapping to zero.
-                root.maxEdgeLength = (value < root.xzCellSize ? 0 : value);
+                mMaxEdgeLength = (value < mXZCellSize ? 0 : value);
             }
         }
 
         /// <summary>
         /// The maximum distance the edges of the mesh should deviate from
-        /// the source geometry. (Applies only to the xz-plane.)
+        /// the source geometry. (>=0)
         /// </summary>
+        /// <remarks>
+        /// <p>Applies only to the xz-plane.</p>
+        /// </remarks>
         public float EdgeMaxDeviation
         {
-            get { return root.edgeMaxDeviation; }
-            set { root.edgeMaxDeviation = Math.Max(0, value); }
+            get { return mEdgeMaxDeviation; }
+            set { mEdgeMaxDeviation = Math.Max(0, value); }
         }
 
         /// <summary>
         /// Sets the sampling distance to use when matching the
         /// mesh surface to the source geometry.
+        /// (0 or >= 0.9)
         /// </summary>
         public float ContourSampleDistance
         {
-            get { return root.contourSampleDistance; }
-            set { root.contourSampleDistance = value < 0.9f ? 0 : value; }
+            get { return mContourSampleDistance; }
+            set { mContourSampleDistance = value < 0.9f ? 0 : value; }
         }
 
         /// <summary>
         /// The maximum distance the mesh surface should deviate from the
         /// surface of the source geometry. 
+        /// (>= 0)
         /// </summary>
         public float ContourMaxDeviation
         {
-            get { return root.contourMaxDeviation; }
-            set { root.contourMaxDeviation = Math.Max(0, value); }
+            get { return mContourMaxDeviation; }
+            set { mContourMaxDeviation = Math.Max(0, value); }
         }
 
         /// <summary>
         /// The amount of smoothing to be performed when generating the distance 
         /// field used for deriving regions.
+        /// (0 &lt;= value &lt;= <see cref="MaxAllowedSmoothing"/>)
         /// </summary>
         public int SmoothingThreshold
         {
-            get { return root.smoothingThreshold; }
+            get { return mSmoothingThreshold; }
             set
             {
                 // Must be between 0 and max allowed.
-                root.smoothingThreshold = Math.Max(0, 
-                        Math.Min(NMGenParamsEx.MaxAllowedSmoothing, value));
+                mSmoothingThreshold = Math.Max(0, 
+                        Math.Min(MaxAllowedSmoothing, value));
             }
         }
 
         /// <summary>
-        /// The minimum area in world units allowed for isolated island meshes.
-        /// (Prevents the formation of meshes that are too small to be
-        /// of use.)
+        /// The minimum number of cells allowed to form isolated island meshes.
+        /// (>= 0)
         /// </summary>
         /// <remarks>
-        /// <p>This value represents an area in world units.  This differs from 
-        /// some other API's, which use voxel area.</p>
+        /// <p>Prevents the formation of meshes that are too small to be
+        /// of use.</p>
         /// </remarks>
-        public float MinIslandRegionSize
+        public int MinIslandRegionSize
         {
             get { return mMinIslandRegionSize; }
-            set
-            {
-                mMinIslandRegionSize = Math.Max(0, value);
-                root.minIslandRegionSize = (int)(mMinIslandRegionSize
-                    / (root.xzCellSize * root.xzCellSize));
-            }
+            set { mMinIslandRegionSize = Math.Max(0, value); }
         }
 
         /// <summary>
-        /// Any regions with an area smaller than this value will, if possible, be
-        /// merged with larger regions.
+        /// Any regions with an cell count smaller than this value will, 
+        /// if possible, be merged with larger regions.
+        /// (>= 0)
         /// </summary>
-        /// <remarks>
-        /// <p>This value represents an area in world units.  This differs from 
-        /// some other API's, which use voxel area.</p>
-        /// </remarks>
-        public float MergeRegionSize
+        public int MergeRegionSize
         {
             get { return mMergeRegionSize; }
-            set
-            {
-                mMergeRegionSize = Math.Max(0, value);
-                root.mergeRegionSize = (int)(mMergeRegionSize
-                    / (root.xzCellSize * root.xzCellSize));
-            }
+            set { mMergeRegionSize = Math.Max(0, value); }
         }
 
         /// <summary>
         /// The maximum number of vertices allowed for polygons
         /// generated during the contour to polygon conversion process.
+        /// (3 &lt;= value &lt; <see cref="MaxAllowedVertsPerPoly"/>)
         /// </summary>
         public int MaxVertsPerPoly
         {
-            get { return root.maxVertsPerPoly; }
+            get { return mMaxVertsPerPoly; }
             set
             {
                 // Must be between 3 and max allowed.
-                root.maxVertsPerPoly = Math.Max(3
-                    , Math.Min(NMGenParamsEx.MaxAllowedVertsPerPoly, value));
+                mMaxVertsPerPoly = Math.Max(3
+                    , Math.Min(MaxAllowedVertsPerPoly, value));
             }
         }
 
         /// <summary>
-        /// Indicates whether ledges should be considered un-walkable
+        /// TRUE if ledge voxels should be considered un-walkable.
         /// </summary>
         public bool ClipLedges
         {
-            get { return root.clipLedges; }
-            set { root.clipLedges = value; }
+            get { return mClipLedges; }
+            set { mClipLedges = value; }
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        private NMGenParams()
-        {
-            /*
-             * Design notes:
-             * 
-             * Don't make construction public.  It is too easy to make a bad
-             * configuration from scratch.
-             */
-
-            root = new NMGenParamsEx();
-        }
-
-        public void LoadFrom(float xzCellSize
+        /// <remarks>
+        /// All min/max limits are automatically applied during construction.  
+        /// So the resulting structure may not contain the values specified 
+        /// during construction.  See the documentation for individual
+        /// properties for information on min/max limits.
+        /// </remarks>
+        /// <param name="xzCellSize">The xz-plane voxel size to use when 
+        /// sampling the source geometry.</param>
+        /// <param name="yCellSize">The y-axis voxel size to use when sampling 
+        /// the source geometry.</param>
+        /// <param name="minTraversableHeight">Minimum floor to 'ceiling' 
+        /// height that will still allow the floor area to be considered 
+        /// traversable.</param>
+        /// <param name="maxTraversableStep">Maximum ledge height that is
+        /// considered to still be traversable. </param>
+        /// <param name="maxTraversableSlope">The maximum slope that is 
+        /// considered traversable. (In degrees.)</param>
+        /// <param name="clipLedges">TRUE if ledge voxels should be considered 
+        /// un-walkable.</param>
+        /// <param name="traversableAreaBorderSize">Represents the closest 
+        /// any part of a mesh should get to an obstruction in the source 
+        /// geometry. (Usually the client radius.)</param>
+        /// <param name="heightfieldBorderSize">The closest the mesh should 
+        /// come to the xz-plane's AABB of the source geometry.</param>
+        /// <param name="smoothingThreshold">The amount of smoothing to be 
+        /// performed when generating the distance field used for deriving 
+        /// regions.</param>
+        /// <param name="minIslandRegionSize">The minimum number of cells 
+        /// allowed to form isolated island meshes.</param>
+        /// <param name="mergeRegionSize">Any regions with an cell count 
+        /// smaller than this value will, if possible, be merged with 
+        /// larger regions.</param>
+        /// <param name="maxEdgeLength">The maximum allowed length of 
+        /// triangle edges on the border of the mesh.</param>
+        /// <param name="edgeMaxDeviation">The maximum distance the edges of 
+        /// the mesh should deviate from the source geometry.</param>
+        /// <param name="maxVertsPerPoly">The maximum number of vertices 
+        /// allowed for polygons generated during the contour to polygon 
+        /// conversion process.</param>
+        /// <param name="contourSampleDistance">Sets the sampling distance 
+        /// to use when matching the mesh surface to the source geometry.
+        /// </param>
+        /// <param name="contourMaxDeviation">The maximum distance the mesh 
+        /// surface should deviate from the surface of the source geometry.
+        /// </param>
+        public NMGenParams(float xzCellSize
                 , float yCellSize
                 , float minTraversableHeight
                 , float maxTraversableStep
@@ -305,37 +399,59 @@ namespace org.critterai.nav.rcn
                 , float traversableAreaBorderSize
                 , float heightfieldBorderSize
                 , int smoothingThreshold
-                , float minIslandRegionSize
-                , float mergeRegionSize
+                , int minIslandRegionSize
+                , int mergeRegionSize
                 , float maxEdgeLength
                 , float edgeMaxDeviation
                 , int maxVertsPerPoly
                 , float contourSampleDistance
                 , float contourMaxDeviation)
         {
-            this.XZCellSize = xzCellSize;
-            this.YCellSize = yCellSize;
-            this.ClipLedges = clipLedges;
-            this.ContourMaxDeviation = contourMaxDeviation;
-            this.ContourSampleDistance = contourSampleDistance;
-            this.EdgeMaxDeviation = edgeMaxDeviation;
-            this.HeightfieldBorderSize = heightfieldBorderSize;
-            this.MaxEdgeLength = maxEdgeLength;
-            this.MaxTraversableSlope = maxTraversableSlope;
-            this.MaxTraversableStep = maxTraversableStep;
-            this.MaxVertsPerPoly = maxVertsPerPoly;
-            this.MergeRegionSize = mergeRegionSize;
-            this.MinIslandRegionSize = minIslandRegionSize;
-            this.MinTraversableHeight = minTraversableHeight;
-            this.SmoothingThreshold = smoothingThreshold;
-            this.TraversableAreaBorderSize = traversableAreaBorderSize;
+
+            this.mXZCellSize = 0;
+            this.mYCellSize = 0;
+            this.mClipLedges = false;
+            this.mContourMaxDeviation = 0;
+            this.mContourSampleDistance = 0;
+            this.mEdgeMaxDeviation = 0;
+            this.mHeightfieldBorderSize = 0;
+            this.mMaxEdgeLength = 0;
+            this.mMaxTraversableSlope = 0;
+            this.mMaxTraversableStep = 0;
+            this.mMaxVertsPerPoly = 0;
+            this.mMinTraversableHeight = 0;
+            this.mSmoothingThreshold = 0;
+            this.mTraversableAreaBorderSize = 0;
+            this.mMergeRegionSize = 0;
+            this.mMinIslandRegionSize = 0;
+
+            XZCellSize = xzCellSize;
+            YCellSize = yCellSize;
+            ClipLedges = clipLedges;
+            ContourMaxDeviation = contourMaxDeviation;
+            ContourSampleDistance = contourSampleDistance;
+            EdgeMaxDeviation = edgeMaxDeviation;
+            HeightfieldBorderSize = heightfieldBorderSize;
+            MaxTraversableSlope = maxTraversableSlope;
+            MaxTraversableStep = maxTraversableStep;
+            MaxVertsPerPoly = maxVertsPerPoly;
+            SmoothingThreshold = smoothingThreshold;
+            TraversableAreaBorderSize = traversableAreaBorderSize;
+
+            // These values have dependancies and must be set last.
+            MaxEdgeLength = maxEdgeLength;
+            MinTraversableHeight = minTraversableHeight;
+            MergeRegionSize = mergeRegionSize;
+            MinIslandRegionSize = minIslandRegionSize;
+
+            NMGenUtilEx.ApplyStandardLimits(ref this);
         }
 
         /// <summary>
-        /// A configuration instance loaded with the default configuration.
-        /// (All values are within allowed limits.)
+        /// An instance loaded with the default configuration.
         /// </summary>
-        /// <returns>A configuration instance loaded with the default configuration.
+        /// <returns>An instance loaded with the default 
+        /// configuration.
         /// </returns>
         public static NMGenParams GetDefault()
         {
@@ -357,20 +473,20 @@ namespace org.critterai.nav.rcn
             config.ContourSampleDistance = DefaultXZCellSize * 40;
             config.ContourMaxDeviation = config.YCellSize * 20;
             config.MinIslandRegionSize = 
-                (float)Math.Pow(config.TraversableAreaBorderSize * 5, 2);
+                (int)Math.Pow(config.TraversableAreaBorderSize * 5, 2);
             config.MergeRegionSize = 
-                (float)Math.Pow(config.TraversableAreaBorderSize * 10, 2);
+                (int)Math.Pow(config.TraversableAreaBorderSize * 10, 2);
 
             return config;
         }
 
         /// <summary>
-        /// Gets a compact machine readable string that is useful for including 
-        /// in save files.
+        /// Gets a compact machine readable string that is useful for
+        /// serialization.
         /// </summary>
         /// <returns>A machine readable string representing the configuration.
         /// </returns>
-        /// <seealso cref="GetFromMachineString"/>
+        /// <seealso cref="FromMachineString"/>
         public string ToMachineString()
         {
             const string format = MachineTag
@@ -402,114 +518,71 @@ namespace org.critterai.nav.rcn
         /// by searching for <see cref="MachineTag"/></remarks>
         /// <param name="config">The machine string to translate.</param>
         /// <returns>The configuration derived from the machine string.</returns>
-        /// <seealso cref="GetMachineString"/>
+        /// <seealso cref="ToMachineString"/>
         public static NMGenParams FromMachineString(string config)
         {
             // Perform a smoke test.  Any other format errors in the string will
             // result in a runtime error.
             if (config == null || !config.StartsWith(MachineTag))
-                return null;
+                return new NMGenParams();
 
             char[] delim = { ':' };
             string[] sa = config.Split(delim);
 
             // Remember that the value at index zero is a tag, not a configuration
             // value.
-            NMGenParams result = new NMGenParams();
-            result.ClipLedges = (sa[1] == "0" ? false : true);
-            result.ContourMaxDeviation = (float)Convert.ToDouble(sa[2]);
-            result.ContourSampleDistance = (float)Convert.ToDouble(sa[3]);
-            result.EdgeMaxDeviation = (float)Convert.ToDouble(sa[4]);
-            result.HeightfieldBorderSize = (float)Convert.ToDouble(sa[5]);
-            result.MaxEdgeLength = (float)Convert.ToDouble(sa[6]);
-            result.MaxTraversableSlope = (float)Convert.ToDouble(sa[7]);
-            result.MaxTraversableStep = (float)Convert.ToDouble(sa[8]);
-            result.MaxVertsPerPoly = Convert.ToInt32(sa[9]);
-            result.MergeRegionSize = (float)Convert.ToDouble(sa[10]);
-            result.MinIslandRegionSize = (float)Convert.ToDouble(sa[11]);
-            result.MinTraversableHeight = (float)Convert.ToDouble(sa[12]);
-            result.SmoothingThreshold = Convert.ToInt32(sa[13]);
-            result.TraversableAreaBorderSize = (float)Convert.ToDouble(sa[14]);
-            result.XZCellSize = (float)Convert.ToDouble(sa[15]);
-            result.YCellSize = (float)Convert.ToDouble(sa[16]);
-            return result;
+            bool clipLedges = (sa[1] == "0" ? false : true);
+            float contourMaxDeviation = (float)Convert.ToDouble(sa[2]);
+            float contourSampleDistance = (float)Convert.ToDouble(sa[3]);
+            float edgeMaxDeviation = (float)Convert.ToDouble(sa[4]);
+            float heightfieldBorderSize = (float)Convert.ToDouble(sa[5]);
+            float maxEdgeLength = (float)Convert.ToDouble(sa[6]);
+            float maxTraversableSlope = (float)Convert.ToDouble(sa[7]);
+            float maxTraversableStep = (float)Convert.ToDouble(sa[8]);
+            int maxVertsPerPoly = Convert.ToInt32(sa[9]);
+            int mergeRegionSize = Convert.ToInt32(sa[10]);
+            int minIslandRegionSize = Convert.ToInt32(sa[11]);
+            float minTraversableHeight = (float)Convert.ToDouble(sa[12]);
+            int smoothingThreshold = Convert.ToInt32(sa[13]);
+            float traversableAreaBorderSize = (float)Convert.ToDouble(sa[14]);
+            float xzCellSize = (float)Convert.ToDouble(sa[15]);
+            float yCellSize = (float)Convert.ToDouble(sa[16]);
+
+            return new NMGenParams(xzCellSize
+                , yCellSize
+                , minTraversableHeight
+                , maxTraversableStep
+                , maxTraversableSlope
+                , clipLedges
+                , traversableAreaBorderSize
+                , heightfieldBorderSize
+                , smoothingThreshold
+                , minIslandRegionSize
+                , mergeRegionSize
+                , maxEdgeLength
+                , edgeMaxDeviation
+                , maxVertsPerPoly
+                , contourSampleDistance
+                , contourMaxDeviation);
         }
 
-        public static NMGenParamsEx ToConfigEx(NMGenParams config)
-        {
-            return config.root;  // Provides a copy.
-        }
-
-        public static NMGenParams GetFrom(NMGenParamsEx source)
-        {
-            NMGenParams config = NMGenParams.GetDefault();
-
-            config.XZCellSize = source.xzCellSize;
-            config.YCellSize = source.yCellSize;
-            config.ClipLedges = source.clipLedges;
-            config.ContourMaxDeviation = source.contourMaxDeviation;
-            config.ContourSampleDistance = source.contourSampleDistance;
-            config.EdgeMaxDeviation = source.edgeMaxDeviation;
-            config.HeightfieldBorderSize = source.heightfieldBorderSize;
-            config.MaxEdgeLength = source.maxEdgeLength;
-            config.MaxTraversableSlope = source.maxTraversableSlope;
-            config.MaxTraversableStep = source.maxTraversableStep;
-            config.MaxVertsPerPoly = source.maxVertsPerPoly;
-            config.MergeRegionSize = GetWorldArea(source.mergeRegionSize
-                , source.xzCellSize);
-            config.MinIslandRegionSize = GetWorldArea(source.minIslandRegionSize
-                , source.xzCellSize);
-            config.MinTraversableHeight = source.minTraversableHeight;
-            config.SmoothingThreshold = source.smoothingThreshold;
-            config.TraversableAreaBorderSize = source.traversableAreaBorderSize;
-
-            return config;
-        }
-
-        public static NMGenParams GetFrom(float xzCellSize
-                , float yCellSize
-                , float minTraversableHeight
-                , float maxTraversableStep
-                , float maxTraversableSlope
-                , bool clipLedges
-                , float traversableAreaBorderSize
-                , float heightfieldBorderSize
-                , int smoothingThreshold
-                , float minIslandRegionSize
-                , float mergeRegionSize
-                , float maxEdgeLength
-                , float edgeMaxDeviation
-                , int maxVertsPerPoly
-                , float contourSampleDistance
-                , float contourMaxDeviation)
-        {
-            NMGenParams config = NMGenParams.GetDefault();
-
-            config.XZCellSize = xzCellSize;
-            config.YCellSize = yCellSize;
-            config.ClipLedges = clipLedges;
-            config.ContourMaxDeviation = contourMaxDeviation;
-            config.ContourSampleDistance = contourSampleDistance;
-            config.EdgeMaxDeviation = edgeMaxDeviation;
-            config.HeightfieldBorderSize = heightfieldBorderSize;
-            config.MaxEdgeLength = maxEdgeLength;
-            config.MaxTraversableSlope = maxTraversableSlope;
-            config.MaxTraversableStep = maxTraversableStep;
-            config.MaxVertsPerPoly = maxVertsPerPoly;
-            config.MergeRegionSize = mergeRegionSize;
-            config.MinIslandRegionSize = minIslandRegionSize;
-            config.MinTraversableHeight = minTraversableHeight;
-            config.SmoothingThreshold = smoothingThreshold;
-            config.TraversableAreaBorderSize = traversableAreaBorderSize;
-
-            return config;
-        }
-
+        /// <summary>
+        /// Converts an area in world units into a cell count.
+        /// </summary>
+        /// <param name="worldArea">The area in world units.</param>
+        /// <param name="xzCellSize">The cell size.</param>
+        /// <returns>The number of cells covered by the world area.</returns>
         public static int GetCellArea(float worldArea, float xzCellSize)
         {
-            return (int)(worldArea / (xzCellSize * xzCellSize));
+            return (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
         }
 
+        /// <summary>
+        /// Converts the number of cells into an area in world units.
+        /// </summary>
+        /// <param name="cellArea">The number of cells.</param>
+        /// <param name="xzCellSize">The cell size.</param>
+        /// <returns></returns>
         public static float GetWorldArea(int cellArea, float xzCellSize)
         {
             return cellArea * xzCellSize * xzCellSize;

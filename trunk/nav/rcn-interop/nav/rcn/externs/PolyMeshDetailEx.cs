@@ -26,7 +26,8 @@ namespace org.critterai.nav.rcn.externs
 {
     /// <summary>
     /// Contains triangle meshes which represent detailed height data 
-    /// associated with the polygons in a RCPolyMeshEx.
+    /// associated with the polygons in its associated 
+    /// <see cref="PolyMeshDetailEx"/>.
     /// </summary>
     /// <remarks>
     /// <p>The detail mesh is made up of sub-meshes which represent
@@ -43,37 +44,38 @@ namespace org.critterai.nav.rcn.externs
     [StructLayout(LayoutKind.Sequential)]
     public struct PolyMeshDetailEx
     {
-        private IntPtr mMeshes;	// Pointer to all mesh data.
-        private IntPtr mVertices;			// Pointer to all vertex data.
-        private IntPtr mTriangles;	// Pointer to all triangle data.
-        private int mMeshCount;			// Number of meshes.
-        private int mVertexCount;				// Number of total vertices.
-        private int mTriangleCount;				// Number of triangles.
+        private IntPtr mMeshes;	
+        private IntPtr mVertices;
+        private IntPtr mTriangles;	
+        private int mMeshCount;		
+        private int mVertexCount;	
+        private int mTriangleCount;		
 
+        /// <summary>
+        /// The number of sub-meshes in the detail mesh.
+        /// </summary>
         public int MeshCount { get { return mMeshCount; } }
+
+        /// <summary>
+        /// The total number of vertices in the detail mesh.
+        /// </summary>
         public int VertexCount { get { return mVertexCount; } }
+
+        /// <summary>
+        /// The total number of triangles in the detail mesh.
+        /// </summary>
         public int TriangleCount { get { return mTriangleCount; } }
 
-        public bool IsFullyAllocated
-        {
-            get
-            {
-                return !(mMeshes == IntPtr.Zero
-                    || mTriangles == IntPtr.Zero
-                    || mVertices == IntPtr.Zero);
-            }
-        }
-
-        public bool HasAllocations
-        {
-            get
-            {
-                return (mMeshes != IntPtr.Zero
-                    || mTriangles != IntPtr.Zero
-                    || mVertices != IntPtr.Zero);
-            }
-        }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <remarks>
+        /// Any mesh constructed using a non-default constructor must be freed 
+        /// using the <see cref="Free"/> method.  Otherwise a memory leak will
+        /// occur.</remarks>
+        /// <param name="vertices">The mesh vertices.</param>
+        /// <param name="triangles">The mesh triangles.</param>
+        /// <param name="meshes">The sub-mesh data.</param>
         public PolyMeshDetailEx(float[] vertices
             , byte[] triangles
             , uint[] meshes)
@@ -102,16 +104,15 @@ namespace org.critterai.nav.rcn.externs
         }
 
         /// <summary>
-        /// Returns a copy of the sub-mesh array in the form (baseVertexIndex,
-        /// vertexCount, baseTriangleIndex, triangleCount). 
+        /// Returns a copy of the sub-mesh data. (baseVertexIndex,
+        /// vertexCount, baseTriangleIndex, triangleCount) * MeshCount. 
         /// </summary>
         /// <remarks>
         /// <p>The maximum number of vertices per sub-mesh is 127.</p>
         /// <p>The maximum number of triangles per sub-mesh is 255.</p>
         /// <p>
         /// An example of iterating the triangles in a sub-mesh. (Where
-        /// iMesh is the index for the sub-mesh of the detail mesh
-        /// detailMesh.)
+        /// iMesh is the index for the sub-mesh within detailMesh.)
         /// </p>
         /// <p>
         /// <pre>
@@ -125,9 +126,9 @@ namespace org.critterai.nav.rcn.externs
         ///     int tCount = meshes[pMesh + 3];
         ///     int vertX, vertY, vertZ;
         ///
-        ///     for (int iTri = 0; iTri < tCount; iTri++)
+        ///     for (int iTri = 0; iTri &lt; tCount; iTri++)
         ///     {
-        ///        for (int iVert = 0; iVert < 3; iVert++)
+        ///        for (int iVert = 0; iVert &lt; 3; iVert++)
         ///        {
         ///            int pVert = pVertBase 
         ///                + (triangles[pTriBase + (iTri * 4 + iVert)] * 3);
@@ -140,7 +141,7 @@ namespace org.critterai.nav.rcn.externs
         /// </pre>
         /// </p>
         /// </remarks>
-        /// <returns></returns>
+        /// <returns>A copy of the sub-mesh data.</returns>
         public uint[] GetMeshes()
         {
             return (mMeshes == IntPtr.Zero ? null
@@ -148,8 +149,8 @@ namespace org.critterai.nav.rcn.externs
         }
 
         /// <summary>
-        /// Returns a copy of the triangles array in the form (vertIndexA
-        /// , vertIndexB, vertIndexC, flag).
+        /// Returns a copy of the triangles array. (vertIndexA,
+        /// vertIndexB, vertIndexC, flag) * TriangleCount
         /// </summary>
         /// <remarks>
         /// <p>The triangles are grouped by sub-mesh. See GetMeshes()
@@ -157,19 +158,20 @@ namespace org.critterai.nav.rcn.externs
         /// each sub-mesh.</p>
         /// <p><b>Vertices</b></p>
         /// <p> The vertex indices in the triangle array are local to the 
-        /// sub-mesh, not global.  To translate into an gobal index in the 
-        /// vertices array, it must be offset by the sub-mesh's base vertex 
-        /// index.</p>
+        /// sub-mesh, not global.  To translate into an global index in the 
+        /// vertices array, the values must be offset by the sub-mesh's base 
+        /// vertex index.</p>
         /// <p>
         /// Example: If the baseVertexIndex for the sub-mesh is 5 and the
         /// triangle entry is (4, 8, 7, 0), then the actual indices for
-        /// the vertices are (5 + 4, 5 + 8, 5 + 7).
+        /// the vertices are (4 + 5, 8 + 5, 7 + 5).
         /// </p>
         /// <p><b>Flags</b></p>
-        /// <p>The flags entry indicates which edges are internal or external to
-        /// the sub-mesh.</p>
+        /// <p>The flags entry indicates which edges are internal and which
+        /// are external to the sub-mesh.</p>
         /// 
-        /// <p>Internal edges connect to other triangles within the sub-mesh.
+        /// <p>Internal edges connect to other triangles within the same 
+        /// sub-mesh.
         /// External edges represent portals to other sub-meshes or the null 
         /// region.</p>
         /// 
@@ -189,7 +191,7 @@ namespace org.critterai.nav.rcn.externs
         /// }
         /// </pre>
         /// </remarks>
-        /// <returns></returns>
+        /// <returns>A copy of the triangles array.</returns>
         public byte[] GetTriangles()
         {
             return (mTriangles == IntPtr.Zero ? null
@@ -197,42 +199,38 @@ namespace org.critterai.nav.rcn.externs
         }
 
         /// <summary>
-        /// The vertices that make up the detail mesh sub-meshes in the form
-        /// (x, y, z).
+        /// The vertices that make up each sub-mesh. (x, y, z) * VertexCount.
         /// </summary>
         /// <remarks>
         /// <p>The vertices are grouped by sub-mesh and will contain duplicates
-        /// for vertices shared by sub-meshes.</p>
-        /// <p>The first sub-mesh vertices are in the same order as the 
-        /// mesh's associated polygon mesh polygon, followed by any additional
-        /// vertices.  So it the associated polygon has 5 vertices, the
+        /// since each sub-mesh is independantly defined.</p>
+        /// <p>The first group of vertices for each sub-mesh are in the same 
+        /// order as the vertices for the sub-mesh's associated polygon 
+        /// mesh polygon.  These vertices are followed by any additional
+        /// detail vertices.  So it the associated polygon has 5 vertices, the
         /// sub-mesh will have a minimum of 5 vertices and the first 5 
         /// vertices will be equivalent to the 5 polygon vertices.</p>
         /// <p>See GetMeshes() for how to obtain the base vertex and
         /// vertex count for each sub-mesh.</p>
         /// </remarks>
-        /// <returns></returns>
+        /// <returns>The vertices that make up each sub-mesh.</returns>
         public float[] GetVertices()
         {
             return (mVertices == IntPtr.Zero ? null
                 : UtilEx.ExtractArrayFloat(mVertices, mVertexCount * 3));
         }
 
-        public static PolyMeshDetailEx Empty
-        {
-            get
-            {
-                PolyMeshDetailEx result = new PolyMeshDetailEx();
-                result.mMeshCount = 0;
-                result.mVertexCount = 0;
-                result.mTriangleCount = 0;
-                result.mMeshes = IntPtr.Zero;
-                result.mVertices = IntPtr.Zero;
-                result.mTriangles = IntPtr.Zero;
-                return result;
-            }
-        }
-
+        /// <summary>
+        /// Frees the unmanaged resources for a mesh created using a local
+        /// non-default constructor.
+        /// </summary>
+        /// <remarks>
+        /// <p>This method does not have to be called if the mesh was created
+        /// using the default constructor.</p>
+        /// <p>Behavior is undefined if this method is used on
+        /// a mesh created by an interop method.</p>
+        /// </remarks>
+        /// <param name="detailMesh">The mesh to free.</param>
         public static void Free(ref PolyMeshDetailEx detailMesh)
         {
             Marshal.FreeHGlobal(detailMesh.mMeshes);
@@ -246,6 +244,14 @@ namespace org.critterai.nav.rcn.externs
             detailMesh.mTriangleCount = 0;
         }
 
+        /// <summary>
+        /// Frees the unmanaged resources for a mesh created using an
+        /// native interop method.
+        /// </summary>
+        /// <remarks>
+        /// Behavior is undefined if this method is called on a
+        /// mesh created by a local constructor.</remarks>
+        /// <param name="detailMesh">The mesh to free.</param>
         [DllImport("cai-nav-rcn", EntryPoint = "freeRCDetailMesh")]
         public static extern void FreeEx(ref PolyMeshDetailEx detailMesh);
     }

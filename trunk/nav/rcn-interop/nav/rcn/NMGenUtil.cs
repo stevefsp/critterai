@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
 using System.Text;
 using org.critterai.nav.rcn.externs;
 
@@ -35,14 +34,29 @@ namespace org.critterai.nav.rcn
         private static byte[] mMessageBuffer = null;
         private static bool mTraceMessagesEnabled = false;
 
+        /// <summary>
+        /// The trace messages for the last build operation. (Null if no trace
+        /// messages are available.)
+        /// </summary>
         public static string[] TraceMessages { get { return mTraceMessages; } }
 
+        /// <summary>
+        /// TRUE if trace messages should be gathered during build operations.
+        /// </summary>
         public static bool TraceMessagesEnabled
         {
             get { return mTraceMessagesEnabled; }
-            set { mTraceMessagesEnabled = value; }
+            set 
+            { 
+                mTraceMessagesEnabled = value;
+                if (!mTraceMessagesEnabled)
+                    ClearTraceMessages();
+            }
         }
 
+        /// <summary>
+        /// Clear all trace messages.
+        /// </summary>
         public static void ClearTraceMessages()
         {
             mTraceMessages = null;
@@ -80,6 +94,9 @@ namespace org.critterai.nav.rcn
         /// Generates navigation mesh data that can be used to create
         /// a <see cref="Navmesh"/> object.
         /// </summary>
+        /// <remarks>
+        /// This method will generate trace messages if trace messages are
+        /// enabled.</remarks>
         /// <param name="config">The configuration parameters to use
         /// during the build.</param>
         /// <param name="sourceVertices">The source geometry vertices in the
@@ -126,7 +143,7 @@ namespace org.critterai.nav.rcn
             PolyMeshEx polyMesh = new PolyMeshEx();
             PolyMeshDetailEx detailMesh = new PolyMeshDetailEx();
 
-            bool success = NMGenUtilEx.BuildMesh(config.root
+            bool success = NMGenUtilEx.BuildMesh(config
                 , ref sourceMesh
                 , triangleAreas
                 , ref polyMesh
@@ -143,8 +160,10 @@ namespace org.critterai.nav.rcn
                 resultPolyMesh = new PolyMesh(polyMesh
                     , config.MinTraversableHeight
                     , config.MaxTraversableStep
-                    , config.TraversableAreaBorderSize);
-                resultDetailMesh = new PolyMeshDetail(detailMesh);
+                    , config.TraversableAreaBorderSize
+                    , AllocType.External);
+                resultDetailMesh = new PolyMeshDetail(detailMesh
+                    , AllocType.External);
             }
             else
             {
@@ -158,6 +177,9 @@ namespace org.critterai.nav.rcn
         /// <summary>
         /// Generates a triangle navigation mesh data from the source geometry.
         /// </summary>
+        /// <remarks>
+        /// This method will generate trace messages if trace message are
+        /// enabled.</remarks>
         /// <param name="config">The configuration parameters to use
         /// during the build.</param>
         /// <param name="sourceVertices">The source geometry vertices in the
@@ -191,7 +213,7 @@ namespace org.critterai.nav.rcn
             PolyMeshEx polyMesh = new PolyMeshEx();
             PolyMeshDetailEx detailMesh = new PolyMeshDetailEx();
 
-            bool success = NMGenUtilEx.BuildMesh(config.root
+            bool success = NMGenUtilEx.BuildMesh(config
                 , ref sourceMesh
                 , null
                 , ref polyMesh

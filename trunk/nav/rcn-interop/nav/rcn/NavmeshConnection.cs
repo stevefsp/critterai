@@ -73,7 +73,7 @@ namespace org.critterai.nav.rcn
         public byte flags;
 
         /// <summary>
-        /// TODO: Document.
+        /// TODO: DOC
         /// </summary>
         public byte side;						// End point side.
 
