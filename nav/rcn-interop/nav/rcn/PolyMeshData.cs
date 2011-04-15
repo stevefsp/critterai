@@ -19,28 +19,82 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai.nav.rcn
 {
+    /// <summary>
+    /// Represents data for a <see cref="PolyMesh"/> object.
+    /// </summary>
+    /// <remarks>
+    /// For information on the data within this structure, see the 
+    /// documentation for <see cref="PolyMesh"/>.
+    /// </remarks>
+    /// <seealso cref="PolyMesh"/>
     public struct PolyMeshData
     {
+        /// <summary>
+        /// The mesh vertices.
+        /// </summary>
         public ushort[] vertices;
+
+        /// <summary>
+        /// The mesh polygon and neighbor data.
+        /// </summary>
         public ushort[] polygons;
+
+        /// <summary>
+        /// The polygon region ids.
+        /// </summary>
         public ushort[] regions;
+
+        /// <summary>
+        /// The polygon flags.
+        /// </summary>
         public ushort[] flags;
-        public byte[] areas;
+
+        /// <summary>
+        /// The polygon area ids.
+        /// </summary>
+        public byte[] areaIds;
+
+        /// <summary>
+        /// The number of vertices.
+        /// </summary>
         public int vertexCount;
+
+        /// <summary>
+        /// The number of polygons.
+        /// </summary>
         public int polygonCount;
+
+        /// <summary>
+        /// The maximum number of polygons the buffer can hold.
+        /// </summary>
         public int maxPolygons;
+
+        /// <summary>
+        /// The maximum vertices per polygon.
+        /// </summary>
         public int maxVertsPerPoly;
 
+        /// <summary>
+        /// The minimum bounds of the mesh.
+        /// </summary>
         public float[] boundsMin;
+
+        /// <summary>
+        /// The maximum bounds of the mesh.
+        /// </summary>
         public float[] boundsMax;
 
-        public float cellSize;
-        public float cellHeight;
+        /// <summary>
+        /// The xz-plane cell size.
+        /// </summary>
+        public float xzCellSize;
+
+        /// <summary>
+        /// the y-axis cell height.
+        /// </summary>
+        public float yCellSize;
     }
 }

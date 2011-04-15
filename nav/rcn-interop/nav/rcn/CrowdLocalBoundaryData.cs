@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
-    // TODO: Doc
+    // TODO: DOC
 
     /// <summary>
     /// Crowd agent local boundary data.

@@ -120,7 +120,7 @@ namespace org.critterai.nav.rcn
                 mAgentCount = 0;
 
                 mFilter.RequestDisposal();
-                mGrid.Dispose();
+                mGrid.RequestDisposal();
                 mQuery.RequestDisposal();
 
                 CrowdManagerEx.FreeEx(root);

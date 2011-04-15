@@ -31,7 +31,7 @@ namespace org.critterai.nav.rcn
     /// with each use. (No asynchronous methods.)</p>
     /// <p>References to this object should not be shared if the sliced path 
     /// feature of the root navigation query is being used.</p>
-    /// <p>Behavior is undefined if objects of this type are used after 
+    /// <p>Behavior is undefined if an object is used after 
     /// disposal.</p>
     /// </remarks>
     public sealed class NavmeshQueryLite
@@ -48,8 +48,7 @@ namespace org.critterai.nav.rcn
         }
 
         /// <summary>
-        /// Indicates whether or not the resources held by the object have
-        /// been released.
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed
         {
@@ -441,7 +440,7 @@ namespace org.critterai.nav.rcn
         /// from the start position toward the end position.
         /// </summary>
         /// <remarks>
-        /// TODO: Add more information on the hit parameter.
+        /// TODO: DOC: Add more information on the hit parameter.
         /// </remarks>
         /// <param name="startPolyId">The id of the start polygon.</param>
         /// <param name="startPosition">A position within the start polygon

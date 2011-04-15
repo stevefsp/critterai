@@ -34,7 +34,7 @@ namespace org.critterai.nav.rcn
     /// and getting myFilter[myFilter.AreaCount] may get and set the value
     /// value normally.  Do not write code that depends on this behavior since 
     /// it may change in future releases.</p>
-    /// <p>Behavior is undefined if objects of this type are used after 
+    /// <p>Behavior is undefined if an object is used after 
     /// disposal.</p>
     /// </remarks>
     public sealed class NavmeshQueryFilter
@@ -103,7 +103,7 @@ namespace org.critterai.nav.rcn
 
         /// <summary>
         /// The traversal cost for each area, indexed by area id.
-        /// (Defaults to 1.0)
+        /// (Default: 1.0)
         /// </summary>
         /// <param name="index">The area id.</param>
         /// <returns>The traversal cost for the area.</returns>
@@ -142,21 +142,25 @@ namespace org.critterai.nav.rcn
         }
 
         /// <summary>
-        /// Indicates whether or not the memory allocated for the instance
-        /// has been released.
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
-        /// <returns>TRUE if memory has been released and the instance is
-        /// no longer useable.  Otherwise FALSE.
-        /// </returns>
         public override bool IsDisposed
         {
             get { return (root == IntPtr.Zero); }
         }
 
+        /// <summary>
+        /// Request all unmanaged resources controlled by the object be 
+        /// immediately freed and the object marked as disposed.
+        /// </summary>
+        /// <remarks>
+        /// If the object was created using a public constructor the
+        /// resources will be freed immediately.
+        /// </remarks>
         public override void RequestDisposal()
         {
             if (root != IntPtr.Zero 
-                && resourceType == AllocType.Local)
+                && ResourceType == AllocType.Local)
             {
                 NavmeshQueryFilterEx.Free(root);
                 root = IntPtr.Zero;

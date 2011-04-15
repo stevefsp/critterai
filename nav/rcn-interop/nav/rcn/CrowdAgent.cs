@@ -29,12 +29,12 @@ namespace org.critterai.nav.rcn
     /// a <see cref="CrowdManager"/>.
     /// </summary>
     /// <remarks>
-    /// <p>This class can only be constructed by <see cref="CrowdManager"/>
-    /// objects.  It is opaque since its purpose is to provide debug data
-    /// for an agent.</p>
+    /// <p>Objects of this type can only be obtained from a 
+    /// <see cref="CrowdManager"/> object.</p>
+    /// <p>This data is provided for debug purposes.</p>
     /// <p>Use the bulk data retrieval methods provided by 
     /// <see cref="CrowdManager"/> for normal access to agent data.</p>
-    /// <p>Behavior is undefined if objects of this type are used after 
+    /// <p>Behavior is undefined if an object is used after 
     /// disposal.</p>
     /// </remarks>
     /// <seealso cref="CrowdManager"/>

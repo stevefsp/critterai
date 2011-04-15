@@ -20,19 +20,23 @@
  * THE SOFTWARE.
  */
 using System;
+using System.Runtime.InteropServices;
 
-namespace org.critterai.nav.rcn
+namespace org.critterai.nav.rcn.externs
 {
 
-    // TODO: DOC
-
-    [Flags]
-    public enum CrowdUpdateFlags : byte
+    public static class CrowdProximityGridEx
     {
-        AnticipateTurns = 1,
-        ObstacleAvoidance = 2,
-        CrowdSeparation = 4,
-        OptimizeVis = 8,
-        OptimizeTopo = 16
+        [DllImport("cai-nav-rcn", EntryPoint = "dtpgGetCellSize")]
+            public static extern float GetCellSize(IntPtr grid);
+
+        [DllImport("cai-nav-rcn", EntryPoint = "dtpgGetBounds")]
+            public static extern void GetBounds(IntPtr grid
+            , [In, Out] int[] bounds);
+
+        [DllImport("cai-nav-rcn", EntryPoint = "dtpgGetItemCountAt")]
+            public static extern int GetItemCountAt(IntPtr grid
+            , int x
+            , int y);
     }
 }

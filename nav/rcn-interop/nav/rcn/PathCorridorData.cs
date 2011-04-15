@@ -20,8 +20,6 @@
  * THE SOFTWARE.
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
@@ -83,8 +81,8 @@ namespace org.critterai.nav.rcn
         /// </summary>
         /// <remarks>
         /// <p>Unlike the <see cref="Initialize"/> method, all references are 
-        /// kept. (E.g. The content of existing arrays are zeroed.)</p>
-        /// <p>The structure must be initialized before using this method.</p>
+        /// kept.  The content of existing arrays are zeroed.</p>
+        /// <p>The structure must be initialized before calling this method.</p>
         /// </remarks>
         public void Reset()
         {

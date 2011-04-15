@@ -19,11 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-// TODO: Rename source file to match enum name.
 
 namespace org.critterai.nav.rcn
 {

@@ -28,7 +28,7 @@ namespace org.critterai.nav.rcn
     /// Provides pathfinding and related queries for a navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Behavior is undefined if objects of this type are used after 
+    /// <p>Behavior is undefined if an object is used after 
     /// disposal.</p>
     /// </remarks>
     public sealed class NavmeshQuery
@@ -72,19 +72,18 @@ namespace org.critterai.nav.rcn
         }
 
         /// <summary>
-        /// Will immediately free all unmanaged resources if the object
+        /// Immediately frees all unmanaged resources if the object
         /// was created using <see cref="BuildQuery"/>.
         /// </summary>
         public override void RequestDisposal()
         {
-            if (resourceType == AllocType.External)
+            if (ResourceType == AllocType.External)
                 NavmeshQueryEx.FreeEx(ref root);
             root = IntPtr.Zero;
         }
 
         /// <summary>
-        /// Indicates whether or not the resources held by the object have
-        /// been released.
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
         public override bool IsDisposed
         {
@@ -543,7 +542,7 @@ namespace org.critterai.nav.rcn
         /// from the start position toward the end position.
         /// </summary>
         /// <remarks>
-        /// TODO: Add more information on the hit parameter.
+        /// TODO: DOC: Add more information on the hit parameter.
         /// </remarks>
         /// <param name="startPolyId">The id of the start polygon.</param>
         /// <param name="startPosition">A position within the start polygon

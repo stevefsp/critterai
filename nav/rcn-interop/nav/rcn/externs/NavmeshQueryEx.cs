@@ -25,13 +25,11 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav.rcn.externs
 {
     /// <summary>
-    /// Provides the method signatures for all interop method calls related
-    /// to the Detour navigation mesh query class.
+    /// Provides interop method signatures related to the dtNavMeshQuery class.
     /// </summary>
     /// <remarks>
     /// <p>Unless otherwise noted, all methods in the class require a fully
-    /// initialized and ready to use instance of the Detour navigation mesh 
-    /// query class.</p>
+    /// initialized and ready to use dtNavMeshQuery object.</p>
     /// <p>Many of the methods in this class require valid polygon ids.
     /// See <see cref="NavmeshEx"/> for information on polygon ids.</p>
     /// </remarks>
@@ -434,7 +432,7 @@ namespace org.critterai.nav.rcn.externs
         /// from the start position toward the end position.
         /// </summary>
         /// <remarks>
-        /// TODO: Add more information on the hit parameter.
+        /// TODO: DOC: Add more information on the hit parameter.
         /// </remarks>
         /// <param name="query">A pointer to an initialized Detour navigation 
         /// mesh query.

@@ -41,6 +41,7 @@
     <Compile Include="nav\rcn\CrowdAgentCoreData.cs" />
     <Compile Include="nav\rcn\CrowdLocalBoundaryData.cs" />
     <Compile Include="nav\rcn\CrowdUpdateFlags.cs" />
+    <Compile Include="nav\rcn\externs\CrowdProximityGridEx.cs" />
     <Compile Include="nav\rcn\PathCorridorData.cs" />
     <Compile Include="nav\rcn\NavmeshQueryLite.cs" />
     <Compile Include="nav\rcn\CrowdProximityGrid.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="nav\rcn\NavmeshConnection.cs" />
     <Compile Include="nav\rcn\NavmeshPolyDetail.cs" />
     <Compile Include="nav\rcn\NavmeshTileFlags.cs" />
-    <Compile Include="nav\rcn\AllocState.cs" />
+    <Compile Include="nav\rcn\AllocType.cs" />
     <Compile Include="nav\rcn\ManagedObject.cs" />
     <Compile Include="nav\rcn\NavmeshPolyType.cs" />
     <Compile Include="nav\rcn\NavUtil.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="nav\rcn\externs\NavmeshQueryEx.cs" />
     <Compile Include="nav\rcn\NavmeshPoly.cs" />
     <Compile Include="nav\rcn\externs\NavmeshQueryFilterEx.cs" />
-    <Compile Include="nav\rcn\externs\NMGenParamsEx.cs" />
     <Compile Include="nav\rcn\externs\PolyMeshDetailEx.cs" />
     <Compile Include="nav\rcn\externs\PolyMeshEx.cs" />
     <Compile Include="nav\rcn\externs\TriMesh3Ex.cs" />
