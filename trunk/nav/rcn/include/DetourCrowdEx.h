@@ -121,6 +121,14 @@ extern "C"
 	
 	EXPORT_API const dtProximityGrid* dtcGetGrid(dtCrowd* crowd);
 
+    EXPORT_API const float dtpgGetCellSize(dtProximityGrid* grid);
+
+    EXPORT_API void dtpgGetBounds(dtProximityGrid* grid, int* bounds);
+
+    EXPORT_API int dtpgGetItemCountAt(dtProximityGrid* grid
+        , const int x
+        , const int y);
+
     // Don't see a purpose for providing this to the other side of 
     // the interop boundary.
 	//EXPORT_API const dtPathQueue* dtcGetPathQueue(dtCrowd* crowd);

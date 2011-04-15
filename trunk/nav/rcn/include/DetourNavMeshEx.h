@@ -116,41 +116,49 @@ extern "C"
     EXPORT_API dtStatus dtnmGetTilePolys(const dtNavMesh* mesh
         , const int tileIndex
         , dtPoly* polys
+        , int* polyCount
         , const int polySize);
 
     EXPORT_API dtStatus dtnmGetTileLinks(const dtNavMesh* mesh
         , const int tileIndex
         , dtLink* links
+        , int* linkCount
         , const int linkSize);
 
     EXPORT_API dtStatus dtnmGetTileVerts(const dtNavMesh* mesh
         , const int tileIndex
         , float* verts
+        , int* vertCount
         , const int vertsSize);
 
     EXPORT_API dtStatus dtnmGetTileDetailMeshes(const dtNavMesh* mesh
         , const int tileIndex
         , dtPolyDetail* meshes
+        , int* meshCount
         , const int meshesSize);
 
     EXPORT_API dtStatus dtnmGetTileDetailVerts(const dtNavMesh* mesh
         , const int tileIndex
         , float* verts
+        , int* vertCount
         , const int vertsSize);
 
     EXPORT_API dtStatus dtnmGetTileDetailTris(const dtNavMesh* mesh
         , const int tileIndex
         , unsigned char* tris
+        , int* trisCount
         , const int trisSize);
 
     EXPORT_API dtStatus dtnmGetTileBVTree(const dtNavMesh* mesh
         , const int tileIndex
         , dtBVNode* nodes
-        , const int nodeSize);
+        , int* nodeCount
+        , const int nodesSize);
 
     EXPORT_API dtStatus dtnmGetTileConnections(const dtNavMesh* mesh
         , const int tileIndex
         , dtOffMeshConnection* conns
+        , int* connCount
         , const int connsSize);
 
     EXPORT_API dtStatus dtnmGetConnectionEndPoints(

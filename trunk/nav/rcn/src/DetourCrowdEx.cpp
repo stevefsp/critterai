@@ -128,6 +128,26 @@ extern "C"
         return crowd->getGrid();
     }
 
+    EXPORT_API const float dtpgGetCellSize(dtProximityGrid* grid)
+    {
+        return grid->getCellSize();
+    }
+
+    EXPORT_API void dtpgGetBounds(dtProximityGrid* grid, int* bounds)
+    {
+        if (bounds)
+        {
+            memcpy(bounds, grid->getBounds(), sizeof(int) * 6);
+        }
+    }
+
+    EXPORT_API int dtpgGetItemCountAt(dtProximityGrid* grid
+        , const int x
+        , const int y)
+    {
+        return grid->getItemCountAt(x, y);
+    }
+
 	//EXPORT_API const dtPathQueue* dtcGetPathQueue(dtCrowd* crowd)
  //   {
  //       return crowd->getPathQueue();
