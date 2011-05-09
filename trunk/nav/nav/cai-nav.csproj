@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E86A77DF-D270-4A68-9BFE-E5690440921F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>org.critterai</RootNamespace>
+    <AssemblyName>cai-nav</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="nav\CrowdCornerData.cs" />
+    <Compile Include="nav\CrowdLocalBoundaryData.cs" />
+    <Compile Include="nav\NavmeshTileHeader.cs" />
+    <Compile Include="nav\NavmeshTile.cs" />
+    <Compile Include="nav\CrowdAgentCoreData.cs" />
+    <Compile Include="nav\CrowdUpdateFlags.cs" />
+    <Compile Include="nav\NavmeshTileData.cs" />
+    <Compile Include="nav\NavmeshTileBuildData.cs" />
+    <Compile Include="nav\rcn\CrowdAgentEx.cs" />
+    <Compile Include="nav\rcn\NavmeshTileEx.cs" />
+    <Compile Include="nav\rcn\CrowdProximityGridEx.cs" />
+    <Compile Include="nav\PathCorridorData.cs" />
+    <Compile Include="nav\CrowdProximityGrid.cs" />
+    <Compile Include="nav\CrowdAgentState.cs" />
+    <Compile Include="nav\CrowdManager.cs" />
+    <Compile Include="nav\CrowdAgent.cs" />
+    <Compile Include="nav\CrowdAgentParams.cs" />
+    <Compile Include="nav\CrowdNeighbor.cs" />
+    <Compile Include="nav\CrowdAvoidanceParams.cs" />
+    <Compile Include="nav\rcn\CrowdManagerEx.cs" />
+    <Compile Include="nav\NavmeshLink.cs" />
+    <Compile Include="nav\NavmeshBVNode.cs" />
+    <Compile Include="nav\NavmeshConnection.cs" />
+    <Compile Include="nav\NavmeshDetailMesh.cs" />
+    <Compile Include="nav\NavmeshPolyType.cs" />
+    <Compile Include="nav\NavUtil.cs" />
+    <Compile Include="nav\Navmesh.cs" />
+    <Compile Include="nav\NavmeshQuery.cs" />
+    <Compile Include="nav\NavStatus.cs" />
+    <Compile Include="nav\rcn\NavmeshEx.cs" />
+    <Compile Include="nav\NavmeshParams.cs" />
+    <Compile Include="nav\rcn\NavmeshQueryEx.cs" />
+    <Compile Include="nav\NavmeshPoly.cs" />
+    <Compile Include="nav\rcn\NavmeshQueryFilterEx.cs" />
+    <Compile Include="nav\NavConnections.cs" />
+    <Compile Include="nav\NavmeshQueryFilter.cs" />
+    <Compile Include="nav\WaypointFlag.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\util\util\cai-util.csproj">
+      <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
+      <Name>cai-util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
