@@ -1,0 +1,488 @@
+﻿/*
+ * Copyright (c) 2011 Stephen A. Pratt
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+using System;
+using System.Runtime.InteropServices;
+using org.critterai.interop;
+using org.critterai.nmgen.rcn;
+
+namespace org.critterai.nmgen
+{
+    /// <summary>
+    /// Provides a representation of the open (unobstructed) space above
+    /// the solid surfaces of a voxel field.
+    /// </summary>
+    /// <remarks>
+    /// <p>For this tpe of heightfield, the spans represent the floor
+    /// and ceiling of the open spaces.</p>
+    /// <p>Data is stored in a compact, efficient manner.</p>
+    /// <p>The following process can be used to iterate spans:</p>
+    /// <code>
+    /// 
+    /// int w = chf.Width;
+    /// int d = chf.Depth;
+    /// 
+    /// CompactCell[] cells = new CompactCell[w * d];
+    /// chf.GetCellData(cells);
+    /// 
+    /// CompactSpan[] spans = new CompactSpan[chf.SpanCount];
+    /// chf.GetSpanData(spans);
+    /// 
+    /// for (int z = 0; z &lt; d; ++z)
+    /// {
+    ///     for (int x = 0; x &lt; w; ++x)
+    ///     {
+    ///         CompactCell c = cells[x + z * w];
+    ///         for (int i = (int)c.Index, ni = (int)(c.Index + c.Count)
+    ///             ; i &lt; ni
+    ///             ; ++i)
+    ///         {
+    ///             CompactSpan s = spans[i];
+    ///             
+    ///             // Do something...
+    ///             
+    ///             // If you have extracted area and distance data, you
+    ///             // can access it with the same index.
+    ///             // E.g. areas[i] or distance[i].
+	///			
+    ///             // To access neighbor information...
+    ///             
+    ///             for (int dir = 0; dir &lt; 4; ++dir)
+    ///             {
+    ///                 if (s.GetConnection(dir) != RC_NOT_CONNECTED)
+    ///                 {
+    ///                     int ax = x + CompactSpan.GetDirOffsetX(dir);
+    ///                     int az = z + CompactSpan.GetDirOffsetZ(dir);
+    ///                     int ai = (int)cells[ax + ay * w].Index 
+    ///                         + s.GetConnection(dir);
+    ///                    
+    ///                     // ai represents the index of the neighbor.
+    ///                     // So spans[ai], areas[ai], directions[ai]
+    ///                     // gets the neighbor.
+    ///                 }
+    ///             }
+    ///         }
+    ///     }
+    /// }
+    /// </code>
+    /// <p>Spans contain neighbor connection data that can be used to
+    /// locate axis-neighbors.  Axis neighbors are spans that are offset
+    /// offset from the current cell column as follows:</p>
+    /// <p>Direction 0 = (-1, 0)<br/>
+    /// Direction 1 = (0, 1)<br/>
+    /// Direction 2 = (1, 0)<br/>
+    /// Direction 3 = (0, -1)</p>
+    /// <p>These standard offset can be obtained from the 
+    /// <see cref="CompactSpan.GetDirOffsetX"/> and 
+    /// <see cref="CompactSpan.GetDirOffsetZ"/> methods.</p>
+    /// <p>See the previous example code for information on how to use
+    /// connection information.</p>
+    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// </remarks>
+    [StructLayout(LayoutKind.Sequential)]
+    public sealed class CompactHeightfield
+        : IManagedObject
+    {
+        private int mWidth = 0;
+        private int mDepth = 0;	
+	    private int mSpanCount = 0;						
+	    private int mWalkableHeight = 0;
+        private int mWalkableStep = 0;	
+	    private int mBorderSize = 0;	
+	    private ushort mMaxDistance = 0;
+	    private ushort mMaxRegions = 0;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        private float[] mBoundsMin = new float[3];
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        private float[] mBoundsMax = new float[3];
+
+	    private float mXZCellSize = 0;
+        private float mYCellSize = 0;
+        private IntPtr mCells = IntPtr.Zero;   // rcCompactCell[width*depth]
+        private IntPtr mSpans = IntPtr.Zero;	// rcCompactSpan[spanCount]
+        private IntPtr mDistanceToBorder = IntPtr.Zero;	// ushort[spanCount]
+        private IntPtr mAreas = IntPtr.Zero;	// byte[spanCount]
+
+        /// <summary>
+        /// The width of the heightfield. (Along the x-axis in voxel units.)
+        /// </summary>
+        public int Width { get { return mWidth; } }
+
+        /// <summary>
+        /// The depth of the heighfield. (Along the z-axis in voxel units.)
+        /// </summary>
+        public int Depth { get { return mDepth; } }
+
+        /// <summary>
+        /// The minimum bounds of the heightfield in world space.
+        /// </summary>
+        /// <returns>The minimum bounds of the heighfield.
+        /// </returns>
+        public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+
+        /// <summary>
+        /// The maximum bounds of the heightfield in world space. (x, y, z).
+        /// </summary>
+        /// <returns>The maximum bounds of the heightfield.</returns>
+        public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+
+        /// <summary>
+        /// The width/depth size of each cell. (On the xz-plane.)
+        /// </summary>
+        /// <remarks>
+        /// <p>The smallest span can be 
+        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <p>A width or depth value within the field can be converted
+        /// to world units as follows:<br/>
+        /// boundsMin[0] + (width * XZCellSize)<br/>
+        /// boundsMin[2] + (depth * XZCellSize)</p>
+        /// </remarks>
+        /// 
+        public float XZCellSize { get { return mXZCellSize; } }
+
+        /// <summary>
+        /// The height increments for span data.  (On the y-axis.)
+        /// </summary>
+        /// <remarks>
+        /// <p>The smallest span can be 
+        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <p>A height within the field is converted to world units:
+        /// as follows: boundsMin[1] + (height * YCellSize)</p>
+        /// </remarks>
+        public float YCellSize { get { return mYCellSize; } }
+
+        /// <summary>
+        /// The number of spans in the field.
+        /// </summary>
+        public int SpanCount { get { return mSpanCount; } }
+
+        /// <summary>
+        /// The walkable height used during the build of the field.
+        /// </summary>
+        public int WalkableHeight { get { return mWalkableHeight; } }
+
+        /// <summary>
+        /// The walkable step used during the build of the field.
+        /// </summary>
+        public int WalkableStep { get { return mWalkableStep; } }
+
+        /// <summary>
+        /// The AABB border size used during the build of the field.
+        /// </summary>
+        public int BorderSize { get { return mBorderSize; } }
+
+        /// <summary>
+        /// The maximum distance value for any span within the field.
+        /// </summary>
+        /// <remarks>
+        /// <p>The value is only valid if the distance field has been
+        /// built.</p>
+        /// </remarks>
+        public ushort MaxDistance { get { return mMaxDistance; } }
+
+        /// <summary>
+        /// The maximum region id for any span within the field.
+        /// </summary>
+        /// <remarks>
+        /// <p>The value is only valid if the regions have been built.</p>
+        /// </remarks>
+        public ushort MaxRegions { get { return mMaxRegions; } }
+
+        /// <summary>
+        /// The type of unmanaged resources within the object.
+        /// </summary>
+        public AllocType ResourceType { get { return AllocType.External; } }
+
+        /// <summary>
+        /// TRUE if the object has been disposed and should no longer be used.
+        /// </summary>
+        public bool IsDisposed { get { return (mCells == IntPtr.Zero); } }
+
+        private CompactHeightfield() { }
+
+        ~CompactHeightfield()
+        {
+            RequestDisposal();
+        }
+
+        /// <summary>
+        /// Frees all unmanaged resources controlled by the object 
+        /// and marks it as disposed.
+        /// </summary>
+        public void RequestDisposal()
+        {
+            if (!IsDisposed)
+            {
+                CompactHeightfieldEx.FreeDataEx(this);
+                mWidth = 0;
+                mDepth = 0;
+                mBorderSize = 0;
+                Array.Clear(mBoundsMax, 0, 3);
+                Array.Clear(mBoundsMin, 0, 3);
+                mMaxDistance = 0;
+                mMaxRegions = 0;
+                mSpanCount = 0;
+                mWalkableHeight = 0;
+                mWalkableStep = 0;
+                mXZCellSize = 0;
+                mYCellSize = 0;
+            }
+        }
+
+        /// <summary>
+        /// Loads the heighfield's <see cref="Compactspan"/> data into
+        /// the buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to load the data into.
+        /// (Size >= Width * Depth)</param>
+        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        public bool GetCellData(CompactCell[] buffer)
+        {
+            if (IsDisposed)
+                return false;
+
+            return CompactHeightfieldEx.GetCellData(this
+                , buffer
+                , buffer.Length);
+        }
+
+        /// <summary>
+        /// Loads the heightfield's <see cref="CompactSpan"/>
+        /// data into the buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to load the data into.
+        /// (Size >= SpanCount)</param>
+        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        public bool GetSpanData(CompactSpan[] buffer)
+        {
+            if (IsDisposed)
+                return false;
+
+            return CompactHeightfieldEx.GetSpanData(this
+                , buffer
+                , buffer.Length);
+        }
+
+        /// <summary>
+        /// Loads the heightfield's distance field
+        /// data into the buffer.
+        /// </summary>
+        /// <remarks>
+        /// <p>This data is only available after the distance field has
+        /// been built.</p>
+        /// <p>Each value represents the estimated distance of the span
+        /// from the nearest boundary or obstruction. The index is the same
+        /// as for the span data.  E.g. span[i], distance[i]</p>
+        /// </remarks>
+        /// <param name="buffer">The buffer to load the data into.
+        /// (Size >= SpanCount)</param>
+        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        public bool GetDistanceData(ushort[] buffer)
+        {
+            if (IsDisposed
+                || mDistanceToBorder == IntPtr.Zero
+                || buffer.Length < mSpanCount)
+            {
+                return false;
+            }
+
+            UtilEx.Copy(mDistanceToBorder
+                , buffer
+                , mSpanCount);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the heightfield's area data into the buffer.
+        /// </summary>
+        /// <remarks>
+        /// <p>Each value represents the id of the area the span belongs to.
+        /// The index is the same as for the span data.  
+        /// E.g. span[i], area[i]</p>
+        /// </remarks>
+        /// <param name="buffer">The buffer to load the data into.
+        /// (Size >= SpanCount)</param>
+        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        public bool GetAreaData(byte[] buffer)
+        {
+            if (IsDisposed || buffer.Length < mSpanCount)
+                return false;
+
+            Marshal.Copy(mAreas
+                , buffer
+                , 0
+                , mSpanCount);
+
+            return true;
+        }
+
+        /// <summary>
+        /// TRUE if distance data is available.
+        /// </summary>
+        public bool HasDistanceData 
+        { 
+            get { return (mDistanceToBorder != IntPtr.Zero); } 
+        }
+
+        /// <summary>
+        /// Erodes the walkable area within the heightfield by the specified
+        /// radius.
+        /// </summary>
+        /// <remarks>
+        /// <p>Basically, any spans that are closer to a boundary or obstruction
+        /// that the radius are marked as unwalkable.</p>
+        /// <p>This method is usually called immediatly after the heightfield
+        /// has been created.</p>
+        /// </remarks>
+        /// <param name="context">The context to use during the operation.
+        /// </param>
+        /// <param name="radius">The radius to apply. (In voxels.)</param>
+        /// <returns>TRUE if the operation completed successfully.</returns>
+        public bool ErodeWalkableArea(BuildContext context, int radius)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.ErodeWalkableArea(context.root
+                , radius
+                , this);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool ApplyMedianFilter(BuildContext context)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.ApplyMedianFilter(context.root, this);
+        }
+
+        public bool MarkBoxArea(BuildContext context
+            , float[] boundsMin
+            , float[] boundsMax
+            , byte area)
+        {
+            if (IsDisposed)
+                return false;
+
+            return CompactHeightfieldEx.MarkArea(context.root
+                , boundsMin
+                , boundsMax
+                , area
+                , this);
+        }
+
+        public bool MarkConvexPolyArea(BuildContext context
+            , float[] verts
+            , float yMin
+            , float yMax
+            , byte area)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.MarkArea(context.root
+                , verts
+                , verts.Length / 3
+                , yMin
+                , yMax
+                , area
+                , this);
+        }
+
+        public bool MarkCylinderArea(BuildContext context
+            , float[] position
+            , float radius
+            , float height
+            , byte area)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.MarkArea(context.root
+                , position
+                , radius
+                , height
+                , area
+                , this);
+        }
+
+        public bool BuildDistanceField(BuildContext context)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.BuildDistanceField(context.root, this);
+        }
+
+        public bool BuildRegions(BuildContext context
+            , int borderSize
+            , int minRegionArea
+            , int mergeRegionArea)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.BuildRegions(context.root
+                , this
+                , borderSize
+                , minRegionArea
+                , mergeRegionArea);
+        }
+
+        public bool BuildRegionsMonotone(BuildContext context
+            , int borderSize
+            , int minRegionArea
+            , int mergeRegionArea)
+        {
+            if (IsDisposed)
+                return false;
+            return CompactHeightfieldEx.BuildRegionsMonotone(context.root
+                , this
+                , borderSize
+                , minRegionArea
+                , mergeRegionArea);
+        }
+
+        public static CompactHeightfield Build(BuildContext context
+            , Heightfield sourceField
+            , int walkableHeight
+            , int walkableStep)
+        {
+            if (context == null || sourceField == null)
+                return null;
+
+            CompactHeightfield field = new CompactHeightfield();
+            if (CompactHeightfieldEx.Build(context.root
+                , walkableHeight
+                , walkableStep
+                , sourceField.root
+                , field))
+            {
+                return field;
+            }
+
+            return null;
+        }
+
+    }
+}
