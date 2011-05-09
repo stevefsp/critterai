@@ -19,35 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-namespace org.critterai.geom
+namespace org.critterai
 {
-    /// <summary>
-    /// Represents a euclidean axis.
-    /// </summary>
-    public enum Axis
+
+    public enum ValidationState
     {
-
-        /*
-         * Design note:
-         * 
-         * The value of each enumeration is the standard offset for
-         * points.  (x, y, z)
-         */
-
-        /// <summary>
-        /// X-axis
-        /// </summary>
-        X = 0,
-
-        /// <summary>
-        /// Y-axis
-        /// </summary>
-        Y = 1,
-
-        /// <summary>
-        /// Z-axis
-        /// </summary>
-        Z = 2
+        OK = 0,
+        WARNING = 1,
+        ERROR = 2,
     }
 }

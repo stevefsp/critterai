@@ -19,35 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-namespace org.critterai.geom
+namespace org.critterai
 {
     /// <summary>
-    /// Represents a euclidean axis.
+    /// Defines the detail to use when generating Unity Editor debug messages.
     /// </summary>
-    public enum Axis
+    public enum MessageStyle
     {
-
-        /*
-         * Design note:
-         * 
-         * The value of each enumeration is the standard offset for
-         * points.  (x, y, z)
-         */
+        /// <summary>
+        /// No messages should be sent to the console.
+        /// </summary>
+        None = 0,
 
         /// <summary>
-        /// X-axis
+        /// Send only minimal messages, usually only errors and warnings,
+        /// to the console.
         /// </summary>
-        X = 0,
+        Brief = 1,
 
         /// <summary>
-        /// Y-axis
+        /// Send only summary messages to the console.
         /// </summary>
-        Y = 1,
+        Summary = 2,
 
         /// <summary>
-        /// Z-axis
+        /// Send detailed messages suitable for tracing the progress of an operation
+        /// to the console.
+        /// (If available.)
         /// </summary>
-        Z = 2
+        Trace = 3
     }
 }

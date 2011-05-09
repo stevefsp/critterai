@@ -92,15 +92,17 @@ namespace org.critterai.geom
         }
 
         /// <summary>
-        /// Returns an array of MeshFilters contained by the provided GameObjects.
+        /// Returns an array of MeshFilters contained by the provided 
+        /// GameObjects. (Recursive search.)
         /// </summary>
         /// <remarks>All returned MeshFilters are guarenteed to contain meshes
         /// with a triangle count > 0.</remarks>
-        /// <param name="sources">An array of game objects to be searched.</param>
+        /// <param name="sources">An array of game objects to be searched.
+        /// </param>
         /// <param name="vertexCount">The total number of vertices found in the
         /// MeshFilters.</param>
-        /// <param name="triangleCount">The total number of triangles found in the
-        /// MeshFilters.</param>
+        /// <param name="triangleCount">The total number of triangles found in 
+        /// the MeshFilters.</param>
         /// <returns>TRUE if any valid MeshFilters were found.</returns>
         public static MeshFilter[] GetMeshFilters(GameObject[] sources
             , out int vertexCount, out int triangleCount)

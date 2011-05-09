@@ -33,7 +33,7 @@ namespace org.critterai
     /// </remarks>
     public static class Vector2Util
     {
-        private const float EPSILON_STD = MathUtil.EPSILON_STD;
+        private const float EPSILON_STD = MathUtil.Epsilon;
 
         /// <summary>
         /// Returns the

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2011 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +20,36 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.geom
+namespace org.critterai.interop
 {
     /// <summary>
-    /// Represents a euclidean axis.
+    /// Indicates how an object's unmanaged resources have been allocated and
+    /// are managed.
     /// </summary>
-    public enum Axis
+    public enum AllocType : byte
     {
-
-        /*
-         * Design note:
-         * 
-         * The value of each enumeration is the standard offset for
-         * points.  (x, y, z)
-         */
+        /// <summary>
+        /// Unmanaged resources were allocated locally and must
+        /// be freed locally.
+        /// </summary>
+        Local = 0,
 
         /// <summary>
-        /// X-axis
+        /// Unmanaged resources were allocated by an external library
+        /// and a call must be made to the library to free them.
         /// </summary>
-        X = 0,
+        External = 1,
 
         /// <summary>
-        /// Y-axis
+        /// Unmanaged resources were allocated and are managed by an
+        /// external library.  There is no local responsiblity to
+        /// directly free the resources.
         /// </summary>
-        Y = 1,
-
-        /// <summary>
-        /// Z-axis
-        /// </summary>
-        Z = 2
+        /// <remarks>
+        /// Objects of this type are usually allocated and owned by another
+        /// unmanaged object.  So its resources are freed by its owner
+        /// when its owner is freed.
+        /// </remarks>
+        ExternallyManaged = 2
     }
 }

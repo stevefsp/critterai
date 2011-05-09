@@ -123,7 +123,7 @@ namespace org.critterai.geom
             float segmentABLengthSq = 
                 deltaABx * deltaABx + deltaABy * deltaABy;
             
-            if (segmentABLengthSq < MathUtil.EPSILON_STD)
+            if (segmentABLengthSq < MathUtil.Epsilon)
                 // AB is not a line segment.  So just return
                 // distanceSq from P to A
                 return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
@@ -184,7 +184,7 @@ namespace org.critterai.geom
             float segmentABLengthSq = 
                 deltaABx * deltaABx + deltaABy * deltaABy;
             
-            if (segmentABLengthSq < MathUtil.EPSILON_STD)
+            if (segmentABLengthSq < MathUtil.Epsilon)
                 // AB is not a line segment.  So just return
                 // distanceSq from P to A
                 return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
@@ -222,7 +222,7 @@ namespace org.critterai.geom
                 , float bx, float by)
         {
             if (Vector2Util.SloppyEquals(
-                    ax, ay, bx, by, MathUtil.TOLERANCE_STD))
+                    ax, ay, bx, by, MathUtil.Tolerance))
                 // Points do not form a line.
                 return new Vector2();
             Vector2 result = Vector2Util.GetDirectionAB(ax, ay, bx, by);
