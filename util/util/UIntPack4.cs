@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2010-2011 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
