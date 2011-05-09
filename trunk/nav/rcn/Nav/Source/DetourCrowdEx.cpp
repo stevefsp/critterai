@@ -1,0 +1,284 @@
+#include <string.h>
+#include "DetourCrowd.h"
+#include "DetourCommon.h"
+#include "DetourEx.h"
+
+static const int MAX_RCN_PATH_CORRIDOR_SIZE = 256;
+static const int MAX_LOCAL_BOUNDARY_SEGS = 8;
+
+struct rcnPathCorridorData
+{
+
+    float position[3];
+    float target[3];
+
+    dtPolyRef path[MAX_RCN_PATH_CORRIDOR_SIZE];
+    int pathCount;
+};
+
+struct rcnLocalBoundary
+{
+    float center[3];
+    float segs[6 * MAX_LOCAL_BOUNDARY_SEGS];
+    int segmentCount;
+};
+
+struct rcnCrowdCornerData
+{
+	float cornerVerts[DT_CROWDAGENT_MAX_CORNERS*3];
+	unsigned char cornerFlags[DT_CROWDAGENT_MAX_CORNERS];
+	dtPolyRef cornerPolys[DT_CROWDAGENT_MAX_CORNERS];
+	int ncorners;
+};
+
+struct rcnCrowdAgentCoreData
+{
+	unsigned char state;
+
+	int nneis;
+	
+	float desiredSpeed;
+
+	float npos[3];
+	float disp[3];
+	float dvel[3];
+	float nvel[3];
+	float vel[3];
+};
+
+extern "C"
+{
+    EXPORT_API dtCrowd* dtcDetourCrowdAlloc(const int maxAgents
+        , const float maxAgentRadius
+        , dtNavMesh* nav)
+    {
+        dtCrowd* result = new dtCrowd();
+        if (result)
+            result->init(maxAgents, maxAgentRadius, nav);
+        return result;
+    }
+
+    EXPORT_API void dtcDetourCrowdFree(dtCrowd* crowd)
+    {
+        if (crowd)
+            crowd->~dtCrowd();
+    }
+
+	EXPORT_API void dtcSetObstacleAvoidanceParams(dtCrowd* crowd
+        , const int idx
+        , dtObstacleAvoidanceParams* params)
+    {
+        crowd->setObstacleAvoidanceParams(idx, params);
+    }
+
+    EXPORT_API const void dtcGetObstacleAvoidanceParams(
+        dtCrowd* crowd
+        , const int idx
+        , dtObstacleAvoidanceParams* params)
+    {
+        memcpy(params
+            , crowd->getObstacleAvoidanceParams(idx)
+            , sizeof(dtObstacleAvoidanceParams));
+    }
+	
+	EXPORT_API const dtCrowdAgent* dtcGetAgent(dtCrowd* crowd
+        , const int idx)
+    {
+        return crowd->getAgent(idx);
+    }
+
+	EXPORT_API const int dtcGetAgentCount(dtCrowd* crowd)
+    {
+        return crowd->getAgentCount();
+    }
+
+	EXPORT_API void dtcUpdateAgentParameters(dtCrowd* crowd
+        , const int idx, const dtCrowdAgentParams* params)
+    {
+        crowd->updateAgentParameters(idx, params);
+    }
+
+	EXPORT_API void dtcRemoveAgent(dtCrowd* crowd
+        , const int idx)
+    {
+        crowd->removeAgent(idx);
+    }
+	
+	EXPORT_API bool dtcRequestMoveTarget(dtCrowd* crowd
+        , const int idx
+        , dtPolyRef ref
+        , const float* pos)
+    {
+        return crowd->requestMoveTarget(idx, ref, pos);
+    }
+
+	EXPORT_API bool dtcAdjustMoveTarget(dtCrowd* crowd
+        , const int idx
+        , dtPolyRef ref
+        , const float* pos)
+    {
+        return crowd->adjustMoveTarget(idx, ref, pos);
+    }
+	
+	EXPORT_API const dtQueryFilter* dtcGetFilter(dtCrowd* crowd)
+    {
+        return crowd->getFilter();
+    }
+
+	EXPORT_API void dtcGetQueryExtents(dtCrowd* crowd, float* extents)
+    {
+        const float* e = crowd->getQueryExtents();
+        dtVcopy(extents, e);
+    }
+	
+	EXPORT_API int dtcGetVelocitySampleCount(dtCrowd* crowd)
+    {
+        return crowd->getVelocitySampleCount();
+    }
+	
+	EXPORT_API const dtProximityGrid* dtcGetGrid(dtCrowd* crowd)
+    {
+        return crowd->getGrid();
+    }
+
+    EXPORT_API const float dtpgGetCellSize(dtProximityGrid* grid)
+    {
+        return grid->getCellSize();
+    }
+
+    EXPORT_API void dtpgGetBounds(dtProximityGrid* grid, int* bounds)
+    {
+        if (bounds)
+        {
+            memcpy(bounds, grid->getBounds(), sizeof(int) * 6);
+        }
+    }
+
+    EXPORT_API int dtpgGetItemCountAt(dtProximityGrid* grid
+        , const int x
+        , const int y)
+    {
+        return grid->getItemCountAt(x, y);
+    }
+
+	EXPORT_API const dtNavMeshQuery* dtcGetNavMeshQuery(dtCrowd* crowd)
+    {
+        return crowd->getNavMeshQuery();
+    }
+
+    EXPORT_API void dtcaGetAgentParams(const dtCrowdAgent* agent
+        , dtCrowdAgentParams* params)
+    {
+        if (!agent || !params)
+            return;
+        memcpy(params, &agent->params, sizeof(dtCrowdAgentParams));
+    }
+
+    EXPORT_API void dtcaGetAgentCorners(const dtCrowdAgent* agent
+        , rcnCrowdCornerData* resultData)
+    {
+        if (!agent || !resultData)
+            return;
+        memcpy(resultData, &agent->cornerVerts[0], sizeof(rcnCrowdCornerData));
+    }
+
+    EXPORT_API void dtcaGetAgentCoreData(const dtCrowdAgent* agent
+        , rcnCrowdAgentCoreData* resultData)
+    {
+        // The active check is important to the design.
+        if (!agent || !agent->active || !resultData)
+            return;
+
+        resultData->state = agent->state;
+
+        int size = sizeof(rcnCrowdAgentCoreData) - sizeof(unsigned char);
+        memcpy(&resultData->nneis, &agent->nneis, size);
+    }
+
+    EXPORT_API int dtcaGetAgentNeighbors(const dtCrowdAgent* agent
+        , dtCrowdNeighbour* neighbors
+        , const int neighborsSize)
+    {
+        if (!agent
+            || !neighbors
+            || neighborsSize < agent->nneis)
+        {
+            return -1;
+        }
+
+        int count = agent->nneis;
+
+        memcpy(neighbors, agent->neis, sizeof(dtCrowdNeighbour) * count);
+
+        return count;
+    }
+
+    EXPORT_API void dtcaGetPathCorridorData(const dtCrowdAgent* agent
+        , rcnPathCorridorData* corridor)
+    {
+        if (!agent || !corridor)
+            return;
+
+        int count = agent->corridor.getPathCount();
+
+        corridor->pathCount = count;
+        dtVcopy(corridor->position, agent->corridor.getPos());
+        dtVcopy(corridor->target, agent->corridor.getTarget());
+        memcpy(&corridor->path[0]
+        , agent->corridor.getPath()
+            , sizeof(dtPolyRef) * count);
+    }
+
+    EXPORT_API void dtcaGetLocalBoundary(const dtCrowdAgent* agent
+        , rcnLocalBoundary* boundary)
+    {
+        if (!agent || !boundary)
+            return;
+
+        int count = agent->boundary.getSegmentCount();
+
+        boundary->segmentCount = count;
+        dtVcopy(&boundary->center[0], agent->boundary.getCenter());
+
+        for (int i = 0; i < count; i++)
+        {
+            memcpy(&boundary->segs[i*6]
+                , agent->boundary.getSegment(i)
+                , sizeof(float) * 6);
+        }
+    }
+
+	EXPORT_API void dtcUpdate(dtCrowd* crowd
+        , const float dt
+        , rcnCrowdAgentCoreData* coreData)
+    {
+        crowd->update(dt, nullptr);
+
+        for (int i = 0; i < crowd->getAgentCount(); i++)
+        {
+            // Note: The get function performs all necessary parameter
+            // validations.
+            dtcaGetAgentCoreData(crowd->getAgent(i), &coreData[i]);
+        }
+    }
+
+    EXPORT_API int dtcAddAgent(dtCrowd* crowd
+        , const float* pos
+        , const dtCrowdAgentParams* params
+        , const dtCrowdAgent** agent
+        , rcnCrowdAgentCoreData* initialData)
+    {
+        int index = crowd->addAgent(pos, params);
+        if (agent)
+        {
+            if (index == -1)
+                *agent = 0;
+            else
+            {
+                *agent = crowd->getAgent(index);
+                dtcaGetAgentCoreData(*agent, initialData);
+            }
+        }
+        return index;
+    }
+}
