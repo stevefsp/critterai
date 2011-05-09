@@ -90,8 +90,8 @@ namespace org.critterai.geom
                 , vertices[pStartVert+6]
                 , vertices[pStartVert+8]);
             
-            if (initDirection > -2 * MathUtil.EPSILON_STD 
-                    && initDirection < 2 * MathUtil.EPSILON_STD)
+            if (initDirection > -2 * MathUtil.Epsilon 
+                    && initDirection < 2 * MathUtil.Epsilon)
             {
                 // The polygon is on or very close to the vertical plane.  
                 // Switch to projecting on the (x, y) plane.

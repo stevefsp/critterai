@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2011 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +20,32 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.geom
+namespace org.critterai.interop
 {
     /// <summary>
-    /// Represents a euclidean axis.
+    /// Interface for objects that contain references to unmanaged resources.
     /// </summary>
-    public enum Axis
+    public interface IManagedObject
     {
-
-        /*
-         * Design note:
-         * 
-         * The value of each enumeration is the standard offset for
-         * points.  (x, y, z)
-         */
+        /// <summary>
+        /// The type of unmanaged resources within the object.
+        /// </summary>
+        AllocType ResourceType { get; }
 
         /// <summary>
-        /// X-axis
+        /// Request all unmanaged resources controlled by the object be 
+        /// immediately freed and the object marked as disposed.
         /// </summary>
-        X = 0,
+        /// <remarks>
+        /// Whether or not unmanaged resources are actually freed depends 
+        /// on whether the resources are owned by the object.  In some cases
+        /// the only action is to mark the object as disposed.
+        /// </remarks>
+        void RequestDisposal();
 
         /// <summary>
-        /// Y-axis
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
-        Y = 1,
-
-        /// <summary>
-        /// Z-axis
-        /// </summary>
-        Z = 2
+        bool IsDisposed { get; }
     }
 }

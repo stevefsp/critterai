@@ -140,7 +140,7 @@ namespace org.critterai.geom
         public static void GetWrapStatisicsXZ(float[] vertices, int[] triangles
             , out int cwCount, out int ccwCount, out int vertical)
         {
-            const float tolerance = MathUtil.TOLERANCE_STD;
+            const float tolerance = MathUtil.Tolerance;
             cwCount = 0;
             ccwCount = 0;
             vertical = 0;
