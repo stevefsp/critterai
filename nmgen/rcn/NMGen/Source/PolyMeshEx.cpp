@@ -37,8 +37,9 @@ struct nmgPolyMeshHeader
 	float cs, ch;
 	int borderSize;
     int maxverts;
-    float walableheight;
-    float walkablestep;
+    float walkableHeight;
+    float walkableRadius;
+    float walkableStep;
     long version;
 };
 
@@ -99,6 +100,7 @@ extern "C"
     EXPORT_API bool rcpmGetSerializedData(const rcPolyMesh* mesh
         , const int maxVerts
         , const float walkableHeight
+        , const float walkableRadius
         , const float walkableStep
         , const bool includeBuffer
         , unsigned char** resultData
@@ -125,8 +127,9 @@ extern "C"
 
         header.maxpolys = polyCount;
         header.maxverts = vertCount;
-        header.walableheight = walkableHeight;
-        header.walkablestep = walkableStep;
+        header.walkableHeight = walkableHeight;
+        header.walkableRadius = walkableRadius;
+        header.walkableStep = walkableStep;
 
         int headerSize = sizeof(nmgPolyMeshHeader);
         int vertSize = sizeof(unsigned short) * (vertCount * 3);
@@ -167,11 +170,12 @@ extern "C"
         return true;
     }
 
-    EXPORT_API bool rcpmBuildFromMeshData(const unsigned char* meshData
+    EXPORT_API bool rcpmBuildSerializedData(const unsigned char* meshData
         , const int dataSize
         , rcPolyMesh* resultMesh
         , int* maxVerts
         , float* walkableHeight
+        , float* walkableRadius
         , float* walkableStep)
     {
         int headerSize = sizeof(nmgPolyMeshHeader);
@@ -182,6 +186,7 @@ extern "C"
             || dataSize < headerSize
             || !maxVerts
             || !walkableStep
+            || !walkableRadius
             || !walkableHeight)
             return false;
 
@@ -262,8 +267,9 @@ extern "C"
         memcpy(resultMesh->areas, &meshData[pos], areaSize);
 
         *maxVerts = header.maxverts;
-        *walkableHeight = header.walableheight;
-        *walkableStep = header.walkablestep;
+        *walkableHeight = header.walkableHeight;
+        *walkableRadius = header.walkableRadius;
+        *walkableStep = header.walkableStep;
 
         return true;
     }

@@ -36,12 +36,13 @@ namespace org.critterai.nmgen.rcn
          * 
          */
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmBuildFromMeshData")]
+        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmBuildSerializedData")]
         public static extern bool Build([In] byte[] meshData
             , int dataSize
             , ref PolyMeshEx polyMesh
             , ref int maxVerts
             , ref float walkableHeight
+            , ref float walkableRadius
             , ref float walkableStep);
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace org.critterai.nmgen.rcn
         public static extern bool GetSerializedData(ref PolyMeshEx polyMesh
             , int maxVerts
             , float walkableHeight
+            , float waklableRadius
             , float walkableStep
             , bool includeBuffer
             , ref IntPtr data
@@ -71,12 +73,12 @@ namespace org.critterai.nmgen.rcn
             , ref PolyMeshEx polyMesh
             , ref int maxVerts);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcmpMergePolyMeshes")]
-        public static extern bool MergeMeshes(IntPtr context
-            , [In] PolyMeshEx[] meshes
-            , int meshCount
-            , ref PolyMeshEx polyMesh
-            , ref int maxVerts);
+        //[DllImport("cai-nmgen-rcn", EntryPoint = "rcmpMergePolyMeshes")]
+        //public static extern bool MergeMeshes(IntPtr context
+        //    , [In] PolyMeshEx[] meshes
+        //    , int meshCount
+        //    , ref PolyMeshEx polyMesh
+        //    , ref int maxVerts);
 
         /// <summary>
         /// ushort buffer

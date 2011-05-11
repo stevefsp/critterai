@@ -74,6 +74,8 @@ namespace org.critterai.nmgen
         /// The id of the region the span belongs to.
         /// </summary>
         /// <remarks>
+        /// <p>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans.</p>
         /// <p>A value of <see cref="NMGen.NullRegion"/> indicates the
         /// span is not part of any region, or region data has
         /// not been built.</p>
@@ -100,7 +102,7 @@ namespace org.critterai.nmgen
         /// <param name="direction">The direction. (0 &lt;= value &lt; 4)
         /// </param>
         /// <returns>The connection data for the specified direction,
-        /// or <see cref="NotConnected"/> if there is not connection.</returns>
+        /// or <see cref="NotConnected"/> if there is no connection.</returns>
         public int GetConnection(int direction)
         {
             return (int)((Connections >> (direction * 6)) & 0x3f);
@@ -119,11 +121,11 @@ namespace org.critterai.nmgen
         public byte Height { get { return (byte)(mPacked >> 24); } }
 
         /// <summary>
-        /// Gets the standard with offset for the specified direction.
+        /// Gets the standard width offset for the specified direction.
         /// </summary>
         /// <remarks>
         /// <p>The direction value will be automatically wrapped.  So the
-        /// a value of 6 will be interpreted at 2.</p>
+        /// a value of 6 will be interpreted as 2.</p>
         /// </remarks>
         /// <param name="direction">The direction. (0 &lt;= value &lt; 4)</param>
         /// <returns>The width offset to the apply to the current cell position
@@ -138,7 +140,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The direction value will be automatically wrapped.  So the
-        /// a value of 6 will be interpreted at 2.</p>
+        /// a value of 6 will be interpreted as 2.</p>
         /// </remarks>
         /// <param name="direction">The direction. (0 &lt;= value &lt; 4)</param>
         /// <returns>The depth offset to the apply to the current cell position

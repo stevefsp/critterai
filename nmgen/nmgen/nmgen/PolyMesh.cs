@@ -58,6 +58,7 @@ namespace org.critterai.nmgen
         private int mMaxVerts = 0;
         private float mWalkableHeight = 0;
         private float mWalkableStep = 0;
+        private float mWalkableRadius = 0;
 
         /// <summary>
         /// The number of vertices in the vertex array.
@@ -115,10 +116,9 @@ namespace org.critterai.nmgen
         /// The Minimum floor to 'ceiling' height used to build the polygon
         /// mesh.
         /// </summary>
-        public float WalkableHeight
-        {
-            get { return mWalkableHeight; }
-        }
+        public float WalkableHeight { get { return mWalkableHeight; } }
+
+        public float WalkableRadius { get { return mWalkableRadius; } }
 
         /// <summary>
         /// The maximum traversable ledge height used to build the polygon
@@ -163,6 +163,7 @@ namespace org.critterai.nmgen
                 , ref root
                 , ref mMaxVerts
                 , ref mWalkableHeight
+                , ref mWalkableRadius
                 , ref mWalkableStep))
             {
                 root.Initialize();
@@ -217,6 +218,7 @@ namespace org.critterai.nmgen
                 , ref root
                 , ref mMaxVerts
                 , ref mWalkableHeight
+                , ref mWalkableRadius
                 , ref mWalkableStep))
             {
                 root.Initialize();
@@ -304,6 +306,7 @@ namespace org.critterai.nmgen
                 || data.walkableHeight 
                     < NMGen.MinWalkableHeight * NMGen.MinCellSize
                 || data.walkableStep < 0
+                || data.walkableRadius < 0
                 || data.borderSize < 0
                 || data.polys.Length 
                     < (root.polyCount * 2 * root.maxVertsPerPoly)
@@ -321,6 +324,7 @@ namespace org.critterai.nmgen
             root.xzCellSize = data.xzCellSize;
             root.yCellSize = data.yCellSize;
             mWalkableHeight = data.walkableHeight;
+            mWalkableRadius = data.walkableRadius;
             mWalkableStep = data.walkableStep;
             root.borderSize = data.borderSize;
 
@@ -399,6 +403,7 @@ namespace org.critterai.nmgen
             buffer.vertCount = root.vertCount;
             buffer.walkableStep = mWalkableStep;
             buffer.walkableHeight = mWalkableHeight;
+            buffer.walkableRadius = mWalkableRadius;
             buffer.borderSize = root.borderSize;
 
             int count = root.polyCount;
@@ -428,6 +433,7 @@ namespace org.critterai.nmgen
             if (!PolyMeshEx.GetSerializedData(ref root
                 , mMaxVerts
                 , mWalkableHeight
+                , mWalkableRadius
                 , mWalkableStep
                 , includeBuffer
                 , ref ptr
@@ -485,6 +491,7 @@ namespace org.critterai.nmgen
             , ContourSet contours
             , int maxVertsPerPoly
             , int walkableHeight
+            , int walkableRadius
             , int walkableStep)
         {
             if (context == null || contours == null)
@@ -501,7 +508,8 @@ namespace org.critterai.nmgen
                 return null;
             }
 
-            result.mWalkableHeight = walkableHeight * contours.XZCellSize;
+            result.mWalkableHeight = walkableHeight * contours.YCellSize;
+            result.mWalkableRadius = walkableRadius * contours.XZCellSize;
             result.mWalkableStep = walkableStep * contours.YCellSize;
 
             return result;

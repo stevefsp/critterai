@@ -23,10 +23,26 @@ using System;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Contour vertex flags. (Applied to the forth element of the vertices
+    /// arrays.)
+    /// </summary>
+    /// <remarks>
+    /// <p>Contour vertices take the form (x, y, z, r).  The r-value can contain
+    /// these flags.</p>
+    /// </remarks>
     [Flags]
     public enum ContourFlags
     {
+        /// <summary>
+        /// The vertex is the start of a border edge.
+        /// </summary>
         BorderVertex = 0x10000,
+
+        /// <summary>
+        /// The vertex is the start of an edge the forms a boundary 
+        /// between areas.
+        /// </summary>
         AreaBorder = 0x20000
     }
 }
