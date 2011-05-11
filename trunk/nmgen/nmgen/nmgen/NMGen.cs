@@ -215,7 +215,7 @@ namespace org.critterai.nmgen
             if ((buildFlags & NMGenBuildFlags.LowObstaclesWalkable) != 0
                 && config.walkableStep > 0)
             {
-                hf.FlagLowObstaclesWalkable(context, config.walkableStep);
+                hf.MarkLowObstaclesWalkable(context, config.walkableStep);
                 if (trace)
                     context.Log(pret + "Flagged low obstacles as walkable.");
 
@@ -223,7 +223,7 @@ namespace org.critterai.nmgen
 
             if ((buildFlags & NMGenBuildFlags.LedgeSpansNotWalkable) != 0)
             {
-                hf.FlagLedgeSpansNotWalkable(context
+                hf.MarkLedgeSpansNotWalkable(context
                     , config.walkableHeight
                     , config.walkableStep);
                 if (trace)
@@ -232,7 +232,7 @@ namespace org.critterai.nmgen
 
             if ((buildFlags & NMGenBuildFlags.LowHeightSpansNotWalkable) != 0)
             {
-                hf.FlagLowHeightSpansNotWalkable(context
+                hf.MarkLowHeightSpansNotWalkable(context
                     , config.walkableHeight);
                 if (trace)
                     context.Log(pret 
@@ -312,6 +312,7 @@ namespace org.critterai.nmgen
                 , cset
                 , config.maxVertsPerPoly
                 , config.walkableHeight
+                , config.walkableRadius
                 , config.walkableStep);
 
             cset.RequestDisposal();

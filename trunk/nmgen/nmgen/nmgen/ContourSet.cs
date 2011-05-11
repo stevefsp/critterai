@@ -26,9 +26,12 @@ using org.critterai.nmgen.rcn;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// 
+    /// Represents a group of related <see cref="Contour">contours</see>.
     /// </summary>
     /// <remarks>
+    /// <p>A contour set is usually generated from a single
+    /// <see cref="CompactHeightfield"/>.  All contours share the minimum
+    /// bounds and cell sizes of the set.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     public sealed class ContourSet
@@ -38,23 +41,72 @@ namespace org.critterai.nmgen
         internal ContourSetEx root;
         private Contour[] mContours = null;
 
+        /// <summary>
+        /// The width of the set. (Along the x-axis in voxel units.)
+        /// </summary>
         public int Width { get { return root.width; } }
+
+        /// <summary>
+        /// The depth of the set. (Along the z-axis in voxel units.)
+        /// </summary>
         public int Depth { get { return root.depth; } }
+
+        /// <summary>
+        /// The width/depth increment of each cell. (On the xz-plane.)
+        /// </summary>
+        /// <remarks>
+        /// <p>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</p>
+        /// </remarks>
         public float XZCellSize { get { return root.xzCellSize; } }
+
+        /// <summary>
+        /// The height increment of each cell. (On the y-axis.)
+        /// </summary> 
+        /// <remarks>
+        /// <p>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</p>
+        /// </remarks>
         public float YCellSize { get { return root.yCellSize; } }
+
+        /// <summary>
+        /// The AABB border size used to generate the source data from
+        /// which the contours were derived.
+        /// </summary>
         public int BorderSize { get { return root.borderSize; } }
+
+        /// <summary>
+        /// The number of contours in the set.
+        /// </summary>
         public int Count { get { return root.contourCount; } }
 
+        /// <summary>
+        /// The minimum bounds of the set in world space. (x, y, z)
+        /// </summary>
+        /// <remarks>
+        /// <p>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</p>
+        /// </remarks>
+        /// <returns>The minimum bounds of the set.
+        /// </returns>
         public float[] GetBoundsMin()
         {
             return (float[])root.boundsMin.Clone();
         }
 
+        /// <summary>
+        /// The maximum bounds of the set in world space. (x, y, z)
+        /// </summary>
+        /// <returns>The maximum bounds of the set.
+        /// </returns>
         public float[] GetBoundsMax()
         {
             return (float[])root.boundsMax.Clone();
         }
 
+        /// <summary>
+        /// TRUE if the object has been disposed and should no longer be used.
+        /// </summary>
         public bool IsDisposed 
         {
             get { return (root.contours == IntPtr.Zero); } 
@@ -77,7 +129,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Frees and marks as disposed all resources. (Including
-        /// <see cref="Contour"/> objects.)
+        /// member <see cref="Contour"/> objects.)
         /// </summary>
         public void RequestDisposal()
         {
@@ -96,6 +148,12 @@ namespace org.critterai.nmgen
             }
         }
 
+        /// <summary>
+        /// Gets the contour for the specified index.
+        /// </summary>
+        /// <param name="index">The contour index. 
+        /// (0 &lt; value &lt <see cref="Count"/>)</param>
+        /// <returns></returns>
         public Contour GetContour(int index)
         {
             if (IsDisposed || index < 0 || index >= root.contourCount)
@@ -115,6 +173,27 @@ namespace org.critterai.nmgen
             return result;
         }
 
+        /// <summary>
+        /// Builds a contour set from the region outlines in the provided 
+        /// <see cref="CompactHeightfield"/>.
+        /// </summary>
+        /// <remarks>
+        /// <p>The raw contours will match the region outlines exactly.  The
+        /// edgeMaxDeviation and maxEdgeLength parameters control how closely
+        /// the simplified contours will match the raw contours.</p>
+        /// <p>Simplified contours are generated such that the vertices for
+        /// portals between areas match up.  (E.g. They are considered
+        /// mandatory vertices.)</p>
+        /// </remarks>
+        /// <param name="context">The context to use for the build.</param>
+        /// <param name="field">The field to use for the build.
+        /// (Must have region data.)</param>
+        /// <param name="edgeMaxDeviation">The maximum distance a simplified
+        /// edge may deviate from the raw contour's vertices.</param>
+        /// <param name="maxEdgeLength">The maximum allowed length of a 
+        /// simplified edge.</param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
         public static ContourSet Build(BuildContext context
             , CompactHeightfield field
             , float edgeMaxDeviation
@@ -137,7 +216,5 @@ namespace org.critterai.nmgen
 
             return result;
         }
-
-        
     }
 }

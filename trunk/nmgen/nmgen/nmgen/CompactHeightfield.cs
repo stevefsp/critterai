@@ -134,7 +134,7 @@ namespace org.critterai.nmgen
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The minimum bounds of the heightfield in world space.
+        /// The minimum bounds of the heightfield in world space. (x, y, z)
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
@@ -166,7 +166,7 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>The smallest span can be 
         /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
-        /// <p>A height within the field is converted to world units:
+        /// <p>A height within the field is converted to world units
         /// as follows: boundsMin[1] + (height * YCellSize)</p>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
@@ -195,7 +195,7 @@ namespace org.critterai.nmgen
         /// The maximum distance value for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <p>The value is only valid if the distance field has been
+        /// <p>The value is only useful if the distance field has been
         /// built.</p>
         /// </remarks>
         public ushort MaxDistance { get { return mMaxDistance; } }
@@ -204,7 +204,7 @@ namespace org.critterai.nmgen
         /// The maximum region id for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <p>The value is only valid if the regions have been built.</p>
+        /// <p>The value is only useful if the regions have been built.</p>
         /// </remarks>
         public ushort MaxRegions { get { return mMaxRegions; } }
 
@@ -250,8 +250,8 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heighfield's <see cref="Compactspan"/> data into
-        /// the buffer.
+        /// Loads the heighfield's <see cref="CompactCell"/> data into
+        /// the provided buffer.
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// (Size >= Width * Depth)</param>
@@ -268,7 +268,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Loads the heightfield's <see cref="CompactSpan"/>
-        /// data into the buffer.
+        /// data into the provided buffer.
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// (Size >= SpanCount)</param>
@@ -284,14 +284,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heightfield's distance field
-        /// data into the buffer.
+        /// Loads the heightfield's distance field data into the 
+        /// provided buffer.
         /// </summary>
         /// <remarks>
         /// <p>This data is only available after the distance field has
         /// been built.</p>
         /// <p>Each value represents the estimated distance of the span
-        /// from the nearest boundary or obstruction. The index is the same
+        /// from the nearest boundary/obstruction. The index is the same
         /// as for the span data.  E.g. span[i], distance[i]</p>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
@@ -314,7 +314,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heightfield's area data into the buffer.
+        /// Loads the heightfield's area data into the provided buffer.
         /// </summary>
         /// <remarks>
         /// <p>Each value represents the id of the area the span belongs to.
@@ -351,8 +351,8 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>Basically, any spans that are closer to a boundary or obstruction
-        /// that the radius are marked as unwalkable.</p>
-        /// <p>This method is usually called immediatly after the heightfield
+        /// than the specified radius are marked as unwalkable.</p>
+        /// <p>This method is usually called immediately after the heightfield
         /// has been created.</p>
         /// </remarks>
         /// <param name="context">The context to use during the operation.
@@ -369,10 +369,11 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// 
+        /// Applies a median filter to the walkable areas, removing noide.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool ApplyMedianFilter(BuildContext context)
         {
             if (IsDisposed)
@@ -380,6 +381,22 @@ namespace org.critterai.nmgen
             return CompactHeightfieldEx.ApplyMedianFilter(context.root, this);
         }
 
+        /// <summary>
+        /// Applies the area id to all spans within the specified bounding
+        /// box. (AABB)
+        /// </summary>
+        /// <remarks>
+        /// <p>The method will return FALSE if the AABB is completely outside
+        /// of the heightfield.</p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="boundsMin">The minimum bounds of the AABB. (x, y, z)
+        /// </param>
+        /// <param name="boundsMax">The maximum bounds of the AABB. (x, y, z)
+        /// </param>
+        /// <param name="area">The area id to apply.</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
             , float[] boundsMin
             , float[] boundsMax
@@ -395,6 +412,25 @@ namespace org.critterai.nmgen
                 , this);
         }
 
+        /// <summary>
+        /// Applies the area id to the all spans within the specified convex
+        /// polygon.
+        /// </summary>
+        /// <remarks>
+        /// <p>The y-values of the polygon vertices are ignored.  So the
+        /// polygon is effectively projected onto the xz-plane at yMin, 
+        /// then extruded to yMax.</p>
+        /// <p>The method will return FALSE if the polygon is completely outside
+        /// of the heightfield.</p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="verts">The vertices of the polygon 
+        /// (x, y, z) * vertCount</param>
+        /// <param name="yMin">The height of the base of the polygon.</param>
+        /// <param name="yMax">The height of the top of the polygon.</param>
+        /// <param name="area">The area id to apply.</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkConvexPolyArea(BuildContext context
             , float[] verts
             , float yMin
@@ -412,6 +448,21 @@ namespace org.critterai.nmgen
                 , this);
         }
 
+        /// <summary>
+        /// Applied the area id to all spans within the specified cylinder.
+        /// </summary>
+        /// <remarks>
+        /// <p>The method will return FALSE if the cylinder is completely 
+        /// outside of the heightfield.</p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="position">The center of the base of the cylinder.
+        /// </param>
+        /// <param name="radius">The radius of the cylinder.</param>
+        /// <param name="height">The height of the cylinder.</param>
+        /// <param name="area">The area id to apply.</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
             , float[] position
             , float radius
@@ -428,6 +479,18 @@ namespace org.critterai.nmgen
                 , this);
         }
 
+        /// <summary>
+        /// Builds the distance field for the heightfield.
+        /// </summary>
+        /// <remarks>
+        /// <p>This method must be called before attempting to build
+        /// region data.</p>
+        /// <p>The distance data is avaiable via <see cref="MaxDistance"/>
+        /// and <see cref="GetDistance"/>.</p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildDistanceField(BuildContext context)
         {
             if (IsDisposed)
@@ -435,6 +498,31 @@ namespace org.critterai.nmgen
             return CompactHeightfieldEx.BuildDistanceField(context.root, this);
         }
 
+        /// <summary>
+        /// Builds region data for the heightfield using watershed 
+        /// partitioning.
+        /// </summary>
+        /// <remarks>
+        /// <p>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans that form a single contour.</p>
+        /// <p>The region data is available via <see cref="MaxRegion"/>
+        /// and <see cref="GetSpanData"/>.</p>
+        /// <p>If multiple regions form an area which is smaller than
+        /// minRegionArea, all spans in the regions are set to
+        /// <see cref="NMGen.NullRegion"/>.</p>
+        /// <p>Watershed partitioning can result in smaller than necessary
+        /// regions, especially in diagonal corridors.  mergeRegionArea
+        /// helps reduce unecessarily small regions.</p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="borderSize">The AABB border size to apply.</param>
+        /// <param name="minRegionArea">The minimum area allowed for 
+        /// unconnected (island) regions. (In voxels.)</param>
+        /// <param name="mergeRegionArea">The maximum region size that will be
+        /// considered for merging with another region.
+        /// (In voxels.)</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegions(BuildContext context
             , int borderSize
             , int minRegionArea
@@ -449,6 +537,31 @@ namespace org.critterai.nmgen
                 , mergeRegionArea);
         }
 
+        /// <summary>
+        /// Builds region data for the heightfield using simple monotone
+        /// partitioning.
+        /// </summary>
+        /// <remarks>
+        /// <p>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans that form a single contour.</p>
+        /// <p>The region data is available via <see cref="MaxRegion"/>
+        /// and <see cref="GetSpanData"/>.</p>
+        /// <p>If multiple regions form an area which is smaller than
+        /// minRegionArea, all spans in the regions are set to
+        /// <see cref="NMGen.NullRegion"/>.</p>
+        /// <p>Partitioning can result in smaller than necessary
+        /// regions.  mergeRegionArea helps reduce unecessarily small regions.
+        /// </p>
+        /// </remarks>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="borderSize">The AABB border size to apply.</param>
+        /// <param name="minRegionArea">The minimum area allowed for 
+        /// unconnected (island) regions. (In voxels.)</param>
+        /// <param name="mergeRegionArea">The maximum region size that will be
+        /// considered for merging with another region.
+        /// (In voxels.)</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegionsMonotone(BuildContext context
             , int borderSize
             , int minRegionArea
@@ -463,6 +576,18 @@ namespace org.critterai.nmgen
                 , mergeRegionArea);
         }
 
+        /// <summary>
+        /// Creates a compact open heightfield from a solid heightfield.
+        /// </summary>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="sourceField">The solid heighfield to derive the
+        /// compact heightfield from.</param>
+        /// <param name="walkableHeight">The minimum floor to ceiling height
+        /// that is still considered walkable.</param>
+        /// <param name="walkableStep">The maximum floor to floor step
+        /// that is still considered walkable.</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public static CompactHeightfield Build(BuildContext context
             , Heightfield sourceField
             , int walkableHeight

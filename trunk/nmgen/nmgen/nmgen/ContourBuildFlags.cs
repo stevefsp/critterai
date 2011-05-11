@@ -23,10 +23,21 @@ using System;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Flags used to control the contour build process.
+    /// </summary>
+    /// <seealso cref="ContourSet.Build"/>
     [Flags]
     public enum ContourBuildFlags
     {
+        /// <summary>
+        /// Tessellate the wall (unconnected border) edges.
+        /// </summary>
         TessellateWallEdges = 1,
+
+        /// <summary>
+        /// Tessellate the edges between areas.
+        /// </summary>
         TessellateAreaEdges = 2
     }
 }

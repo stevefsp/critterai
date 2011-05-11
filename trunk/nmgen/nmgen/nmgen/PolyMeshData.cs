@@ -105,6 +105,8 @@ namespace org.critterai.nmgen
         /// </summary>
         public float walkableHeight;
 
+        public float walkableRadius;
+
         /// <summary>
         /// The maximum traversable ledge height used to build the polygon
         /// mesh.
@@ -169,6 +171,7 @@ namespace org.critterai.nmgen
             borderSize = 0;
             walkableHeight = 0;
             walkableStep = 0;
+            walkableRadius = 0;
             polys = null;
             verts = null;
             areas = null;

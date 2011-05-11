@@ -78,10 +78,10 @@ namespace org.critterai.nmgen
         public int walkableRadius = 1;
 
         public int maxEdgeLength = 0;
-        public float edgeMaxDeviation = 1;
+        public float edgeMaxDeviation = 3;
 
-        public int minRegionArea = 9;
-        public int mergeRegionArea = 25;
+        public int minRegionArea = 25;
+        public int mergeRegionArea = 75;
 
         public int maxVertsPerPoly = 6;
 
