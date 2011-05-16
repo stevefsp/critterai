@@ -64,7 +64,7 @@ namespace org.critterai.nmgen
 
         public int borderSize = 0;
         public float xzCellSize = 0.2f;
-        public float yCellSize = 0.2f;
+        public float yCellSize = 0.1f;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] boundsMin = new float[3];
@@ -73,9 +73,9 @@ namespace org.critterai.nmgen
         public float[] boundsMax = new float[3];
 
         public float walkableSlope = 45.5f;
-        public int walkableHeight = 8;
+        public int walkableHeight = 19;
         public int walkableStep = 3;
-        public int walkableRadius = 1;
+        public int walkableRadius = 2;
 
         public int maxEdgeLength = 0;
         public float edgeMaxDeviation = 3;
