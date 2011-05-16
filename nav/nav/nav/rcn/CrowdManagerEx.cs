@@ -35,12 +35,6 @@ namespace org.critterai.nav.rcn
     internal static class CrowdManagerEx
     {
         /// <summary>
-        /// The maximum number of avoidance configurations that can be
-        /// associated with the manager.
-        /// </summary>
-        public const int MaxAvoidanceParams = 8;
-
-        /// <summary>
         /// Allocates and initializes a new dtCrowd object.
         /// </summary>
         /// <remarks>The <see cref="FreeEx"/> method must be called

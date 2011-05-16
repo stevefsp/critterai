@@ -259,6 +259,7 @@ extern "C"
         , const float* startPos
         , const float* endPos
 		, const dtPolyRef* path
+        , const int pathStart
         , const int pathSize
 	    , float* straightPath
         , unsigned char* straightPathFlags
@@ -268,7 +269,7 @@ extern "C"
     {
         return query->findStraightPath(startPos
             , endPos
-            , path
+            , &path[pathStart]
             , pathSize
             , straightPath
             , straightPathFlags

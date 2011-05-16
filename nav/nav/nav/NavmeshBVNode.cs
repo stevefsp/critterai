@@ -48,34 +48,5 @@ namespace org.critterai.nav
         /// The node's index.  (Negative for escape indices.)
         /// </summary>
 	    public int i;
-
-        // TODO: CLEANUP: Remove if not back in use by v0.4.
-        // Removed this code since the only time the structure is created
-        // is during interop.  And initialization is not needed for interop.
-        ///// <summary>
-        ///// Initializes the structure before its first use.
-        ///// </summary>
-        ///// <remarks>
-        ///// Existing references are released and replaced.
-        ///// </remarks>
-        //public void Initialize()
-        //{
-        //    boundsMin = new ushort[3];
-        //    boundsMax = new ushort[3];
-        //    i = 0;
-        //}
-
-        ///// <summary>
-        ///// Rerturns an array of fully initialized nodes.
-        ///// </summary>
-        ///// <param name="length">The length of the array. (>0)</param>
-        ///// <returns>An array of fully initialized structures.</returns>
-        //public static NavmeshBVNode[] GetInitializedArray(int length)
-        //{
-        //    NavmeshBVNode[] result = new NavmeshBVNode[length];
-        //    for (int i = 0; i < length; i++)
-        //        result[i].Initialize();
-        //    return result;
-        //}
     }
 }

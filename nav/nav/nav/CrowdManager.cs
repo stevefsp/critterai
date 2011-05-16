@@ -52,8 +52,7 @@ namespace org.critterai.nav
         /// The maximum number of avoidance configurations that can be
         /// associated with the manager.
         /// </summary>
-        public const int MaxAvoidanceParams =
-            CrowdManagerEx.MaxAvoidanceParams;
+        public const int MaxAvoidanceParams = 8;
 
         /// <summary>
         /// A pointer to an instance of a dtCrowd class.
