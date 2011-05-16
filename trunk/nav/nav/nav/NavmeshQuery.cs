@@ -107,7 +107,15 @@ namespace org.critterai.nav
         /// <summary>
         /// Finds the nearest polygon to the specified point.
         /// </summary>
-        /// <param name="position">The center of the search location.</param>
+        /// <remarks>
+        /// <p>If the search box does not intersect any polygons the search
+        /// return success, but the result polyRef will be zero.  So always 
+        /// check the result polyRef before using the nearest point data.</p>
+        /// <p>The detail mesh is used to adjust the y-value of the nearest
+        /// point result. So there is no need to call the 
+        /// <see cref="GetPolyHeight"/> method.</p>
+        /// </remarks>
+        /// <param name="point">The center of the search volumn.</param>
         /// <param name="extents">The search distance along each axis in the
         /// form (x, y, z).</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -116,19 +124,19 @@ namespace org.critterai.nav
         /// <param name="nearestPoint">The nearest point on the polygon
         /// in the form (x, y, z). (Optional Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetNearestPoly(float[] position
+        public NavStatus GetNearestPoly(float[] sourcePoint
             , float[] extents
             , NavmeshQueryFilter filter
             , out uint resultPolyRef
-            , float[] resultNearestPoint)
+            , float[] resultPoint)
         {
             resultPolyRef = 0;
             return NavmeshQueryEx.GetNearestPoly(root
-                , position
+                , sourcePoint
                 , extents
                 , filter.root
                 , ref resultPolyRef
-                , resultNearestPoint);
+                , resultPoint);
         }
 
         /// <summary>
@@ -136,18 +144,16 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <p>
-        /// A portal wall will be returned as impassable if the filter argument
-        /// results in the segment's neighbor polygon being marked as excluded.
+        /// A portal will be included in the set if the filter indicates 
+        /// the neighbor is impassable.
         /// </p>
         /// <p>The impassable segments of the polygon can be used for simple 2D
         /// collision detection.</p>
         /// </remarks>
         /// <param name="polyRef">The id of the polygon.</param>
-        /// <param name="filter">The filter to apply to the query. Used to
-        /// determine which polygon neighbors are considered accessible.</param>
+        /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="segmentVerts">An array to load the wall vertices into. 
-        /// The vertices will be in the form (ax, ay, az, bx, by, bz).
-        /// Length: [6 * maxSegments]</param>
+        /// (ax, ay, az, bx, by, bz) * maxSegments.</param>
         /// <param name="segmentCount">The number of segments returned
         /// in the segments array.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
@@ -168,29 +174,28 @@ namespace org.critterai.nav
 
         /// <summary>
         /// Returns the segments for the specified polygon, optionally
-        /// excluding portal segments.
+        /// excluding portals.
         /// </summary>
         /// <remarks>
         /// <p>If the segmentPolyRefs parameter is provided, then all polygon
         /// segments will be returned.  If the parameter is ommited, then only 
         /// the impassable segments are returned.</p>
         /// <p>
-        /// A portal segment will be returned as impassable if the filter 
-        /// argument results in the wall's neighbor polygon being marked as 
-        /// excluded.</p>
+        /// A portal will be included in the impassable set as impassable if the filter 
+        /// indicates the neighbor is impassable.
+        /// </p>
         /// <p>The impassable segments of the polygon can be used for simple 2D
         /// collision detection.</p>
+        /// <p>The segments are polygon segments, not detail mesh segments.</p>
         /// </remarks>
         /// <param name="polyRef">The id of the polygon.</param>
         /// <param name="filter">The filter to apply to the query. Used to
         /// determine which polygon neighbors are considered accessible.</param>
-        /// <param name="segmentVerts">An array to load the segment vertices 
-        /// into. 
-        /// The vertices will be in the form (ax, ay, az, bx, by, bz).
-        /// Length: [6 * maxSegments]</param>
+        /// <param name="segmentVerts">The segment vertex buffer. 
+        /// [Form: (ax, ay, az, bx, by, bz) * maxSegments]</param>
         /// <param name="segmentPolyRefs">Ids of the each segment's neighbor
-        /// polygon. Or zero if the segment is considered impassible. 
-        /// Length: [maxSegements] (Optional)</param>
+        /// polygon. Or zero if the segment is considered impassable. 
+        /// [Length: maxSegements] (Optional)</param>
         /// <param name="segmentCount">The number of segments returned</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetPolySegments(uint polyRef
@@ -212,24 +217,34 @@ namespace org.critterai.nav
         /// <summary>
         /// Finds the polygons that overlap the query box.
         /// </summary>
+        /// <remarks>
+        /// <p>If no polygons are found, the method will return success with
+        /// a result count of zero.</p>
+        /// <p>If the result buffer is too small to hold the full result set, 
+        /// the method will return success with the 
+        /// <see cref="NavStatus.BufferTooSmall"/> flag set.  The method of 
+        /// choosing which polygons from the full set are included in the 
+        /// incomplete result set is undefined.</p>
+        /// <p>The segments are polygon segments, not detail segments.</p>
+        /// </remarks>
         /// <param name="position">The center of the query box in the form
         /// (x, y, z).</param>
         /// <param name="extents">The search distance along each axis in the
         /// form (x, y, z).</param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPolyRefs">The ids for the polygons that
+        /// <param name="resultPolyRefs">The references of the polygons that
         /// overlap the query box. (Out)</param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolygons(float[] position
+        public NavStatus GetPolys(float[] searchPoint
             , float[] extents
             , NavmeshQueryFilter filter
             , uint[] resultPolyRefs
             , out int resultCount)
         {
             resultCount = 0;
-            return NavmeshQueryEx.GetPolygons(root
-                , position
+            return NavmeshQueryEx.GetPolys(root
+                , searchPoint
                 , extents
                 , filter.root
                 , resultPolyRefs
@@ -238,12 +253,34 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Finds the navigation polygons within the graph that touch the
-        /// specified circle.
+        /// Finds the polygons within the graph that touch the specified circle.
         /// </summary>
         /// <remarks>
-        /// <p>The order of the result polygons is from least to highest
-        /// cost. (A Dikstra search.)</p>
+        /// <p>The order of the result set is from least to highest
+        /// cost.</p>
+        /// <p>At least one result buffer must be provided.</p>
+        /// <p>The return status will include the 
+        /// <see cref="NavStatus.BufferToSmall"/> flag if the provided buffers 
+        /// are too small to hold the entire result set. (The operation will not
+        /// fail.)</p>
+        /// <p>The primary use case for this method is for performing
+        /// Dijkstra searches.  This is because candidate polygons are found
+        /// by searching the graph beginning at the start polygon.  If a 
+        /// navmesh polygon is not found via the graph search,
+        /// even if it intersects the search circle, it will not be included
+        /// in the result set. Example scenario:</p>
+        /// <p>polyA is the start polygon.<br/>
+        /// polyB shares an edge with polyA. (Is adjacent.)<br/>
+        /// polyC shares an edge with polyB, but not with polyA<br/>
+        /// Even if the search circle overlaps polyC, it will not
+        /// be included in the result set unless polyB is also in the set.
+        /// </p>
+        /// <p>The value of the position argument is used as the start point 
+        /// for cost calculations.  It is not projected onto the surface of the
+        /// mesh, so its y-value will effect the costs.</p>
+        /// <p>Intersection tests occur in 2D with all polygons and the
+        /// search circle projected onto the xz-plane.  So the y-value of the
+        /// position argument does not effect intersection tests.</p>
         /// </remarks>
         /// <param name="startPolyRef">The id of the polygon to start the
         /// search at.</param>
@@ -260,8 +297,8 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPolygons(uint startPolyRef
-                , float[] position
+        public NavStatus FindPolys(uint startPolyRef
+                , float[] centerPoint
                 , float radius
                 , NavmeshQueryFilter filter
                 , uint[] resultPolyRefs   // Optional, must have one.
@@ -281,9 +318,9 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.FindPolygons(root
+            return NavmeshQueryEx.FindPolys(root
                 , startPolyRef
-                , position
+                , centerPoint
                 , radius
                 , filter.root
                 , resultPolyRefs
@@ -297,6 +334,32 @@ namespace org.critterai.nav
         /// Finds the navigation polygons within the graph that touch the
         /// specified convex polygon.
         /// </summary>
+        /// <remarks>
+        /// <p>The order of the result set is from least to highest
+        /// cost.</p>
+        /// <p>At least one result buffer must be provided.</p>
+        /// <p>The return status will include the 
+        /// <see cref="NavStatus.BufferToSmall"/> flag if the provided buffers 
+        /// are too small to hold the entire result set. (The operation will not
+        /// fail.)</p>
+        /// <p>The primary use case for this method is for performing
+        /// Dijkstra searches.  This is because candidate polygons are found
+        /// by searching the graph beginning at the start polygon.  If a 
+        /// navmesh polygon is not found via the graph search,
+        /// even if it intersects the search polygon, it will not be included
+        /// in the result set. Example scenario:</p>
+        /// <p>polyA is the start polygon.<br/>
+        /// polyB shares an edge with polyA. (Is adjacent.)<br/>
+        /// polyC shares an edge with polyB, but not with polyA<br/>
+        /// Even if the search polygon overlaps polyC, it will not
+        /// be included in the result set unless polyB is also in the set.
+        /// </p>
+        /// <p>The 3D centroid of the polygon is used as the start position for
+        /// cost calculations.</p>
+        /// <p>Intersection tests occur in 2D with all polygons projected
+        /// onto the xz-plane.  So the y-values of the vertices
+        /// do not effect intersection tests.</p>
+        /// </remarks>
         /// <param name="startPolyRef">The id of the polygon to start the
         /// search at.</param>
         /// <param name="vertices">The convex polygon's vertices in the
@@ -313,7 +376,7 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPolygons(uint startPolyRef
+        public NavStatus FindPolys(uint startPolyRef
                 , float[] vertices
                 , NavmeshQueryFilter filter
                 , uint[] resultPolyRefs
@@ -333,7 +396,7 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.FindPolygons(root
+            return NavmeshQueryEx.FindPolys(root
                 , startPolyRef
                 , vertices
                 , vertices.Length / 3
@@ -350,8 +413,33 @@ namespace org.critterai.nav
         /// neighborhood around the specified point.
         /// </summary>
         /// <remarks>
-        /// This method is optimized for a small query radius and small number
-        /// of polygons.
+        /// <p>This method is optimized for a small query radius and small number
+        /// of polygons.</p>
+        /// <p>The order of the result set is from least to highest
+        /// cost.</p>
+        /// <p>At least one result buffer must be provided.</p>
+        /// <p>The return status will include the 
+        /// <see cref="NavStatus.BufferToSmall"/> flag if the provided buffers 
+        /// are too small to hold the entire result set. (The operation will not
+        /// fail.)</p>
+        /// <p>The primary use case for this method is for performing
+        /// Dijkstra searches.  This is because candidate polygons are found
+        /// by searching the graph beginning at the start polygon.  If a 
+        /// navmesh polygon is not found via the graph search,
+        /// even if it intersects the search circle, it will not be included
+        /// in the result set. Example scenario:</p>
+        /// <p>polyA is the start polygon.<br/>
+        /// polyB shares an edge with polyA. (Is adjacent.)<br/>
+        /// polyC shares an edge with polyB, but not with polyA<br/>
+        /// Even if the search circle overlaps polyC, it will not
+        /// be included in the result set unless polyB is also in the set.
+        /// </p>
+        /// <p>The value of the position argument is used as the start point 
+        /// for cost calculations.  It is not projected onto the surface of the
+        /// mesh, so its y-value will effect the costs.</p>
+        /// <p>Intersection tests occur in 2D with all polygons and the
+        /// search circle projected onto the xz-plane.  So the y-value of the
+        /// position argument does not effect intersection tests.</p>
         /// </remarks>
         /// <param name="startPolyRef">The id of the polygon to start the
         /// search at.</param>
@@ -365,8 +453,8 @@ namespace org.critterai.nav
         /// (Optional)</param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolygonsLocal(uint startPolyRef
-                , float[] position
+        public NavStatus GetPolysLocal(uint startPolyRef
+                , float[] centerPoint
                 , float radius
                 , NavmeshQueryFilter filter
                 , uint[] resultPolyRefs
@@ -383,9 +471,9 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.GetPolygonsLocal(root
+            return NavmeshQueryEx.GetPolysLocal(root
                 , startPolyRef
-                , position
+                , centerPoint
                 , radius
                 , filter.root
                 , resultPolyRefs
@@ -399,68 +487,77 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <p>Uses the height detail to provide the most accurate information.
-        /// </p></remarks>
+        /// </p>
+        /// <p>The source point does not have to be within the bounds of the
+        /// navigation mesh.</p>
+        /// </remarks>
         /// <param name="polyRef">The id of the polygon.</param>
-        /// <param name="position">The position to search from in the form
+        /// <param name="sourcePoint">The position to search from in the form
         /// (x, y, z).</param>
         /// <param name="resultPoint">The closest point found in the form 
         /// (x, y, z) (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetNearestPoint(uint polyRef
-            , float[] position
+            , float[] sourcePoint
             , float[] resultPoint)
         {
             return NavmeshQueryEx.GetNearestPoint(root
                 , polyRef
-                , position
+                , sourcePoint
                 , resultPoint);
         }
 
         /// <summary>
-        /// Finds the closest point on the navigation polygon's xz-plane 
-        /// boundary.
+        /// Returns a point on the boundary closest to the source point if the
+        /// source point is is outside the polygon's xz-column.
         /// </summary>
         /// <remarks>
-        /// <p>Snaps the point to the polygon boundary if it is outside the
-        /// polygon's xz-column.</p>
-        /// <p>Does not change the y-value of the point.</p>
         /// <p>Much faster than <see cref="GetNearestPoint" />.</p>
+        /// <p>If the provided point lies within the polygon's xz-column
+        /// (above or below), then the source and result points will be equal
+        /// </p>
+        /// <p>The boundary point will be the polygon boundary, not the height
+        /// corrected detail boundary.  Use <see cref="GetPolyHeight"/> if 
+        /// needed.
+        /// </p>
+        /// <p>The source point does not have to be within the bounds of the
+        /// navigation mesh.</p>
         /// </remarks>
         /// <param name="polyRef">The id of the polygon.</param>
-        /// <param name="position">The point to check in the form (x, y, z).
+        /// <param name="sourcePoint.">The point to check in the form (x, y, z).
         /// </param>
         /// <param name="resultPoint">The closest point. (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetNearestBoundaryPoint(uint polyRef
-            , float[] position
+        public NavStatus GetNearestPointF(uint polyRef
+            , float[] sourcePoint
             , float[] resultPoint)
         {
-            return NavmeshQueryEx.GetNearestBoundaryPoint(root
+            return NavmeshQueryEx.GetNearestPointF(root
                 , polyRef
-                , position
+                , sourcePoint
                 , resultPoint);
         }
 
         /// <summary>
-        /// Finds the polygons that overlap the query box.
+        /// Gets the height of the polygon at the provided point using the
+        /// detail mesh. (Most accurate.)
         /// </summary>
-        /// <param name="position">The center of the query box in the form
-        /// (x, y, z).</param>
-        /// <param name="extents">The search distance along each axis in the
-        /// form (x, y, z).</param>
-        /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPolyRefs">The ids for the polygons that
-        /// overlap the query box. (Out)</param>
-        /// <param name="resultCount">The number of polygons found.</param>
+        /// <remarks>The method will return falure if the provided point is
+        /// outside the xz-column of the polygon.</remarks>
+        /// <param name="polyRef">The polygon reference.</param>
+        /// <param name="point">The point within the polygon's xz-column.
+        /// </param>
+        /// <param name="height">The height at the surface of the polygon.
+        /// </param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetPolyHeight(uint polyRef
-            , float[] position
+            , float[] point
             , out float height)
         {
             height = 0;
             return NavmeshQueryEx.GetPolyHeight(root
                 , polyRef
-                , position
+                , point
                 , ref height);
         }
 
@@ -468,7 +565,17 @@ namespace org.critterai.nav
         /// Returns the distance from the specified position to the nearest
         /// polygon wall.
         /// </summary>
-        /// <remarks>TODO: Confirm that wall refers to solid segment.</remarks>
+        /// <remarks>
+        /// <p>The closest point will be on the polygon wall.  It is not 
+        /// height adjusted using the detail data. Use 
+        /// <see cref="GetPolyHeight"/> if needed.</p>
+        /// <p>The distance will equal the search radius if there is no wall 
+        /// within the search radius.  In this case the values of closestPoint 
+        /// and normal are undefined.</p>
+        /// <p>The normal will become unpredicable if the distance is a
+        /// very small number.</p>
+        /// <p>Remember: A "wall" is considered a solid bounday.</p>
+        /// </remarks>
         /// <param name="polyRef">The id of the polygon.</param>
         /// <param name="position">The center of the search query circle.
         /// </param>
@@ -476,11 +583,11 @@ namespace org.critterai.nav
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="distance">Distance to nearest wall.</param>
         /// <param name="closestPoint">The nearest point on the wall.</param>
-        /// <param name="normal">The normal of the ray from the 
-        /// query position through the closest point on the wall.</param>
+        /// <param name="normal">The normal of the ray formed by the
+        /// position and the closest wall point.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus FindDistanceToWall(uint polyRef
-            , float[] position
+            , float[] sourcePoint
             , float searchRadius
             , NavmeshQueryFilter filter
             , out float distance
@@ -490,7 +597,7 @@ namespace org.critterai.nav
             distance = 0;
             return NavmeshQueryEx.FindDistanceToWall(root
                 , polyRef
-                , position
+                , sourcePoint
                 , searchRadius
                 , filter.root
                 , ref distance
@@ -504,14 +611,14 @@ namespace org.critterai.nav
         /// <remarks>
         /// <p>If the end polygon cannot be reached, then the last polygon
         /// is the nearest to the end polygon.</p>
-        /// <p>The start and end positions are used to properly calculate
-        /// traversal costs.</p>
+        /// <p>The start and end points are used to calculate
+        /// traversal costs. (y-values matter.)</p>
         /// </remarks>
         /// <param name="startPolyRef">The id of the start polygon.</param>
         /// <param name="endPolyRef">The id of the end polygon.</param>
-        /// <param name="startPosition">A position within the start polygon.
+        /// <param name="startPoint">A position within the start polygon.
         /// </param>
-        /// <param name="endPosition">A position within the end polygon.</param>
+        /// <param name="endPoint">A position within the end polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPath">An ordered list of polygon ids in the
         /// path. (Start to end.)</param>
@@ -520,8 +627,8 @@ namespace org.critterai.nav
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus FindPath(uint startPolyRef
             , uint endPolyRef
-            , float[] startPosition
-            , float[] endPosition
+            , float[] startPoint
+            , float[] endPoint
             , NavmeshQueryFilter filter
             , uint[] resultPath
             , out int pathCount)
@@ -530,8 +637,8 @@ namespace org.critterai.nav
             return NavmeshQueryEx.FindPath(root
                 , startPolyRef
                 , endPolyRef
-                , startPosition
-                , endPosition
+                , startPoint
+                , endPoint
                 , filter.root
                 , resultPath
                 , ref pathCount
@@ -577,8 +684,8 @@ namespace org.critterai.nav
         /// <param name="pathCount">The number of visited polygons.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus Raycast(uint startPolyRef
-            , float[] startPosition
-            , float[] endPosition
+            , float[] startPoint
+            , float[] endPoint
             , NavmeshQueryFilter filter
             , out float hitParameter  // Very high number (> 1E38) if no hit.
             , float[] hitNormal
@@ -592,8 +699,8 @@ namespace org.critterai.nav
 
             return NavmeshQueryEx.Raycast(root
                 , startPolyRef
-                , startPosition
-                , endPosition
+                , startPoint
+                , endPoint
                 , filter.root
                 , ref hitParameter
                 , hitNormal
@@ -607,30 +714,62 @@ namespace org.critterai.nav
         /// within the polygon corridor.
         /// </summary>
         /// <remarks>
-        /// <p>Start and end positions will be clamped to the corridor.</p>
-        /// <p>The returned polygon ids represent the id of the polygon
+        /// <p>This method peforms what is often called 'string pulling'.</p>
+        /// <p>The start point is clamped to the first polygon in 
+        /// the path, and the end point is clamped to the last polygon in the 
+        /// path. So the start and end points should be within or very near
+        /// the first and last polygons respectively.  The pathStart and
+        /// pathCount parameters can be adjusted to restrict the usable portion
+        /// of the the path to meet this requirement. (See the example use
+        /// case below.)</p>
+        /// <p>The returned polygon references represent the id of the polygon
         /// that is entered at the associated path point.  The id associated
         /// to end point will always be zero.</p>
+        /// <p>Example use case for adjusting the straight path during
+        /// locomotion:</p>
+        /// <p>Senario: The path consists of polygons A, B, C, D, with the
+        /// start point in A and the end point in D.</p>
+        /// <p>The first call to the method will return straight waypoints for 
+        /// the entire path:<br/>
+        /// <code>
+        /// query.GetStraightPath(startPoint, endPoint
+        ///     , path
+        ///     , 0, 4   // pathStart, pathCount
+        ///     , straigthPath, null, null
+        ///     , out straightCount);
+        /// </code>
+        /// </p>
+        /// <p>If the agent moves into polygon B and needs to recaclulate its
+        /// straight path for some reason, it can call the method as
+        /// follows using the same path:<br/>
+        /// <code>
+        /// query.GetStraightPath(startPoint, endPoint
+        ///     , path
+        ///     , 1, 3   // pathStart, pathCount  &lt;- Note the changes here.
+        ///     , straigthPath, null, null
+        ///     , out straightCount);
+        /// </code></p>
         /// </remarks>
         /// <param name="startPosition">The start position.</param>
         /// <param name="endPosition">The end position.</param>
         /// <param name="path">The list of polygon ids that represent the
         /// path corridor.</param>
-        /// <param name="pathSize">The length of the path within the path
-        /// array.</param>
+        /// <param name="pathCount">The length of the path within the path
+        /// buffer.</param>
         /// <param name="straightPathPoints">Points describing the straight
         /// path in the form (x, y, z).</param>
         /// <param name="straightPathFlags">Flags describing each point.
         /// (Optional)</param>
         /// <param name="straightPathRefs">The id of the polygon that
-        /// is being entered at the point position.</param>
+        /// is being entered at the point position. (Optional)</param>
         /// <param name="straightPathCount">The number of points in the
         /// straight path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetStraightPath(float[] startPosition
-            , float[] endPosition
+        public NavStatus GetStraightPath(float[] startPoint
+            , float[] endPoint
             , uint[] path
-            , int pathSize
+            , int pathStart
+            , int pathCount
             , float[] straightPathPoints
             , WaypointFlag[] straightPathFlags
             , uint[] straightPathRefs
@@ -648,10 +787,11 @@ namespace org.critterai.nav
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
             return NavmeshQueryEx.GetStraightPath(root
-                , startPosition
-                , endPosition
+                , startPoint
+                , endPoint
                 , path
-                , pathSize
+                , pathStart
+                , pathCount
                 , straightPathPoints
                 , straightPathFlags
                 , straightPathRefs
@@ -660,11 +800,11 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Moves from the start position to the end position constrained to
+        /// Moves from the start to the end point constrained to
         /// the navigation mesh.
         /// </summary>
         /// <remarks>
-        /// <p>The result position will equal the end position if the end position
+        /// <p>The result point will equal the end point if the end
         /// is reachable.</p>
         /// <p>This method is optimized for small delta movement and a small
         /// number of polygons.</p>
@@ -685,20 +825,20 @@ namespace org.critterai.nav
         /// the move.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus MoveAlongSurface(uint startPolyRef
-            , float[] startPosition
-            , float[] endPosition
+            , float[] startPoint
+            , float[] endPoint
             , NavmeshQueryFilter filter
-            , float[] resultPosition
+            , float[] resultPoint
             , uint[] visitedPolyRefs
             , out int visitedCount)
         {
             visitedCount = 0;
             return NavmeshQueryEx.MoveAlongSurface(root
                 , startPolyRef
-                , startPosition
-                , endPosition
+                , startPoint
+                , endPoint
                 , filter.root
-                , resultPosition
+                , resultPoint
                 , visitedPolyRefs
                 , ref visitedCount
                 , visitedPolyRefs.Length);
@@ -731,8 +871,8 @@ namespace org.critterai.nav
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus InitSlicedFindPath(uint startPolyRef
             , uint endPolyRef
-            , float[] startPosition
-            , float[] endPosition
+            , float[] startPoint
+            , float[] endPoint
             , NavmeshQueryFilter filter)
         {
             if (mIsRestricted)
@@ -740,8 +880,8 @@ namespace org.critterai.nav
             return NavmeshQueryEx.InitSlicedFindPath(root
                 , startPolyRef
                 , endPolyRef
-                , startPosition
-                , endPosition
+                , startPoint
+                , endPoint
                 , filter.root);
         }
 

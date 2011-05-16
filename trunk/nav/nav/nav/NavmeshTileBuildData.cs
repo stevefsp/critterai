@@ -490,7 +490,7 @@ namespace org.critterai.nav
             mIsDisposed = true;
         }
 
-        public bool SetBase(int tileX
+        public bool LoadBase(int tileX
             , int tileY
             , int tileLayer
             , uint tileUserId
@@ -499,8 +499,8 @@ namespace org.critterai.nav
             , float xzCellSize
             , float yCellSize
             , float walkableHeight
-            , float walkableStep
             , float walkableRadius
+            , float walkableStep
             , bool bvTreeEnabled)
         {
             if (mIsDisposed

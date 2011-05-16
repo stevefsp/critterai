@@ -52,25 +52,27 @@ namespace org.critterai.nav
          * static at runtime.  So no need to optimize interop calls, and
          * support for Unity serialization is more important.
          * 
+         * The default values are the same as those in dtCrowd.init().
+         * 
          */
 
         /// <summary>
         /// 
         /// </summary>
-	    public float velocityBias;
+	    public float velocityBias = 0.4f;
 
         /// <summary>
         /// 
         /// </summary>
-        public float weightDesiredVelocity;
-        public float weightCurrentVelocity;
-        public float weightSide;
-        public float weightToi;
-        public float horizontalTime;
-        public byte gridSize;
-        public byte adaptiveDivisions;
-        public byte adaptiveRings;
-        public byte adaptiveDepth;
+        public float weightDesiredVelocity = 2.0f;
+        public float weightCurrentVelocity = 0.75f;
+        public float weightSide = 0.75f;
+        public float weightToi = 2.5f;
+        public float horizontalTime = 2.5f;
+        public byte gridSize = 33;
+        public byte adaptiveDivisions = 7;
+        public byte adaptiveRings = 2;
+        public byte adaptiveDepth = 5;
 
         public CrowdAvoidanceParams() { }
 

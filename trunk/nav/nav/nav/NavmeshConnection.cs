@@ -88,37 +88,5 @@ namespace org.critterai.nav
         {
             get { return (flags & BiDirectionalFlag) != 0; }
         }
-
-        // TODO: CLEANUP: Remove if not back in use by v0.4.
-        // Removed this code since the only time the structure is created
-        // is during interop.  And initialization is not needed for interop.
-        ///// <summary>
-        ///// Initializes the structure before its first use.
-        ///// </summary>
-        ///// <remarks>
-        ///// Existing references are released and replaced.
-        ///// </remarks>
-        //public void Initialize()
-        //{
-        //    endpoints = new float[6];
-        //    radius = 0;
-        //    polyIndex = 0;
-        //    flags = 0;
-        //    side = 0;
-        //    userId = 0;
-        //}
-
-        ///// <summary>
-        ///// Rerturns an array of fully initialized nodes.
-        ///// </summary>
-        ///// <param name="length">The length of the array. (>0)</param>
-        ///// <returns>An array of fully initialized connections.</returns>
-        //public static NavmeshConnection[] GetInitializedArray(int length)
-        //{
-        //    NavmeshConnection[] result = new NavmeshConnection[length];
-        //    for (int i = 0; i < result.Length; i++)
-        //        result[i].Initialize();
-        //    return result;
-        //}
     }
 }
