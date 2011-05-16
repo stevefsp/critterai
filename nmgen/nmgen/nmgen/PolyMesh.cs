@@ -294,13 +294,13 @@ namespace org.critterai.nmgen
         /// (Size: PolyCount)(Optional)</param>
         public bool Load(PolyMeshData data)
         {
-            root.vertCount = (data.verts == null || data.vertCount < 3 ?
+            int vcount = (data.verts == null || data.vertCount < 3 ?
                 0 : data.vertCount);
-            root.polyCount = (data.polys == null || data.polyCount < 1 ?
+            int pcount = (data.polys == null || data.polyCount < 1 ?
                  0 : data.polyCount);
 
-            if (root.polyCount == 0 || root.polyCount > root.maxPolys
-                || root.vertCount == 0 || root.vertCount > mMaxVerts
+            if (pcount == 0 || pcount > root.maxPolys
+                || vcount == 0 || vcount > mMaxVerts
                 || data.xzCellSize < NMGen.MinCellSize
                 || data.yCellSize < NMGen.MinCellSize
                 || data.walkableHeight 
@@ -309,18 +309,20 @@ namespace org.critterai.nmgen
                 || data.walkableRadius < 0
                 || data.borderSize < 0
                 || data.polys.Length 
-                    < (root.polyCount * 2 * root.maxVertsPerPoly)
-                || data.verts.Length < (root.vertCount * 3)
+                    < (pcount * 2 * root.maxVertsPerPoly)
+                || data.verts.Length < (vcount * 3)
                 || data.boundsMin == null || data.boundsMin.Length < 3
                 || data.boundsMax == null || data.boundsMax.Length < 3
-                || (data.areas != null && data.areas.Length < root.polyCount)
+                || (data.areas != null && data.areas.Length < pcount)
                 || (data.regions != null 
-                    && data.regions.Length < root.polyCount)
-                || (data.flags != null && data.flags.Length < root.polyCount))
+                    && data.regions.Length < pcount)
+                || (data.flags != null && data.flags.Length < pcount))
             {
                 return false;
             }
 
+            root.polyCount = pcount;
+            root.vertCount = vcount;
             root.xzCellSize = data.xzCellSize;
             root.yCellSize = data.yCellSize;
             mWalkableHeight = data.walkableHeight;

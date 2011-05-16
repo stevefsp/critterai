@@ -48,8 +48,10 @@
     <Compile Include="nmgen\HeightFieldLayer.cs" />
     <Compile Include="nmgen\HeightFieldLayerSet.cs" />
     <Compile Include="nmgen\HeightfieldSpan.cs" />
+    <Compile Include="nmgen\IncrementalBuilder.cs" />
     <Compile Include="nmgen\NMGen.cs" />
-    <Compile Include="nmgen\NMGenBuildFlags.cs" />
+    <Compile Include="nmgen\BuildFlags.cs" />
+    <Compile Include="nmgen\NMGenBuildState.cs" />
     <Compile Include="nmgen\rcn\BuildContextEx.cs" />
     <Compile Include="nmgen\rcn\CompactHeightfieldEx.cs" />
     <Compile Include="nmgen\rcn\ContourSetEx.cs" />

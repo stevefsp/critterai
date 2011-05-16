@@ -146,208 +146,232 @@ namespace org.critterai.nmgen
             return true;
         }
 
-        public static bool BuildPolyMesh(BuildContext context
-            , bool trace
-            , NMGenParams config
-            , NMGenBuildFlags buildFlags
+        public static bool BuildPolyMesh(NMGenParams config
+            , BuildFlags buildFlags
             , TriangleMesh sourceMesh
             , out PolyMesh polyMesh
-            , out PolyMeshDetail detailMesh)
+            , out PolyMeshDetail detailMesh
+            , out string[] messages
+            , bool trace)
         {
 
-            // Design note: The return boolean on methods are only checked when 
-            // there is a possibility of content validation errors.  
-            // (Rather than just null errors and such.)
+            IncrementalBuilder builder = new IncrementalBuilder(trace
+                , config
+                , buildFlags
+                , sourceMesh);
 
-            const string pre = "BuildPolyMesh: ";
-            const string pret = pre + "Trace: ";
+            while (!builder.IsFinished)
+            {
+                builder.Build();
+            }
+
+            if (builder.State == BuildState.Complete)
+            {
+                polyMesh = builder.PolyMesh;
+                detailMesh = builder.DetailMesh;
+                messages = builder.GetMessages();
+                return true;
+            }
 
             polyMesh = null;
             detailMesh = null;
+            messages = builder.GetMessages();
 
-            if (context == null || context.IsDisposed)
-                return false;
+            return false;
 
-            if (config == null
-                || sourceMesh == null)
-            {
-                context.Log(pre + "Aborted at parameter null check.");
-                return false;
-            }
+            //// Design note: The return boolean on methods are only checked when 
+            //// there is a possibility of content validation errors.  
+            //// (Rather than just null errors and such.)
 
-            config = config.Clone();
-            config.DerivedGridSize();
+            //const string pre = "BuildPolyMesh: ";
+            //const string pret = pre + "Trace: ";
 
-            // Applying this change based on recast sample code
-            // and experience. The naming doesn't seem to be acruate.
-            config.minRegionArea 
-                = config.minRegionArea * config.minRegionArea;
-            config.mergeRegionArea 
-                = config.mergeRegionArea * config.mergeRegionArea;
+            //polyMesh = null;
+            //detailMesh = null;
 
-            byte[] areas = new byte[sourceMesh.triCount];
+            //if (context == null || context.IsDisposed)
+            //    return false;
 
-            MarkWalkableTriangles(context
-                , sourceMesh
-                , config.walkableSlope
-                , areas);
+            //if (config == null
+            //    || sourceMesh == null)
+            //{
+            //    context.Log(pre + "Aborted at parameter null check.");
+            //    return false;
+            //}
 
-            if (trace)
-                context.Log(pret + "Marked walkable triangles");
+            //config = config.Clone();
+            //config.DerivedGridSize();
 
-            Heightfield hf = new Heightfield(config.width
-                , config.depth
-                , config.boundsMin
-                , config.boundsMax
-                , config.xzCellSize
-                , config.yCellSize);
+            //// Applying this change based on recast sample code
+            //// and experience. The naming doesn't seem to be acruate.
+            //// config.minRegionArea 
+            ////     = config.minRegionArea * config.minRegionArea;
+            //// config.mergeRegionArea 
+            ////     = config.mergeRegionArea * config.mergeRegionArea;
 
-            hf.AddTriangles(context
-                , sourceMesh
-                , areas
-                , config.walkableStep);  // Merge for any spans less than step.
+            //byte[] areas = new byte[sourceMesh.triCount];
 
-            if (trace)
-                context.Log(pret + "Voxelized triangles.");
+            //MarkWalkableTriangles(context
+            //    , sourceMesh
+            //    , config.walkableSlope
+            //    , areas);
 
-            areas = null;
+            //if (trace)
+            //    context.Log(pret + "Marked walkable triangles");
 
-            if ((buildFlags & NMGenBuildFlags.LowObstaclesWalkable) != 0
-                && config.walkableStep > 0)
-            {
-                hf.MarkLowObstaclesWalkable(context, config.walkableStep);
-                if (trace)
-                    context.Log(pret + "Flagged low obstacles as walkable.");
+            //Heightfield hf = new Heightfield(config.width
+            //    , config.depth
+            //    , config.boundsMin
+            //    , config.boundsMax
+            //    , config.xzCellSize
+            //    , config.yCellSize);
 
-            }
+            //hf.AddTriangles(context
+            //    , sourceMesh
+            //    , areas
+            //    , config.walkableStep);  // Merge for any spans less than step.
 
-            if ((buildFlags & NMGenBuildFlags.LedgeSpansNotWalkable) != 0)
-            {
-                hf.MarkLedgeSpansNotWalkable(context
-                    , config.walkableHeight
-                    , config.walkableStep);
-                if (trace)
-                    context.Log(pret + "Flagged ledge spans as not walklable");
-            }
+            //if (trace)
+            //    context.Log(pret + "Voxelized triangles.");
 
-            if ((buildFlags & NMGenBuildFlags.LowHeightSpansNotWalkable) != 0)
-            {
-                hf.MarkLowHeightSpansNotWalkable(context
-                    , config.walkableHeight);
-                if (trace)
-                    context.Log(pret 
-                        + "Flagged low height spans as not walkable.");
-            }
+            //areas = null;
 
-            CompactHeightfield chf = CompactHeightfield.Build(context
-                , hf
-                , config.walkableHeight
-                , config.walkableStep);
+            //if ((buildFlags & BuildFlags.LowObstaclesWalkable) != 0
+            //    && config.walkableStep > 0)
+            //{
+            //    hf.MarkLowObstaclesWalkable(context, config.walkableStep);
+            //    if (trace)
+            //        context.Log(pret + "Flagged low obstacles as walkable.");
 
-            hf.RequestDisposal();
-            hf = null;
+            //}
 
-            if (chf == null)
-            {
-                context.Log(pre + "Aborted at compact heightfield build.");
-                return false;
-            }
+            //if ((buildFlags & BuildFlags.LedgeSpansNotWalkable) != 0)
+            //{
+            //    hf.MarkLedgeSpansNotWalkable(context
+            //        , config.walkableHeight
+            //        , config.walkableStep);
+            //    if (trace)
+            //        context.Log(pret + "Flagged ledge spans as not walklable");
+            //}
 
-            if (trace)
-                context.Log(pret + "Built compact heightfield.");
+            //if ((buildFlags & BuildFlags.LowHeightSpansNotWalkable) != 0)
+            //{
+            //    hf.MarkLowHeightSpansNotWalkable(context
+            //        , config.walkableHeight);
+            //    if (trace)
+            //        context.Log(pret 
+            //            + "Flagged low height spans as not walkable.");
+            //}
 
-            if (config.walkableRadius > 0)
-            {
-                chf.ErodeWalkableArea(context, config.walkableRadius);
-                if (trace)
-                    context.Log(pret + "Eroded walkable area by radius.");
-            }
+            //CompactHeightfield chf = CompactHeightfield.Build(context
+            //    , hf
+            //    , config.walkableHeight
+            //    , config.walkableStep);
 
-            // TODO: EVAL: The Recast sample code skips this step
-            // when building monotone regions.  But I get errors.
-            // Problem with this design?  Problem with sample?
-            chf.BuildDistanceField(context);
-            if (trace)
-                context.Log(pret + "Built distance field.");
+            //hf.RequestDisposal();
+            //hf = null;
 
-            if ((buildFlags & NMGenBuildFlags.UseMonotonePartitioning) != 0)
-            {
-                chf.BuildRegionsMonotone(context
-                    , config.borderSize
-                    , config.minRegionArea
-                    , config.mergeRegionArea);
-                if (trace)
-                    context.Log(pret + "Built monotone regions.");
-            }
-            else
-            {
+            //if (chf == null)
+            //{
+            //    context.Log(pre + "Aborted at compact heightfield build.");
+            //    return false;
+            //}
 
-                chf.BuildRegions(context
-                    , config.borderSize
-                    , config.minRegionArea
-                    , config.mergeRegionArea);
-                if (trace)
-                    context.Log(pret + "Built regions.");
-            }
+            //if (trace)
+            //    context.Log(pret + "Built compact heightfield.");
 
-            ContourBuildFlags cflags = 
-                (ContourBuildFlags)((int)buildFlags & 0x03);
+            //if (config.walkableRadius > 0)
+            //{
+            //    chf.ErodeWalkableArea(context, config.walkableRadius);
+            //    if (trace)
+            //        context.Log(pret + "Eroded walkable area by radius.");
+            //}
 
-            ContourSet cset = ContourSet.Build(context
-                , chf
-                , config.edgeMaxDeviation
-                , config.maxEdgeLength
-                , cflags);
+            //// TODO: EVAL: The Recast sample code skips this step
+            //// when building monotone regions.  But I get errors.
+            //// Problem with this design?  Problem with sample?
+            //chf.BuildDistanceField(context);
+            //if (trace)
+            //    context.Log(pret + "Built distance field.");
 
-            if (cset == null)
-            {
-                context.Log(pre + "Aborted at contour set build.");
-                return false;
-            }
+            //if ((buildFlags & BuildFlags.UseMonotonePartitioning) != 0)
+            //{
+            //    chf.BuildRegionsMonotone(context
+            //        , config.borderSize
+            //        , config.minRegionArea
+            //        , config.mergeRegionArea);
+            //    if (trace)
+            //        context.Log(pret + "Built monotone regions.");
+            //}
+            //else
+            //{
 
-            if (trace)
-                context.Log(pret + "Build contour set.");
+            //    chf.BuildRegions(context
+            //        , config.borderSize
+            //        , config.minRegionArea
+            //        , config.mergeRegionArea);
+            //    if (trace)
+            //        context.Log(pret + "Built regions.");
+            //}
 
-            polyMesh = PolyMesh.Build(context
-                , cset
-                , config.maxVertsPerPoly
-                , config.walkableHeight
-                , config.walkableRadius
-                , config.walkableStep);
+            //ContourBuildFlags cflags = 
+            //    (ContourBuildFlags)((int)buildFlags & 0x03);
 
-            cset.RequestDisposal();
-            cset = null;
+            //ContourSet cset = ContourSet.Build(context
+            //    , chf
+            //    , config.edgeMaxDeviation
+            //    , config.maxEdgeLength
+            //    , cflags);
 
-            if (polyMesh == null)
-            {
-                context.Log(pre + "Aborted at poly mesh build.");
-                return false;
-            }
+            //if (cset == null)
+            //{
+            //    context.Log(pre + "Aborted at contour set build.");
+            //    return false;
+            //}
 
-            if (trace)
-                context.Log(pret + "Built poly mesh.");
+            //if (trace)
+            //    context.Log(pret + "Build contour set.");
 
-            detailMesh = PolyMeshDetail.Build(context
-                , polyMesh
-                , chf
-                , config.detailSampleDistance
-                , config.detailMaxDeviation);
+            //polyMesh = PolyMesh.Build(context
+            //    , cset
+            //    , config.maxVertsPerPoly
+            //    , config.walkableHeight
+            //    , config.walkableRadius
+            //    , config.walkableStep);
 
-            chf.RequestDisposal();
-            chf = null;
+            //cset.RequestDisposal();
+            //cset = null;
 
-            if (detailMesh == null)
-            {
-                context.Log(pre + "Aborted at detail mesh build.");
-                polyMesh.RequestDisposal();
-                polyMesh = null;
-                return false;
-            }
+            //if (polyMesh == null)
+            //{
+            //    context.Log(pre + "Aborted at poly mesh build.");
+            //    return false;
+            //}
 
-            if (trace)
-                context.Log(pret + "Built detail mesh.");
+            //if (trace)
+            //    context.Log(pret + "Built poly mesh.");
+
+            //detailMesh = PolyMeshDetail.Build(context
+            //    , polyMesh
+            //    , chf
+            //    , config.detailSampleDistance
+            //    , config.detailMaxDeviation);
+
+            //chf.RequestDisposal();
+            //chf = null;
+
+            //if (detailMesh == null)
+            //{
+            //    context.Log(pre + "Aborted at detail mesh build.");
+            //    polyMesh.RequestDisposal();
+            //    polyMesh = null;
+            //    return false;
+            //}
+
+            //if (trace)
+            //    context.Log(pret + "Built detail mesh.");
             
-            return true;
+            //return true;
         }
 
         /// <summary>
