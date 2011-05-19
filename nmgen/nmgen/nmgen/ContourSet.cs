@@ -42,12 +42,12 @@ namespace org.critterai.nmgen
         private Contour[] mContours = null;
 
         /// <summary>
-        /// The width of the set. (Along the x-axis in voxel units.)
+        /// The width of the set. (Along the x-axis in cell units.)
         /// </summary>
         public int Width { get { return root.width; } }
 
         /// <summary>
-        /// The depth of the set. (Along the z-axis in voxel units.)
+        /// The depth of the set. (Along the z-axis in cell units.)
         /// </summary>
         public int Depth { get { return root.depth; } }
 
@@ -81,7 +81,7 @@ namespace org.critterai.nmgen
         public int Count { get { return root.contourCount; } }
 
         /// <summary>
-        /// The minimum bounds of the set in world space. (x, y, z)
+        /// The minimum bounds of the set in world space. [Form: (x, y, z)]
         /// </summary>
         /// <remarks>
         /// <p>See <see cref="Contour"/> for information on how the bounds and  
@@ -95,7 +95,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum bounds of the set in world space. (x, y, z)
+        /// The maximum bounds of the set in world space. [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the set.
         /// </returns>
@@ -122,6 +122,9 @@ namespace org.critterai.nmgen
             this.root = root;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~ContourSet()
         {
             RequestDisposal();
@@ -152,7 +155,7 @@ namespace org.critterai.nmgen
         /// Gets the contour for the specified index.
         /// </summary>
         /// <param name="index">The contour index. 
-        /// (0 &lt; value &lt <see cref="Count"/>)</param>
+        /// [Limits: 0 &lt; value &lt <see cref="Count"/>]</param>
         /// <returns></returns>
         public Contour GetContour(int index)
         {
@@ -182,16 +185,18 @@ namespace org.critterai.nmgen
         /// edgeMaxDeviation and maxEdgeLength parameters control how closely
         /// the simplified contours will match the raw contours.</p>
         /// <p>Simplified contours are generated such that the vertices for
-        /// portals between areas match up.  (E.g. They are considered
+        /// portals between areas match up.  (They are considered
         /// mandatory vertices.)</p>
+        /// <p>Setting maxEdgeLength to zero will disabled the feature.</p>
         /// </remarks>
         /// <param name="context">The context to use for the build.</param>
         /// <param name="field">The field to use for the build.
         /// (Must have region data.)</param>
         /// <param name="edgeMaxDeviation">The maximum distance a simplified
-        /// edge may deviate from the raw contour's vertices.</param>
+        /// edge may deviate from the raw contour's vertices.
+        /// [Limits: >= 0]</param>
         /// <param name="maxEdgeLength">The maximum allowed length of a 
-        /// simplified edge.</param>
+        /// simplified edge. [Limits: >= 0]</param>
         /// <param name="flags"></param>
         /// <returns></returns>
         public static ContourSet Build(BuildContext context

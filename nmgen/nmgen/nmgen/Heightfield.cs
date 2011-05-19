@@ -68,24 +68,26 @@ namespace org.critterai.nmgen
         internal IntPtr root;
 
         /// <summary>
-        /// The width of the heightfield. (Along the x-axis in voxel units.)
+        /// The width of the heightfield. (Along the x-axis in cell units.)
         /// </summary>
         public int Width { get { return mWidth; } }
 
         /// <summary>
-        /// The depth of the heighfield. (Along the z-axis in voxel units.)
+        /// The depth of the heighfield. (Along the z-axis in cell units.)
         /// </summary>
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The minimum bounds of the heightfield in world space. (x, y, z)
+        /// The minimum bounds of the heightfield in world space. 
+        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
         public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
 
         /// <summary>
-        /// The maximum bounds of the heightfield in world space. (x, y, z).
+        /// The maximum bounds of the heightfield in world space. 
+        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
         public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
@@ -128,17 +130,21 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="width">The width of the field. (>= 1) (In cells.)
+        /// <param name="width">The width of the field. 
+        /// [Limits: >= 1] [Units: Cells]
         /// </param>
-        /// <param name="depth">The depth of the field. (>= 1) (In cells.)
+        /// <param name="depth">The depth of the field.
+        /// [Limits: >= 1] [Units: Cells]
         /// </param>
-        /// <param name="boundsMin">The minimum bounds.(In world units.)
+        /// <param name="boundsMin">The minimum bounds of the field's AABB.
+        /// [Form: (x, y, z)] [Units: World]
         /// </param>
-        /// <param name="boundsMax">The maximum bounds (In world units.)
+        /// <param name="boundsMax">The maximum bounds of the field's AABB.
+        /// [Form: (x, y, z)] [Units: World]
         /// </param>
-        /// <param name="xzCellSize">The xz-plane cell size.
+        /// <param name="xzCellSize">The xz-plane cell size. [Units: World]
         /// (>= <see cref="NMGen.MinCellSize"/>)</param>
-        /// <param name="yCellSize">The y-axis span increments.
+        /// <param name="yCellSize">The y-axis span increments. [Units: World]
         /// (>= <see cref="NMGen.MinCellSize"/>)</param>
         public Heightfield(int width
             , int depth
@@ -165,6 +171,9 @@ namespace org.critterai.nmgen
             mXZCellSize = xzCellSize;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Heightfield()
         {
             RequestDisposal();
@@ -221,15 +230,15 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The spans will be ordered from lowest height to highest.</p>
-        /// <p>A properly sized buffer can be obtained via
-        /// <see cref="GetSpanBuffer"/>.</p>
+        /// <p>The <see cref="GetSpanBuffer"/> method can be used to
+        /// get a properly sized buffer.</p>
         /// </remarks>
         /// <param name="widthIndex">The width index. 
-        /// (0 &lt;= value &lt <see cref="Width"/>)</param>
+        /// [Limits: 0 &lt;= value &lt <see cref="Width"/>]</param>
         /// <param name="depthIndex">The depth index. 
-        /// (0 &lt;= value &lt <see cref="Depth"/>)</param>
+        /// [Limits: 0 &lt;= value &lt <see cref="Depth"/>]</param>
         /// <param name="buffer">The buffer to load the result into. 
-        /// (Size: Maximum spans in a column.)</param>
+        /// [Size: Maximum spans in a column]</param>
         /// <returns>The number of spans returned.</returns>
         public int GetSpans(int widthIndex
             , int depthIndex
@@ -259,7 +268,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableStep">The maximum allowed difference between
         /// span maximum's for the step to be considered waklable.
-        /// (> 0)</param>
+        /// [Limit: > 0]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool MarkLowObstaclesWalkable(BuildContext context
             , int walkableStep)
@@ -287,9 +296,10 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableHeight">The maximum floor to ceiling height
         /// that is considered still walkable. 
-        /// (> <see cref="NMGen.MinWalkableHeight"/>)</param>
+        /// [Limit: > <see cref="NMGen.MinWalkableHeight"/>]</param>
         /// <param name="walkableStep">The maximum allowed difference between
-        /// span maximum's for the step to be considered walkable. (> 0)
+        /// span maximum's for the step to be considered walkable. 
+        /// [Limit: > 0]
         /// </param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool MarkLedgeSpansNotWalkable(BuildContext context
@@ -317,7 +327,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableHeight">The maximum allowed floor to ceiling
         /// height that is considered still walkable.
-        /// (> <see cref="NMGen.MinWalkableHeight"/>)</param>
+        /// [Limit: > <see cref="NMGen.MinWalkableHeight"/>]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool MarkLowHeightSpansNotWalkable(BuildContext context
             , int walkableHeight)
@@ -334,13 +344,13 @@ namespace org.critterai.nmgen
         /// Voxelizes a triangle into the heightfield.
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
-        /// <param name="verts">The triangle vertices in the form 
-        /// (ax, ay, ax, bx, by, bz, cx, cy, cz)</param>
+        /// <param name="verts">The triangle vertices.
+        /// [Form: (ax, ay, ax, bx, by, bz, cx, cy, cz)]</param>
         /// <param name="area">The id of the area the triangle belongs to.
         /// (&lt= <see cref="NMGen.WalkableArea"/>)</param>
         /// <param name="flagMergeThreshold">The distance where the
-        /// walkable flag is favored over the non-walkable flag. (>= 0)
-        /// (Normal: 1)</param>
+        /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
+        /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangle(BuildContext context
             , float[] verts
@@ -363,11 +373,12 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="mesh"></param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt= <see cref="NMGen.WalkableArea"/>) (Size: >= mesh.triCount)
+        /// [Limit: &lt= <see cref="NMGen.WalkableArea"/>] 
+        /// [Size: >= mesh.triCount]
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
-        /// walkable flag is favored over the non-walkable flag. (>= 0)
-        /// (Normal: 1)</param>
+        /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
+        /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , TriangleMesh mesh
@@ -393,20 +404,20 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>Unlike many other methods in the library, the arrays must
         /// be sized exactly to the content.  If you need to pass buffers,
-        /// use the method that takes a <see cref="TriangleMesh"/>.</p>
+        /// use the method that takes a <see cref="TriangleMesh"/> object.</p>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
-        /// <param name="verts">The vertices in the form (x, y, z) * vertCount.
+        /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]
         /// (No buffering allowed.)</param>
-        /// <param name="tris">The triangles in the form 
-        /// (vertAIndex, vertBIndex, vertCIndex) * triCount. (No buffering
-        /// allowed.)</param>
+        /// <param name="tris">The triangles. 
+        /// [Form: vertAIndex, vertBIndex, vertCIndex) * triCount] 
+        /// (No buffering allowed.)</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
         /// (&lt= <see cref="NMGen.WalkableArea"/>) (Size: >= triCount)
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
-        /// walkable flag is favored over the non-walkable flag. (>= 0)
-        /// (Normal: 1)</param>
+        /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
+        /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , float[] verts
@@ -431,15 +442,15 @@ namespace org.critterai.nmgen
         /// Voxelizes the provided triangles into the heightfield.
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
-        /// <param name="verts">The triangles in the form
-        /// (ax, ay, az, bx, by, bz, cx, by, cx) * triCount.</param>
+        /// <param name="verts">The triangles.
+        /// [Form: (ax, ay, az, bx, by, bz, cx, by, cx) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt= <see cref="NMGen.WalkableArea"/>) (Size: >= triCount)</param>
+        /// (&lt= <see cref="NMGen.WalkableArea"/>) [Size: >= triCount]</param>
         /// <param name="triCount">The number of triangles in the vertex
         /// array.</param>
         /// <param name="flagMergeThreshold">The distance where the
-        /// walkable flag is favored over the non-walkable flag. (>= 0)
-        /// (Normal: 1)</param>
+        /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
+        /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , float[] verts

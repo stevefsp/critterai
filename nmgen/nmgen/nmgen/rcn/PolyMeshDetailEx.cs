@@ -25,16 +25,16 @@ using org.critterai.interop;
 
 namespace org.critterai.nmgen.rcn
 {
-    /*
-     * Design note:
-     * 
-     * This class will have to be converted to a structure when the
-     * merge mesh functionality is implemented.
-     * 
-     */
-
     internal static class PolyMeshDetailEx
     {
+        /*
+         * Design note:
+         * 
+         * This class will have to be converted to a structure when the
+         * merge mesh functionality is implemented.
+         * 
+         */
+
         [DllImport("cai-nmgen-rcn", EntryPoint = "rcpdFreeMeshData")]
         public static extern bool FreeEx([In, Out] PolyMeshDetail detailMesh);
 

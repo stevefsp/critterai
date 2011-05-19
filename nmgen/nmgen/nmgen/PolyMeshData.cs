@@ -34,28 +34,67 @@ namespace org.critterai.nmgen
     public sealed class PolyMeshData
     {
         /// <summary>
-        /// The mesh vertices.
+        /// Mesh vertices.
+        /// [Form: (x, y, z) * vertCount]
         /// </summary>
+        /// <remarks>
+        /// <p>Minimum bounds and cell size is used to convert vertex 
+        /// coordinates into world space.</p>
+        /// <p>worldX = boundsMin[0] + vertX * xzCellSize<br/>
+        /// worldY = boundsMin[1] + vertY * yCellSize<br/>
+        /// worldZ = boundsMin[2] + vertZ * xzCellSize<br/>
+        /// </p>
+        /// </remarks>
         public ushort[] verts;
 
         /// <summary>
-        /// The mesh polygon and neighbor data.
+        /// Polygon and neighbor data. 
+        /// [Length: >= polyCount * 2 * maxVertsPerPoly]
         /// </summary>
+        /// <remarks>
+        /// <p>Each entry is 2 * MaxVertsPerPoly in length.</p>
+        /// <p>The first half of the entry contains the indices of the polygon.
+        /// The first instance of <see cref="PolyMesh.NullIndex"/> indicates 
+        /// the end of the indices for the entry.</p>
+        /// <p>The second half contains indices to neighbor polygons.  A
+        /// value of <see cref="NullIndex"/> indicates no connection for the 
+        /// associated edge. (Solid wall.)</p>
+        /// <p><b>Example:</b></p>
+        /// <p>
+        /// MaxVertsPerPoly = 6<br/>
+        /// For the entry: (1, 3, 4, 8, NullIndex, NullIndex, 18, NullIndex
+        /// , 21, NullIndex, NullIndex, NullIndex)</p>
+        /// <p>
+        /// (1, 3, 4, 8) defines a polygon with 4 vertices.<br />
+        /// Edge 1->3 is shared with polygon 18.<br />
+        /// Edge 4->8 is shared with polygon 21.<br />
+        /// Edges 3->4 and 4->8 are border edges not shared with any other
+        /// polygon.
+        /// </p>
+        /// </remarks>
         public ushort[] polys;
 
         /// <summary>
-        /// The polygon region ids.
+        /// The region id assigned to each polygon.
+        /// [Length: >= polyCount]
         /// </summary>
         public ushort[] regions;
 
         /// <summary>
-        /// The polygon flags.
+        /// The flags assigned to each polygon.
+        /// [Length: >= polyCount]
         /// </summary>
         public ushort[] flags;
 
         /// <summary>
-        /// The polygon area ids.
+        /// The area id assigned to each polygon.
+        /// [Length: >= polyCount]
         /// </summary>
+        /// <remarks>
+        /// <p>During the standard build process, all walkable polygons
+        /// get the default value of <see cref="WalkableArea"/>.
+        /// This value can then be changed to meet user requirements.</p>
+        /// </remarks>
         public byte[] areas;
 
         /// <summary>
@@ -74,12 +113,14 @@ namespace org.critterai.nmgen
         public int maxVertsPerPoly;
 
         /// <summary>
-        /// The minimum bounds of the mesh.
+        /// The minimum bounds of the mesh's AABB.
+        /// [Form: (x, y, z)]
         /// </summary>
         public float[] boundsMin = new float[3];
 
         /// <summary>
-        /// The maximum bounds of the mesh.
+        /// The maximum bounds of the mesh's AABB.
+        /// [Form: (x, y, z)]
         /// </summary>
         public float[] boundsMax = new float[3];
 
@@ -89,32 +130,39 @@ namespace org.critterai.nmgen
         public float xzCellSize;
 
         /// <summary>
-        /// the y-axis cell height.
+        /// The y-axis cell height.
         /// </summary>
         public float yCellSize;
 
         /// <summary>
-        /// The the closest any part of the polygon mesh gets to obstructions 
-        /// in the source geometry.
+        /// The AABB border size used to build the mesh. [Units: CellSize (XZ)]
         /// </summary>
         public int borderSize;
 
         /// <summary>
-        /// The Minimum floor to 'ceiling' height used to build the polygon
-        /// mesh.
+        /// The walkable height used to build the mesh.
         /// </summary>
         public float walkableHeight;
 
+        /// <summary>
+        /// The walkable raduius used to build the mesh.
+        /// </summary>
         public float walkableRadius;
 
         /// <summary>
-        /// The maximum traversable ledge height used to build the polygon
-        /// mesh.
+        /// The maximum walkable step used to build the mesh.
         /// </summary>
         public float walkableStep;
 
-        // public PolyMeshData() { }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// can hold.</param>
+        /// <param name="maxPolys">The maximum polygons the polygon buffer
+        /// can hold.</param>
+        /// <param name="maxVertsPerPoly">The maximum allowed vertices
+        /// for a polygon.</param>
         public PolyMeshData(int maxVerts
             , int maxPolys
             , int maxVertsPerPoly)
@@ -136,11 +184,20 @@ namespace org.critterai.nmgen
             this.maxVertsPerPoly = maxVertsPerPoly;
         }
 
-        public void Reset(int maxVerts
+        /// <summary>
+        /// Clears all object data and resizes the buffers.
+        /// </summary>
+        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// can hold.</param>
+        /// <param name="maxPolys">The maximum polygons the polygon buffer
+        /// can hold.</param>
+        /// <param name="maxVertsPerPoly">The maximum allowed vertices
+        /// for a polygon.</param>
+        public void Resize(int maxVerts
             , int maxPolys
             , int maxVertsPerPoly)
         {
-            Reset();
+            Resize();
 
             if (maxVerts < 3
                 || maxPolys < 1
@@ -159,7 +216,7 @@ namespace org.critterai.nmgen
             this.maxVertsPerPoly = maxVertsPerPoly;
         }
 
-        public void Reset()
+        private void Resize()
         {
             vertCount = 0;
             polyCount = 0;
@@ -179,6 +236,18 @@ namespace org.critterai.nmgen
             regions = null;
         }
 
+        /// <summary>
+        /// Checks the size of the buffers to see if they are large enough
+        /// to hold the specified data.
+        /// </summary>
+        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// needs to hold.</param>
+        /// <param name="maxPolys">The maximum polygons the polygon buffer
+        /// needs to hold.</param>
+        /// <param name="maxVertsPerPoly">The maximum allowed vertices
+        /// for a polygon.</param>
+        /// <returns>TRUE if all buffers are large enough to fit the data.
+        /// </returns>
         public bool CanFit(int vertCount
             , int polyCount
             , int maxVertsPerPoly)
