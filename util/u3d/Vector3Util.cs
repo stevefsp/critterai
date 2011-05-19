@@ -255,6 +255,21 @@ namespace org.critterai
                 , vectors[index * 3 + 2]);
         }
 
+        public static float[] GetVector(Vector3 vector, float[] buffer)
+        {
+            // TODO: Need unit test.
+            buffer[0] = vector.x;
+            buffer[1] = vector.y;
+            buffer[2] = vector.z;
+            return buffer;
+        }
+
+        public static Vector3 GetVector(float[] vector)
+        {
+            // TODO: Need unit test.
+            return new Vector3(vector[0], vector[1], vector[2]);
+        }
+
         /// <summary>
         /// Gets the minimum and maximum bounds of the AABB which contains the 
         /// array of vectors.
@@ -318,6 +333,18 @@ namespace org.critterai
             }
 
             return bounds;
+        }
+
+        public static string ToString(float[] vector)
+        {
+            return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
+                , vector[0], vector[1], vector[2]);
+        }
+
+        public static string ToString(Vector3 vector)
+        {
+            return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
+                , vector.x, vector.y, vector.z);
         }
     }
 }
