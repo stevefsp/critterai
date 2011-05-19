@@ -27,11 +27,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("cai-util")]
-[assembly: AssemblyDescription("CritterAI Utilities")]
+[assembly: AssemblyDescription("Shared utilities for CAI products.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("critterai.org")]
-[assembly: AssemblyProduct("cai-util")]
-[assembly: AssemblyCopyright("Copyright © Stephen A. Pratt 2011")]
+[assembly: AssemblyProduct("CAI")]
+[assembly: AssemblyCopyright("Copyright © Stephen Pratt 2010-2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

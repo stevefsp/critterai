@@ -22,6 +22,8 @@
 using System;
 using System.Text;
 
+// TODO: Remove from SVN if not in use by 2012-01-01.
+
 namespace org.critterai
 {
     public static class TextUtil
