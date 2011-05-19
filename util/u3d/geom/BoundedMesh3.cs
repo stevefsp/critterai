@@ -21,6 +21,8 @@
  */
 using org.critterai.geom;
 
+// TODO: Remove from SVN if not back in use by 2012-01-01.
+
 namespace org.critterai.geom
 {
     /// <summary>
