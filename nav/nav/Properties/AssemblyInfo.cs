@@ -26,11 +26,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("cai-nav-rcn-interop")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("cai-nav")]
+[assembly: AssemblyDescription("Pathfinding and obstacle avoidance.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CritterAI")]
-[assembly: AssemblyProduct("cai-nav-rcn-interop")]
+[assembly: AssemblyCompany("critterai.org")]
+[assembly: AssemblyProduct("CAINav")]
 [assembly: AssemblyCopyright("Copyright © Stephen Pratt 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
