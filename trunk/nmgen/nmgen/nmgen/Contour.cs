@@ -108,7 +108,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Has not effect on the object. (The object owner will handle
+        /// Has no effect on the object. (The object owner will handle
         /// disposal.)
         /// </summary>
         /// <remarks>
@@ -133,7 +133,7 @@ namespace org.critterai.nmgen
         /// r-value indicates the region and connection information for
         /// the edge.</p>
         /// <p>The region id is obtained by applying <see cref="RegionMask"/>.
-        /// E.g. regionId = (vert[i * 4 + 3] && RegionMask)</p>
+        /// E.g. regionId = (vert[i * 4 + 3] & RegionMask)</p>
         /// <p>The edge is not connected if the region id is 
         /// <see cref="NMGen.NullRegion"/>.</p>
         /// <p>If the r-value has the <see cref="ContourFlags.AreaBorder"/>
@@ -141,7 +141,7 @@ namespace org.critterai.nmgen
         /// as region.</p>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= 4 * VertCount)</param>
+        /// [Size: >= 4 * VertCount]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetVerts(int[] buffer)
         {
@@ -162,7 +162,7 @@ namespace org.critterai.nmgen
         /// element layout.</p>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= 4 * VertCount)</param>
+        /// [Size: >= 4 * VertCount]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetRawVerts(int[] buffer)
         {

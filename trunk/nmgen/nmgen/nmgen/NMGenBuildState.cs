@@ -22,19 +22,70 @@
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Represents the build state for an <see cref="IncrementalBuild"/>
+    /// object.
+    /// </summary>
     public enum BuildState
     {
+        /// <summary>
+        /// The build was aborted due to an error.
+        /// </summary>
         Aborted,
+
+        /// <summary>
+        /// The build was completed.  Valid mesh data is available.
+        /// </summary>
         Complete,
+
+        /// <summary>
+        /// At the step to mark walkable triangles.
+        /// </summary>
         MarkWalkableTris,
+
+        /// <summary>
+        /// At the step to build the heightfield.
+        /// </summary>
         HeightfieldBuild,
+
+        /// <summary>
+        /// At the step to build the compact heightfield.
+        /// </summary>
         CompactFieldBuild,
+
+        /// <summary>
+        /// At the step to perform various optional span marking operations.
+        /// </summary>
         MarkSpans,
+
+        /// <summary>
+        /// At the step to erode the heightfield's walkable area.
+        /// </summary>
         ErodeWalkableArea,
+
+        /// <summary>
+        /// At the step to build the heightfield's distance field.
+        /// </summary>
         DistanceFieldBuild,
+
+        /// <summary>
+        /// At the step to build the heightfield's regions.
+        /// </summary>
         RegionBuild,
+
+        /// <summary>
+        /// At the step to build raw and detail contours.
+        /// </summary>
         ContourBuild,
+
+        /// <summary>
+        /// At the step to build the polygon mesh.
+        /// </summary>
         PolyMeshBuild,
+
+        /// <summary>
+        /// At the step to build the detail mesh.
+        /// </summary>
         DetailMeshBuild
     }
 }

@@ -45,11 +45,6 @@ namespace org.critterai.nmgen.rcn
             , ref float walkableRadius
             , ref float walkableStep);
 
-        /// <summary>
-        /// Frees the unmanaged resources for a mesh with a resource type
-        /// of <see cref="AllocType.External"/>.
-        /// </summary>
-        /// <param name="detailMesh">The mesh to free.</param>
         [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmFreeMeshData")]
         internal static extern bool FreeEx(ref PolyMeshEx polyMesh);
 
@@ -72,13 +67,6 @@ namespace org.critterai.nmgen.rcn
             , int maxVertsPerPoly
             , ref PolyMeshEx polyMesh
             , ref int maxVerts);
-
-        //[DllImport("cai-nmgen-rcn", EntryPoint = "rcmpMergePolyMeshes")]
-        //public static extern bool MergeMeshes(IntPtr context
-        //    , [In] PolyMeshEx[] meshes
-        //    , int meshCount
-        //    , ref PolyMeshEx polyMesh
-        //    , ref int maxVerts);
 
         /// <summary>
         /// ushort buffer

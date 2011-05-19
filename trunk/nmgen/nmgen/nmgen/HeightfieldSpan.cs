@@ -23,18 +23,30 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Represents a span within a <see cref="Heightfield"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct HeightfieldSpan
     {
         private uint mPacked;  // [Area, Max, Min]
 
+        /// <summary>
+        /// The miniumum height of span.
+        /// </summary>
         public ushort Min { get { return (ushort)(mPacked & 0x1fff ); } }
 
+        /// <summary>
+        /// The maximum height of the span.
+        /// </summary>
         public ushort Max 
         { 
             get { return (ushort)((mPacked >> 13) & 0x1fff); } 
         }
 
+        /// <summary>
+        /// The area id assigned to the span.
+        /// </summary>
         public byte Area { get { return (byte)(mPacked >> 26); } }
     }
 }

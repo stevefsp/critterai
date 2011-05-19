@@ -26,9 +26,12 @@ using org.critterai.interop;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// 
+    /// Represents a layer within a <see cref="HeightfieldLayerSet"/>.
     /// </summary>
     /// <remarks>
+    /// <p>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</p>
+    /// <p>Instances of this class can only be obtained from a
+    /// <see cref="HeightFieldLayerSet"/>.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
@@ -61,19 +64,68 @@ namespace org.critterai.nmgen
         private IntPtr mAreas;				// byte[depth*width]
         private IntPtr mCons;	            // byte[depth*width]
 
+        /// <summary>
+        /// The width of the layer. (Along the x-axis in cell units.)
+        /// </summary>
         public int Width { get { return mWidth; } }
+
+        /// <summary>
+        /// The depth of the layer. (Along the z-axis in cell units.)
+        /// </summary>
         public int Depth { get { return mDepth; } }
+
+        /// <summary>
+        /// The minimum bounds of the layer in world space. [Form: (x, y, z)]
+        /// </summary>
+        /// <returns>The minimum bounds of the layer.
+        /// </returns>
         public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+
+        /// <summary>
+        /// The maximum bounds of the layer in world space. [Form: (x, y, z)]
+        /// </summary>
+        /// <returns>The maximum bounds of the layer.
+        /// </returns>
         public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+
+        /// <summary>
+        /// The width/depth increment of each cell. (On the xz-plane.)
+        /// </summary>
         public float XZCellSize { get { return mXZCellSize; } }
+
+        /// <summary>
+        /// The height increment of each cell. (On the y-axis.)
+        /// </summary>
         public float YCellSize { get { return mYCellSize; } }
 
+        /// <summary>
+        /// The height maximum of the usable data.
+        /// </summary>
         public int HeightMin { get { return mHeightMin; } }
+
+        /// <summary>
+        /// The hight minimum of the usable data.
+        /// </summary>
         public int HeightMax { get { return mHeightMax; } }
 
+        /// <summary>
+        /// The x-minumum of the usuable data.
+        /// </summary>
         public int XMin { get { return mXMin; } }
+
+        /// <summary>
+        /// The x-maximum of teh usable data.
+        /// </summary>
         public int XMax { get { return mXMax; } }
+
+        /// <summary>
+        /// The z-minimum of the usable data.
+        /// </summary>
         public int ZMin { get { return mYMin; } }
+
+        /// <summary>
+        /// The z-maximum of the usable data.
+        /// </summary>
         public int ZMax { get { return mYMax; } }
 
         /// <summary>
@@ -113,7 +165,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Has not effect on the object. (The object owner will handle
+        /// Has no effect on the object. (The object owner will handle
         /// disposal.)
         /// </summary>
         /// <remarks>
@@ -125,6 +177,13 @@ namespace org.critterai.nmgen
             // Always externally managed.  So don't do anything.
         }
 
+
+        /// <summary>
+        /// Loads the height data into the specified buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to load the data into.
+        /// [Size: >= Width * Depth]</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetHeightData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -135,6 +194,12 @@ namespace org.critterai.nmgen
             return true;
         }
 
+        /// <summary>
+        /// Loads the area data into the specified buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to load the data into.
+        /// [Size: >= Width * Depth]</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetAreaData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -145,6 +210,12 @@ namespace org.critterai.nmgen
             return true;
         }
 
+        /// <summary>
+        /// Loads the connection data into the specified buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to load the data into.
+        /// [Size: >= Width * Depth]</param>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetConnectionData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)

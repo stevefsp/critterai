@@ -124,24 +124,26 @@ namespace org.critterai.nmgen
         private IntPtr mAreas = IntPtr.Zero;	// byte[spanCount]
 
         /// <summary>
-        /// The width of the heightfield. (Along the x-axis in voxel units.)
+        /// The width of the heightfield. (Along the x-axis in cell units.)
         /// </summary>
         public int Width { get { return mWidth; } }
 
         /// <summary>
-        /// The depth of the heighfield. (Along the z-axis in voxel units.)
+        /// The depth of the heighfield. (Along the z-axis in cell units.)
         /// </summary>
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The minimum bounds of the heightfield in world space. (x, y, z)
+        /// The minimum bounds of the heightfield in world space. 
+        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
         public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
 
         /// <summary>
-        /// The maximum bounds of the heightfield in world space. (x, y, z).
+        /// The maximum bounds of the heightfield in world space. 
+        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
         public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
@@ -254,7 +256,7 @@ namespace org.critterai.nmgen
         /// the provided buffer.
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= Width * Depth)</param>
+        /// [Size: >= Width * Depth]</param>
         /// <returns>TRUE if the buffer was successfully loaded.</returns>
         public bool GetCellData(CompactCell[] buffer)
         {
@@ -271,7 +273,7 @@ namespace org.critterai.nmgen
         /// data into the provided buffer.
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= SpanCount)</param>
+        /// [Size: >= SpanCount]</param>
         /// <returns>TRUE if the buffer was successfully loaded.</returns>
         public bool GetSpanData(CompactSpan[] buffer)
         {
@@ -295,7 +297,7 @@ namespace org.critterai.nmgen
         /// as for the span data.  E.g. span[i], distance[i]</p>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= SpanCount)</param>
+        /// [Size: >= SpanCount]</param>
         /// <returns>TRUE if the buffer was successfully loaded.</returns>
         public bool GetDistanceData(ushort[] buffer)
         {
@@ -322,7 +324,7 @@ namespace org.critterai.nmgen
         /// E.g. span[i], area[i]</p>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
-        /// (Size >= SpanCount)</param>
+        /// [Size: >= SpanCount]</param>
         /// <returns>TRUE if the buffer was successfully loaded.</returns>
         public bool GetAreaData(byte[] buffer)
         {
@@ -391,9 +393,11 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <param name="boundsMin">The minimum bounds of the AABB. (x, y, z)
+        /// <param name="boundsMin">The minimum bounds of the AABB. 
+        /// [Form: (x, y, z)]
         /// </param>
-        /// <param name="boundsMax">The maximum bounds of the AABB. (x, y, z)
+        /// <param name="boundsMax">The maximum bounds of the AABB. 
+        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="area">The area id to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
@@ -426,7 +430,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="verts">The vertices of the polygon 
-        /// (x, y, z) * vertCount</param>
+        /// [Fomr: (x, y, z) * vertCount]</param>
         /// <param name="yMin">The height of the base of the polygon.</param>
         /// <param name="yMax">The height of the top of the polygon.</param>
         /// <param name="area">The area id to apply.</param>
@@ -457,14 +461,15 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <param name="position">The center of the base of the cylinder.
+        /// <param name="centerBase">The center of the base of the cylinder.
+        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>
         /// <param name="area">The area id to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
-            , float[] position
+            , float[] centerBase
             , float radius
             , float height
             , byte area)
@@ -472,7 +477,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
             return CompactHeightfieldEx.MarkArea(context.root
-                , position
+                , centerBase
                 , radius
                 , height
                 , area

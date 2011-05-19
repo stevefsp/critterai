@@ -26,7 +26,7 @@ using org.critterai.nmgen.rcn;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Provides various utility methods and constants related to generating
+    /// Provides various constants and utility methods related to generating
     /// navigation mesh data.
     /// </summary>
     public static class NMGen
@@ -35,8 +35,8 @@ namespace org.critterai.nmgen
         /// The default area id used to indicate a walkable polygon.
         /// </summary>
         /// <remarks>
-        /// This value is the only recognized non-zero id for most stages of 
-        /// the mesh build process.
+        /// This is the only recognized non-zero area id recognized by some 
+        /// steps in the mesh build process.
         /// </remarks>
         public const byte WalkableArea = 63;
 
@@ -44,15 +44,22 @@ namespace org.critterai.nmgen
         /// Represents the null region.
         /// </summary>
         /// <remarks>
-        /// <p>When a data item is given this region it is not considered
+        /// <p>When a data item is given this region it is considered
         /// to have been removed from the the data set.
         /// <p>Examples: When applied to a poygon, it indicates the polygon 
         /// should be culled from the final mesh. When applied to an edge,
-        /// it means the edge is a solid boundary.
+        /// it means the edge is a solid wall.
         /// <p>
         /// </remarks>
         public const byte NullRegion = 0;
 
+        /// <summary>
+        /// Represents a null area.
+        /// </summary>
+        /// <remarks>
+        /// <p>When a data item is given this value it is considered to 
+        /// no longer be assigned to a usable area.</p>
+        /// </remarks>
         public const byte NullArea = 0;
 
         /// <summary>
@@ -76,33 +83,43 @@ namespace org.critterai.nmgen
         public const int MinWalkableHeight = 3;
 
         /// <summary>
-        /// The maximum allowed value for <see cref="MaxTraversableSlope"/>.
+        /// The maximum allowed value for parameters that define slope.
         /// </summary>
         public const float MaxAllowedSlope = 85.0f;
 
         /// <summary>
         /// Returns an array with all values set to <see cref="WalkableArea"/>.
         /// </summary>
-        /// <param name="length">The length of the array.</param>
+        /// <param name="size">The length of the returned array.</param>
         /// <returns>An array with all values set to <see cref="WalkableArea"/>.
         /// </returns>
-        public static byte[] BuildWalkableAreaBuffer(int length)
+        public static byte[] BuildWalkableAreaBuffer(int size)
         {
-            byte[] result = new byte[length];
-            for (int i = 0; i < length; i++)
+            byte[] result = new byte[size];
+            for (int i = 0; i < size; i++)
             {
                 result[i] = WalkableArea;
             }
             return result;
         }
 
+        /// <summary>
+        /// Set the area id of all triangles with a slope below the specified
+        /// value to <see cref="WalkableArea"/>.
+        /// </summary>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="mesh">The source mesh.</param>
+        /// <param name="walkableSlope">The maximum walkable slope.
+        /// </param>
+        /// <param name="areas">The area ids associated with each triangle.
+        /// [Size: >= mesh.triCount].</param>
+        /// <returns>TRUE if the operation was successful.</returns>
         public static bool MarkWalkableTriangles(BuildContext context
             , TriangleMesh mesh
             , float walkableSlope
             , byte[] areas)
         {
-            // TODO: Needs test.
-
             if (mesh == null
                 || context == null
                 || areas == null || areas.Length < mesh.triCount)
@@ -121,13 +138,23 @@ namespace org.critterai.nmgen
             return true;
         }
 
+        /// <summary>
+        /// Set the area id of all triangles with a slope above the specified
+        /// value to <see cref="NullArea"/>.
+        /// </summary>
+        /// <param name="context">The context to use duing the operation.
+        /// </param>
+        /// <param name="mesh">The source mesh.</param>
+        /// <param name="walkableSlope">The maximum walkable slope.
+        /// </param>
+        /// <param name="areas">The area ids associated with each triangle.
+        /// [Size: >= mesh.triCount].</param>
+        /// <returns>TRUE if the operation was successful.</returns>
         public static bool ClearWalkableTriangles(BuildContext context
             , TriangleMesh mesh
             , float walkableSlope
             , byte[] areas)
         {
-            // TODO: Needs test.
-
             if (mesh == null
                 || context == null
                 || areas == null || areas.Length < mesh.triCount)
@@ -146,6 +173,21 @@ namespace org.critterai.nmgen
             return true;
         }
 
+        /// <summary>
+        /// Creates <see cref="PolyMesh"/> and <see cref="PolyMeshDetail"/>
+        /// data from the specified source geometry.
+        /// </summary>
+        /// <param name="config">The configuration to use for the build.</param>
+        /// <param name="buildFlags">Flags indicating the optional build
+        /// steps to peform.</param>
+        /// <param name="sourceMesh">The source geometry.</param>
+        /// <param name="polyMesh">The resulting polygon mesh.</param>
+        /// <param name="detailMesh">The resulting detail mesh.</param>
+        /// <param name="messages">The messages generated by the build.</param>
+        /// <param name="trace">TRUE if detailed trace messages should
+        /// be generated.</param>
+        /// <returns>TRUE if the build produced valid polygon and detail 
+        /// meshes.</returns>
         public static bool BuildPolyMesh(NMGenParams config
             , BuildFlags buildFlags
             , TriangleMesh sourceMesh
@@ -178,212 +220,19 @@ namespace org.critterai.nmgen
             messages = builder.GetMessages();
 
             return false;
-
-            //// Design note: The return boolean on methods are only checked when 
-            //// there is a possibility of content validation errors.  
-            //// (Rather than just null errors and such.)
-
-            //const string pre = "BuildPolyMesh: ";
-            //const string pret = pre + "Trace: ";
-
-            //polyMesh = null;
-            //detailMesh = null;
-
-            //if (context == null || context.IsDisposed)
-            //    return false;
-
-            //if (config == null
-            //    || sourceMesh == null)
-            //{
-            //    context.Log(pre + "Aborted at parameter null check.");
-            //    return false;
-            //}
-
-            //config = config.Clone();
-            //config.DerivedGridSize();
-
-            //// Applying this change based on recast sample code
-            //// and experience. The naming doesn't seem to be acruate.
-            //// config.minRegionArea 
-            ////     = config.minRegionArea * config.minRegionArea;
-            //// config.mergeRegionArea 
-            ////     = config.mergeRegionArea * config.mergeRegionArea;
-
-            //byte[] areas = new byte[sourceMesh.triCount];
-
-            //MarkWalkableTriangles(context
-            //    , sourceMesh
-            //    , config.walkableSlope
-            //    , areas);
-
-            //if (trace)
-            //    context.Log(pret + "Marked walkable triangles");
-
-            //Heightfield hf = new Heightfield(config.width
-            //    , config.depth
-            //    , config.boundsMin
-            //    , config.boundsMax
-            //    , config.xzCellSize
-            //    , config.yCellSize);
-
-            //hf.AddTriangles(context
-            //    , sourceMesh
-            //    , areas
-            //    , config.walkableStep);  // Merge for any spans less than step.
-
-            //if (trace)
-            //    context.Log(pret + "Voxelized triangles.");
-
-            //areas = null;
-
-            //if ((buildFlags & BuildFlags.LowObstaclesWalkable) != 0
-            //    && config.walkableStep > 0)
-            //{
-            //    hf.MarkLowObstaclesWalkable(context, config.walkableStep);
-            //    if (trace)
-            //        context.Log(pret + "Flagged low obstacles as walkable.");
-
-            //}
-
-            //if ((buildFlags & BuildFlags.LedgeSpansNotWalkable) != 0)
-            //{
-            //    hf.MarkLedgeSpansNotWalkable(context
-            //        , config.walkableHeight
-            //        , config.walkableStep);
-            //    if (trace)
-            //        context.Log(pret + "Flagged ledge spans as not walklable");
-            //}
-
-            //if ((buildFlags & BuildFlags.LowHeightSpansNotWalkable) != 0)
-            //{
-            //    hf.MarkLowHeightSpansNotWalkable(context
-            //        , config.walkableHeight);
-            //    if (trace)
-            //        context.Log(pret 
-            //            + "Flagged low height spans as not walkable.");
-            //}
-
-            //CompactHeightfield chf = CompactHeightfield.Build(context
-            //    , hf
-            //    , config.walkableHeight
-            //    , config.walkableStep);
-
-            //hf.RequestDisposal();
-            //hf = null;
-
-            //if (chf == null)
-            //{
-            //    context.Log(pre + "Aborted at compact heightfield build.");
-            //    return false;
-            //}
-
-            //if (trace)
-            //    context.Log(pret + "Built compact heightfield.");
-
-            //if (config.walkableRadius > 0)
-            //{
-            //    chf.ErodeWalkableArea(context, config.walkableRadius);
-            //    if (trace)
-            //        context.Log(pret + "Eroded walkable area by radius.");
-            //}
-
-            //// TODO: EVAL: The Recast sample code skips this step
-            //// when building monotone regions.  But I get errors.
-            //// Problem with this design?  Problem with sample?
-            //chf.BuildDistanceField(context);
-            //if (trace)
-            //    context.Log(pret + "Built distance field.");
-
-            //if ((buildFlags & BuildFlags.UseMonotonePartitioning) != 0)
-            //{
-            //    chf.BuildRegionsMonotone(context
-            //        , config.borderSize
-            //        , config.minRegionArea
-            //        , config.mergeRegionArea);
-            //    if (trace)
-            //        context.Log(pret + "Built monotone regions.");
-            //}
-            //else
-            //{
-
-            //    chf.BuildRegions(context
-            //        , config.borderSize
-            //        , config.minRegionArea
-            //        , config.mergeRegionArea);
-            //    if (trace)
-            //        context.Log(pret + "Built regions.");
-            //}
-
-            //ContourBuildFlags cflags = 
-            //    (ContourBuildFlags)((int)buildFlags & 0x03);
-
-            //ContourSet cset = ContourSet.Build(context
-            //    , chf
-            //    , config.edgeMaxDeviation
-            //    , config.maxEdgeLength
-            //    , cflags);
-
-            //if (cset == null)
-            //{
-            //    context.Log(pre + "Aborted at contour set build.");
-            //    return false;
-            //}
-
-            //if (trace)
-            //    context.Log(pret + "Build contour set.");
-
-            //polyMesh = PolyMesh.Build(context
-            //    , cset
-            //    , config.maxVertsPerPoly
-            //    , config.walkableHeight
-            //    , config.walkableRadius
-            //    , config.walkableStep);
-
-            //cset.RequestDisposal();
-            //cset = null;
-
-            //if (polyMesh == null)
-            //{
-            //    context.Log(pre + "Aborted at poly mesh build.");
-            //    return false;
-            //}
-
-            //if (trace)
-            //    context.Log(pret + "Built poly mesh.");
-
-            //detailMesh = PolyMeshDetail.Build(context
-            //    , polyMesh
-            //    , chf
-            //    , config.detailSampleDistance
-            //    , config.detailMaxDeviation);
-
-            //chf.RequestDisposal();
-            //chf = null;
-
-            //if (detailMesh == null)
-            //{
-            //    context.Log(pre + "Aborted at detail mesh build.");
-            //    polyMesh.RequestDisposal();
-            //    polyMesh = null;
-            //    return false;
-            //}
-
-            //if (trace)
-            //    context.Log(pret + "Built detail mesh.");
-            
-            //return true;
         }
 
         /// <summary>
         /// Builds a standard triangle mesh from the detail mesh data.
         /// </summary>
         /// <remarks>
-        /// All duplicate vertices are merged.
+        /// <p>All duplicate vertices are merged.</p>
         /// </remarks>
-        /// <param name="vertices">The result vertices. (x, y, z) * vertexCount
+        /// <param name="vertices">The result vertices.
+        /// [Form: (x, y, z) * vertCount]
         /// </param>
         /// <param name="triangles">The result triangles.
-        /// (vertAIndex, vertBIndex, vertCIndex) * triangleCount</param>
+        /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
         /// <returns></returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
             , out float[] verts
