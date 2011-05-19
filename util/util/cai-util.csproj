@@ -32,8 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayUtil.cs" />
@@ -41,14 +39,11 @@
     <Compile Include="interop\IManagedObject.cs" />
     <Compile Include="interop\ManagedObject.cs" />
     <Compile Include="MathUtil.cs" />
-    <Compile Include="MessageStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="interop\UtilEx.cs" />
-    <Compile Include="TextUtil.cs" />
     <Compile Include="TimeUtil.cs" />
     <Compile Include="geom\TriangleMesh.cs" />
     <Compile Include="UIntPack4.cs" />
-    <Compile Include="ValidationState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

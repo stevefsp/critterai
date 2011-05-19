@@ -19,9 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+// TODO: Remove from SVN if not in use by 2012-01-01.
+
 namespace org.critterai
 {
-
     public enum ValidationState
     {
         OK = 0,
