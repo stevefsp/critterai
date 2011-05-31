@@ -23,15 +23,47 @@ using System;
 
 namespace org.critterai.geom
 {
+    /// <summary>
+    /// A basic indexed triangle mesh.
+    /// </summary>
+    /// <remarks>
+    /// <p>The class arrays may represent buffers with unused space.</p></remarks>
     public sealed class TriangleMesh
     {
+        /// <summary>
+        /// Vertices [Form: (x, y, z) * vertCount]
+        /// </summary>
         public float[] verts;
+
+        /// <summary>
+        /// Triangles [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// </summary>
         public int[] tris;
+
+        /// <summary>
+        /// The number of vertices.
+        /// </summary>
         public int vertCount;
+
+        /// <summary>
+        /// The number of triangles.
+        /// </summary>
         public int triCount;
 
+        /// <summary>
+        /// Constuctor.
+        /// </summary>
         public TriangleMesh() { }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <remarks>This constructor assigns the provided references
+        /// to the object.  (No copying.)</remarks>
+        /// <param name="verts">The vertices.</param>
+        /// <param name="vertCount">The number of vertices.</param>
+        /// <param name="tris">The triangles.</param>
+        /// <param name="triCount">The number of triangles.</param>
         public TriangleMesh(float[] verts
             , int vertCount
             , int[] tris
