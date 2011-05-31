@@ -133,7 +133,7 @@ namespace org.critterai.nmgen
         /// r-value indicates the region and connection information for
         /// the edge.</p>
         /// <p>The region id is obtained by applying <see cref="RegionMask"/>.
-        /// E.g. regionId = (vert[i * 4 + 3] & RegionMask)</p>
+        /// E.g. regionId = (vert[i * 4 + 3] &amp; RegionMask)</p>
         /// <p>The edge is not connected if the region id is 
         /// <see cref="NMGen.NullRegion"/>.</p>
         /// <p>If the r-value has the <see cref="ContourFlags.AreaBorder"/>

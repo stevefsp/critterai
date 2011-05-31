@@ -101,19 +101,11 @@ namespace org.critterai.nmgen
         /// <summary>
         /// The xz-plane size of the cells that form the mesh field.
         /// </summary>
-        /// <remarks>
-        /// <p>See the <see cref="GetVetices"/> method for details.
-        /// </p>
-        /// </remarks>
         public float XZCellSize { get { return root.xzCellSize; } }
 
         /// <summary>
         /// The y-axis size of the cells that form the mesh field.
         /// </summary>
-        /// <remarks>
-        /// <p>See the <see cref="GetVetices"/> method for details.
-        /// </p>
-        /// </remarks>
         public float YCellSize { get { return root.yCellSize; } }
 
         /// <summary>

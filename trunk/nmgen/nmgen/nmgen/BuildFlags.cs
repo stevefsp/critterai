@@ -23,6 +23,9 @@ using System;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Flags used to control optional build steps. 
+    /// </summary>
     [Flags]
     public enum BuildFlags
     {
@@ -32,16 +35,56 @@ namespace org.critterai.nmgen
          * Keep the base type of this enum an integer in order to remain 
          * compatible with Unity serialization.
          *
+         * Keep the two tessellation flags in synch with ContourBuildFlags.
+         * Leave some room for future contour flags.
          */
 
-        // Keep the first two flags in synch with ContourBuildFlags.
+        /// <summary>
+        /// Tesselate wall edges during the contour build.
+        /// </summary>
+        /// <remarks>
+        /// <p>Equivalent to the same value in 
+        /// <see cref="ContourBuildFlags"/>.</p>
+        /// </remarks>
         TessellateWallEdges = 0x001,
+
+        /// <summary>
+        /// Tessellate area edges during the contour build.
+        /// </summary>
+        /// <remarks>
+        /// <p>Equivalent to the same value in 
+        /// <see cref="ContourBuildFlags"/>.</p>
+        /// </remarks>
         TessellateAreaEdges = 0x002,
-        // Leave some room here for future contour flags.
+
+        /// <summary>
+        /// Include <see cref="Heightfield.MarkLedgeSpansNotWalkable"/>
+        /// in the build.
+        /// </summary>
         LedgeSpansNotWalkable = 0x010,
+
+        /// <summary>
+        /// Include <see cref="Heightfield.MarkLowHeightSpansNotWalkable"/>
+        /// in the build.
+        /// </summary>
         LowHeightSpansNotWalkable = 0x020,
+
+        /// <summary>
+        /// Include <see cref="Heightfield.MarkLowObstaclesWalkable"/>
+        /// in the build.
+        /// </summary>
         LowObstaclesWalkable = 0x040,
+
+        /// <summary>
+        /// Use <see cref="CompactHeightfield.BuildRegionsMonotone"/>
+        /// to build region data.
+        /// </summary>
         UseMonotonePartitioning = 0x080,
+
+        /// <summary>
+        /// The 0x01 flag should be applied to all polygons in the
+        /// <see cref="PolyMesh"/> object.
+        /// </summary>
         ApplyPolyFlags = 0x100
     }
 }

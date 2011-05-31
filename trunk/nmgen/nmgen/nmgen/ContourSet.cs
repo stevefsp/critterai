@@ -155,7 +155,7 @@ namespace org.critterai.nmgen
         /// Gets the contour for the specified index.
         /// </summary>
         /// <param name="index">The contour index. 
-        /// [Limits: 0 &lt; value &lt <see cref="Count"/>]</param>
+        /// [Limits: 0 &lt; value &lt; <see cref="Count"/>]</param>
         /// <returns></returns>
         public Contour GetContour(int index)
         {

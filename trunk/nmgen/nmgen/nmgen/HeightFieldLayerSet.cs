@@ -33,11 +33,11 @@ namespace org.critterai.nmgen
     /// <p>Undocumented: Equivalent to Recast: rcHeightfieldLayerSet.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
-    public sealed class HeightFieldLayerSet
+    public sealed class HeightfieldLayerSet
         : IManagedObject
     {
         private IntPtr root;
-        private HeightFieldLayer[] mLayers;
+        private HeightfieldLayer[] mLayers;
         private int mLayerCount;
 
         /// <summary>
@@ -55,15 +55,15 @@ namespace org.critterai.nmgen
         /// </summary>
         public int LayerCount { get { return mLayerCount; } }
 
-        private HeightFieldLayerSet(IntPtr root, int layerCount)
+        private HeightfieldLayerSet(IntPtr root, int layerCount)
         {
             this.root = root;
             mLayerCount = layerCount;
-            mLayers = new HeightFieldLayer[layerCount];
+            mLayers = new HeightfieldLayer[layerCount];
 
             for (int i = 0; i < mLayerCount; i++)
             {
-                HeightFieldLayer layer = new HeightFieldLayer();
+                HeightfieldLayer layer = new HeightfieldLayer();
                 HeightfieldLayserSetEx.GetLayer(root, i, layer);
                 mLayers[i] = layer;
             }
@@ -72,7 +72,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Destructor.
         /// </summary>
-        ~HeightFieldLayerSet()
+        ~HeightfieldLayerSet()
         {
             RequestDisposal();
         }
@@ -101,7 +101,7 @@ namespace org.critterai.nmgen
         /// <param name="index">The layer. 
         /// [Limit: 0 &lt;= value &lt; LayerCount]</param>
         /// <returns></returns>
-        public HeightFieldLayer GetLayer(int index)
+        public HeightfieldLayer GetLayer(int index)
         {
             if (IsDisposed || index < 0 || index >= mLayerCount)
                 return null;
@@ -116,7 +116,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <param name="field">The source field.</param>
         /// <returns>The resulting layer set, or null on failure.</returns>
-        public static HeightFieldLayerSet Build(BuildContext context
+        public static HeightfieldLayerSet Build(BuildContext context
             , CompactHeightfield field)
         {
             if (context == null)
@@ -133,7 +133,7 @@ namespace org.critterai.nmgen
             if (ptr == IntPtr.Zero)
                 return null;
 
-            return new HeightFieldLayerSet(ptr, layerCount);
+            return new HeightfieldLayerSet(ptr, layerCount);
         }
     }
 }

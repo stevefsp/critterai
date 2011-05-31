@@ -368,10 +368,10 @@ namespace org.critterai.nmgen
                     , mConfig.mergeRegionArea);
                 if (mTrace)
                     mContext.Log(pret + "Built regions. Region Count: "
-                        + chf.MaxRegions);
+                        + chf.MaxRegion);
             }
 
-            if (chf.MaxRegions < 2)
+            if (chf.MaxRegion < 2)
             {
                 // Null region counts as a region.  So expect
                 // at least 2.
@@ -456,7 +456,7 @@ namespace org.critterai.nmgen
                 PolyMeshData data = polyMesh.GetData(false);
                 for (int i = 0; i < data.flags.Length; i++)
                 {
-                    data.flags[i] = 1;
+                    data.flags[i] = NMGen.DefaultFlag;
                 }
 
                 polyMesh.Load(data);

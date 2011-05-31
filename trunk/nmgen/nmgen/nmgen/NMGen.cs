@@ -41,15 +41,20 @@ namespace org.critterai.nmgen
         public const byte WalkableArea = 63;
 
         /// <summary>
+        /// The default flag applied to polygons during the build process
+        /// if the <see cref="BuildFlags.ApplyPolyFlags"/> is set.
+        /// </summary>
+        public const ushort DefaultFlag = 0x01;
+
+        /// <summary>
         /// Represents the null region.
         /// </summary>
         /// <remarks>
         /// <p>When a data item is given this region it is considered
-        /// to have been removed from the the data set.
+        /// to have been removed from the the data set.</p>
         /// <p>Examples: When applied to a poygon, it indicates the polygon 
         /// should be culled from the final mesh. When applied to an edge,
-        /// it means the edge is a solid wall.
-        /// <p>
+        /// it means the edge is a solid wall.</p>
         /// </remarks>
         public const byte NullRegion = 0;
 
@@ -223,22 +228,23 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Builds a standard triangle mesh from the detail mesh data.
+        /// Builds an aggregate triangle mesh from a detail mesh.
         /// </summary>
         /// <remarks>
         /// <p>All duplicate vertices are merged.</p>
         /// </remarks>
-        /// <param name="vertices">The result vertices.
-        /// [Form: (x, y, z) * vertCount]
+        /// <param name="source">The detail mesh to extract the triangle mesh
+        /// from.</param>
+        /// <param name="verts">The result vertices. [Form: (x, y, z) * vertCount]
         /// </param>
-        /// <param name="triangles">The result triangles.
+        /// <param name="tris">The result triangles.
         /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
-        /// <returns></returns>
+        /// <returns>TRUE if the operation completed successfully.
+        /// </returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
             , out float[] verts
             , out int[] tris)
         {
-
             // TODO: EVAL: Inefficient.
 
             verts = null;

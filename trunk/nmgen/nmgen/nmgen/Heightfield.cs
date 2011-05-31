@@ -234,9 +234,9 @@ namespace org.critterai.nmgen
         /// get a properly sized buffer.</p>
         /// </remarks>
         /// <param name="widthIndex">The width index. 
-        /// [Limits: 0 &lt;= value &lt <see cref="Width"/>]</param>
+        /// [Limits: 0 &lt;= value &lt; <see cref="Width"/>]</param>
         /// <param name="depthIndex">The depth index. 
-        /// [Limits: 0 &lt;= value &lt <see cref="Depth"/>]</param>
+        /// [Limits: 0 &lt;= value &lt; <see cref="Depth"/>]</param>
         /// <param name="buffer">The buffer to load the result into. 
         /// [Size: Maximum spans in a column]</param>
         /// <returns>The number of spans returned.</returns>
@@ -347,7 +347,7 @@ namespace org.critterai.nmgen
         /// <param name="verts">The triangle vertices.
         /// [Form: (ax, ay, ax, bx, by, bz, cx, cy, cz)]</param>
         /// <param name="area">The id of the area the triangle belongs to.
-        /// (&lt= <see cref="NMGen.WalkableArea"/>)</param>
+        /// (&lt;= <see cref="NMGen.WalkableArea"/>)</param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
@@ -373,7 +373,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="mesh"></param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// [Limit: &lt= <see cref="NMGen.WalkableArea"/>] 
+        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] 
         /// [Size: >= mesh.triCount]
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
@@ -413,7 +413,7 @@ namespace org.critterai.nmgen
         /// [Form: vertAIndex, vertBIndex, vertCIndex) * triCount] 
         /// (No buffering allowed.)</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt= <see cref="NMGen.WalkableArea"/>) (Size: >= triCount)
+        /// (&lt;= <see cref="NMGen.WalkableArea"/>) (Size: >= triCount)
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
@@ -445,7 +445,7 @@ namespace org.critterai.nmgen
         /// <param name="verts">The triangles.
         /// [Form: (ax, ay, az, bx, by, bz, cx, by, cx) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt= <see cref="NMGen.WalkableArea"/>) [Size: >= triCount]</param>
+        /// (&lt;= <see cref="NMGen.WalkableArea"/>) [Size: >= triCount]</param>
         /// <param name="triCount">The number of triangles in the vertex
         /// array.</param>
         /// <param name="flagMergeThreshold">The distance where the
