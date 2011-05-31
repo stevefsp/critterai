@@ -26,8 +26,7 @@ using org.critterai.interop;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Represents an agent is being managed by a <see cref="CrowdManager"/>
-    /// object.
+    /// Represents an agent managed by a <see cref="CrowdManager"/> object.
     /// </summary>
     /// <remarks>
     /// <p>Objects of this type can only be obtained from a 
@@ -42,35 +41,74 @@ namespace org.critterai.nav
          * 
          * The difficulty in the design of the agent is that the
          * structure on the native side contains embedded classes.
-         * (Not pointers to instances.)  And interop can't seem to handle
-         * that. So I'm forced into a less efficient design.
+         * (Rather than pointers to instances.)  And interop can't seem to 
+         * handle that. So I'm forced into a less efficient design.
          * 
          */
 
-        private IntPtr root;
+        private IntPtr root;  // dtCrowdAgent
         private CrowdManager mManager;
         internal int managerIndex;
 
+        /// <summary>
+        /// The <see cref="CrowdManager"/> the agent belongs to.
+        /// </summary>
+        public CrowdManager Manager
+        {
+            get { return mManager; }
+        }
+
+        /// <summary>
+        /// The type of mesh polygon the agent is traversing.
+        /// </summary>
         public CrowdAgentState State 
         { 
             get { return mManager.agentStates[managerIndex].state; } 
         }
+
+        /// <summary>
+        /// The number of neighbor agents. (In vicinity of agent.)
+        /// </summary>
         public int NeighborCount 
         { 
             get { return mManager.agentStates[managerIndex].neighborCount; } 
         }
+
+        /// <summary>
+        /// The desired agent speed. (Derived) [Form: (x, y, z)]
+        /// </summary>
         public float DesiredSpeed 
         { 
             get { return mManager.agentStates[managerIndex].desiredSpeed; } 
         }
+
+        /// <summary>
+        /// The current position of the agent. [Form: (x, y, z)]
+        /// </summary>
         public float[] Position 
         { 
             get { return mManager.agentStates[managerIndex].position; } 
         }
+
+        /// <summary>
+        /// The reference id of the polygon where the position resides.
+        /// </summary>
+        public uint PositionPoly
+        {
+            get { return mManager.agentStates[managerIndex].positionPoly; }
+        }
+
+        /// <summary>
+        /// The desired agent velocity. (Derived) [Form: (x, y, z)]
+        /// </summary>
         public float[] DesiredVelocity 
         { 
             get { return mManager.agentStates[managerIndex].desiredVelocity; } 
         }
+
+        /// <summary>
+        /// The actual agent velocity. [Form: (x, y, z)]
+        /// </summary>
         public float[] Velocity 
         { 
             get { return mManager.agentStates[managerIndex].velocity; } 
@@ -81,12 +119,6 @@ namespace org.critterai.nav
         /// </summary>
         public bool IsDisposed { get { return (root == IntPtr.Zero); } }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="agent">A pointer to an allocated native 
-        /// dtCrowdAgent object.
-        /// </param>
         internal CrowdAgent(CrowdManager manager
             , IntPtr agent
             , int mangerIndex)
@@ -103,6 +135,10 @@ namespace org.critterai.nav
             managerIndex = -1;
         }
 
+        /// <summary>
+        /// Gets the current agent configuration.
+        /// </summary>
+        /// <returns></returns>
         public CrowdAgentParams GetConfig()
         {
             CrowdAgentParams config = new CrowdAgentParams();
@@ -114,7 +150,7 @@ namespace org.critterai.nav
         /// <summary>
         /// Updates the configuration for an agent.
         /// </summary>
-        /// <param name="agentParams">The new agent configuration.</param>
+        /// <param name="config">The new agent configuration.</param>
         public void SetConfig(CrowdAgentParams config)
         {
             if (!IsDisposed)
@@ -129,32 +165,31 @@ namespace org.critterai.nav
         /// <remarks>
         /// <p>This method is used when a new target is set.  Use 
         /// <see cref="AdjustMoveTarget"/> when only small adjustments are 
-        /// needed. (Such as happens when following a moving target.</p>
+        /// needed. (Such as happens when following a moving target.)</p>
         /// </remarks>
-        /// <param name="agentIndex">The index of the agent.</param>
-        /// <param name="polyRef">The id of the navmesh polygon where the 
-        /// position is located.</param>
-        /// <param name="position">The target position.</param>
+        /// <param name="polyRef">The refernece id of the polygon containing
+        /// the targetPoint.</param>
+        /// <param name="targetPoint">The target position.</param>
         /// <returns>TRUE if the target was successfully set.</returns>
-        public bool RequestMoveTarget(uint polyRef, float[] position)
+        public bool RequestMoveTarget(uint polyRef, float[] targetPoint)
         {
             if (IsDisposed)
                 return false;
             return CrowdManagerEx.RequestMoveTarget(mManager.root
                 , managerIndex
                 , polyRef
-                , position);
+                , targetPoint);
         }
 
         /// <summary>
         /// Adjusts the position of an agent's move target.
         /// </summary>
-        /// <remarks><p>This method expects small increments and is suitable
+        /// <remarks
+        /// ><p>This method expects small increments and is suitable
         /// to call every frame.  (Such as is required when the target is
-        /// moving.)</p></remarks>
-        /// <param name="agentIndex">The index of the agent.</param>
-        /// <param name="polyRef">The id of the navmesh polygon where the 
-        /// position is located.</param>
+        /// moving frequently.)</p></remarks>
+        /// <param name="polyRef">The refernece id of the polygon containing
+        /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
         /// <returns>TRUE if the adjustment was successfully applied.</returns>
         public bool AdjustMoveTarget(uint polyRef, float[] position)
@@ -167,18 +202,47 @@ namespace org.critterai.nav
                 , position);
         }
 
+        /// <summary>
+        /// Gets the corridor data related to the agent.
+        /// </summary>
+        /// <remarks>
+        /// <p>Only available after after a <see cref="CrowdManager"/>
+        /// update.</p>
+        /// </remarks>
+        /// <param name="buffer">
+        /// The buffer to hold the corridor data. (Out)</param>
         public void GetCorridor(PathCorridorData buffer)
         {
             if (!IsDisposed)
                 CrowdAgentEx.GetPathCorridor(root, buffer);
         }
 
+        /// <summary>
+        /// Gets the boundary data related to the agent.
+        /// </summary>
+        /// <remarks>
+        /// <p>Only available after after a <see cref="CrowdManager"/>
+        /// update.</p>
+        /// </remarks>
+        /// <param name="buffer">The buffer to hold the boundary
+        /// data. (Out)</param>
         public void GetBoundary(LocalBoundaryData buffer)
         {
             if (!IsDisposed)
                 CrowdAgentEx.GetLocalBoundary(root, buffer);
         }
 
+        /// <summary>
+        /// Gets data related to the current agent neighbors.
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// <p>Only available after after a <see cref="CrowdManager"/>
+        /// update.</p>
+        /// </remarks>
+        /// <param name="buffer">The buffer to load. 
+        /// [Size: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]</param>
+        /// <returns>The number of neighbors in the buffer.</returns>
         public int GetNeighbors(CrowdNeighbor[] buffer)
         {
             if (IsDisposed
@@ -195,6 +259,11 @@ namespace org.critterai.nav
             return count;
         }
 
+        /// <summary>
+        /// Gets the agent associated with the specified neighbor.
+        /// </summary>
+        /// <param name="neighbor">The agent neighbor data.</param>
+        /// <returns>The agent associated with the neighbor data.</returns>
         public CrowdAgent GetNeighbor(CrowdNeighbor neighbor)
         {
             if (IsDisposed || neighbor.index >= mManager.MaxAgents)
@@ -202,6 +271,14 @@ namespace org.critterai.nav
             return mManager.mAgents[neighbor.index];
         }
 
+        /// <summary>
+        /// Gets the cordner data for the agent.
+        /// </summary>
+        /// <remarks>
+        /// <p>Only available after after a <see cref="CrowdManager"/>
+        /// update.</p>
+        /// </remarks>
+        /// <param name="buffer">The buffer to load with corner data.</param>
         public void GetCornerData(CrowdCornerData buffer)
         {
             if (!IsDisposed)

@@ -29,14 +29,40 @@ namespace org.critterai.nav
 
     // TODO: DOC
 
+    /// <summary>
+    /// Navigation mesh links. (Undocumented.)
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshLink
     {
-	    public uint polyRef;							// Neighbour reference.
-        public uint next;						// Index to next link.
-        public byte edge;						// Index to polygon edge which owns this link. 
-        public byte side;						// If boundary link, defines on which side the link is.
-        public byte bmin;
-        public byte bmax;				// If boundary link, defines the sub edge area.
+        /// <summary>
+        /// The polygon reference of the neighbor.
+        /// </summary>
+        public uint polyRef;
+
+        /// <summary>
+        /// The index of the next link.
+        /// </summary>
+        public uint next;
+
+        /// <summary>
+        /// The index of the polygon edge that owns this link.
+        /// </summary>
+        public byte edge;
+        
+        /// <summary>
+        /// If a boundary link, defines which side the link is.
+        /// </summary>
+        public byte side;
+
+        /// <summary>
+        /// If a boundary link, defines the sub-edge minimum.
+        /// </summary>
+        public byte boundsMin;
+
+        /// <summary>
+        /// If a boundary link, defines the sub-edge maximum.
+        /// </summary>
+        public byte boundsMax;
     }
 }

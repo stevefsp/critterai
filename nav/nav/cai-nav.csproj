@@ -81,6 +81,10 @@
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\rcn\cai-nav-rcn.vcproj">
+      <Project>{319D361B-147F-45AC-854E-50C06FCA3393}</Project>
+      <Name>cai-nav-rcn</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

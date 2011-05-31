@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Crowd agent configuration parameters.
+    /// Configuration parameters for <see cref="CrowdAgent"/> objects.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CrowdAgentParams
@@ -51,39 +51,40 @@ namespace org.critterai.nav
          */
 
         /// <summary>
-        /// Agent radius. (>= 0)
+        /// Agent radius. [Limit: >= 0]
         /// </summary>
 	    public float radius;
 
         /// <summary>
-        /// Agent height. (> 0)
+        /// Agent height. [Limit: > 0]
         /// </summary>
         public float height;
 
         /// <summary>
-        /// Maximum allowed acceleration. (>= 0)
+        /// Maximum allowed acceleration. [Limit: >= 0]
         /// </summary>
         public float maxAcceleration;
 
         /// <summary>
-        /// Maximum allowed speed. (>= 0)
+        /// Maximum allowed speed. [Limit: >= 0]
         /// </summary>
         public float maxSpeed;
 
         /// <summary>
         /// Defines how close a neighbor must be before it is considered
-        /// in steering behaviors. (> 0)
+        /// in steering behaviors. [Limit: > 0]
         /// </summary>
         /// <remarks>
-        /// The value is often based on the agent radius and/or
-        /// and maximum speed.  E.g. radius * 8</remarks>
+        /// <p>The value is often based on the agent radius and/or
+        /// and maximum speed.  E.g. radius * 8</p></remarks>
         public float collisionQueryRange;
 
         /// <summary>
-        /// TODO: DOC
+        /// The path optimization range.
         /// </summary>
         /// <remarks>
-        /// This value is often based on the agent radius. E.g. radius * 30
+        /// <p>This value is often based on the agent radius. E.g. radius * 30
+        /// </p>
         /// </remarks>
         public float pathOptimizationRange;
 
@@ -92,9 +93,9 @@ namespace org.critterai.nav
         /// collisions with this agent.
         /// </summary>
         /// <remarks>
-        /// A higher value will result in agents trying to stay farther away 
-        /// from eachother, at the cost of more difficult steering in tight
-        /// spaces.</remarks>
+        /// <p>A higher value will result in agents trying to stay farther away 
+        /// from eachother at the cost of more difficult steering in tight
+        /// spaces.</p></remarks>
         public float separationWeight;
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace org.critterai.nav
         /// <remarks>
         /// <p>The <see cref="CrowdManager"/> permits agents to use different
         /// avoidance configurations.  (See 
-        /// <see cref="CrowManager.SetObstacleAvoidanceParams"/>.)  This value
+        /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This value
         /// is the index of the configuration to use.</p>
         /// </remarks>
         /// <seealso cref="CrowdAvoidanceParams"/>
@@ -118,49 +119,10 @@ namespace org.critterai.nav
         // On the native side this is a void pointer for custom user data.
 	    private IntPtr userData;
 
-        ///// <summary>
-        ///// Constructor
-        ///// </summary>
-        ///// <param name="radius">Agent radius (>=0)</param>
-        ///// <param name="height">Agent height (>0)</param>
-        ///// <param name="maxAcceleration">Maximum allowed acceleration. (>=0)
-        ///// </param>
-        ///// <param name="maxSpeed">Maximum allowed speed (>=0)</param>
-        ///// <param name="collisionQueryRange">Defines how close a neighbor must 
-        ///// be before it is considered in steering behaviors. (>0)</param>
-        ///// <param name="pathOptimizationRange">TODO: Need documentation</param>
-        ///// <param name="separationWeight">How aggresive the agent manager 
-        ///// should be at avoiding collisions with this agent.</param>
-        ///// <param name="updateFlags">Flags that impact steering behavior.
-        ///// </param>
-        ///// <param name="obstacleAvoidanceType">The index of the avoidance 
-        ///// parameters to use for the agent.</param>
-        //public CrowdAgentParams(float radius
-        //    , float height
-        //    , float maxAcceleration
-        //    , float maxSpeed
-        //    , float collisionQueryRange
-        //    , float pathOptimizationRange
-        //    , float separationWeight
-        //    , CrowdUpdateFlags updateFlags
-        //    , byte avoidanceType)
-        //{
-        //    this.radius = radius;
-        //    this.height = height;
-        //    this.maxAcceleration = maxAcceleration;
-        //    this.maxSpeed = maxSpeed;
-        //    this.collisionQueryRange = collisionQueryRange;
-        //    this.pathOptimizationRange = pathOptimizationRange;
-        //    this.separationWeight = separationWeight;
-        //    this.updateFlags = updateFlags;
-        //    this.avoidanceType = avoidanceType;
-        //    this.userData = IntPtr.Zero;
-        //}
-
         /// <summary>
         /// Copy constructor.
         /// </summary>
-        /// <param name="config">The configuratioin to copy.</param>
+        /// <param name="config">The configuration to copy.</param>
         public CrowdAgentParams(CrowdAgentParams config)
         {
             this.radius = config.radius;

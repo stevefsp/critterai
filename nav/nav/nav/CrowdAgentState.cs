@@ -23,7 +23,7 @@
 namespace org.critterai.nav
 {
     /// <summary>
-    /// The type of navmesh polygon an agent is associated with.
+    /// The type of navmesh polygon an agent is currently traversing.
     /// </summary>
     public enum CrowdAgentState : byte
     {

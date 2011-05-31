@@ -24,15 +24,35 @@ using System;
 namespace org.critterai.nav
 {
 
-    // TODO: DOC
-
+    /// <summary>
+    /// <see cref="CrowdAgent"/> configurtation flags.
+    /// </summary>
     [Flags]
     public enum CrowdUpdateFlags : byte
     {
+        /// <summary>
+        /// Undocumented
+        /// </summary>
         AnticipateTurns = 1,
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         ObstacleAvoidance = 2,
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         CrowdSeparation = 4,
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         OptimizeVis = 8,
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         OptimizeTopo = 16
     }
 }

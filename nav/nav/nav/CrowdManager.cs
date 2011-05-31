@@ -27,17 +27,16 @@ using System.Collections.Generic;
 
 namespace org.critterai.nav
 {
-
-    // TODO: Need to find a more elegant and efficient way to handle
-    // agent core state.
-
     /// <summary>
     /// Provides local steering behaviors for a group of agents.
     /// </summary>
     /// <remarks>
-    /// <p>Behavior is undefined if methods are called after the object
-    /// has been disposed.</p>
-    /// TODO: DOC: Add use case details and warnings about local pathfinding.
+    /// <p>It is important to remember that this class is meant to provide 
+    /// 'local' movement.  It is not meant to provide automatic pathfinding 
+    /// services over long distances. Agents should be given targets that are 
+    /// no more than two or three straight path corners away.  Much further
+    /// and the agent will move toward the target but may fail to find it.</p>
+    /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     public sealed class CrowdManager
         : ManagedObject
@@ -55,7 +54,7 @@ namespace org.critterai.nav
         public const int MaxAvoidanceParams = 8;
 
         /// <summary>
-        /// A pointer to an instance of a dtCrowd class.
+        /// An instance of a dtCrowd object.
         /// </summary>
         internal IntPtr root;
         
@@ -67,20 +66,30 @@ namespace org.critterai.nav
         private Navmesh mNavmesh;
         
         internal CrowdAgent[] mAgents;
-
-        // Needs to be a separate array since it is uses as an argument
-        // in an interop call.
+        // Needs to be a separate array since it is used as an argument
+        // for an interop call.
         internal CrowdAgentCoreState[] agentStates;
 
+        /// <summary>
+        /// The maximum number agents that can be managed by the object.
+        /// </summary>
         public int MaxAgents { get { return mAgents.Length; } }
+
+        /// <summary>
+        /// The maximum allowed agent radius supported by the object.
+        /// </summary>
         public float MaxAgentRadius { get { return mMaxAgentRadius; } }
+
+        /// <summary>
+        /// The navigation mesh used by the object.
+        /// </summary>
         public Navmesh Navmesh { get { return mNavmesh; } }
 
         /// <summary>
         /// The query filter used by the manager.
         /// </summary>
         /// <remarks>
-        /// Updating the state of the filter will alter the steering 
+        /// Updating the state of this filter will alter the steering 
         /// behaviors of the agents.
         /// </remarks>
         public NavmeshQueryFilter QueryFilter { get { return mFilter; } }
@@ -102,11 +111,24 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Indicates whether the object's resources have been disposed.
+        /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
         public override bool IsDisposed
         {
             get { return (root == IntPtr.Zero || mNavmesh.IsDisposed); }
+        }
+
+        /// <summary>
+        /// The agent buffer entry.
+        /// </summary>
+        /// <param name="index">The buffer index. 
+        /// [Limit: 0 &lt;= value &lt; <see cref="MaxAgents"/>]
+        /// </param>
+        /// <returns>The agent buffer entry. (Null if no agent at the index.)
+        /// </returns>
+        public CrowdAgent this[int index]
+        {
+            get { return (IsDisposed ? null : mAgents[index]); }
         }
 
         /// <summary>
@@ -118,8 +140,6 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="navmesh">The navigation mesh to use for steering
         /// related queries.</param>
-        /// <returns>A ready to use crowd manager, or null if one could
-        /// not be created.</returns>
         public CrowdManager(int maxAgents
             , float maxAgentRadius
             , Navmesh navmesh)
@@ -154,6 +174,9 @@ namespace org.critterai.nav
             mQuery = new NavmeshQuery(ptr, true, AllocType.ExternallyManaged);
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~CrowdManager()
         {
             RequestDisposal();
@@ -196,21 +219,21 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// Multiple avoidance configurations can be set for the manager with
-        /// each agent assigned a configuration as appropriate.
+        /// agents assigned to different avoidance behaviors via the
+        /// <see cref="CrowdAgentParams"/> object.
         /// </remarks>
-        /// <param name="index">An index between zero and 
-        /// <see cref="MaxAvoidanceParams"/>.</param>
-        /// <param name="obstacleParams">The avoidance configuration.</param>
+        /// <param name="index">The index. 
+        /// [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
+        /// </param>
+        /// <param name="config">The avoidance configuration.</param>
         /// <returns>TRUE if the configuration is successfully set.</returns>
         public bool SetAvoidanceConfig(int index
-            , CrowdAvoidanceParams obstacleParams)
+            , CrowdAvoidanceParams config)
         {
             if (IsDisposed || index < 0 || index >= MaxAvoidanceParams)
                 return false;
 
-            CrowdManagerEx.SetAvoidanceParams(root
-                , index
-                , obstacleParams);
+            CrowdManagerEx.SetAvoidanceParams(root, index, config);
 
             return true;
         }
@@ -222,8 +245,9 @@ namespace org.critterai.nav
         /// Getting a configuration for an index that has not been set will
         /// return a configuration in an undefined state.
         /// </remarks>
-        /// <param name="index">An index between zero and 
-        /// <see cref="MaxAvoidanceParams"/>.</param>
+        /// <param name="index">The index 
+        /// [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
+        /// </param>
         /// <returns>An avoidance configuration.</returns>
         public CrowdAvoidanceParams GetAvoidanceConfig(int index)
         {
@@ -239,27 +263,43 @@ namespace org.critterai.nav
             return null;
         }
 
-        // May contain nulls.
-        public int GetAgentBuffer(CrowdAgent[] buffer)
-        {
-            if (IsDisposed || buffer.Length < mAgents.Length)
-                return -1;
+        // TODO: v0.4: Remove.
+        ///// <summary>
+        ///// Gets the agent buffer containing all agents currently being
+        ///// managed by the manager.
+        ///// </summary>
+        ///// <remarks>
+        ///// <p>The agents may be dispersed throughout the buffer with
+        ///// null entries in between. Also, there is no quarentee that the order
+        ///// of the agents will match the order they were added to the manager.
+        ///// </p>
+        ///// </remarks>
+        ///// <param name="buffer">A buffer to load with the agent data.
+        ///// [Size: >= MaxAgents]</param>
+        ///// <returns>The number of agents in the buffer.</returns>
+        //public int GetAgentBuffer(CrowdAgent[] buffer)
+        //{
+        //    if (IsDisposed || buffer.Length < mAgents.Length)
+        //        return -1;
 
-            int result = 0;
-            for (int i = 0; i < mAgents.Length; i++)
-            {
-                buffer[i] = mAgents[i];
-                result += (mAgents[i] == null) ? 0 : 1;
-            }
-            return result;
-        }
+        //    int result = 0;
+        //    for (int i = 0; i < mAgents.Length; i++)
+        //    {
+        //        buffer[i] = mAgents[i];
+        //        result += (mAgents[i] == null) ? 0 : 1;
+        //    }
+        //    return result;
+        //}
 
         /// <summary>
         /// Adds an agent to the manager.
         /// </summary>
-        /// <param name="position">The position of the agent.</param>
+        /// <param name="position">The current position of the agent within the
+        /// navigation mesh.
+        /// </param>
         /// <param name="agentParams">The agent configuration.</param>
-        /// <returns>The index of the agent.</returns>
+        /// <returns>A reference to the agent object created by the manager,
+        /// or null on error.</returns>
         public CrowdAgent AddAgent(float[] position
             , CrowdAgentParams agentParams)
         {
@@ -288,10 +328,10 @@ namespace org.critterai.nav
         /// Removes an agent from the manager.
         /// </summary>
         /// <remarks>
-        /// All associated references to the agent are immediately disposed.
+        /// The <see cref="CrowdAgent"/> object will be immediately disposed.
         /// Continued use will result in undefined behavior.
         /// </remarks>
-        /// <param name="index">The index of the agent to remove.</param>
+        /// <param name="agent">The agent to remove.</param>
         public void RemoveAgent(CrowdAgent agent)
         {
             for (int i = 0; i < mAgents.Length; i++)
@@ -307,7 +347,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Updates the steering for all agents.
+        /// Updates the steering and positions for all agents.
         /// </summary>
         /// <param name="deltaTime">The time in seconds to update the
         /// simulation.</param>
@@ -328,7 +368,7 @@ namespace org.critterai.nav
         /// distances of the navigation mesh surface.  For example, if
         /// the yAxis extent is 0.5, then the agent should remain between
         /// 0.5 above and 0.5 below the surface of the mesh.</p>
-        /// <p>The extents remain constant over the life of the object.</p>
+        /// <p>The extents remains constant over the life of the object.</p>
         /// </remarks>
         /// <returns>The extents.</returns>
         public float[] GetQueryExtents()
@@ -340,7 +380,7 @@ namespace org.critterai.nav
             return result;
         }
         /// <summary>
-        /// Undocumented.
+        /// Gets the velocity sample count.
         /// </summary>
         /// <returns>The velocity sample count.</returns>
         public int GetVelocitySampleCount()
@@ -351,7 +391,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Undocumented.
+        /// Gets the proximity grid.
         /// </summary>
         public CrowdProximityGrid ProximityGrid { get { return mGrid; } }
 
@@ -359,7 +399,7 @@ namespace org.critterai.nav
         /// The navmesh query used by the manager.
         /// </summary>
         /// <remarks>
-        /// <p>The configuration of this query makes it only useful for
+        /// <p>The configuration of this query makes it useful only for
         /// local pathfinding queries. (Its search size is limited.) Also,
         /// it is marked as <see cref="NavmeshQuery.IsRestricted">
         /// restricted.</see></p>

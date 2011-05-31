@@ -55,9 +55,13 @@ struct rcnCrowdCornerData
 struct rcnCrowdAgentCoreData
 {
 	unsigned char state;
+    dtPolyRef polyRef;
+
+    // It is important that everything below this point be kepth in synch
+    // with dtCrowdAgent.
 
 	int nneis;
-	
+
 	float desiredSpeed;
 
 	float npos[3];
@@ -211,8 +215,11 @@ extern "C"
             return;
 
         resultData->state = agent->state;
+        resultData->polyRef = agent->corridor.getFirstPoly();
 
-        int size = sizeof(rcnCrowdAgentCoreData) - sizeof(unsigned char);
+        int size = sizeof(rcnCrowdAgentCoreData)
+            - sizeof(unsigned char) - sizeof(dtPolyRef);
+
         memcpy(&resultData->nneis, &agent->nneis, size);
     }
 

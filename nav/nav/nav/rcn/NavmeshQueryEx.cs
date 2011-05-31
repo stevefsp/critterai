@@ -24,20 +24,8 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
-    /// <summary>
-    /// Provides interop method signatures related to the dtNavMeshQuery class.
-    /// </summary>
-    /// <remarks>
-    /// <p>Unless otherwise noted, all methods in the class require a fully
-    /// initialized and ready to use dtNavMeshQuery object.</p>
-    /// <p>Many of the methods in this class require valid polygon ids.
-    /// See <see cref="NavmeshEx"/> for information on polygon ids.</p>
-    /// </remarks>
     internal static class NavmeshQueryEx
     {
-
-        // Source header: DetourNavmeshQueryEx.h
-
         [DllImport("cai-nav-rcn", EntryPoint = "rcnBuildDTNavQuery")]
         public static extern NavStatus BuildNavmeshQuery(IntPtr navmesh
             , int maxNodes

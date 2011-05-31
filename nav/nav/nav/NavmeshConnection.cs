@@ -26,7 +26,6 @@ namespace org.critterai.nav
     /// <summary>
     /// A navigation mesh off-mesh connection.
     /// </summary>
-    /// <remarks>This structure is provided for debug purposes.</remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshConnection
     {
@@ -36,40 +35,41 @@ namespace org.critterai.nav
         public const uint BiDirectionalFlag = 0x01;
 
         /// <summary>
-        /// The endpoints of the connection in the form 
-        /// (ax, ay, az, bx, by, bz).
+        /// The endpoints of the connection.
+        /// [Form: (ax, ay, az, bx, by, bz)].
         /// </summary>
-        /// <remarks>For a properly built navigation mesh, vertexA
+        /// <remarks>For a properly built navigation mesh, vertex A
         /// will always be within the bounds of the mesh.
-        /// vertexB may or may not be within the bounds of the mesh.
+        /// Vertex B is not required to be within the bounds of the mesh.
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
 	    public float[] endpoints;
 
         /// <summary>
-        /// The radius of the endpoints. (>=0)
+        /// The radius of the endpoints. [Limit: >=0]
         /// </summary>
         public float radius;
 
         /// <summary>
-        /// The polygon id of the connection.
+        /// The polygon reference id of the connection.
         /// </summary>
-        /// <remarks>All connections are stored as 2-vertex polygons within
-        /// the navigation mesh.</remarks>
-        public ushort polyIndex;
+        /// <remarks>
+        /// <p>All connections are stored as 2-vertex polygons within
+        /// the navigation mesh.</p></remarks>
+        public ushort polyRef;
         
         /// <summary>
         /// Link flags.
         /// </summary>
         /// <remarks>
-        /// These are not the off-mesh connection user flags.  Those
-        /// are assigned to the connection's polygon.  These are link flags 
-        /// used for internal purposes.
+        /// <p>These are not the user flags.  Those are assigned to the 
+        /// connection's polygon.  These are link flags used for internal 
+        /// purposes.</p>
         /// </remarks>
         public byte flags;
 
         /// <summary>
-        /// TODO: DOC
+        /// Side.
         /// </summary>
         public byte side;
 
@@ -81,8 +81,8 @@ namespace org.critterai.nav
 
         /// <summary>
         /// TRUE if the traversal of the connection can start from either 
-        /// endpoint.  FALSE if the connection can only be travered only from
-        /// vertexA to vertexB.
+        /// endpoint.  FALSE if the connection can only be travered from
+        /// vertex A to vertex B.
         /// </summary>
         public bool IsBiDirectional
         {
