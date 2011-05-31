@@ -23,15 +23,26 @@ using UnityEngine;
 
 namespace org.critterai
 {
+    /// <summary>
+    /// Provides various utility methods related to Unity Color structures.
+    /// </summary>
     public static class ColorUtil
     {
-        // Returns 1 if the bit at position b in value a is 1
-        // Otherwise returns 0.
+        /// <summary>
+        /// Returns 1 if the bit at position b in value a is 1
+        /// Otherwise returns 0.
+        /// </summary>
         private static int bit(int a, int b)
         {
             return (a & (1 << b)) >> b;
         }
 
+        /// <summary>
+        /// Creates a Unity color from a hex format color. (E.g. 0xFFCCAA)
+        /// </summary>
+        /// <param name="hex">The hex value of the color.</param>
+        /// <param name="alpha">The color's alpha.</param>
+        /// <returns>The Unity color associated with the hex color.</returns>
         public static Color HexToColor(int hex, float alpha)
         {
             float factor = 1f / 255;
@@ -42,6 +53,17 @@ namespace org.critterai
             return c;
         }
 
+        /// <summary>
+        /// Creates a Unity color from an integer value.
+        /// </summary>
+        /// <remarks>
+        /// <p>This method is useful for generating a variety of colors that
+        /// are visually disimilar.
+        /// </p>
+        /// </remarks>
+        /// <param name="i">An integer value to create the color from.</param>
+        /// <param name="alpha">The color's alpha.</param>
+        /// <returns>A Unity color based on the integer value.</returns>
         public static Color IntToColor(int i, float alpha)
         {
             // r, g, and b are constrained to between 1 and 4 inclusive.
