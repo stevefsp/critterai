@@ -84,6 +84,9 @@ namespace org.critterai.nmgen
             }
         }
 
+        /// <summary>
+        /// Destructor.
+        /// </summary>
         ~BuildContext()
         {
             RequestDisposal();

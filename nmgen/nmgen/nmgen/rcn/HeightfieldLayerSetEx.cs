@@ -39,6 +39,6 @@ namespace org.critterai.nmgen.rcn
         [DllImport("cai-nmgen-rcn", EntryPoint = "nmlsGetLayer")]
         public static extern bool GetLayer(IntPtr lset
             , int index
-            , [In, Out] HeightFieldLayer layer);
+            , [In, Out] HeightfieldLayer layer);
     }
 }

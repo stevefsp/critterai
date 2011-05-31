@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Respresents a span within a <see cref="CompactHeighfield"/> object.
+    /// Respresents a span within a <see cref="CompactHeightfield"/> object.
     /// </summary>
     /// <remarks>
     /// <p>The span represents open, unobstructed space within a heightfield

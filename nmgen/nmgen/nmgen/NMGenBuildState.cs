@@ -23,7 +23,7 @@
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Represents the build state for an <see cref="IncrementalBuild"/>
+    /// Represents the build state for an <see cref="IncrementalBuilder"/>
     /// object.
     /// </summary>
     public enum BuildState

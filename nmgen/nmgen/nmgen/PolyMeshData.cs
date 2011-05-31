@@ -57,7 +57,7 @@ namespace org.critterai.nmgen
         /// The first instance of <see cref="PolyMesh.NullIndex"/> indicates 
         /// the end of the indices for the entry.</p>
         /// <p>The second half contains indices to neighbor polygons.  A
-        /// value of <see cref="NullIndex"/> indicates no connection for the 
+        /// value of <see cref="PolyMesh.NullIndex"/> indicates no connection for the 
         /// associated edge. (Solid wall.)</p>
         /// <p><b>Example:</b></p>
         /// <p>
@@ -92,7 +92,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>During the standard build process, all walkable polygons
-        /// get the default value of <see cref="WalkableArea"/>.
+        /// get the default value of <see cref="NMGen.WalkableArea"/>.
         /// This value can then be changed to meet user requirements.</p>
         /// </remarks>
         public byte[] areas;
@@ -240,9 +240,9 @@ namespace org.critterai.nmgen
         /// Checks the size of the buffers to see if they are large enough
         /// to hold the specified data.
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// <param name="vertCount">The maximum vertices the vertex buffer
         /// needs to hold.</param>
-        /// <param name="maxPolys">The maximum polygons the polygon buffer
+        /// <param name="polyCount">The maximum polygons the polygon buffer
         /// needs to hold.</param>
         /// <param name="maxVertsPerPoly">The maximum allowed vertices
         /// for a polygon.</param>

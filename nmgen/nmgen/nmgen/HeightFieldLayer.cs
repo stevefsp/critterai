@@ -31,11 +31,11 @@ namespace org.critterai.nmgen
     /// <remarks>
     /// <p>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</p>
     /// <p>Instances of this class can only be obtained from a
-    /// <see cref="HeightFieldLayerSet"/>.</p>
+    /// <see cref="HeightfieldLayerSet"/>.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public sealed class HeightFieldLayer
+    public sealed class HeightfieldLayer
         : IManagedObject
     {
 
@@ -141,7 +141,7 @@ namespace org.critterai.nmgen
             get { return AllocType.ExternallyManaged; }
         }
 
-        internal HeightFieldLayer() { }
+        internal HeightfieldLayer() { }
 
         internal void Reset()
         {

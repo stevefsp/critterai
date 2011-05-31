@@ -31,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>..\bin\Release\cai-nmgen.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,8 +46,8 @@
     <Compile Include="nmgen\ContourSet.cs" />
     <Compile Include="nmgen\CompactSpan.cs" />
     <Compile Include="nmgen\Heightfield.cs" />
-    <Compile Include="nmgen\HeightFieldLayer.cs" />
-    <Compile Include="nmgen\HeightFieldLayerSet.cs" />
+    <Compile Include="nmgen\HeightfieldLayer.cs" />
+    <Compile Include="nmgen\HeightfieldLayerSet.cs" />
     <Compile Include="nmgen\HeightfieldSpan.cs" />
     <Compile Include="nmgen\IncrementalBuilder.cs" />
     <Compile Include="nmgen\NMGen.cs" />
@@ -71,6 +72,10 @@
     <ProjectReference Include="..\..\util\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\rcn\cai-nmgen-rcn.vcproj">
+      <Project>{B783B817-8746-4D54-A6CC-664C0A73186F}</Project>
+      <Name>cai-nmgen-rcn</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

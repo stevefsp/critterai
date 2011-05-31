@@ -156,7 +156,7 @@ namespace org.critterai.nmgen
         public float detailMaxDeviation = 1;
 
         /// <summary>
-        /// The width of the heightfield set along the x-axis.
+        /// The width of the heightfield along the x-axis.
         /// [Limit: >0] [Units: CellSize (XZ)]
         /// </summary>
         /// <remarks><p>Often a derived value.</p></remarks>
@@ -412,7 +412,8 @@ namespace org.critterai.nmgen
         /// <summary>
         /// The maximum number of vertices allowed for polygons
         /// generated during the contour to polygon conversion process.
-        /// [Limits: 3 &lt;= value &lt; <see cref="MaxAllowedVertsPerPoly"/>]
+        /// [Limits: 3 &lt;= value &lt; 
+        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
         /// </summary>
         public int MaxVertsPerPoly
         {

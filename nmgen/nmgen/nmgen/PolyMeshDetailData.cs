@@ -119,7 +119,7 @@ namespace org.critterai.nmgen
         ///
         /// <p>Testing can be performed as follows:</p>
         /// <code>
-        /// if (((flag >> 2) & 0x3) == 0)
+        /// if (((flag >> 2) &amp; 0x3) == 0)
         /// {
         ///     // Edge BC is an external edge.
         /// }
@@ -201,11 +201,11 @@ namespace org.critterai.nmgen
         /// Checks the size of the buffers to see if they are large enough
         /// to hold the specified data.
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the object needs to
+        /// <param name="vertCount">The maximum vertices the object needs to
         /// hold.</param>
-        /// <param name="maxTris">The maximum triangles the object needs to
+        /// <param name="triCount">The maximum triangles the object needs to
         /// hold.</param>
-        /// <param name="maxMeshes">The maximum sub-meshes the object
+        /// <param name="meshCount">The maximum sub-meshes the object
         /// needs to hold.</param>
         /// <returns>TRUE if all buffers are large enough to fit the data.
         /// </returns>

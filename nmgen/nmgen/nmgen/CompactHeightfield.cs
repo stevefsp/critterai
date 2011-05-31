@@ -208,7 +208,7 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>The value is only useful if the regions have been built.</p>
         /// </remarks>
-        public ushort MaxRegions { get { return mMaxRegions; } }
+        public ushort MaxRegion { get { return mMaxRegions; } }
 
         /// <summary>
         /// The type of unmanaged resources within the object.
@@ -222,6 +222,9 @@ namespace org.critterai.nmgen
 
         private CompactHeightfield() { }
 
+        /// <summary>
+        /// Destructor.
+        /// </summary>
         ~CompactHeightfield()
         {
             RequestDisposal();
@@ -491,7 +494,7 @@ namespace org.critterai.nmgen
         /// <p>This method must be called before attempting to build
         /// region data.</p>
         /// <p>The distance data is avaiable via <see cref="MaxDistance"/>
-        /// and <see cref="GetDistance"/>.</p>
+        /// and <see cref="GetDistanceData"/>.</p>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
