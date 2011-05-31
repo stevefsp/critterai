@@ -24,13 +24,17 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav
 {
+    /// <summary>
+    /// Crowd agent corner data.
+    /// </summary>
+    /// <remarks><p>Minimal available documentation.</p></remarks>
     [StructLayout(LayoutKind.Sequential)]
     public class CrowdCornerData
     {
         /*
          * Design note:
          * 
-         * Implemented as a class to permit use as a re-usable buffer.
+         * Implemented as a class to permit use as a buffer.
          * 
          */
 
@@ -41,22 +45,26 @@ namespace org.critterai.nav
         public const int MaxCorners = 4;
 
         /// <summary>
-        /// The corner vertices of the agent's local path.  (Not documented.)
+        /// The corner vertices of the agent's local path.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * MaxCorners)]
         public float[] verts = new float[3 * MaxCorners];
 
         /// <summary>
-        /// The corner flags of the agent's local path.  (Not documented.)
+        /// The corner flags of the agent's local path.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
         public WaypointFlag[] flags = new WaypointFlag[MaxCorners];
 
-        /// The polygon ids of the agent's local path. (Not documented.)
+        /// <summary>
+        /// The polygon references of the agent's local path.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
         public uint[] polyRefs = new uint[MaxCorners];
 
+        /// <summary>
+        /// Nubmer of corners.
+        /// </summary>
         public int cornerCount = 0;
     }
 }

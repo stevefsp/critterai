@@ -23,7 +23,6 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav
 {
-
     /// <summary>
     /// Polygon data for a polygon in a navigation mesh tile.
     /// </summary>
@@ -39,11 +38,13 @@ namespace org.critterai.nav
         /// </summary>
         public uint firstLink;
 
+        // Yes, the size has been confirmed as correct. The size is not
+        // effected by the maxVertsPerPoly used to construct the navmesh.
         /// <summary>
         /// Indices to the polygon's vertices.
         /// </summary>
         /// <remarks>
-        /// <p>Length: <see cref="Navmesh.MaxVertsPerPolygon"/>.</p>
+        /// <p>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</p>
         /// <p>The indices refer vertices in the polygon's 
         /// <see cref="NavmeshTileData">tile</see>.</p>
         /// </remarks>
@@ -56,16 +57,16 @@ namespace org.critterai.nav
         /// edge.
         /// </summary>
         /// <remarks>
-        /// <p>Length: <see cref="Navmesh.MaxVertsPerPolygon"/>.</p>
+        /// <p>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</p>
         /// <p>Each entry represents data for the edge starting at the
         /// vertex of the same index.  E.g. The entry at index n represents
         /// the edge data for vertex[n] to vertex[n+1].</p>
         /// <p>A value of zero indicates the edge has no polygon connection.
         /// (It makes up the border of the navigation mesh.)</p>
         /// <p>The polygon id can be found as follows:
-        /// (int)neighborPolyRefs[n] & 0xff</p>
+        /// (int)neighborPolyRefs[n] &amp; 0xff</p>
         /// <p>The edge is an external (portal) edge if the following test
-        /// is TRUE: (neighborPolyRefs[n] & Navmesh.ExternalLink) == 0</p>
+        /// is TRUE: (neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</p>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray
             , SizeConst = Navmesh.MaxAllowedVertsPerPoly)]
@@ -81,8 +82,8 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <p>The value will be between 3 and 
-        /// <see cref="Navmesh.MaxVertsPerPolygon"/> inclusive for standard
-        /// polygons, and 2 for off-mesh connections.</p>
+        /// <see cref="Navmesh.MaxAllowedVertsPerPoly"/> inclusive for 
+        /// standard polygons, and 2 for off-mesh connections.</p>
         /// </remarks>
 	    public byte vertCount;
 

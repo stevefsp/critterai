@@ -31,59 +31,76 @@ namespace org.critterai.nav
     /// A navigation mesh based on convex polygons.
     /// </summary>
     /// <remarks>
-    /// <p>The navigation mesh supports polygons that vary in number of 
-    /// sides and overlap.
+    /// <p>This class is usually used in conjunction with the
+    /// <see cref="NavmeshQuery"/> class.</p>
+    /// <p>Tile and Polygon Reference Ids: Reference ids are essentially 
+    /// 'handles' to data in a certain structural state. If a tile's structure
+    /// changes, all associated refrences become invalid.  Serialization
+    /// does not impact references. Nor do changes to area and flag state.</p>
+    /// <p>Technically, all navigation meshes are tiled.  A 'solo' mesh
+    /// is simply a navigation mesh configured to have only a single tile.</p>
+    /// <p>Most object references returned by this class cannot
+    /// be compared for equality.  I.e. mesh.GetTile(0) != mesh.GetTile(0).
+    /// The object state may be equal.  But the references are not.
     /// </p>
-    /// <p>While various methods refer to tiling, the tile functionality is
-    /// not currently exposed.  So there is only one tile for the entire
-    /// mesh.</p>
-    /// <p>There are no asynchronous methods for this class.  So all methods
-    /// will return a <see cref="NavStatus"/> including success or failure.</p>
-    /// <p>Instances of this class are not serializable.  
-    /// If you need serialization, then save the the source data used to create 
-    /// the mesh.</p>
-    /// <p>Behavior is undefined if an object is used after 
-    /// disposal.</p>
+    /// <p>This class does not implement any asynchronous methods.  So the
+    /// result status of all methods will contain a success or failure flag.
+    /// </p>
+    /// <p>This class is not compatible with Unity serialization. Manual
+    /// serialization can be implemented using the 
+    /// <see cref="GetSerializedMesh"/> mesh method.</p>
+    /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     [Serializable]
     public sealed class Navmesh
         : ManagedObject, ISerializable
     {
-        private const long ClassVersion = 1L;
+        // Local version is not needed.  Detour includes its own mesh 
+        // versioning.
+        // private const long ClassVersion = 1L;
 
-        private const string VersionKey = "v";
         private const string DataKey = "d";
 
         /// <summary>
         /// A flag that indicates a link is external.  (Context dependant.)
         /// </summary>
-        public const ushort ExternalLink = NavmeshEx.ExternalLink;
+        public const ushort ExternalLink = 0x8000;
 
         /// <summary>
         /// Indicates that a link is null. (Does not link to anything.)
         /// </summary>
-        public const uint NullLink = NavmeshEx.NullLink;
+        public const uint NullLink = 0xffffffff;
 
         /// <summary>
-        /// The maximum vertices per polygon.
+        /// The maximum supported vertices per polygon.
         /// </summary>
-        public const int MaxAllowedVertsPerPoly = NavmeshEx.MaxVertsPerPolygon;
+        public const int MaxAllowedVertsPerPoly = 6;
 
         /// <summary>
         /// The maximum supported number of areas.
         /// </summary>
-        public const int MaxAreas = NavmeshEx.MaxAreas;
+        public const int MaxAreas = 64;
 
         /// <summary>
-        /// A pointer to the unmanaged dtNavMesh object.
+        /// The reference id for a null polygon. (Does not exist.)
+        /// </summary>
+        public const uint NullPoly = 0;
+
+        /// <summary>
+        /// The reference id for a null tile. (Does not exist.)
+        /// </summary>
+        public const uint NullTile = 0;
+
+        /// <summary>
+        /// Represents an polygon index that does not point to anything.
+        /// </summary>
+        public const ushort NullIndex = 0xffff;
+
+        /// <summary>
+        /// dtNavMesh object.
         /// </summary>
         internal IntPtr root;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="mesh">A pointer to an unmanaged dtNavMesh object.
-        /// </param>
         private Navmesh(IntPtr mesh)
             : base(AllocType.External)
         {
@@ -95,13 +112,16 @@ namespace org.critterai.nav
         {
             root = IntPtr.Zero;
 
-            if (info.MemberCount != 2 || info.GetInt64("v") != ClassVersion)
+            if (info.MemberCount != 1)
                 return;
             
             byte[] data = (byte[])info.GetValue(DataKey, typeof(byte[]));
             NavmeshEx.BuildMesh(data, data.Length, ref root);
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Navmesh()
         {
             RequestDisposal();
@@ -116,7 +136,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Request all unmanaged resources controlled by the object be 
+        /// Request all resources controlled by the object be 
         /// immediately freed and the object marked as disposed.
         /// </summary>
         public override void RequestDisposal()
@@ -134,20 +154,30 @@ namespace org.critterai.nav
         /// </summary>
         /// <returns>The configuration parameters used to initialize the
         /// navigation mesh.</returns>
-        public NavmeshParams GetParams()
+        public NavmeshParams GetConfig()
         {
             NavmeshParams result = new NavmeshParams();
             NavmeshEx.GetParams(root, result);
             return result;
         }
 
+        /// <summary>
+        /// Adds a tile to the navigation mesh.
+        /// </summary>
+        /// <param name="tileData">The tile data.</param>
+        /// <param name="desiredTileRef">The desired reference for the tile.
+        /// </param>
+        /// <param name="resultTileRef">The actual reference assigned to the
+        /// tile.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus AddTile(NavmeshTileData tileData
             , uint desiredTileRef
             , out uint resultTileRef)
         {
             if (tileData == null
                 || tileData.IsOwned
-                || tileData.Length == 0)
+                || tileData.Size == 0)
             {
                 resultTileRef = 0;
                 return NavStatus.Failure | NavStatus.InvalidParam;
@@ -161,50 +191,89 @@ namespace org.critterai.nav
                 , ref resultTileRef);
         }
 
+        /// <summary>
+        /// Removes the specified tile from the mesh.
+        /// </summary>
+        /// <param name="tileRef">The tile reference.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus RemoveTile(uint tileRef)
         {
             return NavmeshEx.RemoveTile(root, tileRef);
         }
 
-        public void CalculateTileLocation(float[] position
-            , out int tx
-            , out int ty)
+        /// <summary>
+        /// Derives the location based on the provided position in world space.
+        /// </summary>
+        /// <param name="position">Position [Form: (x, y, z)]</param>
+        /// <param name="x">The tile's grid x-location.</param>
+        /// <param name="z">The tiles's grid z-location.</param>
+        public void DeriveTileLocation(float[] position
+            , out int x
+            , out int z)
         {
-            tx = 0;
-            ty = 0;
-            NavmeshEx.CalculateTileLocation(root, position, ref tx, ref ty);
+            x = 0;
+            z = 0;
+            NavmeshEx.DeriveTileLocation(root, position, ref x, ref z);
         }
 
-        public NavmeshTile GetTile(int x, int y, int layer)
+        /// <summary>
+        /// Gets the tile at the specified grid location.
+        /// </summary>
+        /// <param name="x">The tile's grid x-location.</param>
+        /// <param name="z">The tiles's grid z-location.</param>
+        /// <param name="layer">The tiles layer.</param>
+        /// <returns></returns>
+        public NavmeshTile GetTile(int x, int z, int layer)
         {
-            IntPtr tile = NavmeshEx.GetTile(root, x, y, layer);
+            IntPtr tile = NavmeshEx.GetTile(root, x, z, layer);
             if (tile == IntPtr.Zero)
                 return null;
             return new NavmeshTile(this, tile);
         }
 
-        public int GetTiles(int x, int y, NavmeshTile[] resultTiles)
+        /// <summary>
+        /// Gets all tiles at the specified grid location.  (All layers.)
+        /// </summary>
+        /// <param name="x">The tile's grid x-location.</param>
+        /// <param name="z">The tiles's grid z-location.</param>
+        /// <param name="buffer">The result tiles.</param>
+        /// <returns>The number of tiles returned in the buffer.</returns>
+        public int GetTiles(int x, int z, NavmeshTile[] buffer)
         {
-            IntPtr[] tiles = new IntPtr[resultTiles.Length];
+            IntPtr[] tiles = new IntPtr[buffer.Length];
 
-            int tileCount = NavmeshEx.GetTiles(root, x, y, tiles, tiles.Length);
+            int tileCount = NavmeshEx.GetTiles(root, x, z, tiles, tiles.Length);
 
             for (int i = 0; i < tileCount; i++)
             {
-                resultTiles[i] = new NavmeshTile(this, tiles[i]);
+                buffer[i] = new NavmeshTile(this, tiles[i]);
             }
 
             return tileCount;
         }
 
-        public uint GetTileRef(int x, int y, int layer)
+        /// <summary>
+        /// Gets the reference id for the tile at the specified grid location.
+        /// </summary>
+        /// <param name="x">The tile's grid x-location.</param>
+        /// <param name="z">The tiles's grid z-location.</param>
+        /// <param name="layer">The tiles layer.</param>
+        /// <returns>The reference id, or zero if there is no tile at the
+        /// location.</returns>
+        public uint GetTileRef(int x, int z, int layer)
         {
-            return NavmeshEx.GetTileRef(root, x, y, layer);
+            return NavmeshEx.GetTileRef(root, x, z, layer);
         }
 
-        public NavmeshTile GetTileByRef(uint id)
+        /// <summary>
+        /// Gets a tile using its reference id.
+        /// </summary>
+        /// <param name="tileRef">The reference id of the tile.</param>
+        /// <returns>The tile, or null if none was found.</returns>
+        public NavmeshTile GetTileByRef(uint tileRef)
         {
-            IntPtr tile = NavmeshEx.GetTileByRef(root, id);
+            IntPtr tile = NavmeshEx.GetTileByRef(root, tileRef);
             if (tile == IntPtr.Zero)
                 return null;
             return new NavmeshTile(this, tile);
@@ -220,6 +289,14 @@ namespace org.critterai.nav
             return NavmeshEx.GetMaxTiles(root);
         }
 
+        /// <summary>
+        /// Gets a tile from the tile buffer.
+        /// </summary>
+        /// <param name="tileIndex">The index of the tile.
+        /// [Limits: 0 &lt;= index &lt; <see cref="GetMaxTiles"/>]
+        /// </param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavmeshTile GetTile(int tileIndex)
         {
             IntPtr tile = NavmeshEx.GetTile(root, tileIndex);
@@ -228,7 +305,14 @@ namespace org.critterai.nav
             return new NavmeshTile(this, tile);
         }
 
-
+        /// <summary>
+        /// Gets a polygon and its tile.
+        /// </summary>
+        /// <param name="polyRef">The reference id of the polygon.</param>
+        /// <param name="tile">The tile the polygon belongs to.</param>
+        /// <param name="poly">The polygon.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus GetTileAndPoly(uint polyRef
             , out NavmeshTile tile
             , out NavmeshPoly poly)
@@ -258,11 +342,11 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Indicates whether or not the specified polygon id is valid for
-        /// the navigation mesh.
+        /// Indicates whether or not the specified polygon reference is valid 
+        /// for the navigation mesh.
         /// </summary>
-        /// <param name="polyRef">The polygon id to check.</param>
-        /// <returns>TRUE if the provided polygon id is valid.</returns>
+        /// <param name="polyRef">The reference id to check.</param>
+        /// <returns>TRUE if the provided reference id valid.</returns>
         public bool IsValidPolyRef(uint polyRef)
         {
             return NavmeshEx.IsValidPolyRef(root, polyRef);
@@ -270,7 +354,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// Gets the endpoints for an off-mesh connection, ordered by
-        /// "direction of travel".
+        /// 'direction of travel'.
         /// </summary>
         /// <remarks>
         /// <p>Off-mesh connections are stored in the navigation mesh as
@@ -281,25 +365,32 @@ namespace org.critterai.nav
         /// </remarks>
         /// <param name="startPolyRef">The polygon id in which the
         /// start endpoint lies.</param>
-        /// <param name="connectionPolyRef">The off-mesh connection's polyon 
+        /// <param name="connectionPolyRef">The off-mesh connection's reference 
         /// id.</param>
-        /// <param name="startPosition">The start position in the form
-        /// (x, y, z).</param>
-        /// <param name="endPosition">The end position in the form
-        /// (x, y, z).</param>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="startPoint">The start point buffer. (Out)
+        /// [Form: (x, y, z)]</param>
+        /// <param name="endPoint">The end point buffer. (Out)
+        /// [Form: (x, y, z)]</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus GetConnectionEndpoints(uint startPolyRef
             , uint connectionPolyRef
-            , float[] startPosition
-            , float[] endPosition)
+            , float[] startPoint
+            , float[] endPoint)
         {
             return NavmeshEx.GetConnEndpoints(root
                 , startPolyRef
                 , connectionPolyRef
-                , startPosition
-                , endPosition);
+                , startPoint
+                , endPoint);
         }
 
+        /// <summary>
+        /// Gets an off-mesh connection.
+        /// </summary>
+        /// <param name="polyRef">The reference id of the off-mesh
+        /// connection.</param>
+        /// <returns>The off-mesh connection.</returns>
         public NavmeshConnection GetConnectionByRef(uint polyRef)
         {
             IntPtr conn = NavmeshEx.GetConnectionByRef(root, polyRef);
@@ -317,9 +408,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns the flags for the specified polygon.
         /// </summary>
-        /// <param name="polyRef">The polygon id.</param>
-        /// <param name="flags">The polygon's flags.</param>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="polyRef">The reference id of the polygon.</param>
+        /// <param name="flags">The polygon flags.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus GetPolyFlags(uint polyRef, out ushort flags)
         {
             flags = 0;
@@ -329,9 +421,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Sets the flags for the specified polygon.
         /// </summary>
-        /// <param name="polyRef">The polyon id.</param>
-        /// <param name="flags">The polygon's flags.</param>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="polyRef">The reference id of the polygon.</param>
+        /// <param name="flags">The polygon flags.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus SetPolyFlags(uint polyRef, ushort flags)
         {
             return NavmeshEx.SetPolyFlags(root, polyRef, flags);
@@ -340,9 +433,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns the area id of the specified polygon.
         /// </summary>
-        /// <param name="polyRef">The polyon id.</param>
-        /// <param name="area">The polygon's area id.</param>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="polyRef">The reference id of the polygon.</param>
+        /// <param name="area">The area id of the polygon.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus GetPolyArea(uint polyRef, out byte area)
         {
             area = 0;
@@ -352,233 +446,20 @@ namespace org.critterai.nav
         /// <summary>
         /// Sets the area id of the specified polygon.
         /// </summary>
-        /// <param name="polyRef">The polyon id.</param>
-        /// <param name="area">The polygon's area id.</param>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="polyRef">The reference id of the polygon.</param>
+        /// <param name="area">The area id of the polygon.
+        /// [Limit: &lt; <see cref="Navmesh.MaxAreas"/>]</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public NavStatus SetPolyArea(uint polyRef, byte area)
         {
             return NavmeshEx.SetPolyArea(root, polyRef, area);
         }
 
-        ///// <summary>
-        ///// Returns information for the specified tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="info">The tile information.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileInfo(int tileIndex
-        //    , out NavmeshTileDebugData info)
-        //{
-        //    info = new NavmeshTileDebugData();
-        //    info.Initialize();
-        //    return NavmeshEx.GetTileDebugData(root, tileIndex, ref info);
-        //}
-
-        ///// <summary>
-        ///// Returns the polygon information for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultPolys">An array of initialized polygon
-        ///// structures which will hold the result. 
-        ///// (Minimum size: tile.polygonCount)</param>
-        ///// <param name="polyCount">The number of polygons in the result
-        ///// array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTilePolys(int tileIndex
-        //    , NavmeshPoly[] resultPolys
-        //    , out int resultCount)
-        //{
-        //    resultCount = 0;
-        //    NavStatus status = NavmeshEx.GetTilePolys(root
-        //        , tileIndex
-        //        , resultPolys
-        //        , ref resultCount
-        //        , resultPolys.Length);
-
-        //    if (NavUtil.Failed(status))
-        //        resultCount = 0;
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns the polygon vertices for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultVerts">The polygon vertices in the form
-        ///// (x, y, z). (Minimum size: tile.vertexCount * 3)
-        ///// E.g.: 3 * <see cref="MaxVertsPerPolygon"/>)</param>
-        ///// <param name="vertCount">The number of vertices in the result
-        ///// array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileVerts(int tileIndex
-        //    , float[] resultVerts
-        //    , out int vertCount)
-        //{
-        //    vertCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileVerts(root
-        //        , tileIndex
-        //        , resultVerts
-        //        , ref vertCount
-        //        , resultVerts.Length);
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns the detail polygon vertices for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultVerts">The detail polygon vertices in the form
-        ///// (x, y, z). (Minimum size: tile.detailVertCount * 3)</param>
-        ///// <param name="vertCount">The number of vertices return in the
-        ///// result.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileDetailVerts(int tileIndex
-        //    , float[] resultVerts
-        //    , out int vertCount)
-        //{
-        //    vertCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileDetailVerts(root
-        //        , tileIndex
-        //        , resultVerts
-        //        , ref vertCount
-        //        , resultVerts.Length);
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns the indices and flags of the detail triangles for a tile.
-        ///// </summary>
-        ///// <remarks>See the <see cref="PolyMeshDetail"/> class description
-        ///// for information on triangle flags.</remarks>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultTris">The indices for the detail triangles
-        ///// in the form (vertAIndex, vertBIndex, vertCIndex, flags).
-        ///// (Minimum size: tile.detailTriCount * 4)</param>
-        ///// <param name="trisCount">The number of triangles returned
-        ///// in the result array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileDetailTris(int tileIndex
-        //    , byte[] resultTriangles
-        //    , out int triangleCount)
-        //{
-        //    triangleCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileDetailTris(root
-        //        , tileIndex
-        //        , resultTriangles
-        //        , ref triangleCount
-        //        , resultTriangles.Length);
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns link data for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultLinks">An array of link structures which will
-        ///// hold the result. (Minimum size: tile.maxLinkCount)</param>
-        ///// <param name="linkCount">The number of links returned in the result
-        ///// array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileLinks(int tileIndex
-        //    , NavmeshLink[] resultLinks
-        //    , out int linkCount)
-        //{
-        //    linkCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileLinks(root
-        //        , tileIndex
-        //        , resultLinks
-        //        , ref linkCount
-        //        , resultLinks.Length);
-
-        //    if (NavUtil.Failed(status))
-        //        resultLinks = null;
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns bounding volume node information for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultNodes">An array of initialized bounding volumne
-        ///// structures which will hold the result.
-        ///// (Minimum size: tile.bvNodeCount)</param>
-        ///// <param name="nodeCount">The number of nodes returned in the
-        ///// result array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileBVTree(int tileIndex
-        //    , NavmeshBVNode[] resultNodes
-        //    , out int nodeCount)
-        //{
-        //    nodeCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileBVTree(root
-        //        , tileIndex
-        //        , resultNodes
-        //        , ref nodeCount
-        //        , resultNodes.Length);
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns off-mesh connection information for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile information.</param>
-        ///// <param name="resultConns">An initialized array of connection
-        ///// structures which will be loaded with the result.
-        ///// (Minimum size: tile.offMeshConCount)</param>
-        ///// <param name="connCount">The number of connections returned in the 
-        ///// result array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileOffMeshCons(int tileIndex
-        //    , NavmeshConnection[] resultConns
-        //    , out int connCount)
-        //{
-        //    connCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileOffMeshCons(root
-        //        , tileIndex
-        //        , resultConns
-        //        , ref connCount
-        //        , resultConns.Length);
-
-        //    return status;
-        //}
-
-        ///// <summary>
-        ///// Returns the detail mesh information for a tile.
-        ///// </summary>
-        ///// <param name="tileIndex">The tile index.</param>
-        ///// <param name="resultMeshes">An array of detail mesh structures
-        ///// which will hold the result. (Minimum size: tile.detailMeshCount)
-        ///// </param>
-        ///// <param name="meshCount">The number of meshes returned in the
-        ///// result array.</param>
-        ///// <returns>The status flags for the request.</returns>
-        //public NavStatus GetTileDetailMeshes(int tileIndex
-        //    , NavmeshPolyDetail[] resultMeshes
-        //    , out int meshCount)
-        //{
-        //    meshCount = 0;
-
-        //    NavStatus status = NavmeshEx.GetTileDetailMeshes(root
-        //        , tileIndex
-        //        , resultMeshes
-        //        , ref meshCount
-        //        , resultMeshes.Length);
-
-        //    return status;
-        //}
-
+        /// <summary>
+        /// Gets a serialized version of the mesh.
+        /// </summary>
+        /// <returns>The serialized mesh.</returns>
         public byte[] GetSerializedMesh()
         {
             if (IsDisposed)
@@ -599,21 +480,29 @@ namespace org.critterai.nav
             return resultData;
         }
 
+        /// <summary>
+        /// Gets serialization data for the object.
+        /// </summary>
+        /// <param name="info">Serialization information.</param>
+        /// <param name="context">Serialization context.</param>
         public void GetObjectData(SerializationInfo info
             , StreamingContext context)
         {
             if (IsDisposed)
                 return;
 
-            info.AddValue(VersionKey, ClassVersion);
+            // info.AddValue(VersionKey, ClassVersion);
             info.AddValue(DataKey, GetSerializedMesh());
         }
 
         /// <summary>
-        /// Builds a static, single tile navigation mesh from the provided
+        /// Builds a single tile navigation mesh from the provided
         /// data.
         /// </summary>
-        /// <returns>The status flags for the request.</returns>
+        /// <param name="buildData">The tile build data.</param>
+        /// <param name="resultMesh">The result mesh.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public static NavStatus Build(NavmeshTileBuildData buildData
             , out Navmesh resultMesh)
         {
@@ -630,6 +519,14 @@ namespace org.critterai.nav
             return status;
         }
 
+        /// <summary>
+        /// Builds a navigation mesh from data created by the 
+        /// <see cref="GetSerializedMesh"/> method.
+        /// </summary>
+        /// <param name="serializedMesh">The serialized mesh.</param>
+        /// <param name="resultMesh">The result mesh.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public static NavStatus Build(byte[] serializedMesh
             , out Navmesh resultMesh)
         {
@@ -653,6 +550,16 @@ namespace org.critterai.nav
             return status;
         }
 
+        /// <summary>
+        /// Builds an initialized navigation mesh ready for tiles to be added.
+        /// </summary>
+        /// <remarks>
+        /// This is the build method to use when creating new multi-tile meshes.
+        /// </remarks>
+        /// <param name="config">The mesh configuration.</param>
+        /// <param name="resultMesh">The result mesh.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.
+        /// </returns>
         public static NavStatus Build(NavmeshParams config
             , out Navmesh resultMesh)
         {

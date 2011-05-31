@@ -24,17 +24,15 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Data for a polygon's detailed mesh. (Within a navigation mesh tile.)
+    /// The height detail mesh for a polygon in a <see cref="NavmeshTile"/>.
     /// </summary>
     /// <remarks>
-    /// <p>This data is provided for debug purposes.</p>
     /// <p>All indices refer to the vertex and triangle data in the
-    /// polygon's <see cref="NavmeshTileData">tile</see>.</p>
+    /// associated <see cref="NavmeshTile"/>.</p>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshDetailMesh
     {
-
         /// <summary>
         /// The index of the base vertex for the detail mesh.
         /// </summary>

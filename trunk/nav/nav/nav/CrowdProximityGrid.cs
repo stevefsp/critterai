@@ -31,10 +31,9 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <p>Objects of this type can only be obtained from a 
-    /// <see cref="CrowdManger"/> object.</p>
-    /// <p>This class is provided for debug purposes.</p>
+    /// <see cref="CrowdManager"/> object.</p>
     /// <p><b>Example of iterating the proximity data:</b></p>
-    /// <p><pre>
+    /// <p><code>
     /// int[] bounds = new int[4];
     /// grid.GetBounds(bounds);
 	///	float cs = grid.GetCellSize();
@@ -51,7 +50,7 @@ namespace org.critterai.nav
     ///			float maxX = x * cs + cs;
 	///		}
 	///	}
-    /// </pre></p>
+    /// </code></p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     public sealed class CrowdProximityGrid
@@ -59,15 +58,14 @@ namespace org.critterai.nav
         private IntPtr root;
         private bool mIsDisposed = false;
 
-        /// <summary>
-        /// Unsafe constructor.
-        /// </summary>
-        /// <param name="grid">A pointer to a dtProximityGrid object.</param>
         internal CrowdProximityGrid(IntPtr grid)
         {
             root = grid;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~CrowdProximityGrid()
         {
             Dispose();
@@ -117,7 +115,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the bounds of the grid. (minX, minY, maxX, maxY)
+        /// Gets the bounds of the grid. [Form: (minX, minY, maxX, maxY)]
         /// </summary>
         /// <remarks>
         /// To convert from grid units to world units, multipy by the grid's

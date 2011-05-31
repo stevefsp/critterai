@@ -28,22 +28,30 @@ namespace org.critterai.nav
     /// object.
     /// </summary>
     /// <remarks>
-    /// <p>Must be initialized before use.</p>
     /// <p>This structure is useful for marshalling information from the
     /// <see cref="CrowdManager"/> back to the actual agent implementation.</p>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct CrowdAgentCoreState
+    internal struct CrowdAgentCoreState
     {
         /*
-         * Design note: This is a structure because it must be passed
+         * Design notes:
+         * 
+         * This is a structure because it must be passed
          * in an array during interop.
+         * 
+         * Duplicate of: rcnCrowdAgentCoreData
          */
 
         /// <summary>
         /// The state of the agent.
         /// </summary>
 	    public CrowdAgentState state;
+
+        /// <summary>
+        /// The reference id of the polygon where the position resides.
+        /// </summary>
+        public uint positionPoly;
 
         /// <summary>
         /// The number of neighbors.

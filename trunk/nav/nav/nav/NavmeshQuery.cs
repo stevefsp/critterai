@@ -35,8 +35,7 @@ namespace org.critterai.nav
     /// <p>For methods that support undersized buffers, if the buffer is too
     /// small to hold the entire result set the return status of the method will 
     /// include the <see cref="NavStatus.BufferTooSmall"/> flag.</p>
-    /// <p>Behavior is undefined if an object is used after 
-    /// disposal.</p>
+    /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     public sealed class NavmeshQuery
         : ManagedObject
@@ -112,7 +111,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Finds the nearest polygon to the specified point.
+        /// Finds the polygon nearest to the specified point.
         /// </summary>
         /// <remarks>
         /// <p>If the search box does not intersect any polygons the search
@@ -121,7 +120,7 @@ namespace org.critterai.nav
         /// <p>The detail mesh is used to correct the y-value of the nearest
         /// point.</p>
         /// </remarks>
-        /// <param name="sourcePoint">The center of the search box.</param>
+        /// <param name="searchPoint">The center of the search box.</param>
         /// <param name="extents">The search distance along each axis.
         /// [Form: (x, y, z)]</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -130,7 +129,7 @@ namespace org.critterai.nav
         /// <param name="resultPoint">The nearest point on the polygon.
         /// [Form: (x, y, z)] (Optional Out)</param>
         /// <returns>The <see cref="NavStatus"/> flags for the query.</returns>
-        public NavStatus GetNearestPoly(float[] sourcePoint
+        public NavStatus GetNearestPoly(float[] searchPoint
             , float[] extents
             , NavmeshQueryFilter filter
             , out uint resultPolyRef
@@ -138,7 +137,7 @@ namespace org.critterai.nav
         {
             resultPolyRef = 0;
             return NavmeshQueryEx.GetNearestPoly(root
-                , sourcePoint
+                , searchPoint
                 , extents
                 , filter.root
                 , ref resultPolyRef
@@ -204,7 +203,7 @@ namespace org.critterai.nav
         /// <param name="segmentPolyRefs">Refernce ids of the each segment's 
         /// neighbor polygon. Or zero if the segment is considered impassable. 
         /// [Form: (polyRef) * segmentCount] (Optional)</param>
-        /// <param name="segmentCount">The number of segments returned</param>
+        /// <param name="segmentCount">The number of segments returned.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetPolySegments(uint polyRef
             , NavmeshQueryFilter filter
@@ -565,7 +564,7 @@ namespace org.critterai.nav
         /// very small number.</p>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
-        /// <param name="sourcePoint">The center of the search circle.
+        /// <param name="searchPoint">The center of the search circle.
         /// </param>
         /// <param name="searchRadius">The radius of the search circle.</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -576,7 +575,7 @@ namespace org.critterai.nav
         /// to the source point. [Form: (x, y, z)] (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus FindDistanceToWall(uint polyRef
-            , float[] sourcePoint
+            , float[] searchPoint
             , float searchRadius
             , NavmeshQueryFilter filter
             , out float distance
@@ -586,7 +585,7 @@ namespace org.critterai.nav
             distance = 0;
             return NavmeshQueryEx.FindDistanceToWall(root
                 , polyRef
-                , sourcePoint
+                , searchPoint
                 , searchRadius
                 , filter.root
                 , ref distance

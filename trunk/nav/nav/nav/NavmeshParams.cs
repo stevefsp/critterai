@@ -35,6 +35,9 @@ namespace org.critterai.nav
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshParams
     {
+        /// <summary>
+        /// The minimumn allowed tile size.
+        /// </summary>
         public const float MinTileSize = 0.1f;
 
         /// <summary>
@@ -64,11 +67,10 @@ namespace org.critterai.nav
         /// </summary>
         public int maxPolysPerTile = 0;
 
-        //public float TileWidth { get { return mTileWidth; } }
-        //public float TileDepth { get { return mTileDepth; } }
-        //public int MaxTiles { get { return mMaxTiles; } }
-        //public int MaxPolysPerTile { get { return mMaxPolysPerTile; } }
-
+        /// <summary>
+        /// The world-space origin of the navigation mesh. [Form: (x, y, z)]
+        /// </summary>
+        /// <returns>The world-space origin of the navigation mesh.</returns>
         public float[] GetOrigin()
         {
             return (float[])origin.Clone();

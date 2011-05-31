@@ -26,10 +26,12 @@ using org.critterai.nav.rcn;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Represents the raw data buffer for a navigation mesh tile.
+    /// Represents the data buffer for a navigation mesh tile.
     /// </summary>
     /// <remarks>
-    /// This </remarks>
+    /// <p>Represents a fully built tile, ready to be add to a tiled 
+    /// <see cref="Navmesh"/>.  This is the unabstracted tile.</p>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTileData
     {
@@ -49,14 +51,30 @@ namespace org.critterai.nav
         private int mDataLength = 0;
         private bool mIsOwned = false;
 
-        public int Length { get { return mDataLength; } }
+        /// <summary>
+        /// The size of the data buffer.
+        /// </summary>
+        public int Size { get { return mDataLength; } }
+
+        /// <summary>
+        /// TRUE if the memory for the buffer is managed by another object.
+        /// </summary>
         public bool IsOwned { get { return mIsOwned; } }
 
+        /// <summary>
+        /// Constructs a tile from the provided build data.
+        /// </summary>
+        /// <param name="buildData">The build data.</param>
         public NavmeshTileData(NavmeshTileBuildData buildData)
         {
             NavmeshTileEx.BuildTileData(buildData, this);
         }
 
+        /// <summary>
+        /// Constructs a tile from a data buffer created by 
+        /// <see cref="GetData"/>.
+        /// </summary>
+        /// <param name="rawTileData"></param>
         public NavmeshTileData(byte[] rawTileData)
         {
             if (rawTileData == null)
@@ -66,6 +84,9 @@ namespace org.critterai.nav
                 , this);
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~NavmeshTileData()
         {
             if (!mIsOwned && mData != IntPtr.Zero)
@@ -73,6 +94,10 @@ namespace org.critterai.nav
             mData = IntPtr.Zero;
         }
 
+        /// <summary>
+        /// Gets a copy of the tile's data buffer.
+        /// </summary>
+        /// <returns>A copy of the tile's data buffer.</returns>
         public byte[] GetData()
         {
             if (mData == IntPtr.Zero)

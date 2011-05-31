@@ -21,27 +21,26 @@
  */
 using System.Runtime.InteropServices;
 
-namespace org.critterai.nav.rcn
+namespace org.critterai.nav
 {
     /// <summary>
-    /// Provides information on the neighbors of agents managed by a
-    /// crowd manager.
+    /// Provides neighbor data for agents managed by a
+    /// crowd manager. (See: <see cref="CrowdAgent.GetNeighbors"/>)
     /// </summary>
-    /// <remarks>
-    /// <p>This data is provided for debug purposes.</p>
-    /// </remarks>
+    /// <seealso cref="CrowdManager"/>
+    /// <see cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct CrowdNeighbor
     {
         /// <summary>
         /// The maximum number of agent neighbors. 
         /// </summary>
-        /// <remarks>
-        /// Used to size buffers of this structure.</remarks>
+        /// <remarks>Used to size buffers of this structure.</remarks>
         public const int MaxNeighbors = 6;
 
         /// <summary>
-        /// The index of the neighbor.
+        /// The index of the neighbor. (In the <see cref="CrowdManager"/>
+        /// agent buffer.)
         /// </summary>
         public int index;
 

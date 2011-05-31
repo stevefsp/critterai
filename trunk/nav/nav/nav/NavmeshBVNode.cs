@@ -26,20 +26,17 @@ namespace org.critterai.nav
     /// <summary>
     /// Bounding volumn node.
     /// </summary>
-    /// <remarks>
-    /// <p>This structure is provided for debug purposes.</p>
-    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshBVNode
     {
         /// <summary>
-        /// Minimimum bounds of the node's AABB in the form (x, y, z).
+        /// Minimimum bounds of the node's AABB. [Form: (x, y, z)]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] boundsMin;
 
         /// <summary>
-        /// Maximum bounds of the node's AABB in the form (x, y, z).
+        /// Maximum bounds of the node's AABB. [Form: (x, y, z)]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] boundsMax;		                    

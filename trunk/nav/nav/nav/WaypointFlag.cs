@@ -24,7 +24,7 @@ using System;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// The type of path points returned by <see cref="NavmeshQuery"/>.
+    /// Flags for path related waypoints.
     /// </summary>
     [Flags]
     public enum WaypointFlag : byte
@@ -42,6 +42,8 @@ namespace org.critterai.nav
         /// <summary>
         /// The point is the start of an off-mesh connection.
         /// </summary>
+        /// <remarks>This flag is useful in detecting when special
+        /// locomotion handling needs to occur.</remarks>
         OffMesh = 4
     }
 }

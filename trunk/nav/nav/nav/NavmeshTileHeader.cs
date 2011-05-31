@@ -23,10 +23,21 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav
 {
+    /// <summary>
+    /// Provides high level information related to a <see cref="NavmeshTile"/>
+    /// object.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshTileHeader
     {
+        /// <summary>
+        /// The tile magic number. (Undocumented.)
+        /// </summary>
         public int magic;
+
+        /// <summary>
+        /// The tile version. (Undocumented.)
+        /// </summary>
         public int version;
 
         /// <summary>
@@ -48,7 +59,7 @@ namespace org.critterai.nav
         public int layer;
 
         /// <summary>
-        /// The user assigned id of the tile.
+        /// The user-defined id of the tile.
         /// </summary>
         public uint userId;
 
@@ -68,23 +79,24 @@ namespace org.critterai.nav
         public int maxLinkCount;
 
         /// <summary>
-        /// The number of detail meshes.
+        /// The number of sub-meshes in the detail mesh.
         /// </summary>
         public int detailMeshCount;
 
         /// <summary>
-        /// The number of unique detail vertices.  (In addition to the
-        /// polygon vertices.)
+        /// The number of unique vertices in the detail mesh.  
+        /// (In addition to the polygon vertices.)
         /// </summary>
         public int detailVertCount;
 
         /// <summary>
-        /// The number of detail triangles.
+        /// The number of triangles in the detail mesh.
         /// </summary>
         public int detailTriCount;
 
         /// <summary>
-        /// The number of bounding volume nodes.
+        /// The number of bounding volume nodes. (Zero if bounding volumes
+        /// are disabled.)
         /// </summary>
         public int bvNodeCount;
 
@@ -99,31 +111,31 @@ namespace org.critterai.nav
         public int connBase;
 
         /// <summary>
-        /// The designed minimum floor to 'ceiling' height that will still 
+        /// The minimum floor to 'ceiling' height that will still 
         /// allow the floor area to be considered traversable.
         /// </summary>
         public float walkableHeight;
 
         /// <summary>
-        /// Represents the closest any part of a mesh gets to an
-        /// obstruction in the source geometry. (Usually the client radius.)
+        /// The amount the polygon walls have been eroded away from 
+        /// obstructions.
         /// </summary>
         public float walkableRadius;
 
         /// <summary>
-        /// The designed maximum ledge height that is considered to still be
-        /// traversable. 
+        /// The maximum ledge height that is considered to still be
+        /// traversable.
         /// </summary>
         public float walkableStep;
 
         /// <summary>
-        /// The minimum bounds of the tile's AABB in the form (x, y, z).
+        /// The minimum bounds of the tile's AABB.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] boundsMin;
 
         /// <summary>
-        /// The maximum bounds of the tile's AABB in the form (x, y, z).
+        /// The maximum bounds of the tile's AABB.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] boundsMax;

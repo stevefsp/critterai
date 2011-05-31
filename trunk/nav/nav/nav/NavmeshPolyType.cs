@@ -26,7 +26,7 @@ using System.Text;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Navigation polygon type.
+    /// Navigation mesh polygon type.
     /// </summary>
     public enum NavmeshPolyType
     {

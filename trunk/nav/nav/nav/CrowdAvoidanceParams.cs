@@ -31,10 +31,12 @@ namespace org.critterai.nav
     /// managed by a crowd manager.
     /// </summary>
     /// <remarks>
+    /// <p>Minimal available documentation.</p>
     /// <p>This type has been implemented as a class with public fields
     /// in order to support Unity serialization. Care must be taken
-    /// to not set the fields to invalid values, or to pass references
-    /// inappropriatly.</p></remarks>
+    /// to not set the fields to invalid values, or to share references
+    /// inappropriatly.</p>
+    /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public class CrowdAvoidanceParams
@@ -57,25 +59,65 @@ namespace org.critterai.nav
          */
 
         /// <summary>
-        /// 
+        /// Velocity bias.
         /// </summary>
 	    public float velocityBias = 0.4f;
 
         /// <summary>
-        /// 
+        /// Desired velocity weight.
         /// </summary>
         public float weightDesiredVelocity = 2.0f;
+
+        /// <summary>
+        /// Current velocity weight.
+        /// </summary>
         public float weightCurrentVelocity = 0.75f;
+
+        /// <summary>
+        /// Size weight.
+        /// </summary>
         public float weightSide = 0.75f;
+
+        /// <summary>
+        /// Weight TOI.
+        /// </summary>
         public float weightToi = 2.5f;
+
+        /// <summary>
+        /// Horizontal time.
+        /// </summary>
         public float horizontalTime = 2.5f;
+
+        /// <summary>
+        /// Sample grid size.
+        /// </summary>
         public byte gridSize = 33;
+
+        /// <summary>
+        /// Adaptive divisions.
+        /// </summary>
         public byte adaptiveDivisions = 7;
+
+        /// <summary>
+        /// Adaptive rings.
+        /// </summary>
         public byte adaptiveRings = 2;
+
+        /// <summary>
+        /// Adaptive depth.
+        /// </summary>
         public byte adaptiveDepth = 5;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public CrowdAvoidanceParams() { }
 
+        /// <summary>
+        /// Clones the current object. (Usually more appropriate than sharing
+        /// references.)
+        /// </summary>
+        /// <returns>A clone of the object.</returns>
         public CrowdAvoidanceParams Clone()
         {
             CrowdAvoidanceParams result = new CrowdAvoidanceParams();
