@@ -171,6 +171,28 @@ namespace org.critterai
         }
 
         /// <summary>
+        /// Determines whether or not the two vectors are within range
+        /// of each other based on a xz-plane radius and a y-axis height.
+        /// </summary>
+        /// <remarks>
+        /// <p>This is essentially a cylinder inclusion test where one 
+        /// vector defines the centroid of the cylinder.</p>
+        /// </remarks>
+        /// <param name="u">A position.</param>
+        /// <param name="v">A position.</param>
+        /// <param name="radius">The allowed radius on the xz-plane.</param>
+        /// <param name="height">The allowed y-axis delta.</param>
+        /// <returns>TRUE if the two vectors are within the xz-radius and 
+        /// y-height of each other.</returns>
+        public static bool IsInRange(Vector3 u, Vector3 v
+            , float radius, float height)
+        {
+            Vector3 d = v - u;
+            return (d.x * d.x + d.z * d.z) < radius * radius
+                && Mathf.Abs(d.y) < height;
+        }
+
+        /// <summary>
         /// Traslates point A toward point B by the specified factor of the 
         /// distance between them.
         /// </summary>
@@ -240,14 +262,13 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Creates a vector from the values in a flattened vector array.
+        /// Creates a Unity vector from an entry in an array of vectors.
         /// </summary>
-        /// <param name="vectors">An array of flattened values in the form
-        /// (x, y, z).</param>
-        /// <param name="index">The vector's index with the array. (Stride = 3)
+        /// <param name="vectors">An array of vectors.
+        /// [(x, y, z) * vertorCount]</param>
+        /// <param name="index">The index of the vector in the array.
         /// </param>
-        /// <returns>A vector instance for the vector in the flattened
-        /// array.</returns>
+        /// <returns>The Unity vector for the specified array vector.</returns>
         public static Vector3 GetVector(float[] vectors, int index)
         {
             return new Vector3(vectors[index * 3 + 0]
@@ -255,18 +276,29 @@ namespace org.critterai
                 , vectors[index * 3 + 2]);
         }
 
+        /// <summary>
+        /// Fills an array vector based on the provided Unity vector.
+        /// </summary>
+        /// <param name="vector">The source vector.</param>
+        /// <param name="buffer">The buffer to copy the source
+        /// vector into. [Length: >= 3] (Out)
+        /// </param>
+        /// <returns>A reference to the buffer.</returns>
         public static float[] GetVector(Vector3 vector, float[] buffer)
         {
-            // TODO: Need unit test.
             buffer[0] = vector.x;
             buffer[1] = vector.y;
             buffer[2] = vector.z;
             return buffer;
         }
 
+        /// <summary>
+        /// Returns a Unity vector created from an array vector.
+        /// </summary>
+        /// <param name="vector">The array vector.  [(x, y, z)] </param>
+        /// <returns>A Unity vector created from the array vector.</returns>
         public static Vector3 GetVector(float[] vector)
         {
-            // TODO: Need unit test.
             return new Vector3(vector[0], vector[1], vector[2]);
         }
 
@@ -335,12 +367,24 @@ namespace org.critterai
             return bounds;
         }
 
+        /// <summary>
+        /// Returns the standard string representation of the provided array
+        /// vector.
+        /// </summary>
+        /// <param name="vector">An array vector. [(x, y, z)]</param>
+        /// <returns>A string representing the vector.</returns>
         public static string ToString(float[] vector)
         {
             return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
                 , vector[0], vector[1], vector[2]);
         }
 
+        /// <summary>
+        /// Returns a standard string representation of the provided Unity
+        /// vector.
+        /// </summary>
+        /// <param name="vector">A vector.</param>
+        /// <returns>A string representing the vector.</returns>
         public static string ToString(Vector3 vector)
         {
             return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
