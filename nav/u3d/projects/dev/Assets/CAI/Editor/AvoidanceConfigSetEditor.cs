@@ -23,6 +23,9 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.nav;
 
+/// <summary>
+/// Custom inspector for <see cref="AvoidanceConfigSet"/>.
+/// </summary>
 [CustomEditor(typeof(AvoidanceConfigSet))]
 public class AvoidanceConfigSetEditor
     : Editor

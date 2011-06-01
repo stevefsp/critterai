@@ -23,6 +23,9 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.nav;
 
+/// <summary>
+/// Custom inspector for <see cref="AgentNavConfig"/>.
+/// </summary>
 [CustomEditor(typeof(AgentNavConfig))]
 public class AgentNavConfigEditor
     : Editor
