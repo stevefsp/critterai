@@ -28,16 +28,14 @@ using org.critterai;
 using System.IO;
 
 /// <summary>
-/// Provides a custom inspector for <see cref="CAIArraySource"/>.
+/// Custom inspector for <see cref="BakedPolyMesh"/>.
 /// </summary>
 [CustomEditor(typeof(BakedPolyMesh))]
 public class BakedPolyMeshEditor
     : Editor
 {
-    public static bool displayDetails = false;
-
+    private static bool mDisplayDetails = false;
     private const int DefaultLabelWidth = 150;
-
     private bool mForceDirty = false;
 
     /// <summary>
@@ -54,9 +52,9 @@ public class BakedPolyMeshEditor
 
         if (targ.HasMesh)
         {
-            displayDetails = EditorGUILayout.Foldout(displayDetails
+            mDisplayDetails = EditorGUILayout.Foldout(mDisplayDetails
                 , "Mesh Baked");
-            if (displayDetails)
+            if (mDisplayDetails)
             {
                 EditorGUILayout.LabelField("Poly Count"
                     , targ.PolyCount.ToString());

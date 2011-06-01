@@ -23,6 +23,9 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.nmgen.u3d.editor;
 
+/// <summary>
+/// Provides a way of selecting and creating polygon mesh component structures.
+/// </summary>
 public sealed class PolyMeshWizard
     : EditorWindow
 {
@@ -31,6 +34,9 @@ public sealed class PolyMeshWizard
         | PolyMeshEditorFlags.BuildConfig
         | PolyMeshEditorFlags.BakedPolyMesh;
 
+    /// <summary>
+    /// Presents the GUI.
+    /// </summary>
     public void OnGUI()
     {
         mNMGenFlags = HandleSelection(mNMGenFlags, false);
@@ -57,7 +63,15 @@ public sealed class PolyMeshWizard
             this.Close();
     }
 
-    public static GameObject Build(PolyMeshEditorFlags flags, out BakedPolyMesh mesh)
+    /// <summary>
+    /// Builds the polygon mesh component structure.
+    /// </summary>
+    /// <param name="flags">The components to include.</param>
+    /// <param name="mesh">A convenience reference to the polygon mesh 
+    /// component</param>
+    /// <returns>The game object that was created. Or null on error.</returns>
+    public static GameObject Build(PolyMeshEditorFlags flags
+        , out BakedPolyMesh mesh)
     {
         if ((flags & PolyMeshEditorFlags.BakedPolyMesh) == 0)
         {
@@ -90,6 +104,13 @@ public sealed class PolyMeshWizard
         return result;
     }
 
+    /// <summary>
+    /// Presents the option selection portion of the GUI.
+    /// </summary>
+    /// <param name="flags">The current flags.</param>
+    /// <param name="includePolyMesh">TRUE if the polygon mesh option should
+    /// be included in the GUI.</param>
+    /// <returns>The new flags.</returns>
     public static PolyMeshEditorFlags HandleSelection(PolyMeshEditorFlags flags
         , bool includePolyMesh)
     {
@@ -161,8 +182,11 @@ public sealed class PolyMeshWizard
         return flags;
     }
 
+    /// <summary>
+    /// Defines the menu item for the editor.
+    /// </summary>
     [MenuItem("GameObject/Create CAI/PolyMesh", false, 0)]
-    public static void AddNavmesh()
+    public static void CreatePolyMeshMenu()
     {
         PolyMeshWizard window = EditorWindow.GetWindow<PolyMeshWizard>(true
             , "PolyMesh Options"

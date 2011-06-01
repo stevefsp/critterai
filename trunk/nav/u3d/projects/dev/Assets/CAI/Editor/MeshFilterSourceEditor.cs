@@ -23,7 +23,7 @@ using UnityEngine;
 using UnityEditor;
 
 /// <summary>
-/// Provides a custom inspector for <see cref="CAIArraySource"/>.
+/// Custom inspector for <see cref="MeshFilterSourceEditor"/>.
 /// </summary>
 [CustomEditor(typeof(MeshFilterSource))]
 public class MeshFilterSourceEditor
