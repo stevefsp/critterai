@@ -25,20 +25,21 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Release\cai-nmgen-u3d-editor.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,11 +72,11 @@
       <Project>{B783B817-8746-4D54-A6CC-664C0A73186F}</Project>
       <Name>cai-nmgen-rcn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\util\u3d\cai-util-u3d.csproj">
+    <ProjectReference Include="..\..\..\util\u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\util\util\cai-util.csproj">
+    <ProjectReference Include="..\..\..\util\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>

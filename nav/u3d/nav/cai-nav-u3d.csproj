@@ -35,7 +35,7 @@
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,15 +66,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\util\u3d\cai-util-u3d.csproj">
+    <ProjectReference Include="..\..\..\util\u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\nav\nav\cai-nav.csproj">
+    <ProjectReference Include="..\..\nav\cai-nav.csproj">
       <Project>{E86A77DF-D270-4A68-9BFE-E5690440921F}</Project>
       <Name>cai-nav</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\util\util\cai-util.csproj">
+    <ProjectReference Include="..\..\..\util\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>

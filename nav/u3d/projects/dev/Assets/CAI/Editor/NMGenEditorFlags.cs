@@ -23,12 +23,31 @@ using System;
 
 namespace org.critterai.nmgen.u3d.editor
 {
+    /// <summary>
+    /// Options flags specifying the components to be included in a 
+    /// polygon component structure.
+    /// </summary>
     [Flags]
     public enum PolyMeshEditorFlags : uint
     {
+        /// <summary>
+        /// Include a <see cref="MeshFilterSource"/> component.
+        /// </summary>
         MeshFilterArray = 0x01,
+
+        /// <summary>
+        /// Include a <see cref="TaggedMeshFilterSource"/> component.
+        /// </summary>
         TaggedMeshFilter = 0x02,
+
+        /// <summary>
+        /// Include a <see cref="NMGenBuildConfig"/> component.
+        /// </summary>
         BuildConfig = 0x04,
+
+        /// <summary>
+        /// Include a <see cref="BakedPolyMesh"/> component.
+        /// </summary>
         BakedPolyMesh = 0x08
     }
 }

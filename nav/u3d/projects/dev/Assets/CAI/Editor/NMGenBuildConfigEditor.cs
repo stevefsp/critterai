@@ -25,6 +25,9 @@ using org.critterai.nmgen;
 using org.critterai.nmgen.u3d;
 using Math = System.Math;
 
+/// <summary>
+/// The custom inspector for <see cref="NMGenBuildConfig"/>.
+/// </summary>
 [CustomEditor(typeof(NMGenBuildConfig))]
 public class NMGenBuildConfigEditor
     : Editor
@@ -141,24 +144,24 @@ public class NMGenBuildConfigEditor
         "Ledges Not Walkable"
         , "Increases mesh distance from ledges.");
 
-    public static GUIContent LowHeightText = new GUIContent(
+    private static GUIContent LowHeightText = new GUIContent(
         "Low Height Not Walkable"
         , "Areas with low clearance are not walkable");
 
-    public static GUIContent LowObstacleText = new GUIContent(
+    private static GUIContent LowObstacleText = new GUIContent(
         "Low Obstacles Walkable"
         , "Low lying obstacles are walkable. (Curbs, steps, etc.)");
 
-    public static GUIContent TessAreasText = new GUIContent(
+    private static GUIContent TessAreasText = new GUIContent(
         "Tessellate Area Edges");
 
-    public static GUIContent TessWallsText = new GUIContent(
+    private static GUIContent TessWallsText = new GUIContent(
         "Tessellate Wall Edges");
 
-    public static GUIContent UseMonoText = new GUIContent(
+    private static GUIContent UseMonoText = new GUIContent(
         "Use Monotone Partitioning");
 
-    public static GUIContent FlagPolysText = new GUIContent(
+    private static GUIContent FlagPolysText = new GUIContent(
         "Apply Poly Flag"
         , "Applys the 0x01 flag to the final polygons.");
 
@@ -209,10 +212,6 @@ public class NMGenBuildConfigEditor
         config.WalkableStep = (float)Math.Round(config.WalkableStep, 2);
     }
 
-    /// <summary>
-    /// Display and process the inspector's main button section.
-    /// </summary>
-    /// <param name="nm">The active navigation mesh.</param>
     private void ProcessGUIMainSec(NMGenBuildConfig ctarget)
     {
         EditorGUILayout.Separator();
@@ -242,10 +241,6 @@ public class NMGenBuildConfigEditor
         return "  (" + Math.Round(value, 2) + ")";
     }
 
-    /// <summary>
-    /// Display and process the inspector's primary configuration foldout.
-    /// </summary>
-    /// <param name="nm">The active navigation mesh.</param>
     private void ProcessGUIPriConfig(NMGenBuildParams config)
     {
         EditorGUILayout.Separator();
@@ -314,10 +309,6 @@ public class NMGenBuildConfigEditor
         }
     }
 
-    /// <summary>
-    /// Display and process the inspector's secondary configuration foldout.
-    /// </summary>
-    /// <param name="nm">The active navigation mesh.</param>
     private void ProcessGUISecConfig(NMGenBuildParams config)
     {
         EditorGUILayout.Separator();

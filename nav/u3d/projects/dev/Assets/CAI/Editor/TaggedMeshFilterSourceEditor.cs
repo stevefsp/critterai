@@ -23,7 +23,7 @@ using UnityEngine;
 using UnityEditor;
 
 /// <summary>
-/// Provides a custom inspector for <see cref="CAITagSource"/>.
+/// The custom inspector for <see cref="TaggedMeshFilterSource"/>.
 /// </summary>
 [CustomEditor(typeof(TaggedMeshFilterSource))]
 public class TaggedMeshFilterSourceEditor 
