@@ -22,6 +22,9 @@
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Custom inspector for <see cref="NavManager"/>.
+/// </summary>
 [CustomEditor(typeof(NavManager))]
 public class NavManagerEditor
     : Editor

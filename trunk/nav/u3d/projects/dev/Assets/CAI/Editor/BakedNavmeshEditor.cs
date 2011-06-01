@@ -24,6 +24,9 @@ using UnityEditor;
 using org.critterai.nav;
 using org.critterai.nav.u3d;
 
+/// <summary>
+/// Custom inspector for <see cref="BakedNavmesh"/>.
+/// </summary>
 [CustomEditor(typeof(BakedNavmesh))]
 public class BakedNavmeshEditor
     : Editor
