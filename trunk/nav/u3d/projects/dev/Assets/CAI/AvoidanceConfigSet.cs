@@ -23,8 +23,8 @@ using UnityEngine;
 using org.critterai.nav;
 
 /// <summary>
-/// Provides for the creation of <see cref="CrowdAvoidanceParams"/> in the 
-/// Unity editor.
+/// A set of <see cref="CrowdAvoidanceParams"/> configurations to be used
+/// with a <see cref="CrowdManager"/>.
 /// </summary>
 [AddComponentMenu("CAI/Avoidance Config Set")]
 public class AvoidanceConfigSet 
@@ -63,19 +63,19 @@ public class AvoidanceConfigSet
     /// Constructor.  (DO NOT USE DIRECLTY IN CODE.)
     /// </summary>
     /// <remarks>
-    /// <p>This constructor is provided for used by the Unity engine,
-    /// not by script code.  It is necessary to address an internal 
-    /// initialization issue in the Unity editor.</p></remarks>
+    /// <p>This constructor is provided to work around a Unity Editor
+    /// peculiarity. It is not meant for use in script code.</p></remarks>
     public AvoidanceConfigSet()
     {
         Reset();
     }
 
     /// <summary>
-    /// Returns a reference to the configuration at the specified index.
+    /// A reference to the configuration at the specified index.
     /// </summary>
     /// <remarks>
     /// <p>Attempting to set a configuration to null will have no effect.</p>
+    /// <p>References are stored.  No cloning occurs.</p>
     /// </remarks>
     /// <param name="index">The index of the configuration.</param>
     /// <returns></returns>
@@ -91,7 +91,8 @@ public class AvoidanceConfigSet
     }
 
     /// <summary>
-    /// Resets the objects to its default configuration.
+    /// Restores the object to its default state, releasing all
+    /// references to existing configurations.
     /// </summary>
     public void Reset()
     {

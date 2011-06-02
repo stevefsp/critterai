@@ -26,11 +26,11 @@ using org.critterai.nmgen.u3d;
 using org.critterai;
 
 /// <summary>
-/// Recursively searches all game objects with the specified tags for Meshes
-/// and combines them into a single triangle mesh.
+/// Recursively searches an all game objects with the specified tags 
+/// for MeshFilters and combines the meshes into a single triangle mesh.
 /// </summary>
 /// <remarks>
-/// <p>The standard triangle limit for the Mesh type does not apply.</p>
+/// <p>The standard triangle limit for the Unity Mesh type does not apply.</p>
 /// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/Mesh Filter Source (Tagged)")]
@@ -69,7 +69,7 @@ public class TaggedMeshFilterSource
     }
 
     /// <summary>
-    /// TRUE if any of the GameObjects contain at least one Mesh.
+    /// TRUE if any of the GameObjects contain at least one Unity Mesh.
     /// </summary>
     public override bool HasGeometry
     {
@@ -92,6 +92,7 @@ public class TaggedMeshFilterSource
 
     /// <summary>
     /// Derives the bounds for the aggregate meshes.
+    /// [Form: (minX, minY, minZ, maxX, maxY, maxZ)]
     /// </summary>
     /// <remarks>
     /// This method performs a full build of the source geometry.  So
@@ -118,8 +119,8 @@ public class TaggedMeshFilterSource
     }
 
     /// <summary>
-    /// Derives an aggregate <see cref="TriangleMesh"/> from all meshes attached
-    /// to the tagged GameObject's.
+    /// Derives an aggregate <see cref="TriangleMesh"/> from all
+    /// Unity Meshes attached to the tagged GameObject's. (Recursive search.)
     /// </summary>
     /// <returns>An aggregate <see cref="TriangleMesh"/>.</returns>
     public override TriangleMesh GetGeometry()

@@ -25,8 +25,12 @@ using org.critterai.nav;
 using org.critterai.nav.u3d;
 
 /// <summary>
-/// Provides access and management of shared navigation components.
+/// A centralized component used to configure and share common navigation
+/// objects.
 /// </summary>
+/// <remarks>
+/// <p>The navigation objects are initialized during the Awake operation.</p>
+/// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/Navigation Manager")]
 public class NavManager 
@@ -59,7 +63,7 @@ public class NavManager
     public bool enableCrowdManager = true;
 
     /// <summary>
-    /// The maximum agents the <see cref="Crowd"/> will support.
+    /// The maximum number agents the <see cref="Crowd"/> will support.
     /// </summary>
     public int maxCrowdAgents = 10;
 
@@ -125,27 +129,29 @@ public class NavManager
     public Navmesh Navmesh { get { return mNavmeshRoot; } }
 
     /// <summary>
-    /// The root query object used by <see cref="Query"/>.
+    /// The root <see cref="NavmeshQuery"/> object used by 
+    /// <see cref="Query"/>.
     /// </summary>
     public NavmeshQuery QueryRoot { get { return mQueryRoot; } }
 
     /// <summary>
-    /// The shared query object.
+    /// The shared <see cref="U3DNavmeshQuery"/> object.
     /// </summary>
     public U3DNavmeshQuery Query { get { return mQuery; } }
 
     /// <summary>
-    /// The shared crowd object.
+    /// The shared <see cref="CrowdManager"/> object.
     /// </summary>
     public CrowdManager Crowd { get { return mCrowd; } }
 
     /// <summary>
     /// The shared default extents. (A reference, not a copy.)
+    /// [Form: (x, y, x)]
     /// </summary>
     public float[] DefaultExtents { get { return mDefaultExtents; } }
 
     /// <summary>
-    /// The shared default filter.
+    /// The default shared <see cref="NavmeshQueryFilter"/>.
     /// </summary>
     public NavmeshQueryFilter DefaultFilter 
     { 

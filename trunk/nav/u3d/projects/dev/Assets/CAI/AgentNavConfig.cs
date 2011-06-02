@@ -23,12 +23,12 @@ using UnityEngine;
 using org.critterai.nav;
 
 /// <summary>
-/// Provides for the creation of shared agent configurations in the 
-/// Unity editor.
+/// A <see cref="CrowdAgentParams"/> configuration suitable for sharing 
+/// between multiple agents.
 /// </summary>
 [System.Serializable]
 [AddComponentMenu("CAI/Agent Navigation Config")]
-public class AgentNavConfig 
+public sealed class AgentNavConfig 
     : MonoBehaviour 
 {
     /*
@@ -39,36 +39,36 @@ public class AgentNavConfig
      */
 
     /// <summary>
-    /// The <see cref="NavManager"/> agents should use.
+    /// The <see cref="NavManager"/> agents are to use.
     /// </summary>
     public NavManager manager;
 
     /// <summary>
-    /// Agent radius. (>= 0)
+    /// Agent radius. [Limit: >= 0]
     /// </summary>
     public float radius = 0.4f;
 
     /// <summary>
-    /// Agent height. (> 0)
+    /// Agent height. [Limit: > 0]
     /// </summary>
     public float height = 1.8f;
 
     /// <summary>
-    /// Maximum allowed acceleration. (>= 0)
+    /// Maximum allowed acceleration. [Limit: >= 0]
     /// </summary>
     public float maxAcceleration = 8;
 
     /// <summary>
-    /// Maximum allowed speed. (>= 0)
+    /// Maximum allowed speed. [Limit: >= 0]
     /// </summary>
     public float maxSpeed = 3.5f;
 
     /// <summary>
     /// Defines how close a neighbor must be before it is considered
-    /// in steering behaviors. (> 0)
+    /// in steering behaviors. [Limit: > 0]
     /// </summary>
     /// <remarks>
-    /// The value is often based on the agent radius and/or
+    /// The value is usually based on the agent radius and/or
     /// and maximum speed.  E.g. radius * 8</remarks>
     public float collisionQueryRange = 0.4f * 8;
 
@@ -76,12 +76,12 @@ public class AgentNavConfig
     /// Path optimization range.
     /// </summary>
     /// <remarks>
-    /// This value is often based on the agent radius. E.g. radius * 30
+    /// The value is usually based on the agent radius. E.g. radius * 30
     /// </remarks>
     public float pathOptimizationRange = 0.4f * 30;
 
     /// <summary>
-    /// How aggresive the agent manager should be at avoiding
+    /// How aggresive the <see cref="CrowdManager"/> should be at avoiding
     /// collisions with this agent.
     /// </summary>
     /// <remarks>
@@ -91,26 +91,27 @@ public class AgentNavConfig
     public float separationWeight = 2.0f;
 
     /// <summary>
-    /// Flags that impact steering behavior.
+    /// Steering behavior flags.
     /// </summary>
     public CrowdUpdateFlags updateFlags = CrowdUpdateFlags.AnticipateTurns
         | CrowdUpdateFlags.CrowdSeparation | CrowdUpdateFlags.ObstacleAvoidance
         | CrowdUpdateFlags.OptimizeVis | CrowdUpdateFlags.OptimizeTopo;
 
     /// <summary>
-    /// The index of the avoidance parameters to use for the agent.
+    /// The <see cref="CrowdManager"/> avoidance parameters to use for the 
+    /// agent.
     /// </summary>
     /// <remarks>
     /// <p>The <see cref="CrowdManager"/> permits agents to use different
     /// avoidance configurations.  (See 
-    /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This value
-    /// is the index of the configuration to use.</p>
+    /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This is the index 
+    /// of the configuration to use.</p>
     /// </remarks>
     /// <seealso cref="CrowdAvoidanceParams"/>
     public byte avoidanceType = 3;
 
     /// <summary>
-    /// The maximum path buffer.
+    /// The size of the path agent's path buffer.
     /// </summary>
     public int maxPathSize = 100;
 

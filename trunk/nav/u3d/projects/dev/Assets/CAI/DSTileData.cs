@@ -23,26 +23,27 @@ using UnityEngine;
 using org.critterai.nav;
 
 /// <summary>
-/// Provides a base class for components that provides navigation mesh
-/// tile data to other components.
+/// The base class for components that provide navigation mesh
+/// tile data for use by components.
 /// </summary>
 public abstract class DSTileData
     : MonoBehaviour 
 {
     /// <summary>
-    /// Tile mesh build data.
+    /// Tile build data.
     /// </summary>
     /// <remarks>
     /// <p>Set <paramref name="includeTilePos"/> to FALSE if the tile
-    /// will be used to build a single tile mesh.</p>
+    /// will be used to build a single-tile mesh.</p>
     /// </remarks>
     /// <param name="includeTilePos">If TRUE, tile position data will
-    /// be included in the build data.  Otherwise it will be stripped.</param>
-    /// <returns>Tile mesh build data.  Or null if none is available.</returns>
+    /// be included in the build data.  Otherwise the values will be
+    /// set to zero.</param>
+    /// <returns>Tile build data.  Or NULL if none is available.</returns>
     public abstract NavmeshTileBuildData GetTileBuildData(bool includeTilePos);
 
     /// <summary>
-    /// TRUE if tile mesh data is available.
+    /// TRUE if tile data is available.
     /// </summary>
     public abstract bool HasTileBuildData { get; }
 }

@@ -29,7 +29,7 @@ namespace org.critterai.nmgen.u3d
     public static class NMGenDebug
     {
         /// <summary>
-        /// Draws a debug view of a<see cref="PolyMeshData"/> object.
+        /// Draws a debug view of a <see cref="PolyMeshData"/> object.
         /// </summary>
         /// <remarks>
         /// <p>Meant to be called during the MonoBehavior.OnRenderObject()
@@ -142,7 +142,7 @@ namespace org.critterai.nmgen.u3d
         }
 
         /// <summary>
-        /// Draws a debug view of a<see cref="PolyMeshDetailData"/> object.
+        /// Draws a debug view of a <see cref="PolyMeshDetailData"/> object.
         /// </summary>
         /// <remarks>
         /// <p>Meant to be called during the MonoBehavior.OnRenderObject()
