@@ -89,9 +89,9 @@ namespace org.critterai.nav
         /// The item count at the specified grid location.
         /// </summary>
         /// <param name="x">The x-value of the grid location.
-        /// (bounds[0] &lt;= value &lt;= bounds[2])</param>
+        /// [Limits: bounds[0] &lt;= value &lt;= bounds[2]]</param>
         /// <param name="y">The y-value of the grid location.
-        /// (bounds[1] &lt;= value &lt;= bounds[3])</param>
+        /// [Limits: bounds[1] &lt;= value &lt;= bounds[3]]</param>
         /// <returns>The item count at the specified grid location.</returns>
         public int GetItemCountAt(int x, int y)
         {
@@ -121,6 +121,7 @@ namespace org.critterai.nav
         /// To convert from grid units to world units, multipy by the grid's
         /// cell size.
         /// </remarks>
+        /// <returns>The bounds of the grid.</returns>
         public int[] GetBounds()
         {
             if (IsDisposed)

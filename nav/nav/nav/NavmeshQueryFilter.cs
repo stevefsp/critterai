@@ -33,11 +33,12 @@ namespace org.critterai.nav
     /// at least one flag set to ever be considered by a query.  So setting
     /// the include flags to 0 will always result in all polygons being
     /// excluded.</p>
-    /// <p>Brackets [] are used to access area cost.</p>
+    /// <p>The array form is used to access area cost. 
+    /// E.g. <c>myFilter[5] = 2.5f</c></p>
     /// <p>WARNING: Behavior is undefined if an area
     /// index is out of range.  The error may result in a runtime error, or
     /// it may operate as if there is no problem whatsoever.  E.g. Setting
-    /// and getting myFilter[myFilter.AreaCount] may get and set the value
+    /// and getting <c>myFilter[myFilter.AreaCount]</c> may get and set the 
     /// value normally.  Do not write code that depends on this behavior since 
     /// it may change in future releases.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
@@ -105,7 +106,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// The flags for polygons that should be excluded from the query.
-        /// [Default: DefaultExcludeFlags]
+        /// [Default: <see cref="DefaultExcludeFlags"/>]
         /// </summary>
         /// <remarks>If a polygon has any of these flags set it will be
         /// excluded by a query.</remarks>
