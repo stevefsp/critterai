@@ -674,11 +674,12 @@ namespace org.critterai.nav
         /// </p>
         /// <p>If the hit parameter is zero, then the start point is on the
         /// border that was hit and the value of hitNormal is undefined.</p>
-        /// <p>If 0 &lt; hitParameter &lt; 1.0 then the following applies:</p>
-        /// <p>
+        /// <p>If <c>0 &lt; hitParameter &lt; 1.0 </c>
+        /// then the following applies:</p>
+        /// <code>
         /// distanceToHitBorder = distanceToEndPoint * hitParameter<br/>
         /// hitPoint = startPoint + (endPoint - startPoint) * hitParameter
-        /// </p>
+        /// </code>
         /// <p><b>Use Case Restriction</b></p>
         /// <p>The raycast ignores the y-value of the end point.  (2D check)
         /// This places significant limits on how it can be used.

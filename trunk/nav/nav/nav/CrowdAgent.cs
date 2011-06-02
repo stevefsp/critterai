@@ -138,7 +138,7 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets the current agent configuration.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The current agent configuration.</returns>
         public CrowdAgentParams GetConfig()
         {
             CrowdAgentParams config = new CrowdAgentParams();

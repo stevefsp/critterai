@@ -64,9 +64,10 @@ namespace org.critterai.nav
         /// <p>A value of zero indicates the edge has no polygon connection.
         /// (It makes up the border of the navigation mesh.)</p>
         /// <p>The polygon id can be found as follows:
-        /// (int)neighborPolyRefs[n] &amp; 0xff</p>
+        /// <c>(int)neighborPolyRefs[n] &amp; 0xff</c></p>
         /// <p>The edge is an external (portal) edge if the following test
-        /// is TRUE: (neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</p>
+        /// is TRUE: 
+        /// <c>(neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</c></p>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray
             , SizeConst = Navmesh.MaxAllowedVertsPerPoly)]
@@ -93,7 +94,7 @@ namespace org.critterai.nav
         private byte mAreaAndType;		
 	
         /// <summary>
-        /// The polygon's area id.
+        /// The polygon's user defined area id.
         /// </summary>
         public byte Area
         {

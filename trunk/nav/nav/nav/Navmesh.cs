@@ -44,7 +44,8 @@ namespace org.critterai.nav
     /// The object state may be equal.  But the references are not.
     /// </p>
     /// <p>This class does not implement any asynchronous methods.  So the
-    /// result status of all methods will contain a success or failure flag.
+    /// result status of all methods will contain always contain either
+    /// a success or failure flag.
     /// </p>
     /// <p>This class is not compatible with Unity serialization. Manual
     /// serialization can be implemented using the 
@@ -223,7 +224,7 @@ namespace org.critterai.nav
         /// <param name="x">The tile's grid x-location.</param>
         /// <param name="z">The tiles's grid z-location.</param>
         /// <param name="layer">The tiles layer.</param>
-        /// <returns></returns>
+        /// <returns>The tile at the specified grid location.</returns>
         public NavmeshTile GetTile(int x, int z, int layer)
         {
             IntPtr tile = NavmeshEx.GetTile(root, x, z, layer);
@@ -270,7 +271,7 @@ namespace org.critterai.nav
         /// Gets a tile using its reference id.
         /// </summary>
         /// <param name="tileRef">The reference id of the tile.</param>
-        /// <returns>The tile, or null if none was found.</returns>
+        /// <returns>The tile, or NULL if none was found.</returns>
         public NavmeshTile GetTileByRef(uint tileRef)
         {
             IntPtr tile = NavmeshEx.GetTileByRef(root, tileRef);

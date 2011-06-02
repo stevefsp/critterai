@@ -100,7 +100,8 @@ namespace org.critterai.nav
         /// </remarks>
         /// <param name="buffer">The buffer to load the state into.
         /// [Size: >= <see cref="GetStateSize"/>]</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the operation.
+        /// </returns>
         public NavStatus GetState(byte[] buffer)
         {
             if (mOwner.IsDisposed || buffer == null)
@@ -117,7 +118,8 @@ namespace org.critterai.nav
         /// (Obtained from the <see cref="GetState"/> method.)
         /// </summary>
         /// <param name="stateData">The state data to apply.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the operation.
+        /// </returns>
         public NavStatus SetState(byte[] stateData)
         {
             if (mOwner.IsDisposed || stateData == null)

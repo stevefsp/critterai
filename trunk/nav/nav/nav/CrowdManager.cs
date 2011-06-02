@@ -299,7 +299,7 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="agentParams">The agent configuration.</param>
         /// <returns>A reference to the agent object created by the manager,
-        /// or null on error.</returns>
+        /// or NULL on error.</returns>
         public CrowdAgent AddAgent(float[] position
             , CrowdAgentParams agentParams)
         {

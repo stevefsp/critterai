@@ -71,10 +71,10 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Constructs a tile from a data buffer created by 
+        /// Constructs a tile from a serialized data created by 
         /// <see cref="GetData"/>.
         /// </summary>
-        /// <param name="rawTileData"></param>
+        /// <param name="rawTileData">The serialized tile data.</param>
         public NavmeshTileData(byte[] rawTileData)
         {
             if (rawTileData == null)
@@ -95,9 +95,9 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets a copy of the tile's data buffer.
+        /// Gets a serialized copy of the tile's data buffer.
         /// </summary>
-        /// <returns>A copy of the tile's data buffer.</returns>
+        /// <returns>A serialized copy of the tile's data buffer.</returns>
         public byte[] GetData()
         {
             if (mData == IntPtr.Zero)
