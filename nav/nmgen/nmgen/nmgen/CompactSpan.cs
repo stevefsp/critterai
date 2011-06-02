@@ -99,7 +99,8 @@ namespace org.critterai.nmgen
         /// See the <see cref="CompactHeightfield"/> documentation for details.
         /// </p>
         /// </remarks>
-        /// <param name="direction">The direction. (0 &lt;= value &lt; 4)
+        /// <param name="direction">The direction. 
+        /// [Limits: 0 &lt;= value &lt; 4]
         /// </param>
         /// <returns>The connection data for the specified direction,
         /// or <see cref="NotConnected"/> if there is no connection.</returns>
@@ -115,8 +116,8 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>The span's height in world units can be derived as follows:
         /// <br/>
-        /// <code>fieldBoundsMin[1] + ((Floor + Height) * fieldYCellSize)
-        /// </code></p>
+        /// <c>fieldBoundsMin[1] + ((Floor + Height) * fieldYCellSize)
+        /// </c></p>
         /// </remarks>
         public byte Height { get { return (byte)(mPacked >> 24); } }
 
@@ -127,7 +128,8 @@ namespace org.critterai.nmgen
         /// <p>The direction value will be automatically wrapped.  So the
         /// a value of 6 will be interpreted as 2.</p>
         /// </remarks>
-        /// <param name="direction">The direction. (0 &lt;= value &lt; 4)</param>
+        /// <param name="direction">The direction.
+        /// [Limits: 0 &lt;= value &lt; 4]</param>
         /// <returns>The width offset to the apply to the current cell position
         /// to move in the direction.</returns>
         public static int GetDirOffsetX(int direction)
@@ -142,7 +144,8 @@ namespace org.critterai.nmgen
         /// <p>The direction value will be automatically wrapped.  So the
         /// a value of 6 will be interpreted as 2.</p>
         /// </remarks>
-        /// <param name="direction">The direction. (0 &lt;= value &lt; 4)</param>
+        /// <param name="direction">The direction.
+        /// [Limits: 0 &lt;= value &lt; 4]</param>
         /// <returns>The depth offset to the apply to the current cell position
         /// to move in the direction.</returns>
         public static int GetDirOffsetZ(int direction)

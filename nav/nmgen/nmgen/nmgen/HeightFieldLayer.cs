@@ -183,7 +183,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool GetHeightData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -199,7 +199,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool GetAreaData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -215,7 +215,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool GetConnectionData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)

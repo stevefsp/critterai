@@ -39,8 +39,8 @@ namespace org.critterai.nmgen
     /// But it is best to set the fields using the properties since
     /// they will enforce valid min/max limits.</p>
     /// <p>All properties and methods will auto-limit parameters
-    /// to valid values. For example, if the <see cref="TileSize"/>property
-    /// is set to -1, the field will be set to the minimum allowed value of 1.
+    /// to valid values. For example, if the <see cref="TileSize"/> property
+    /// is set to -1, the field will be set to the minimum allowed value of 0.
     /// </p>
     /// <p>Fields are minimally documented.  See the property documentation
     /// for details.</p>
@@ -157,7 +157,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The width of the heightfield along the x-axis.
-        /// [Limit: >0] [Units: CellSize (XZ)]
+        /// [Limit: >0] [Units: XZCellSize]
         /// </summary>
         /// <remarks><p>Often a derived value.</p></remarks>
         public int Width
@@ -168,7 +168,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The depth of the heightfield along the z-axis.
-        /// [Limit: >=0] [Units: CellSize (XZ)]
+        /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks><p>Often a derived value.</p></remarks>
         public int Depth
@@ -253,7 +253,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The y-axis voxel size to use when sampling the source geometry.
-        /// Limit >= <see cref="NMGen.MinCellSize"/>]
+        /// [Limit >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
         /// <p>Also the 'voxel size' for the y-axis.</p>
@@ -268,7 +268,7 @@ namespace org.critterai.nmgen
         /// Minimum floor to 'ceiling' height that will still allow the
         /// floor area to be considered walkable. 
         /// [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
-        /// [Units: CellSize (Y)]
+        /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
         /// <p>Permits detection of overhangs in the source geometry that make 
@@ -282,7 +282,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Maximum ledge height that is considered to still be traversable.
-        /// [Limit: >=0] [Units: CellSize (Y)]
+        /// [Limit: >=0] [Units: YCellSize]
         /// </summary>
         /// <remarks>
         /// <p>Allows the mesh to flow over low lying obstructions such as
@@ -313,7 +313,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Represents the closest any part of a mesh should get to an
         /// obstruction in the source geometry.
-        /// [Limit: >=0] [Units: CellSize (XZ)]
+        /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks>
         ///  Usually the client radius.
@@ -327,7 +327,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// The closest the mesh should come to the xz-plane AABB of the
         /// source geometry.
-        /// [Limit: >=0] [Units: CellSize (XZ)]
+        /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         public int BorderSize
         {
@@ -337,7 +337,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The maximum allowed length for edges on the border of the
-        /// mesh. [Limit: >=0] [Units: CellSize (XZ)]
+        /// mesh. [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks>
         /// <p>Extra vertices will be inserted if needed.</p>
@@ -364,7 +364,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Sets the sampling distance to use when matching the
-        /// mesh surface to the source geometry. (Provides height detail.)
+        /// mesh surface to the source geometry. (For height detail only.)
         /// [Limits: 0 or >= 0.9] [Units: World]
         /// </summary>
         public float DetailSampleDistance
@@ -386,7 +386,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum number of cells allowed to form isolated island meshes.
-        /// [Limit: >=0] [Units: CellSize (XZ)]
+        /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks>
         /// <p>Prevents the formation of meshes that are too small to be
@@ -401,7 +401,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Any regions with an cell count smaller than this value will, 
         /// if possible, be merged with larger regions.
-        /// [Limit: >=0] [Units: CellSize (XZ)]
+        /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         public int MergeRegionArea
         {

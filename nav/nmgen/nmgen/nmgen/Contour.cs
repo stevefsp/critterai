@@ -33,12 +33,13 @@ namespace org.critterai.nmgen
     /// form a simple polygon when projected onto the xz-plane.</p>
     /// <p>Minimum bounds and cell size information is needed in order to
     /// translate vertex coordinates into world space.</p>
-    /// <p>worldX = boundsMin[0] + vertX * xzCellSize<br/>
-    /// worldY = boundsMin[1] + vertY * yCellSize<br/>
-    /// worldZ = boundsMin[2] + vertZ * xzCellSize<br/>
-    /// </p>
-    /// <p>A contour generally only exists within the context of
-    /// a <see cref="ContourSet"/>.</p>
+    /// <code>
+    /// worldX = boundsMin[0] + vertX * xzCellSize
+    /// worldY = boundsMin[1] + vertY * yCellSize
+    /// worldZ = boundsMin[2] + vertZ * xzCellSize
+    /// </code>
+    /// <p>A contour only exists within the context of a 
+    /// <see cref="ContourSet"/>.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
@@ -49,6 +50,12 @@ namespace org.critterai.nmgen
         /// The mask to apply to the forth element of the vertices data in 
         /// order to extract region ids. (Removes flags from the element.)
         /// </summary>
+        /// <remarks>
+        /// Example:
+        /// <code>
+        /// int region = verts[i * 4 + 3] &amp; Contour.RegionMask;
+        /// </code>
+        /// </remarks>
         public const int RegionMask = 0xfff;
 
 	    private IntPtr mVerts;			// int[vertCount * 4]
@@ -112,8 +119,8 @@ namespace org.critterai.nmgen
         /// disposal.)
         /// </summary>
         /// <remarks>
-        /// <p>A <see cref="ContourSet"/> always ownes and manages objects
-        /// of this type.</p>
+        /// <p>Objects of this type are always owned by a 
+        /// <see cref="ContourSet"/> object, which manages its disposal.</p>
         /// </remarks>
         public void RequestDisposal()
         {
@@ -128,12 +135,13 @@ namespace org.critterai.nmgen
         /// <p>The simplified contour is a version of the raw contour with
         /// all 'unnecessary' vertices removed.  Whether a vertex is
         /// considered unnecessary depends on the contour build process.</p>
-        /// <p>The data is represented as follows: (x, y, z, r) * VertCount.</p>
+        /// <p>The data is represented as follows: 
+        /// <c>(x, y, z, r) * VertCount</c>.</p>
         /// <p>A contour edge is formed by the current and next vertex. The
         /// r-value indicates the region and connection information for
         /// the edge.</p>
         /// <p>The region id is obtained by applying <see cref="RegionMask"/>.
-        /// E.g. regionId = (vert[i * 4 + 3] &amp; RegionMask)</p>
+        /// E.g. <c>regionId = (vert[i * 4 + 3] &amp; RegionMask)</c></p>
         /// <p>The edge is not connected if the region id is 
         /// <see cref="NMGen.NullRegion"/>.</p>
         /// <p>If the r-value has the <see cref="ContourFlags.AreaBorder"/>
@@ -142,7 +150,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool GetVerts(int[] buffer)
         {
             if (IsDisposed)
@@ -163,7 +171,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool GetRawVerts(int[] buffer)
         {
             if (IsDisposed)

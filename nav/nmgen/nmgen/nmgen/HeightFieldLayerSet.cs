@@ -100,7 +100,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="index">The layer. 
         /// [Limit: 0 &lt;= value &lt; LayerCount]</param>
-        /// <returns></returns>
+        /// <returns>The layer, or NULL on error.</returns>
         public HeightfieldLayer GetLayer(int index)
         {
             if (IsDisposed || index < 0 || index >= mLayerCount)
@@ -115,7 +115,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="field">The source field.</param>
-        /// <returns>The resulting layer set, or null on failure.</returns>
+        /// <returns>The resulting layer set, or NULL on failure.</returns>
         public static HeightfieldLayerSet Build(BuildContext context
             , CompactHeightfield field)
         {

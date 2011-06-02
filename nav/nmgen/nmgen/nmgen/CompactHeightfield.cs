@@ -67,15 +67,15 @@ namespace org.critterai.nmgen
     ///             
     ///             for (int dir = 0; dir &lt; 4; ++dir)
     ///             {
-    ///                 if (s.GetConnection(dir) != RC_NOT_CONNECTED)
+    ///                 if (s.GetConnection(dir) != CompactSpan.NotConnected)
     ///                 {
-    ///                     int ax = x + CompactSpan.GetDirOffsetX(dir);
-    ///                     int az = z + CompactSpan.GetDirOffsetZ(dir);
-    ///                     int ai = (int)cells[ax + ay * w].Index 
+    ///                     int nx = x + CompactSpan.GetDirOffsetX(dir);
+    ///                     int nz = z + CompactSpan.GetDirOffsetZ(dir);
+    ///                     int ni = (int)cells[ax + az * w].Index 
     ///                         + s.GetConnection(dir);
     ///                    
-    ///                     // ai represents the index of the neighbor.
-    ///                     // So spans[ai], areas[ai], directions[ai]
+    ///                     // ni represents the index of the neighbor.
+    ///                     // So spans[ni], areas[ni], directions[ni]
     ///                     // gets the neighbor.
     ///                 }
     ///             }
@@ -153,13 +153,14 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The smallest span can be 
-        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</p>
         /// <p>A width or depth value within the field can be converted
-        /// to world units as follows:<br/>
-        /// boundsMin[0] + (width * XZCellSize)<br/>
-        /// boundsMin[2] + (depth * XZCellSize)</p>
+        /// to world units as follows:</p>
+        /// <code>
+        /// boundsMin[0] + (width * XZCellSize)
+        /// boundsMin[2] + (depth * XZCellSize)
+        /// </code>
         /// </remarks>
-        /// 
         public float XZCellSize { get { return mXZCellSize; } }
 
         /// <summary>
@@ -167,9 +168,9 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The smallest span can be 
-        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</p>
         /// <p>A height within the field is converted to world units
-        /// as follows: boundsMin[1] + (height * YCellSize)</p>
+        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></p>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -378,7 +379,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool ApplyMedianFilter(BuildContext context)
         {
             if (IsDisposed)
@@ -403,7 +404,7 @@ namespace org.critterai.nmgen
         /// [Form: (x, y, z)]
         /// </param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
             , float[] boundsMin
             , float[] boundsMax
@@ -437,7 +438,7 @@ namespace org.critterai.nmgen
         /// <param name="yMin">The height of the base of the polygon.</param>
         /// <param name="yMax">The height of the top of the polygon.</param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkConvexPolyArea(BuildContext context
             , float[] verts
             , float yMin
@@ -470,7 +471,7 @@ namespace org.critterai.nmgen
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
             , float[] centerBase
             , float radius
@@ -498,7 +499,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool BuildDistanceField(BuildContext context)
         {
             if (IsDisposed)
@@ -530,7 +531,7 @@ namespace org.critterai.nmgen
         /// <param name="mergeRegionArea">The maximum region size that will be
         /// considered for merging with another region.
         /// (In voxels.)</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool BuildRegions(BuildContext context
             , int borderSize
             , int minRegionArea
@@ -569,7 +570,7 @@ namespace org.critterai.nmgen
         /// <param name="mergeRegionArea">The maximum region size that will be
         /// considered for merging with another region.
         /// (In voxels.)</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public bool BuildRegionsMonotone(BuildContext context
             , int borderSize
             , int minRegionArea
@@ -595,7 +596,7 @@ namespace org.critterai.nmgen
         /// that is still considered walkable.</param>
         /// <param name="walkableStep">The maximum floor to floor step
         /// that is still considered walkable.</param>
-        /// <returns>True if the operation completed successfully.</returns>
+        /// <returns>TRUE if the operation completed successfully.</returns>
         public static CompactHeightfield Build(BuildContext context
             , Heightfield sourceField
             , int walkableHeight

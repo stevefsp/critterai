@@ -97,13 +97,14 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The smallest span can be 
-        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</p>
         /// <p>A width or depth value within the field can be converted
-        /// to world units as follows:<br/>
-        /// boundsMin[0] + (width * XZCellSize)<br/>
-        /// boundsMin[2] + (depth * XZCellSize)</p>
+        /// to world units as follows:</p>
+        /// <code>
+        /// boundsMin[0] + (width * XZCellSize)
+        /// boundsMin[2] + (depth * XZCellSize)
+        /// </code>
         /// </remarks>
-        /// 
         public float XZCellSize { get { return mXZCellSize; } }
 
         /// <summary>
@@ -111,9 +112,9 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>The smallest span can be 
-        /// XZCellSize width * XZCellSize depth * YCellSize height.</p>
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</p>
         /// <p>A height within the field is converted to world units
-        /// as follows: boundsMin[1] + (height * YCellSize)</p>
+        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></p>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -131,10 +132,10 @@ namespace org.critterai.nmgen
         /// Constructor
         /// </summary>
         /// <param name="width">The width of the field. 
-        /// [Limits: >= 1] [Units: Cells]
+        /// [Limit: >= 1] [Units: Cells]
         /// </param>
         /// <param name="depth">The depth of the field.
-        /// [Limits: >= 1] [Units: Cells]
+        /// [Limit: >= 1] [Units: Cells]
         /// </param>
         /// <param name="boundsMin">The minimum bounds of the field's AABB.
         /// [Form: (x, y, z)] [Units: World]
@@ -142,10 +143,12 @@ namespace org.critterai.nmgen
         /// <param name="boundsMax">The maximum bounds of the field's AABB.
         /// [Form: (x, y, z)] [Units: World]
         /// </param>
-        /// <param name="xzCellSize">The xz-plane cell size. [Units: World]
-        /// (>= <see cref="NMGen.MinCellSize"/>)</param>
-        /// <param name="yCellSize">The y-axis span increments. [Units: World]
-        /// (>= <see cref="NMGen.MinCellSize"/>)</param>
+        /// <param name="xzCellSize">The xz-plane cell size.
+        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// </param>
+        /// <param name="yCellSize">The y-axis span increments. 
+        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// </param>
         public Heightfield(int width
             , int depth
             , float[] boundsMin
@@ -260,10 +263,12 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <p>Example of test: 
-        /// Math.Abs(currentSpan.Max - neighborSpan.Max) &lt; walkableStep
+        /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) &lt; walkableStep
+        /// </c>
         /// </p>
         /// <p>Allows the formation of walkable regions that will flow over low
-        /// lying objects such as curbs, or up structures such as stairways.</p>
+        /// lying objects such as curbs, and up structures such as stairways.
+        /// </p>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableStep">The maximum allowed difference between
@@ -287,7 +292,7 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>A ledge is a span with neighbor whose maximum further away than
         /// walkableStep.  Example: 
-        /// Math.Abs(currentSpan.Max - neighborSpan.Max) > walkableStep
+        /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) > walkableStep</c>
         /// </p>
         /// <p>This method removes the impact of the overestimation of
         /// conservative voxelization so the resulting mesh will not have 
@@ -347,7 +352,7 @@ namespace org.critterai.nmgen
         /// <param name="verts">The triangle vertices.
         /// [Form: (ax, ay, ax, bx, by, bz, cx, cy, cz)]</param>
         /// <param name="area">The id of the area the triangle belongs to.
-        /// (&lt;= <see cref="NMGen.WalkableArea"/>)</param>
+        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>]</param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
@@ -371,7 +376,7 @@ namespace org.critterai.nmgen
         /// Voxelizes the triangles in the provided mesh into the heightfield.
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
-        /// <param name="mesh"></param>
+        /// <param name="mesh">The triangle mesh.</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
         /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] 
         /// [Size: >= mesh.triCount]
@@ -413,7 +418,7 @@ namespace org.critterai.nmgen
         /// [Form: vertAIndex, vertBIndex, vertCIndex) * triCount] 
         /// (No buffering allowed.)</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt;= <see cref="NMGen.WalkableArea"/>) (Size: >= triCount)
+        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] [Size: >= triCount]
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
@@ -445,7 +450,7 @@ namespace org.critterai.nmgen
         /// <param name="verts">The triangles.
         /// [Form: (ax, ay, az, bx, by, bz, cx, by, cx) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// (&lt;= <see cref="NMGen.WalkableArea"/>) [Size: >= triCount]</param>
+        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] [Size: >= triCount]</param>
         /// <param name="triCount">The number of triangles in the vertex
         /// array.</param>
         /// <param name="flagMergeThreshold">The distance where the

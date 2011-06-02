@@ -37,8 +37,9 @@ namespace org.critterai.nmgen
     /// meta-data representing region and area membership, as well as user 
     /// defined flags.
     /// </p>
-    /// <p>This object is not normally built manually.  Instead it is built
-    /// using one of the standard build processes.</p>
+    /// <p>This object is normally built using one of the standard build 
+    /// processes.  E.g. <see cref="Build"/> 
+    /// and <see cref="NMGen.BuildPolyMesh"/>.</p>
     /// <p>This class is not compatible with Unity serialization.</p>
     /// <p>Behavior is undefined if an object is used after disposal.</p>
     /// </remarks>
@@ -84,6 +85,7 @@ namespace org.critterai.nmgen
         /// The world space minimum bounds of the mesh's AABB. 
         /// [Form: (x, y, z)]
         /// </summary>
+        /// <returns>The minimum bounds of the mesh.</returns>
         public float[] GetBoundsMin() 
         { 
             return (float[])root.boundsMin.Clone(); 
@@ -93,6 +95,7 @@ namespace org.critterai.nmgen
         /// The world space maximum bounds of the mesh's AABB.
         /// [Form: (x, y, z)]
         /// </summary>
+        /// <returns>The maximum bounds of the mesh.</returns>
         public float[] GetBoundsMax() 
         { 
             return (float[])root.boundsMax.Clone(); 
@@ -110,18 +113,19 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum floor to 'ceiling' height used to build the polygon
-        /// mesh.
+        /// mesh.  [Units: World]
         /// </summary>
         public float WalkableHeight { get { return mWalkableHeight; } }
 
         /// <summary>
         /// The radius used to erode the walkable area of the mesh.
+        ///  [Units: World]
         /// </summary>
         public float WalkableRadius { get { return mWalkableRadius; } }
 
         /// <summary>
         /// The maximum traversable ledge height used to build the polygon
-        /// mesh.
+        /// mesh. [Units: World]
         /// </summary>
         public float WalkableStep { get { return mWalkableStep; } }
 
@@ -137,6 +141,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The AABB border size applied during the build of the mesh.
+        ///  [Units: XZCellSize]
         /// </summary>
         public int BorderSize { get { return root.borderSize; } }
 
@@ -274,7 +279,7 @@ namespace org.critterai.nmgen
         /// Loads the data into the mesh buffers, overwriting existing content.
         /// </summary>
         /// <param name="data">The data to load.</param>
-        /// <remarks>TRUE if the load was successful.</remarks>
+        /// <returns>TRUE if the load was successful.</returns>
         public bool Load(PolyMeshData data)
         {
             int vcount = (data.verts == null || data.vertCount < 3 ?
@@ -371,8 +376,9 @@ namespace org.critterai.nmgen
         /// Loads the data from the mesh buffers into the data object.
         /// </summary>
         /// <remarks>
-        /// <p>If the buffer argument is null, a new buffer will be returned.
-        /// If the buffer is too small it will be resized.</p>
+        /// <p>A new buffer will be returned ff the buffer argument is NULL.</p>
+        /// <p>The buffer will be automatically resized if it is too small
+        /// to hold the result.</p>
         /// <p>Only the used portions of the mesh buffers are copied.</p>
         /// </remarks>
         /// <param name="buffer">A buffer to load the data into.</param>
@@ -500,12 +506,12 @@ namespace org.critterai.nmgen
         /// <param name="maxVertsPerPoly">The maximum allowed vertices for
         /// a polygon.</param>
         /// <param name="walkableHeight">The walkable height used to build
-        /// the contour data. [Units: CellSize (Y)]</param>
+        /// the contour data. [Units: YCellSize]</param>
         /// <param name="walkableRadius">The radius used to erode the
-        /// walkable area covered by the contours. [Units: CellSize (XZ)]</param>
+        /// walkable area covered by the contours. [Units: XZCellSize]</param>
         /// <param name="walkableStep">The walkable step used to build
-        /// the contour data. [Units: CellSize (Y)]</param>
-        /// <returns>The generated polygon mesh, or null if there were errors.
+        /// the contour data. [Units: YCellSize]</param>
+        /// <returns>The generated polygon mesh, or NULL if there were errors.
         /// </returns>
         public static PolyMesh Build(BuildContext context
             , ContourSet contours
