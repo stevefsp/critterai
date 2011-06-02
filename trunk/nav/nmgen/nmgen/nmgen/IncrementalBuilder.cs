@@ -32,10 +32,10 @@ namespace org.critterai.nmgen
     /// <remarks>
     /// <p>This class is useful for instances where not all the build steps
     /// should occur in a single step.  (Such as when a GUI needs to
-    /// provided feedback.)  The time to perform each increment will not be
+    /// provid feedback.)  The time to perform each increment will not be
     /// equal.  Rather the increments are broken down by steps in the build
     /// process.  E.g. Voxelize geometry, build regions, etc.</p>
-    /// <p>Each instance can be used to perform a single build.</p>
+    /// <p>Each instance can be used to perform only a single build.</p>
     /// </remarks>
     public sealed class IncrementalBuilder
     {
@@ -52,9 +52,13 @@ namespace org.critterai.nmgen
         private Object mSecondary;
 
         /// <summary>
-        /// The current state of the builder. (The build step that
-        /// will occur then next time rhe <see cref="Build"/> method called.
+        /// The current state of the builder.
         /// </summary>
+        /// <remarks>
+        /// If the value is an unfinished state, then it represents the 
+        /// build step that will occur the next time the <see cref="Build"/> 
+        /// method called.
+        /// </remarks>
         public BuildState State { get { return mState; } }
 
         /// <summary>
@@ -70,7 +74,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The <see cref="PolyMesh"/> created by the build, or null if no
+        /// The <see cref="PolyMesh"/> created by the build, or NULL if no
         /// mesh is available.
         /// </summary>
         public PolyMesh PolyMesh
@@ -84,7 +88,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The <see cref="PolyMeshDetail"/> created by the build, or null
+        /// The <see cref="PolyMeshDetail"/> created by the build, or NULL
         /// if no mesh is available.
         /// </summary>
         public PolyMeshDetail DetailMesh

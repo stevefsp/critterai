@@ -40,10 +40,11 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <p>Minimum bounds and cell size is used to convert vertex 
         /// coordinates into world space.</p>
-        /// <p>worldX = boundsMin[0] + vertX * xzCellSize<br/>
-        /// worldY = boundsMin[1] + vertY * yCellSize<br/>
-        /// worldZ = boundsMin[2] + vertZ * xzCellSize<br/>
-        /// </p>
+        /// <code>
+        /// worldX = boundsMin[0] + vertX * xzCellSize
+        /// worldY = boundsMin[1] + vertY * yCellSize
+        /// worldZ = boundsMin[2] + vertZ * xzCellSize
+        /// </code>
         /// </remarks>
         public ushort[] verts;
 
@@ -135,22 +136,22 @@ namespace org.critterai.nmgen
         public float yCellSize;
 
         /// <summary>
-        /// The AABB border size used to build the mesh. [Units: CellSize (XZ)]
+        /// The AABB border size used to build the mesh. [Units: XZCellSize]
         /// </summary>
         public int borderSize;
 
         /// <summary>
-        /// The walkable height used to build the mesh.
+        /// The walkable height used to build the mesh. [Units: World]
         /// </summary>
         public float walkableHeight;
 
         /// <summary>
-        /// The walkable raduius used to build the mesh.
+        /// The walkable radius used to build the mesh. [Units: World]
         /// </summary>
         public float walkableRadius;
 
         /// <summary>
-        /// The maximum walkable step used to build the mesh.
+        /// The maximum walkable step used to build the mesh. [Units: World]
         /// </summary>
         public float walkableStep;
 

@@ -76,7 +76,7 @@ namespace org.critterai.nmgen
         /// since each sub-mesh is independantly defined.</p>
         /// <p>The first group of vertices for each sub-mesh are in the same
         /// order as the vertices for the sub-mesh's associated 
-        /// <see cref="PolyMesh"/>polygon.  These vertices are followed by 
+        /// <see cref="PolyMesh"/> polygon.  These vertices are followed by 
         /// any additional detail vertices.  So it the associated polygon has 
         /// 5 vertices, the sub-mesh will have a minimum of 5 vertices and the 
         /// first 5 vertices will be equivalent to the 5 polygon vertices.</p>
@@ -85,7 +85,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The mesh triangles.
-        /// [Form: vertIndexA, vertIndexB, vertIndexC, flag) * triCount]
+        /// [Form: (vertIndexA, vertIndexB, vertIndexC, flag) * triCount]
         /// [Size: >= 4 * triCount]
         /// </summary>
         /// <remarks>

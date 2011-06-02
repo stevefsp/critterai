@@ -156,7 +156,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="index">The contour index. 
         /// [Limits: 0 &lt; value &lt; <see cref="Count"/>]</param>
-        /// <returns></returns>
+        /// <returns>The contour, or NULL on failure.</returns>
         public Contour GetContour(int index)
         {
             if (IsDisposed || index < 0 || index >= root.contourCount)
@@ -194,11 +194,11 @@ namespace org.critterai.nmgen
         /// (Must have region data.)</param>
         /// <param name="edgeMaxDeviation">The maximum distance a simplified
         /// edge may deviate from the raw contour's vertices.
-        /// [Limits: >= 0]</param>
+        /// [Limit: >= 0]</param>
         /// <param name="maxEdgeLength">The maximum allowed length of a 
-        /// simplified edge. [Limits: >= 0]</param>
-        /// <param name="flags"></param>
-        /// <returns></returns>
+        /// simplified edge. [Limit: >= 0]</param>
+        /// <param name="flags">The build flags.</param>
+        /// <returns>The contour set, or NULL on failure.</returns>
         public static ContourSet Build(BuildContext context
             , CompactHeightfield field
             , float edgeMaxDeviation
