@@ -52,8 +52,7 @@ namespace org.critterai
 
         /// <summary>
         /// Derives the normalized direction vector from point A (ax, ay) 
-        /// to point B (bx, by).
-        /// <p>WARNING: This is a costly method.</p>
+        /// to point B (bx, by). WARNING: This is a costly method.
         /// </summary>
         /// <param name="ax">The x-value for the starting point A (ax, ay).
         /// </param>
@@ -160,8 +159,7 @@ namespace org.critterai
 
         /// <summary>
         /// Normalizes the provided vector such that its length is equal to 
-        /// one.
-        /// <p>WARNING: This is a costly method.</p>
+        /// one. WARNING: This is a costly method.
         /// </summary>
         /// <param name="x">The x-value of the vector (x, y).</param>
         /// <param name="y">The y-value of the vector (x, y).</param>
@@ -185,7 +183,7 @@ namespace org.critterai
 
         /// <summary>
         /// Scales the vector to the provided length.
-        /// <p>WARNING: This is a costly method.</p>
+        /// WARNING: This is a costly method.
         /// </summary>
         /// <param name="x">The x-value of the vector (x, y).</param>
         /// <param name="y">The y-value of the vector (x, y).</param>
@@ -201,7 +199,7 @@ namespace org.critterai
 
         /// <summary>
         /// Scales the vector to the provided length.
-        /// <p>WARNING: This is a costly method.</p>
+        /// WARNING: This is a costly method.
         /// </summary>
         /// <param name="v">The vector to scale.</param>
         /// <param name="length">The length to scale the vector to.</param>

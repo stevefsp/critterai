@@ -203,7 +203,7 @@ namespace org.critterai.geom
         
         /// <summary>
         /// Returns the normalized vector that is perpendicular to line AB.
-        /// <p>WARNING: This is an expensive method.</p>
+        /// WARNING: This is an expensive method.
         /// </summary>
         /// <remarks>
         /// <p>The direction of the vector will be to the right when viewed 

@@ -34,7 +34,7 @@ namespace org.critterai.geom
     {
         /// <summary>
         /// Returns the area of the triangle ABC.
-        /// <p>WARNING: This is an costly method.</p>
+        /// WARNING: This is an costly method.
         /// </summary>
         /// <remarks>
         /// <p>If the value is only needed for comparison with other triangles, 
@@ -108,7 +108,7 @@ namespace org.critterai.geom
         
         /// <summary>
         /// Returns the normal for the  triangle.
-        /// <p>WARNING: This is a costly method.</p>
+        /// WARNING: This is a costly method.
         /// </summary>
         /// <remarks>
         /// <p>The normal of a triangle is the vector perpendicular 
@@ -147,7 +147,7 @@ namespace org.critterai.geom
 
         /// <summary>
         /// Returns the normal for the  triangle.
-        /// <p>WARNING: This is a costly method.</p>
+        /// WARNING: This is a costly method.
         /// </summary>
         /// <remarks>
         /// <p>The normal of a triangle is the vector perpendicular 
@@ -157,8 +157,8 @@ namespace org.critterai.geom
         /// </remarks>
         /// <param name="vertices">An array of vertices which contains a 
         /// representation of triangles in the form 
-        /// (ax, ay, az, bx, by, bz, cx, cy, cz).  The wrap direction is 
-        /// expected to be clockwise.</param>
+        /// The wrap direction is  expected to be clockwise.
+        /// [Form:(x, y, z) * 3]</param>
         /// <param name="startVertIndex">The index of the first vertex 
         /// in the triangle.</param>
         /// <returns>The normal for the  triangle.</returns>
