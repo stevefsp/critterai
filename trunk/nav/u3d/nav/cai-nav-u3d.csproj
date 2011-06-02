@@ -32,6 +32,10 @@
     <DocumentationFile>..\..\bin\Release\cai-nav-u3d.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boo.Lang, Version=2.0.9.5, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\unity\Boo.Lang.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
