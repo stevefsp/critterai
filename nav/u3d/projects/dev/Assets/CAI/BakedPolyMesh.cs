@@ -29,10 +29,8 @@ using org.critterai;
 /// <see cref="PolyMesh"/> and <see cref="PolyMeshDetail"/> objects at run-time.
 /// </summary>
 /// <remarks>
-/// <p>This component provides means of serializing mesh data
-/// in the Unity. (Since the detault <see cref="PolyMesh"/> and 
-/// <see cref="PolyMeshDetail"/> serialization methods are not compatible with 
-/// Unity serialization.)</p>
+/// <p>This component provides means of serializing polygon mesh data
+/// in the Unity.</p>
 /// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
@@ -49,18 +47,20 @@ public class BakedPolyMesh
      */
 
     /// <summary>
-    /// The configuation to use when baking the polygon mesh.
+    /// The configuation to use to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>This field can be set to null after baking.</p>
+    /// <p>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</p>
     /// </remarks>
     public NMGenBuildConfig buildConfig = null;
 
     /// <summary>
-    /// The source geometry used to bake the polygon mesh.
+    /// The source geometry to used to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>This field can be set to null after baking.</p>
+    /// <p>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</p>
     /// </remarks>
     public DSGeometry geomSource = null;
 
@@ -155,8 +155,12 @@ public class BakedPolyMesh
     }
 
     /// <summary>
-    /// TRUE if the polygon mesh debug visualization should be displayed.
+    /// TRUE to enable the polygon mesh debug visualization.
     /// </summary>
+    /// <remarks>
+    /// <p>Setting this value to TRUE will disable 
+    /// <see cref="DisplayDetailMesh"/>.</p>
+    /// </remarks>
     public bool DisplayPolyMesh
     {
         get { return mDisplayPolyMesh; }
@@ -173,9 +177,13 @@ public class BakedPolyMesh
     }
 
     /// <summary>
-    /// TRUE if the detail mesh debug visualization should be displayed.
+    /// TRUE to enable the detail mesh debug visualization.
     /// </summary>
-    public bool DisplayPolyMeshDetail
+    /// <remarks>
+    /// <p>Setting this value to TRUE will disable 
+    /// <see cref="DisplayPolyMesh"/>.</p>
+    /// </remarks>
+    public bool DisplayDetailMesh
     {
         get { return mDisplayDetailMesh; }
         set
@@ -191,9 +199,9 @@ public class BakedPolyMesh
     }
 
     /// <summary>
-    /// TRUE if the object contains baked data.
+    /// TRUE if the meshes are available. (Have been baked.)
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TRUE if the meshes are available.</returns>
     public bool HasMesh
     {
         get { return !(mPolyPack == null || mPolyPack.Length == 0); }
@@ -212,7 +220,7 @@ public class BakedPolyMesh
     /// source geometry used to build the mesh.</param>
     /// <param name="sourceBoundsMax">The maximum AABB bounds of the
     /// source geometry used to build the mesh.</param>
-    /// <returns></returns>
+    /// <returns>TRUE if the bake was successful.</returns>
     public bool Bake(PolyMesh polyMesh
         , PolyMeshDetail detailMesh
         , int sourceTriCount
@@ -305,7 +313,7 @@ public class BakedPolyMesh
     }
 
     /// <summary>
-    /// Clears all mesh data.
+    /// Clears all baked data.
     /// </summary>
     public void ClearMesh()
     {

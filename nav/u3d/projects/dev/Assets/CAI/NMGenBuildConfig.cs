@@ -23,8 +23,12 @@ using UnityEngine;
 using org.critterai.nmgen.u3d;
 
 /// <summary>
-/// Provides a navigation mesh build configuration.
+/// A configuration used to build polygon mesh data.
 /// </summary>
+/// <remarks>
+/// <p>The primary purpose of this class is for editing configurations
+/// in the Unity Editor.</p>
+/// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/NMGen Build Config")]
 public sealed class NMGenBuildConfig

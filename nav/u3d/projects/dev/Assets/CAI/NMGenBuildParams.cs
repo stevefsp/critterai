@@ -187,7 +187,7 @@ namespace org.critterai.nmgen.u3d
 
         /// <summary>
         /// The y-axis voxel size to use when sampling the source geometry.
-        /// Limit >= <see cref="NMGen.MinCellSize"/>]
+        /// [Limit: >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
         /// <p>Also the 'voxel size' for the y-axis.</p>
@@ -290,7 +290,7 @@ namespace org.critterai.nmgen.u3d
         /// <summary>
         /// Sets the sampling distance to use when matching the
         /// mesh surface to the source geometry.
-        /// (0 or >= 0.9)
+        /// [Limits: 0 or >= 0.9]
         /// </summary>
         public float DetailSampleDistance
         {
@@ -301,7 +301,7 @@ namespace org.critterai.nmgen.u3d
         /// <summary>
         /// The maximum distance the mesh surface should deviate from the
         /// surface of the source geometry. 
-        /// (>= 0)
+        /// [Limit: >= 0]
         /// </summary>
         public float DetailMaxDeviation
         {
@@ -311,7 +311,7 @@ namespace org.critterai.nmgen.u3d
 
         /// <summary>
         /// The minimum number of cells allowed to form isolated island meshes.
-        /// (>= 0)
+        /// [Limit: >= 0]
         /// </summary>
         /// <remarks>
         /// <p>Prevents the formation of meshes that are too small to be
@@ -326,7 +326,7 @@ namespace org.critterai.nmgen.u3d
         /// <summary>
         /// Any regions with an cell count smaller than this value will, 
         /// if possible, be merged with larger regions.
-        /// (>= 0)
+        /// [Limit: >= 0]
         /// </summary>
         public float MergeRegionArea
         {

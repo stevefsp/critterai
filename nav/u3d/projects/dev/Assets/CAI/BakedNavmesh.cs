@@ -28,9 +28,8 @@ using org.critterai.nav.u3d;
 /// <see cref="Navmesh"/> object at run-time.
 /// </summary>
 /// <remarks>
-/// <p>This component provides means of serializing navigation mesh data
-/// in the Unity. (Since the detault <see cref="Navmesh"/> 
-/// serialization method is not compatible with Unity serialization.)</p>
+/// <p>This component provides a means of serializing navigation mesh data
+/// in the Unity.</p>
 /// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
@@ -39,10 +38,11 @@ public sealed class BakedNavmesh
     : MonoBehaviour 
 {
     /// <summary>
-    /// The source data to use when baking the navigation mesh.
+    /// The source data to use to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// May be set to null after the mesh has been baked.
+    /// <p>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</p>
     /// </remarks>
     public DSTileData sourceData = null;
 
@@ -56,7 +56,7 @@ public sealed class BakedNavmesh
     private byte[] mDataPack = null;
 
     /// <summary>
-    /// Enables the debug visualization of the navigation mesh.
+    /// TRUE to display the debug visualization.
     /// </summary>
     public bool DisplayMesh
     {
@@ -70,9 +70,9 @@ public sealed class BakedNavmesh
     }
 
     /// <summary>
-    /// TRUE if the baked data is available.
+    /// TRUE if the navigation mesh is available. (Has been baked.)
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TRUE if the navigation mesh is available.</returns>
     public bool HasNavmesh()
     {
         return (mDataPack != null && mDataPack.Length > 0);
@@ -81,8 +81,8 @@ public sealed class BakedNavmesh
     /// <summary>
     /// Bakes the navigation mesh data for later use.
     /// </summary>
-    /// <param name="navmesh"></param>
-    /// <returns></returns>
+    /// <param name="navmesh">The navigation mesh to bake.</param>
+    /// <returns>TRUE if the bake was successful.</returns>
     public bool Bake(Navmesh navmesh)
     {
         if (navmesh == null || navmesh.IsDisposed)
@@ -97,7 +97,7 @@ public sealed class BakedNavmesh
     }
 
     /// <summary>
-    /// Clears all navigaiton mesh data.
+    /// Clears the baked data.
     /// </summary>
     public void ClearMesh()
     {
@@ -108,7 +108,7 @@ public sealed class BakedNavmesh
     /// <summary>
     /// Creates a new navigation mesh from the baked data.
     /// </summary>
-    /// <returns>A new navigation mesh. Or null if there is not baked
+    /// <returns>A new navigation mesh. Or null if there is no baked
     /// data.</returns>
     public Navmesh GetNavmesh()
     {

@@ -23,7 +23,7 @@ using UnityEngine;
 using org.critterai.geom;
 
 /// <summary>
-/// The base class for a component that provides triangle mesh data for use
+/// The base class for components that provide triangle mesh data for use
 /// by other components.
 /// </summary>
 public abstract class DSGeometry 
@@ -32,11 +32,12 @@ public abstract class DSGeometry
     /// <summary>
     /// TRUE if geometry data is available.
     /// </summary>
-    /// <returns>True if geometry data is available.</returns>
+    /// <returns>TRUE if geometry data is available.</returns>
     public abstract bool HasGeometry { get; }
 
     /// <summary>
-    /// Derives and returns the bounds of the geometry.
+    /// Derives and returns the bounds of the geometry. 
+    /// [Form: (minX, minY, minZ, maxX, maxY, maxZ)]
     /// </summary>
     /// <returns>The bounds of the geometry.</returns>
     public abstract float[] GetGeometryBounds();
@@ -44,6 +45,6 @@ public abstract class DSGeometry
     /// <summary>
     /// Gets the geometry.
     /// </summary>
-    /// <returns>The geometry, or null if geometry is not available.</returns>
+    /// <returns>The geometry, or NULL if geometry is not available.</returns>
     public abstract TriangleMesh GetGeometry();
 }

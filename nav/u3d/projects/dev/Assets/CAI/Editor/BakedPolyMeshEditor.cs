@@ -107,10 +107,10 @@ public class BakedPolyMeshEditor
         if (bo != bn)
             targ.DisplayPolyMesh = bn;
 
-        bo = targ.DisplayPolyMeshDetail;
+        bo = targ.DisplayDetailMesh;
         bn = EditorGUILayout.Toggle("Display Detail Mesh", bo);
         if (bo != bn)
-            targ.DisplayPolyMeshDetail = bn;
+            targ.DisplayDetailMesh = bn;
 
         EditorGUILayout.Separator();
 
