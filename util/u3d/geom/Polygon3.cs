@@ -42,9 +42,9 @@ namespace org.critterai.geom
         /// of the polygon is too small  to detect on both the (x, z) and 
         /// (x, y) planes, then this method may improperly return FALSE.</p>
         /// </remarks>
-        /// <param name="vertices">An array of vertices which contains a 
-        /// representation of polygons with an  arbitrary number of sides 
-        /// in the form (x1, y1, z1, x2, y2, z2, ..., xn, yn, zn).  
+        /// <param name="vertices">An array of vertices that contains a 
+        /// representation of polygons with an  arbitrary number of sides. 
+        /// [Form:(x, y, z) * vertexCount]  
         /// Wrap direction does not matter.</param>
         /// <param name="startVertIndex">The index of the first vertex 
         /// in the polygon.</param>
@@ -154,9 +154,9 @@ namespace org.critterai.geom
         /// vertices and out arrays are the same object.)</p>
         /// </remarks>
         /// <param name="vertices">An array of vertices which contains a 
-        /// representation of a polygon with an  arbitrary number of sides 
-        /// in the form (x1, y1, z1, x2, y2, z2, ..., xn, yn, zn).  
-        /// Wrap direction does not matter.</param>
+        /// representation of a polygon with an  arbitrary number of sides.  
+        /// Wrap direction does not matter.
+        /// [Form:(x, y, z) * vertexCount]</param>
         /// <param name="startVertIndex">The index of the first vertex in the 
         /// polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.
@@ -164,7 +164,7 @@ namespace org.critterai.geom
         /// <param name="result">The array to store the result in.</param>
         /// <param name="resultVectorIndex">The vector index in the out array
         /// to store the result in.  (The stride is expected to be three.  
-        /// So the insertion point will be outVectorIndex*3.)</param>
+        /// So the insertion point will be outVectorIndex * 3.)</param>
         /// <returns>A reference to the result argument.</returns>
         public static float[] GetCentroid(float[] vertices
                 , int startVertIndex
@@ -200,9 +200,10 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <param name="vertices">An array of vertices which contains a 
-        /// representation of a polygon with an arbitrary number of sides in 
-        /// the form (x1, y1, z1, x2, y2, z2, ..., xn, yn, zn).  
-        /// Wrap direction does not matter.</param>
+        /// representation of a polygon with an arbitrary number of sides.
+        /// Wrap direction does not matter.
+        /// [Form:(x, y, z) * vertexCount]
+        /// </param>
         /// <param name="startVertIndex">The index of the first vertex in 
         /// the polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.
@@ -237,8 +238,8 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <param name="vertices">An list of vertices which represent a 
-        /// polygon with an  arbitrary number of sides in the form 
-        /// (x1, y1, z1, x2, y2, z2, ..., xn, yn, zn).</param>
+        /// polygon with an  arbitrary number of sides.
+        /// [Form:(x, y, z) * vertexCount]</param>
         /// <returns>The centroid of a convex polygon.</returns>
         public static Vector3 GetCentroid(params float[] vertices)
         {
