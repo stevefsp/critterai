@@ -60,9 +60,11 @@ namespace org.critterai.geom
         /// </summary>
         /// <remarks>This constructor assigns the provided references
         /// to the object.  (No copying.)</remarks>
-        /// <param name="verts">The vertices.</param>
+        /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]
+        /// </param>
         /// <param name="vertCount">The number of vertices.</param>
-        /// <param name="tris">The triangles.</param>
+        /// <param name="tris">The triangles. 
+        /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
         /// <param name="triCount">The number of triangles.</param>
         public TriangleMesh(float[] verts
             , int vertCount

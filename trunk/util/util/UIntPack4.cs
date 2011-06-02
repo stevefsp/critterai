@@ -39,8 +39,9 @@ namespace org.critterai
         /// Sets the value of a slot. (Mutates the target.)
         /// </summary>
         /// <param name="target">The packed integer to update.</param>
-        /// <param name="slot">The slot to place the value in. (0 - 7)</param>
-        /// <param name="value">The value. (0 - 15)</param>
+        /// <param name="slot">The slot to place the value in.
+        /// [Limit: 0 - 7]</param>
+        /// <param name="value">The value. [Limit: 0 - 15]</param>
         public static void Set(ref uint target, int slot, uint value)
         {
             target = ((target & ~(0xfU << (slot * 4)) // Clear the slot.
@@ -51,7 +52,8 @@ namespace org.critterai
         /// Sets the value of a slot to zero. (Mutates the target.)
         /// </summary>
         /// <param name="target">The packed integer to update.</param>
-        /// <param name="slot">The slot to to set to zero. (0 - 7)</param>
+        /// <param name="slot">The slot to to set to zero. 
+        /// [Limit: 0 - 7]</param>
         public static void Zero(ref uint target, int slot)
         {
             target = (target & ~(0xfU << (slot * 4)));
@@ -61,8 +63,8 @@ namespace org.critterai
         /// Gets the value of a slot.
         /// </summary>
         /// <param name="source">The packed integer.</param>
-        /// <param name="slot">The slot.  (0 - 7)</param>
-        /// <returns>The value of the specified slot. (0 - 15)</returns>
+        /// <param name="slot">The slot.  [Limit: 0 - 7]</param>
+        /// <returns>The value of the specified slot. [Limit: 0 - 15]</returns>
         public static uint Get(uint source, int slot)
         {
             return (source >> (slot * 4)) & 0xfU;
@@ -79,7 +81,7 @@ namespace org.critterai
         /// of zero.</p>
         /// </remarks>
         /// <param name="target">The packed integer to update.</param>
-        /// <param name="value">The value. (0 - 15)</param>
+        /// <param name="value">The value. [Limit: 0 - 15]</param>
         public static void SetFirstEmpty(ref uint target, uint value)
         {
             for (int slot = 0; slot < 8; slot++)
