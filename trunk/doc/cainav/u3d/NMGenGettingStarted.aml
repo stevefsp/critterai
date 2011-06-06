@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fa09a9f3-7d31-4441-8f03-80adfddf8d48" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+    
+      <para>This page provides an introduction to using NMGen in the Unity Editor.</para>
+      
+      <alert class="note">
+      <para>See <link xlink:href="e81146c4-0143-4cde-ad55-fe1fd1049cbc#upAndRunning">
+      Getting CAINav Up and Running</link> if you need to import <application>CAINav</application> 
+      into your project.</para>
+      </alert>
+      
+      <para>There are multiple ways to generate a navigation mesh. But they all follow the same basic process:
+      </para>
+      
+	  <list class="ordered">
+		<listItem>Add a geometry data source component to the scene and assign GameObjects to it.</listItem>
+		<listItem>Add a
+		<codeEntityReference>T:NMGenBuildConfig</codeEntityReference> component to the scene.</listItem>
+		<listItem>Add a <codeEntityReference>T:BakedPolyMesh</codeEntityReference> component to the 
+		scene and assign the geometry source and configuration to it.</listItem>
+		<listItem>Update the configuration according to your needs.</listItem>
+		<listItem>Bake the meshes.</listItem>
+		<listItem>If needed, adjust the configuration and re-bake until you get what you want.</listItem>
+	  </list>
+      
+    </introduction>
+    
+    <section address="makingItEasy">
+    
+      <title>Making It Easy</title>
+      
+      <content>
+
+        <para>While you can add each component to the scene manually, the menu items under 
+        <ui>GameObject->Create CAI</ui> make it much easier. The <ui>PolyMesh</ui> menu item will give 
+        you the minimum required NMGen components necessary to build polygon and detail meshes. The 
+        <ui>Navigation Manger</ui> and <ui>Navmesh</ui> menu items will include extra components required to 
+        utilize <application>CAINav's</application> navigation features.</para>
+
+        <para>If you select the <ui>PolyMesh</ui> menu item you'll get the following dialog:</para>
+        
+        <mediaLink><image xlink:href="U3D-PolyMeshOptions"/></mediaLink>
+
+        <para>If you want to assign the game objects manually, select the <ui>MeshFilter (Array)</ui> option. 
+        If you want the game object's selected based on one or more tags, select the 
+        <ui>MeshFilter (Tagged)</ui> option. In either case, you only need to select/tag the root game 
+        objects since each game object will be searched recursively for MeshFilter's.</para>
+
+        <para>A GameObject structure similar to the following will be created:</para>
+
+        <mediaLink><image xlink:href="U3D-BakedPolyMeshSetup"/></mediaLink>
+        
+      </content>
+      
+    </section>
+    
+    <section address="example">
+    
+      <title>An Example Scenario</title>
+      
+      <content>
+
+        <para>In this scenario we have a scene that contains three GameObjects that hold all of the 
+        static geometry for an interior environment.</para>
+        
+        <mediaLink><image xlink:href="Example-InteriorEnvironment"/></mediaLink>
+
+        <para>In this case, the best choice is to use a <ui>MeshFilter (Array)</ui> geometry source. So select 
+        <ui>GameObject->Create CAI->PolyMesh</ui> from the menu and accept the default settings. Then 
+        assign the game objects to the geometry source.</para>
+
+        <para>All GameObjects will be recursively searched for MeshFilters during the build.</para>
+
+        <mediaLink><image xlink:href="Example-AssignGeom"/></mediaLink>
+        
+        <para>In this particular scene the source geometry is scaled in meters for normal human 
+        sized agents. So we adjust some of the important configuration settings to take this into account.</para>
+        
+        <para>The rest of the settings are usually based on the type and size of the source 
+        geometry. Using the <ui>Derive Configuration</ui> button will get you a good starting baseline.</para>
+        
+        <mediaLink><image xlink:href="Example-NMGenConfig"/></mediaLink>
+        
+        <para>Once ready, click the <ui>Bake Mesh</ui> button to generate the polygon and detail meshes. 
+        Adjust the configuration and re-bake as needed.</para>
+        
+        <mediaLink><image xlink:href="Example-FinalMesh"/></mediaLink>
+     
+      </content>
+      
+    </section>
+    
+  </developerConceptualDocument>
+</topic>
