@@ -28,8 +28,8 @@ namespace org.critterai.nav.u3d
     /// Provides methods useful for debugging navigation.
     /// </summary>
     /// <remarks>
-    /// <p>All draw methods in this class use GL.  So they should generally be
-    /// called from within OnRenderObject().</p></remarks>
+    /// <para>All draw methods in this class use GL.  So they should generally be
+    /// called from within OnRenderObject().</para></remarks>
     public static class NavDebug
     {
         /// <summary>
@@ -122,8 +122,8 @@ namespace org.critterai.nav.u3d
         /// Draws a debug visualization of an individual navmesh tile.
         /// </summary>
         /// <remarks>
-        /// <p>The tile will be checked to see if it is in use before it is
-        /// drawn.  So there is no need for client to do so.</p></remarks>
+        /// <para>The tile will be checked to see if it is in use before it is
+        /// drawn.  So there is no need for client to do so.</para></remarks>
         private static void Draw(NavmeshTile tile
             , NavmeshQuery query
             , uint[] markPolys
@@ -388,10 +388,10 @@ namespace org.critterai.nav.u3d
         /// Returns the 3D centroids of the provided navigation mesh polygons.
         /// </summary>
         /// <remarks>
-        /// <p>If a polygon does not exist within the mesh, its associated
+        /// <para>If a polygon does not exist within the mesh, its associated
         /// centroid will not be altered.  So some centroid data will be
         /// invalid if <paramref name="polyCount"/> is not equal to the result
-        /// count.</p>
+        /// count.</para>
         /// </remarks>
         /// <param name="mesh">The navigation mesh containing the polygons.
         /// </param>

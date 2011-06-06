@@ -32,8 +32,8 @@ namespace org.critterai.nmgen.u3d
         /// Draws a debug view of a <see cref="PolyMeshData"/> object.
         /// </summary>
         /// <remarks>
-        /// <p>Meant to be called during the MonoBehavior.OnRenderObject()
-        /// method.</p>
+        /// <para>Meant to be called during the MonoBehavior.OnRenderObject()
+        /// method.</para>
         /// </remarks>
         /// <param name="polyData">The polygon mesh to draw.</param>
         public static void Draw(PolyMeshData polyData)
@@ -145,8 +145,8 @@ namespace org.critterai.nmgen.u3d
         /// Draws a debug view of a <see cref="PolyMeshDetailData"/> object.
         /// </summary>
         /// <remarks>
-        /// <p>Meant to be called during the MonoBehavior.OnRenderObject()
-        /// method.</p>
+        /// <para>Meant to be called during the MonoBehavior.OnRenderObject()
+        /// method.</para>
         /// </remarks>
         /// <param name="detailData">The detail mesh to draw.</param>
         public static void Draw(PolyMeshDetailData detailData)

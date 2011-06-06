@@ -33,8 +33,8 @@ public abstract class DSTileData
     /// Tile build data.
     /// </summary>
     /// <remarks>
-    /// <p>Set <paramref name="includeTilePos"/> to FALSE if the tile
-    /// will be used to build a single-tile mesh.</p>
+    /// <para>Set <paramref name="includeTilePos"/> to FALSE if the tile
+    /// will be used to build a single-tile mesh.</para>
     /// </remarks>
     /// <param name="includeTilePos">If TRUE, tile position data will
     /// be included in the build data.  Otherwise the values will be

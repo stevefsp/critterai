@@ -44,8 +44,8 @@ public class AvoidanceConfigSet
     /// <summary>
     /// The maximum permitted avoidance configurations.
     /// </summary>
-    /// <remarks><p>Based on the maximum number of configurations permited
-    /// for <see cref="CrowdManager"/> objects.</p></remarks>
+    /// <remarks><para>Based on the maximum number of configurations permited
+    /// for <see cref="CrowdManager"/> objects.</para></remarks>
     public const int MaxCount = CrowdManager.MaxAvoidanceParams;
 
     /// <summary>
@@ -63,8 +63,8 @@ public class AvoidanceConfigSet
     /// Constructor.  (DO NOT USE DIRECLTY IN CODE.)
     /// </summary>
     /// <remarks>
-    /// <p>This constructor is provided to work around a Unity Editor
-    /// peculiarity. It is not meant for use in script code.</p></remarks>
+    /// <para>This constructor is provided to work around a Unity Editor
+    /// peculiarity. It is not meant for use in script code.</para></remarks>
     public AvoidanceConfigSet()
     {
         Reset();
@@ -74,8 +74,8 @@ public class AvoidanceConfigSet
     /// A reference to the configuration at the specified index.
     /// </summary>
     /// <remarks>
-    /// <p>Attempting to set a configuration to null will have no effect.</p>
-    /// <p>References are stored.  No cloning occurs.</p>
+    /// <para>Attempting to set a configuration to null will have no effect.</para>
+    /// <para>References are stored.  No cloning occurs.</para>
     /// </remarks>
     /// <param name="index">The index of the configuration.</param>
     /// <returns></returns>
@@ -144,9 +144,9 @@ public class AvoidanceConfigSet
     /// Sets the name of a configuration.
     /// </summary>
     /// <remarks>
-    /// <p>The name will be auto-trimmed.</p>
-    /// <p>If the name is an empty string it will be automatically set to 
-    /// <see cref="DefaultName"/>.</p></remarks>
+    /// <para>The name will be auto-trimmed.</para>
+    /// <para>If the name is an empty string it will be automatically set to 
+    /// <see cref="DefaultName"/>.</para></remarks>
     /// <param name="index">The index of the configuration.</param>
     /// <param name="name">The new name of the configuration.</param>
     public void SetName(int index, string name)

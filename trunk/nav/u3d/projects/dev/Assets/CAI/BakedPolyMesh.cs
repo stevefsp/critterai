@@ -25,12 +25,12 @@ using org.critterai.nmgen.u3d;
 using org.critterai;
 
 /// <summary>
-/// A polygon mesh that is built at design time and creates
+/// A polygon mesh that is baked at design time and creates
 /// <see cref="PolyMesh"/> and <see cref="PolyMeshDetail"/> objects at run-time.
 /// </summary>
 /// <remarks>
-/// <p>This component provides means of serializing polygon mesh data
-/// in the Unity.</p>
+/// <para>This component provides means of serializing polygon mesh data
+/// in the Unity.</para>
 /// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
@@ -50,8 +50,8 @@ public class BakedPolyMesh
     /// The configuation to use to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Only applicable until the mesh is baked.  
-    /// Can be set to null after baking.</p>
+    /// <para>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</para>
     /// </remarks>
     public NMGenBuildConfig buildConfig = null;
 
@@ -59,8 +59,8 @@ public class BakedPolyMesh
     /// The source geometry to used to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Only applicable until the mesh is baked.  
-    /// Can be set to null after baking.</p>
+    /// <para>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</para>
     /// </remarks>
     public DSGeometry geomSource = null;
 
@@ -107,7 +107,7 @@ public class BakedPolyMesh
     /// polygon mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Not critical. Used for reporting.</p>
+    /// <para>Not critical. Used for reporting.</para>
     /// </remarks>
     public int SourceTriCount { get { return mSourceTriCount; } }
 
@@ -120,7 +120,7 @@ public class BakedPolyMesh
     /// The minimum AABB bounds of the geometry used to build the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Not critical. Used for reporting.</p>
+    /// <para>Not critical. Used for reporting.</para>
     /// </remarks>
     public Vector3 SourceBoundsMin
     {
@@ -131,7 +131,7 @@ public class BakedPolyMesh
     /// The maximum AABB bounds of the geometry used to build the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Not critical. Used for reporting.</p>
+    /// <para>Not critical. Used for reporting.</para>
     /// </remarks>
     public Vector3 SourceBoundsMax
     {
@@ -158,8 +158,8 @@ public class BakedPolyMesh
     /// TRUE to enable the polygon mesh debug visualization.
     /// </summary>
     /// <remarks>
-    /// <p>Setting this value to TRUE will disable 
-    /// <see cref="DisplayDetailMesh"/>.</p>
+    /// <para>Setting this value to TRUE will disable 
+    /// <see cref="DisplayDetailMesh"/>.</para>
     /// </remarks>
     public bool DisplayPolyMesh
     {
@@ -180,8 +180,8 @@ public class BakedPolyMesh
     /// TRUE to enable the detail mesh debug visualization.
     /// </summary>
     /// <remarks>
-    /// <p>Setting this value to TRUE will disable 
-    /// <see cref="DisplayPolyMesh"/>.</p>
+    /// <para>Setting this value to TRUE will disable 
+    /// <see cref="DisplayPolyMesh"/>.</para>
     /// </remarks>
     public bool DisplayDetailMesh
     {

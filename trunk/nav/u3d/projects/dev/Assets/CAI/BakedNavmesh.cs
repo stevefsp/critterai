@@ -24,12 +24,12 @@ using org.critterai.nav;
 using org.critterai.nav.u3d;
 
 /// <summary>
-/// A navigation mesh that is built at design time and creates a
+/// A navigation mesh that is bkaed at design time and creates a
 /// <see cref="Navmesh"/> object at run-time.
 /// </summary>
 /// <remarks>
-/// <p>This component provides a means of serializing navigation mesh data
-/// in the Unity.</p>
+/// <para>This component provides a means of serializing navigation mesh data
+/// in the Unity.</para>
 /// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
@@ -41,8 +41,8 @@ public sealed class BakedNavmesh
     /// The source data to use to bake the mesh.
     /// </summary>
     /// <remarks>
-    /// <p>Only applicable until the mesh is baked.  
-    /// Can be set to null after baking.</p>
+    /// <para>Only applicable until the mesh is baked.  
+    /// Can be set to null after baking.</para>
     /// </remarks>
     public DSTileData sourceData = null;
 

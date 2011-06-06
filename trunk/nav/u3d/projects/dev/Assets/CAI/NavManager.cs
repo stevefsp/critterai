@@ -29,7 +29,7 @@ using org.critterai.nav.u3d;
 /// objects.
 /// </summary>
 /// <remarks>
-/// <p>The navigation objects are initialized during the Awake operation.</p>
+/// <para>The navigation objects are initialized during the Awake operation.</para>
 /// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/Navigation Manager")]
@@ -46,15 +46,15 @@ public class NavManager
     /// The avoidance configuration to be used by the <see cref="Crowd"/>.
     /// </summary>
     /// <remarks>
-    /// <p>Required if <see cref="enableCrowdManager"/> is TRUE.</p>
+    /// <para>Required if <see cref="enableCrowdManager"/> is TRUE.</para>
     /// </remarks>
     public AvoidanceConfigSet avoidanceSource = null;
 
     /// <summary>
     /// The maximum search nodes to use for the query object.
     /// </summary>
-    /// <remarks><p>Does not apply to the <see cref="Crowd"/>.
-    /// </p></remarks>
+    /// <remarks><para>Does not apply to the <see cref="Crowd"/>.
+    /// </para></remarks>
     public int maxQueryNodes = 2048;
 
     /// <summary>
@@ -76,8 +76,8 @@ public class NavManager
     /// The initial value of <see cref="DefaultExtents"/>.
     /// </summary>
     /// <remarks>
-    /// <p>Not applicable if <see cref="enableCrowdManager"/> is TRUE. In that
-    /// case the <see cref="Crowd"/> extents will be used.</p>
+    /// <para>Not applicable if <see cref="enableCrowdManager"/> is TRUE. In that
+    /// case the <see cref="Crowd"/> extents will be used.</para>
     /// </remarks>
     public Vector3 initialExtents = new Vector3(1, 1, 1);
 
@@ -104,12 +104,12 @@ public class NavManager
     /// use.
     /// </summary>
     /// <remarks>
-    /// <p>The manager's is initialized during the Awake() method.  So
+    /// <para>The manager's is initialized during the Awake() method.  So
     /// the assest are expected to be available during the clients' Start() 
     /// method.
-    /// </p>
-    /// <p>The enabled state of the component only effects the result if
-    /// the <see cref="Crowd"/> is in use.</p>
+    /// </para>
+    /// <para>The enabled state of the component only effects the result if
+    /// the <see cref="Crowd"/> is in use.</para>
     /// </remarks>
     public bool IsActive
     {
