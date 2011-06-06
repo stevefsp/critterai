@@ -27,9 +27,9 @@ namespace org.critterai.geom
     /// Provides various 3D polygon utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Unless otherwise noted, methods expect all polygon vertices to
-    /// be co-planar.</p>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Unless otherwise noted, methods expect all polygon vertices to
+    /// be co-planar.</para>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Polygon3 
     {
@@ -37,10 +37,10 @@ namespace org.critterai.geom
         /// Determines whether a polygon is convex.
         /// </summary>
         /// <remarks>
-        /// <p>Behavior is undefined if vertices are not coplanar.</p>
-        /// <p>If the area of the triangle formed by the first three vertices 
+        /// <para>Behavior is undefined if vertices are not coplanar.</para>
+        /// <para>If the area of the triangle formed by the first three vertices 
         /// of the polygon is too small  to detect on both the (x, z) and 
-        /// (x, y) planes, then this method may improperly return FALSE.</p>
+        /// (x, y) planes, then this method may improperly return FALSE.</para>
         /// </remarks>
         /// <param name="vertices">An array of vertices that contains a 
         /// representation of polygons with an  arbitrary number of sides. 
@@ -148,10 +148,10 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <remarks>
-        /// <p>Behavior is undefined if the polygon is not convex.</p>
-        /// <p>Behavior is undefined if the vector being overwritten in the 
+        /// <para>Behavior is undefined if the polygon is not convex.</para>
+        /// <para>Behavior is undefined if the vector being overwritten in the 
         /// out array is a vertex in the polygon.  (Can only happen if the 
-        /// vertices and out arrays are the same object.)</p>
+        /// vertices and out arrays are the same object.)</para>
         /// </remarks>
         /// <param name="vertices">An array of vertices which contains a 
         /// representation of a polygon with an  arbitrary number of sides.  

@@ -27,11 +27,11 @@ namespace org.critterai
     /// packed unsigned integers.
     /// </summary>
     /// <remarks>
-    /// <p>A 'slot' represents the location of a packed 4-bit 
+    /// <para>A 'slot' represents the location of a packed 4-bit 
     /// value. The range is from 0 through 7 with zero representing the lowest 
-    /// 4-bits.</p>
-    /// <p>The range of values permitted for a slot is 0 through 15.</p>
-    /// <p>Static methods are thread safe.</p>
+    /// 4-bits.</para>
+    /// <para>The range of values permitted for a slot is 0 through 15.</para>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class UIntPack4
     {
@@ -76,9 +76,9 @@ namespace org.critterai
         /// (Mutates the target.)
         /// </summary>
         /// <remarks>
-        /// <p>Starts the search at slot zero. (The lowest 4-bit slot.)</p>
-        /// <p>The target will not change if it has no slots with a value
-        /// of zero.</p>
+        /// <para>Starts the search at slot zero. (The lowest 4-bit slot.)</para>
+        /// <para>The target will not change if it has no slots with a value
+        /// of zero.</para>
         /// </remarks>
         /// <param name="target">The packed integer to update.</param>
         /// <param name="value">The value. [Limit: 0 - 15]</param>
@@ -98,7 +98,7 @@ namespace org.critterai
         /// Gets the index of the first slot with a value of zero.
         /// </summary>
         /// <remarks>
-        /// <p>Starts the search at slot zero. (The lowest 4-bit slot.)</p>
+        /// <para>Starts the search at slot zero. (The lowest 4-bit slot.)</para>
         /// </remarks>
         /// <param name="source">A packed integer.</param>
         /// <returns>The index of the first slot with a value of zero, or -1

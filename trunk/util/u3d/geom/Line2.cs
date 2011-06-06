@@ -27,7 +27,7 @@ namespace org.critterai.geom
     /// Provides 2D line and line segment utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Line2
     {
@@ -206,10 +206,10 @@ namespace org.critterai.geom
         /// WARNING: This is an expensive method.
         /// </summary>
         /// <remarks>
-        /// <p>The direction of the vector will be to the right when viewed 
-        /// from point A to point B along the line.</p>
-        /// <p>Special Case: A zero length vector will be returned if points 
-        /// A and B do not form a line.</p>
+        /// <para>The direction of the vector will be to the right when viewed 
+        /// from point A to point B along the line.</para>
+        /// <para>Special Case: A zero length vector will be returned if points 
+        /// A and B do not form a line.</para>
         /// </remarks>
         /// <param name="ax">The x-value of point A on line AB.</param>
         /// <param name="ay">The y-value of point A on line AB.</param>

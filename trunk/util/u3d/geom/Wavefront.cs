@@ -29,24 +29,24 @@ namespace org.critterai.geom
     /// Provides some simple Wavefront utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Only a small subset of Wavefront information is supported.</p>
-    /// <p>Only the "v" and "f" entries are recognized. All others are ignored.
-    /// </p>
-    /// <p>The v entries are expected to be in one of the following forms:
-    /// </p>
+    /// <para>Only a small subset of Wavefront information is supported.</para>
+    /// <para>Only the "v" and "f" entries are recognized. All others are ignored.
+    /// </para>
+    /// <para>The v entries are expected to be in one of the following forms:
+    /// </para>
     /// <blockquote>
     /// "v x y z w"<br/>
     /// "v x y z"
     /// </blockquote>
-    /// <p>The f entries are expected to be in one of the following forms: 
-    /// </p>
+    /// <para>The f entries are expected to be in one of the following forms: 
+    /// </para>
     /// <blockquote>
     /// "f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3"<br/>
     /// "f v1 v2 v3"
     /// </blockquote>
-    /// <p> Only the vertex portions of the entries are recognized,  
-    /// and only positive indices supported.</p>
-    /// <p>Static methods are thread safe.</p>
+    /// <para> Only the vertex portions of the entries are recognized,  
+    /// and only positive indices supported.</para>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Wavefront
     {

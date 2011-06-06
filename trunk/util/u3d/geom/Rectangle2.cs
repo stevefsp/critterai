@@ -26,7 +26,7 @@ namespace org.critterai.geom
     /// Provides various 2D rectangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Rectangle2
     {
@@ -35,9 +35,9 @@ namespace org.critterai.geom
         /// axis-aligned rectangle. 
         /// </summary>
         /// <remarks>
-        /// <p>The test is inclusive of the edges of the rectangle. 
+        /// <para>The test is inclusive of the edges of the rectangle. 
         /// I.e. If the point lies n the edge of the rectangle, then it is 
-        /// contained by the rectangle.</p>
+        /// contained by the rectangle.</para>
         /// </remarks>
         /// <param name="minX">The minimum x-axis bounds of the rectangle.
         /// </param>
@@ -62,7 +62,7 @@ namespace org.critterai.geom
         /// contained within another axis-aligned rectangle (A).
         /// </summary>
         /// <remarks>
-        /// <p>The test is inclusive of the edges of the rectangles.</p>
+        /// <para>The test is inclusive of the edges of the rectangles.</para>
         /// </remarks>
         /// <param name="minXA">The minimum x-axis bounds of rectangle A.
         /// </param>
@@ -96,9 +96,9 @@ namespace org.critterai.geom
         /// <summary>
         /// Indicates whether or not two axis-aligned rectangles intersect. 
         /// </summary>
-        /// <remarks><p>
+        /// <remarks><para>
         /// The test is inclusive of the edges of the rectangles.
-        /// </p></remarks>
+        /// </para></remarks>
         /// <param name="minAX">The minimum x-axis bounds of rectangle A.
         /// </param>
         /// <param name="minAY">The minimum y-axis bounds of rectangle A.

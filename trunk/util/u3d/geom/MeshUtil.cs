@@ -45,9 +45,9 @@ namespace org.critterai.geom
         /// the provided GameObjects (including children).  
         /// </summary>
         /// <remarks>
-        /// <p>The output parameters will be null if the method return value is 
-        /// FALSE.</p>
-        /// <p>Vertices will be in world space coordinates.</p>
+        /// <para>The output parameters will be null if the method return value is 
+        /// FALSE.</para>
+        /// <para>Vertices will be in world space coordinates.</para>
         /// </remarks>
         /// <param name="sources">An array of GameObjects cointaining the 
         /// meshes to be combined.</param>

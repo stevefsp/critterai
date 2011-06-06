@@ -29,7 +29,7 @@ namespace org.critterai
     /// by the Unity3D vector class.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Vector3Util
     {
@@ -39,10 +39,10 @@ namespace org.critterai
         /// target="_blank">cross product</a>. (u x v)
         /// </summary>
         /// <remarks>
-        /// <p>The resulting vector will be perpendicular to the plane 
-        /// containing the two provided vectors.</p>
-        /// <p>Special Case: The result will be zero if the two vectors are 
-        /// parallel.</p>
+        /// <para>The resulting vector will be perpendicular to the plane 
+        /// containing the two provided vectors.</para>
+        /// <para>Special Case: The result will be zero if the two vectors are 
+        /// parallel.</para>
         /// </remarks>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
@@ -175,8 +175,8 @@ namespace org.critterai
         /// of each other based on a xz-plane radius and a y-axis height.
         /// </summary>
         /// <remarks>
-        /// <p>This is essentially a cylinder inclusion test where one 
-        /// vector defines the centroid of the cylinder.</p>
+        /// <para>This is essentially a cylinder inclusion test where one 
+        /// vector defines the centroid of the cylinder.</para>
         /// </remarks>
         /// <param name="u">A position.</param>
         /// <param name="v">A position.</param>
@@ -197,11 +197,11 @@ namespace org.critterai
         /// distance between them.
         /// </summary>
         /// <remarks>
-        /// <p>Examples:</p>
-        /// <p>If the factor is 0.0, then the result will equal A.<br/>
+        /// <para>Examples:</para>
+        /// <para>If the factor is 0.0, then the result will equal A.<br/>
         /// If the factor is 0.5, then the result will be the midpoint 
         /// between A and B.<br/>
-        /// If the factor is 1.0, then the result will equal B.<br/></p>
+        /// If the factor is 1.0, then the result will equal B.<br/></para>
         /// </remarks>
         /// <param name="ax">The x-value of the point (ax, ay, az).</param>
         /// <param name="ay">The y-value of the point (ax, ay, az).</param>

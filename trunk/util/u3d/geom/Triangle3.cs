@@ -28,7 +28,7 @@ namespace org.critterai.geom
     /// Provides various 3D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Triangle3 
     {
@@ -37,9 +37,9 @@ namespace org.critterai.geom
         /// WARNING: This is an costly method.
         /// </summary>
         /// <remarks>
-        /// <p>If the value is only needed for comparison with other triangles, 
+        /// <para>If the value is only needed for comparison with other triangles, 
         /// then use  <see cref="GetAreaComp">GetAreaComp</see> instead. 
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -65,9 +65,9 @@ namespace org.critterai.geom
         /// triangles. (E.g. Is triangleA larger than triangleB.  )
         /// </summary>
         /// <remarks>
-        /// <p>The value returned by this method can be converted to area as 
-        /// follows: Area = Math.sqrt(value)/2</p>
-        /// <p>Useful for quickly comparing the size of triangles.</p>
+        /// <para>The value returned by this method can be converted to area as 
+        /// follows: Area = Math.sqrt(value)/2</para>
+        /// <para>Useful for quickly comparing the size of triangles.</para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -111,10 +111,10 @@ namespace org.critterai.geom
         /// WARNING: This is a costly method.
         /// </summary>
         /// <remarks>
-        /// <p>The normal of a triangle is the vector perpendicular 
+        /// <para>The normal of a triangle is the vector perpendicular 
         /// to the triangle's plane with the direction determined by the 
         /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
-        /// target="_blank">right-handed rule</a>.</p>
+        /// target="_blank">right-handed rule</a>.</para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -150,10 +150,10 @@ namespace org.critterai.geom
         /// WARNING: This is a costly method.
         /// </summary>
         /// <remarks>
-        /// <p>The normal of a triangle is the vector perpendicular 
+        /// <para>The normal of a triangle is the vector perpendicular 
         /// to the triangle's plane with the direction determined by the 
         /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
-        /// target="_blank">right-handed rule</a>.</p>
+        /// target="_blank">right-handed rule</a>.</para>
         /// </remarks>
         /// <param name="vertices">An array of vertices which contains a 
         /// representation of triangles in the form 
