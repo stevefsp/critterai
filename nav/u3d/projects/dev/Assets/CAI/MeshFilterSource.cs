@@ -29,7 +29,7 @@ using org.critterai.nmgen.u3d;
 /// the meshes into a single triangle mesh.
 /// </summary>
 /// <remarks>
-/// <p>The standard triangle limit for the Unity Mesh type does not apply.</p>
+/// <para>The standard triangle limit for the Unity Mesh type does not apply.</para>
 /// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/Mesh Filter Source (Array)")]

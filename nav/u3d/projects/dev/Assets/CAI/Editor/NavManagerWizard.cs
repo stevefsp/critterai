@@ -33,8 +33,8 @@ public sealed class NavManagerWizard
         | PolyMeshEditorFlags.BakedPolyMesh;
 
     private bool mIncludeNavmesh = true;
-    private bool mIncludeAvoidance = true;
-    private bool mIncludeAgent = true;
+    private bool mIncludeAvoidance = false;
+    private bool mIncludeAgent = false;
 
     public void OnGUI()
     {

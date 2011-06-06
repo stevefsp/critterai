@@ -27,11 +27,11 @@ namespace org.critterai.nav.u3d
     /// Provides a Unity friendly interface to the NavmeshQuery class.
     /// </summary>
     /// <remarks>
-    /// <p>See the <see cref="NavmeshQuery"/> class for detailed descriptions 
-    /// of the methods common to the two classes.</p>
-    /// <p>While this is technically a convenience class, it is implemented
+    /// <para>See the <see cref="NavmeshQuery"/> class for detailed descriptions 
+    /// of the methods common to the two classes.</para>
+    /// <para>While this is technically a convenience class, it is implemented
     /// in such a way that its features will have the minimum possible negative
-    /// impact performance and memory.</p>
+    /// impact performance and memory.</para>
     /// </remarks>
     public class U3DNavmeshQuery
     {
@@ -58,9 +58,9 @@ namespace org.critterai.nav.u3d
         /// If TRUE, certain methods are disabled.
         /// </summary>
         /// <remarks>
-        /// <p>Certain methods are generally not safe for use by multiple
+        /// <para>Certain methods are generally not safe for use by multiple
         /// clients.  These methods will fail if the object is marked as 
-        /// restricted.</p>
+        /// restricted.</para>
         /// </remarks>
         public bool IsRestricted { get { return mRoot.IsRestricted; } }
 
@@ -378,9 +378,9 @@ namespace org.critterai.nav.u3d
         /// excluding portals.
         /// </summary>
         /// <remarks>
-        /// <p>If the segmentPolyRefs parameter is provided, then all polygon
+        /// <para>If the segmentPolyRefs parameter is provided, then all polygon
         /// segments will be returned.  If the parameter is null, then only 
-        /// the wall segments are returned.</p>
+        /// the wall segments are returned.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -459,11 +459,11 @@ namespace org.critterai.nav.u3d
         /// Returns TRUE if the polygon refernce is in the current closed list.
         /// </summary>
         /// <remarks>
-        /// <p>The closed list is the list of polygons that were fully evaluated
-        /// during a find operation.</p>
-        /// <p>All methods prefixed with "Find" and all sliced path methods
+        /// <para>The closed list is the list of polygons that were fully evaluated
+        /// during a find operation.</para>
+        /// <para>All methods prefixed with "Find" and all sliced path methods
         /// generate a closed list.  The content of the list will persist 
-        /// until the next find/sliced method is called.</p>
+        /// until the next find/sliced method is called.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <returns>TRUE if the polgyon is in the current closed list.
@@ -589,7 +589,7 @@ namespace org.critterai.nav.u3d
         /// Finalizes and returns the results of the sliced path query.
         /// </summary>
         /// <remarks>
-        /// <p>This method will fail if <see cref="IsRestricted"/> is TRUE.</p>
+        /// <para>This method will fail if <see cref="IsRestricted"/> is TRUE.</para>
         /// </remarks>
         /// <param name="path">An ordered list of polygons representing the
         /// path. [Form: (polyRef) * pathCount]</param>

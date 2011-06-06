@@ -102,10 +102,10 @@ public sealed class AgentNavConfig
     /// agent.
     /// </summary>
     /// <remarks>
-    /// <p>The <see cref="CrowdManager"/> permits agents to use different
+    /// <para>The <see cref="CrowdManager"/> permits agents to use different
     /// avoidance configurations.  (See 
     /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This is the index 
-    /// of the configuration to use.</p>
+    /// of the configuration to use.</para>
     /// </remarks>
     /// <seealso cref="CrowdAvoidanceParams"/>
     public byte avoidanceType = 3;

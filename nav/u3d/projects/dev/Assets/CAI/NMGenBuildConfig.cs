@@ -26,8 +26,8 @@ using org.critterai.nmgen.u3d;
 /// A configuration used to build polygon mesh data.
 /// </summary>
 /// <remarks>
-/// <p>The primary purpose of this class is for editing configurations
-/// in the Unity Editor.</p>
+/// <para>The primary purpose of this class is for editing configurations
+/// in the Unity Editor.</para>
 /// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/NMGen Build Config")]

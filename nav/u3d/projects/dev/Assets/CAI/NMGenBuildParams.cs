@@ -29,12 +29,12 @@ namespace org.critterai.nmgen.u3d
     /// Represents a configuration for a navigation mesh build in Unity.
     /// </summary>
     /// <remarks>
-    /// <p>See 
+    /// <para>See 
     /// <a href="http://www.critterai.org/projects/cainav/common/commonparams.html">
     /// Common Parameters</a> for details on the various properties. The primary
     /// difference between this class and the <see cref="NMGenParams"/> class
     /// is that some values in this class are in world units rather than cell
-    /// units.</p>
+    /// units.</para>
     /// </remarks>
     [System.Serializable]
     public sealed class NMGenBuildParams
@@ -177,7 +177,7 @@ namespace org.critterai.nmgen.u3d
         /// The xz-plane voxel size to use when sampling the source geometry.
         /// </summary>
         /// <remarks>
-        /// <p>Also the 'grid size' or 'voxel size'.</p>
+        /// <para>Also the 'grid size' or 'voxel size'.</para>
         /// </remarks>
         public float XZCellSize
         {
@@ -190,7 +190,7 @@ namespace org.critterai.nmgen.u3d
         /// [Limit: >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
-        /// <p>Also the 'voxel size' for the y-axis.</p>
+        /// <para>Also the 'voxel size' for the y-axis.</para>
         /// </remarks>
         public float YCellSize
         {
@@ -203,7 +203,7 @@ namespace org.critterai.nmgen.u3d
         /// floor area to be considered traversable.
         /// </summary>
         /// <remarks>
-        /// <p>Usually the maximum client height.</p>
+        /// <para>Usually the maximum client height.</para>
         /// </remarks>
         public float WalkableHeight
         {
@@ -220,7 +220,7 @@ namespace org.critterai.nmgen.u3d
         /// traversable.
         /// </summary>
         /// <remarks>
-        /// <p>Usually set to how far up/down the client can step.</p>
+        /// <para>Usually set to how far up/down the client can step.</para>
         /// </remarks>
         public float WalkableStep
         {
@@ -265,8 +265,8 @@ namespace org.critterai.nmgen.u3d
         /// mesh.
         /// </summary>
         /// <remarks>
-        /// <p>Extra vertices will be inserted if needed.</p>
-        /// <p>A value of zero disabled this feature.</p>
+        /// <para>Extra vertices will be inserted if needed.</para>
+        /// <para>A value of zero disabled this feature.</para>
         /// </remarks>
         public float MaxEdgeLength
         {
@@ -279,7 +279,7 @@ namespace org.critterai.nmgen.u3d
         /// the source geometry.
         /// </summary>
         /// <remarks>
-        /// <p>Applies only to the xz-plane.</p>
+        /// <para>Applies only to the xz-plane.</para>
         /// </remarks>
         public float EdgeMaxDeviation
         {
@@ -314,8 +314,8 @@ namespace org.critterai.nmgen.u3d
         /// [Limit: >= 0]
         /// </summary>
         /// <remarks>
-        /// <p>Prevents the formation of meshes that are too small to be
-        /// of use.</p>
+        /// <para>Prevents the formation of meshes that are too small to be
+        /// of use.</para>
         /// </remarks>
         public float MinRegionArea
         {
