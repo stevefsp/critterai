@@ -57,9 +57,9 @@ namespace org.critterai
         /// Creates a Unity color from an integer value.
         /// </summary>
         /// <remarks>
-        /// <p>This method is useful for generating a variety of colors that
+        /// <para>This method is useful for generating a variety of colors that
         /// are visually disimilar.
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="i">An integer value to create the color from.</param>
         /// <param name="alpha">The color's alpha.</param>

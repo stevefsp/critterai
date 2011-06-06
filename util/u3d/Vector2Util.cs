@@ -29,7 +29,7 @@ namespace org.critterai
     /// by the Unity3D vector class.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Vector2Util
     {
@@ -213,12 +213,12 @@ namespace org.critterai
         /// Truncates the length of the vector to the provided value.
         /// </summary>
         /// <remarks>
-        /// <p>If the vector's length is longer than the provided value the 
+        /// <para>If the vector's length is longer than the provided value the 
         ///  length of the vector is scaled back to the provided maximum 
-        ///  length.</p>
-        ///  <p>If the vector's length is shorter than the provided value, 
-        ///  the  vector is not changed.</p>
-        ///  <p>WARNING: This is a potentially costly method.</p>
+        ///  length.</para>
+        ///  <para>If the vector's length is shorter than the provided value, 
+        ///  the  vector is not changed.</para>
+        ///  <para>WARNING: This is a potentially costly method.</para>
         /// </remarks>
         /// <param name="x">The x-value of the vector (x, y).</param>
         /// <param name="y">The y-value of the vector (x, y).</param>
@@ -243,12 +243,12 @@ namespace org.critterai
         /// Truncates the length of the vector to the provided value.
         /// </summary>
         /// <remarks>
-        /// <p>If the vector's length is longer than the provided value 
+        /// <para>If the vector's length is longer than the provided value 
         /// the length of the vector is scaled back to the provided
-        /// maximum length.</p>
-        /// <p>If the vector's length is shorter than the provided value, 
-        /// the vector is not changed.</p>
-        /// <p>WARNING: This is a potentially costly method.</p>
+        /// maximum length.</para>
+        /// <para>If the vector's length is shorter than the provided value, 
+        /// the vector is not changed.</para>
+        /// <para>WARNING: This is a potentially costly method.</para>
         /// </remarks>
         /// <param name="v">The vector to scale.</param>
         /// <param name="maxLength">The maximum allowed length of the 

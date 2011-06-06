@@ -26,7 +26,7 @@ namespace org.critterai.geom
     /// Provides various 2D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Triangle2
     {
@@ -35,8 +35,8 @@ namespace org.critterai.geom
         /// (Inclusive)
         /// </summary>
         /// <remarks>
-        /// <p>The test is inclusive.  So points on the vertices or edges
-        /// of the triangle are considered to be contained by the triangle.</p>
+        /// <para>The test is inclusive.  So points on the vertices or edges
+        /// of the triangle are considered to be contained by the triangle.</para>
         /// </remarks>
         /// <param name="px">The x-value for the point to test. (px, py)</param>
         /// <param name="py">The y-value for the poitn to test. (px, py)</param>
@@ -80,21 +80,21 @@ namespace org.critterai.geom
         /// the triangle ABC.
         /// </summary>
         /// <remarks>
-        /// <p>A positive return value indicates:</p>
+        /// <para>A positive return value indicates:</para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.
         /// </li>
         /// </ul>
-        /// <p>A negative value indicates:</p>
+        /// <para>A negative value indicates:</para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the left of line AC, looking from A toward C.
         /// </li>
         /// </ul>
-        /// <p>A value of zero indicates that all points are collinear or 
-        /// represent the same point.</p>
-        /// <p>This is a low cost method.</p>
+        /// <para>A value of zero indicates that all points are collinear or 
+        /// represent the same point.</para>
+        /// <para>This is a low cost method.</para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>
@@ -120,21 +120,21 @@ namespace org.critterai.geom
         /// the triangle ABC.
         /// </summary>
         /// <remarks>
-        /// <p>A positive return value indicates:</p>
+        /// <para>A positive return value indicates:</para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.
         /// </li>
         /// </ul>
-        /// <p>A negative value indicates:</p>
+        /// <para>A negative value indicates:</para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the left of line AC, looking from A toward C.
         /// </li>
         /// </ul>
-        /// <p>A value of zero indicates that all points are collinear or 
-        /// represent the same point.</p>
-        /// <p>This is a low cost method.</p>
+        /// <para>A value of zero indicates that all points are collinear or 
+        /// represent the same point.</para>
+        /// <para>This is a low cost method.</para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A in triangle ABC</param>
         /// <param name="ay">The y-value for vertex A in triangle ABC</param>

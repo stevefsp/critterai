@@ -26,7 +26,7 @@ namespace org.critterai.geom
     /// Specifies the position relationship between a point and a line.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p></remarks>
+    /// <para>Static methods are thread safe.</para></remarks>
     public enum PointLineRelType : byte
     {
         /// <summary>

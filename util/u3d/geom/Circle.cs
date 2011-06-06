@@ -26,17 +26,17 @@ namespace org.critterai.geom
     /// Provides circle utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Circle
     {
         /// <summary>
-        /// Determines whether or not two circles intersect eachother.
+        /// Determines whether or not two circles intersect each other.
         /// </summary>
         /// <remarks>
-        /// <p>Test is inclusive of the circle boundary.</p>
-        /// <p>Containment of one circle by another is considered intersection.
-        /// </p>
+        /// <para>Test is inclusive of the circle boundary.</para>
+        /// <para>Containment of one circle by another is considered intersection.
+        /// </para>
         /// </remarks>
         /// <param name="ax">
         /// The x-value of circle A's center point. (ax, ay)
@@ -69,7 +69,7 @@ namespace org.critterai.geom
         /// Determines whether or not a point is contained within a circle.
         /// </summary>
         /// <remarks>
-        /// <p>The test is inclusive of the circle boundary</p></remarks>
+        /// <para>The test is inclusive of the circle boundary</para></remarks>
         /// <param name="px">The x-value of point (px, py).</param>
         /// <param name="py">The y-value of point (px, py).</param>
         /// <param name="cx">The x-value of the circle's center point (cx, cy).

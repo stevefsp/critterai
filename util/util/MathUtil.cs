@@ -27,7 +27,7 @@ namespace org.critterai
     /// Provides various math related utility methods.
     /// </summary>
     /// <remarks>
-    /// <p>Static methods are thread safe.</p>
+    /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class MathUtil 
     {

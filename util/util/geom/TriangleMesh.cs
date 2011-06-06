@@ -27,7 +27,7 @@ namespace org.critterai.geom
     /// A basic indexed triangle mesh.
     /// </summary>
     /// <remarks>
-    /// <p>The class arrays may represent buffers with unused space.</p></remarks>
+    /// <para>The class arrays may represent buffers with unused space.</para></remarks>
     public sealed class TriangleMesh
     {
         /// <summary>
