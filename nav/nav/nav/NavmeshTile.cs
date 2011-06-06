@@ -30,12 +30,12 @@ namespace org.critterai.nav
     /// A tile within a <see cref="Navmesh"/>
     /// </summary>
     /// <remarks>
-    /// <p>Tiles always exist within the context of a <see cref="Navmesh"/>
-    /// object.</p>
-    /// <p>Tiles returned by a <see cref="Navmesh"/> are not guarenteed to
+    /// <para>Tiles always exist within the context of a <see cref="Navmesh"/>
+    /// object.</para>
+    /// <para>Tiles returned by a <see cref="Navmesh"/> are not guarenteed to
     /// be populated. (The tile at a location may have been removed.)
     /// To determine if a tile is active, check the polygon count in the 
-    /// <see cref="NavmeshTileHeader"/>.</p>
+    /// <see cref="NavmeshTileHeader"/>.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTile
@@ -47,8 +47,8 @@ namespace org.critterai.nav
         /// TRUE if the object has been disposed and should no longer be used.
         /// </summary>
         /// <remarks>
-        /// <p>Just because a tile has no polygons does not mean it is
-        /// disposed.</p></remarks>
+        /// <para>Just because a tile has no polygons does not mean it is
+        /// disposed.</para></remarks>
         public bool IsDisposed { get { return mOwner.IsDisposed; } }
 
         internal NavmeshTile(Navmesh owner, IntPtr tile) 
@@ -95,8 +95,8 @@ namespace org.critterai.nav
         /// Gets the non-structural state of the tile. (Flags, area ids, etc.)
         /// </summary>
         /// <remarks>
-        /// <p>The state data is only valid until the tile reference changes.
-        /// </p>
+        /// <para>The state data is only valid until the tile reference changes.
+        /// </para>
         /// </remarks>
         /// <param name="buffer">The buffer to load the state into.
         /// [Size: >= <see cref="GetStateSize"/>]</param>

@@ -54,17 +54,17 @@ namespace org.critterai.nav
         /// The polygon reference id of the connection.
         /// </summary>
         /// <remarks>
-        /// <p>All connections are stored as 2-vertex polygons within
-        /// the navigation mesh.</p></remarks>
+        /// <para>All connections are stored as 2-vertex polygons within
+        /// the navigation mesh.</para></remarks>
         public ushort polyRef;
         
         /// <summary>
         /// Link flags.
         /// </summary>
         /// <remarks>
-        /// <p>These are not the user flags.  Those are assigned to the 
+        /// <para>These are not the user flags.  Those are assigned to the 
         /// connection's polygon.  These are link flags used for internal 
-        /// purposes.</p>
+        /// purposes.</para>
         /// </remarks>
         public byte flags;
 

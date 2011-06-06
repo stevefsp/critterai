@@ -28,9 +28,9 @@ namespace org.critterai.nav
     /// Navigation mesh configuration parameters.
     /// </summary>
     /// <remarks>
-    /// <p>Implemented as a class with public fields in order to support Unity
+    /// <para>Implemented as a class with public fields in order to support Unity
     /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</p></remarks>
+    /// values.</para></remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshParams

@@ -30,9 +30,9 @@
 //    /// Defines navigation connections.
 //    /// </summary>
 //    /// <remarks>
-//    /// <p>All arrays in this structure, even the optional data arrays,
+//    /// <para>All arrays in this structure, even the optional data arrays,
 //    /// must be sized for MaxConnections.  The actual number of connections 
-//    /// is specified by determined by the count field.</p>
+//    /// is specified by determined by the count field.</para>
 //    /// </remarks>
 //    [StructLayout(LayoutKind.Sequential)]
 //    public struct NavConnections
@@ -156,10 +156,10 @@
 //        /// Initializes the structure before its first use.
 //        /// </summary>
 //        /// <remarks>
-//        /// <p>If flags are not used, then set initialFlags to 1 to ensure
+//        /// <para>If flags are not used, then set initialFlags to 1 to ensure
 //        /// normal navigation behavior. (A flags value of zero effectively
-//        /// disables a connection.)</p>
-//        /// <p>Existing references are released and replaced.</p>
+//        /// disables a connection.)</para>
+//        /// <para>Existing references are released and replaced.</para>
 //        /// </remarks>
 //        /// <param name="initialFlags">The initial flags to use for all
 //        /// connections.</param>

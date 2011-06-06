@@ -29,9 +29,9 @@ namespace org.critterai.nav
     /// Represents an agent managed by a <see cref="CrowdManager"/> object.
     /// </summary>
     /// <remarks>
-    /// <p>Objects of this type can only be obtained from a 
-    /// <see cref="CrowdManager"/> object.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <para>Objects of this type can only be obtained from a 
+    /// <see cref="CrowdManager"/> object.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     /// <seealso cref="CrowdManager"/>
     public sealed class CrowdAgent
@@ -163,9 +163,9 @@ namespace org.critterai.nav
         /// Sets the move target for an agent.
         /// </summary>
         /// <remarks>
-        /// <p>This method is used when a new target is set.  Use 
+        /// <para>This method is used when a new target is set.  Use 
         /// <see cref="AdjustMoveTarget"/> when only small adjustments are 
-        /// needed. (Such as happens when following a moving target.)</p>
+        /// needed. (Such as happens when following a moving target.)</para>
         /// </remarks>
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
@@ -185,9 +185,9 @@ namespace org.critterai.nav
         /// Adjusts the position of an agent's move target.
         /// </summary>
         /// <remarks
-        /// ><p>This method expects small increments and is suitable
+        /// ><para>This method expects small increments and is suitable
         /// to call every frame.  (Such as is required when the target is
-        /// moving frequently.)</p></remarks>
+        /// moving frequently.)</para></remarks>
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
@@ -206,8 +206,8 @@ namespace org.critterai.nav
         /// Gets the corridor data related to the agent.
         /// </summary>
         /// <remarks>
-        /// <p>Only available after after a <see cref="CrowdManager"/>
-        /// update.</p>
+        /// <para>Only available after after a <see cref="CrowdManager"/>
+        /// update.</para>
         /// </remarks>
         /// <param name="buffer">
         /// The buffer to hold the corridor data. (Out)</param>
@@ -221,8 +221,8 @@ namespace org.critterai.nav
         /// Gets the boundary data related to the agent.
         /// </summary>
         /// <remarks>
-        /// <p>Only available after after a <see cref="CrowdManager"/>
-        /// update.</p>
+        /// <para>Only available after after a <see cref="CrowdManager"/>
+        /// update.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to hold the boundary
         /// data. (Out)</param>
@@ -237,8 +237,8 @@ namespace org.critterai.nav
         /// 
         /// </summary>
         /// <remarks>
-        /// <p>Only available after after a <see cref="CrowdManager"/>
-        /// update.</p>
+        /// <para>Only available after after a <see cref="CrowdManager"/>
+        /// update.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load. 
         /// [Size: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]</param>
@@ -275,8 +275,8 @@ namespace org.critterai.nav
         /// Gets the cordner data for the agent.
         /// </summary>
         /// <remarks>
-        /// <p>Only available after after a <see cref="CrowdManager"/>
-        /// update.</p>
+        /// <para>Only available after after a <see cref="CrowdManager"/>
+        /// update.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load with corner data.</param>
         public void GetCornerData(CrowdCornerData buffer)

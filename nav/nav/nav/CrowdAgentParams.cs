@@ -75,16 +75,16 @@ namespace org.critterai.nav
         /// in steering behaviors. [Limit: > 0]
         /// </summary>
         /// <remarks>
-        /// <p>The value is often based on the agent radius and/or
-        /// and maximum speed.  E.g. radius * 8</p></remarks>
+        /// <para>The value is often based on the agent radius and/or
+        /// and maximum speed.  E.g. radius * 8</para></remarks>
         public float collisionQueryRange;
 
         /// <summary>
         /// The path optimization range.
         /// </summary>
         /// <remarks>
-        /// <p>This value is often based on the agent radius. E.g. radius * 30
-        /// </p>
+        /// <para>This value is often based on the agent radius. E.g. radius * 30
+        /// </para>
         /// </remarks>
         public float pathOptimizationRange;
 
@@ -93,9 +93,9 @@ namespace org.critterai.nav
         /// collisions with this agent.
         /// </summary>
         /// <remarks>
-        /// <p>A higher value will result in agents trying to stay farther away 
-        /// from eachother at the cost of more difficult steering in tight
-        /// spaces.</p></remarks>
+        /// <para>A higher value will result in agents trying to stay farther away 
+        /// from each other at the cost of more difficult steering in tight
+        /// spaces.</para></remarks>
         public float separationWeight;
 
         /// <summary>
@@ -107,10 +107,10 @@ namespace org.critterai.nav
         /// The index of the avoidance parameters to use for the agent.
         /// </summary>
         /// <remarks>
-        /// <p>The <see cref="CrowdManager"/> permits agents to use different
+        /// <para>The <see cref="CrowdManager"/> permits agents to use different
         /// avoidance configurations.  (See 
         /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This value
-        /// is the index of the configuration to use.</p>
+        /// is the index of the configuration to use.</para>
         /// </remarks>
         /// <seealso cref="CrowdAvoidanceParams"/>
         public byte avoidanceType;

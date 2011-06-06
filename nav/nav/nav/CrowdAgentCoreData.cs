@@ -28,8 +28,8 @@ namespace org.critterai.nav
     /// object.
     /// </summary>
     /// <remarks>
-    /// <p>This structure is useful for marshalling information from the
-    /// <see cref="CrowdManager"/> back to the actual agent implementation.</p>
+    /// <para>This structure is useful for marshalling information from the
+    /// <see cref="CrowdManager"/> back to the actual agent implementation.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     internal struct CrowdAgentCoreState

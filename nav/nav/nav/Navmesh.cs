@@ -31,26 +31,26 @@ namespace org.critterai.nav
     /// A navigation mesh based on convex polygons.
     /// </summary>
     /// <remarks>
-    /// <p>This class is usually used in conjunction with the
-    /// <see cref="NavmeshQuery"/> class.</p>
-    /// <p>Tile and Polygon Reference Ids: Reference ids are essentially 
+    /// <para>This class is usually used in conjunction with the
+    /// <see cref="NavmeshQuery"/> class.</para>
+    /// <para>Tile and Polygon Reference Ids: Reference ids are essentially 
     /// 'handles' to data in a certain structural state. If a tile's structure
     /// changes, all associated refrences become invalid.  Serialization
-    /// does not impact references. Nor do changes to area and flag state.</p>
-    /// <p>Technically, all navigation meshes are tiled.  A 'solo' mesh
-    /// is simply a navigation mesh configured to have only a single tile.</p>
-    /// <p>Most object references returned by this class cannot
+    /// does not impact references. Nor do changes to area and flag state.</para>
+    /// <para>Technically, all navigation meshes are tiled.  A 'solo' mesh
+    /// is simply a navigation mesh configured to have only a single tile.</para>
+    /// <para>Most object references returned by this class cannot
     /// be compared for equality.  I.e. mesh.GetTile(0) != mesh.GetTile(0).
     /// The object state may be equal.  But the references are not.
-    /// </p>
-    /// <p>This class does not implement any asynchronous methods.  So the
+    /// </para>
+    /// <para>This class does not implement any asynchronous methods.  So the
     /// result status of all methods will contain always contain either
     /// a success or failure flag.
-    /// </p>
-    /// <p>This class is not compatible with Unity serialization. Manual
+    /// </para>
+    /// <para>This class is not compatible with Unity serialization. Manual
     /// serialization can be implemented using the 
-    /// <see cref="GetSerializedMesh"/> mesh method.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <see cref="GetSerializedMesh"/> mesh method.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [Serializable]
     public sealed class Navmesh
@@ -63,7 +63,7 @@ namespace org.critterai.nav
         private const string DataKey = "d";
 
         /// <summary>
-        /// A flag that indicates a link is external.  (Context dependant.)
+        /// A flag that indicates a link is external.  (Context dependent.)
         /// </summary>
         public const ushort ExternalLink = 0x8000;
 
@@ -358,11 +358,11 @@ namespace org.critterai.nav
         /// 'direction of travel'.
         /// </summary>
         /// <remarks>
-        /// <p>Off-mesh connections are stored in the navigation mesh as
+        /// <para>Off-mesh connections are stored in the navigation mesh as
         /// special 2-vertex polygons with a single edge.  At least one of the
         /// vertices is expected to be inside a normal polygon. So an off-mesh
         /// connection is "entered" from a normal polygon at one of its 
-        /// endpoints. This is the polygon identified by startPolyRef.</p>
+        /// endpoints. This is the polygon identified by startPolyRef.</para>
         /// </remarks>
         /// <param name="startPolyRef">The polygon id in which the
         /// start endpoint lies.</param>

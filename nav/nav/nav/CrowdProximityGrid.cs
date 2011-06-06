@@ -30,10 +30,10 @@ namespace org.critterai.nav
     /// <see cref="CrowdManager"/> object during its update method.
     /// </summary>
     /// <remarks>
-    /// <p>Objects of this type can only be obtained from a 
-    /// <see cref="CrowdManager"/> object.</p>
-    /// <p><b>Example of iterating the proximity data:</b></p>
-    /// <p><code>
+    /// <para>Objects of this type can only be obtained from a 
+    /// <see cref="CrowdManager"/> object.</para>
+    /// <para><b>Example of iterating the proximity data:</b></para>
+    /// <para><code>
     /// int[] bounds = new int[4];
     /// grid.GetBounds(bounds);
 	///	float cs = grid.GetCellSize();
@@ -50,8 +50,8 @@ namespace org.critterai.nav
     ///			float maxX = x * cs + cs;
 	///		}
 	///	}
-    /// </code></p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// </code></para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class CrowdProximityGrid
     {
@@ -104,7 +104,7 @@ namespace org.critterai.nav
         /// The cell size of the grid.
         /// </summary>
         /// <remarks>
-        /// <p>Used for converting from grid units to world units.</p>
+        /// <para>Used for converting from grid units to world units.</para>
         /// </remarks>
         /// <returns>The cell size of the grid.</returns>
         public float GetCellSize()

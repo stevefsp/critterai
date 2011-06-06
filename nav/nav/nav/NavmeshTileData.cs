@@ -29,8 +29,8 @@ namespace org.critterai.nav
     /// Represents the data buffer for a navigation mesh tile.
     /// </summary>
     /// <remarks>
-    /// <p>Represents a fully built tile, ready to be add to a tiled 
-    /// <see cref="Navmesh"/>.  This is the unabstracted tile.</p>
+    /// <para>Represents a fully built tile, ready to be add to a tiled 
+    /// <see cref="Navmesh"/>.  This is the unabstracted tile.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTileData

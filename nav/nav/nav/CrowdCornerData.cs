@@ -27,7 +27,7 @@ namespace org.critterai.nav
     /// <summary>
     /// Crowd agent corner data.
     /// </summary>
-    /// <remarks><p>Minimal available documentation.</p></remarks>
+    /// <remarks><para>Minimal available documentation.</para></remarks>
     [StructLayout(LayoutKind.Sequential)]
     public class CrowdCornerData
     {

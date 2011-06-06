@@ -31,12 +31,12 @@ namespace org.critterai.nav
     /// Provides local steering behaviors for a group of agents.
     /// </summary>
     /// <remarks>
-    /// <p>It is important to remember that this class is meant to provide 
+    /// <para>It is important to remember that this class is meant to provide 
     /// 'local' movement.  It is not meant to provide automatic pathfinding 
     /// services over long distances. Agents should be given targets that are 
     /// no more than two or three straight path corners away.  Much further
-    /// and the agent will move toward the target but may fail to find it.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// and the agent will move toward the target but may fail to find it.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class CrowdManager
         : ManagedObject
@@ -269,10 +269,10 @@ namespace org.critterai.nav
         ///// managed by the manager.
         ///// </summary>
         ///// <remarks>
-        ///// <p>The agents may be dispersed throughout the buffer with
+        ///// <para>The agents may be dispersed throughout the buffer with
         ///// null entries in between. Also, there is no quarentee that the order
         ///// of the agents will match the order they were added to the manager.
-        ///// </p>
+        ///// </para>
         ///// </remarks>
         ///// <param name="buffer">A buffer to load with the agent data.
         ///// [Size: >= MaxAgents]</param>
@@ -364,11 +364,11 @@ namespace org.critterai.nav
         /// the navigation mesh. (xAxis, yAxis, zAxis)
         /// </summary>
         /// <remarks>
-        /// <p>All agents and targets should remain within these
+        /// <para>All agents and targets should remain within these
         /// distances of the navigation mesh surface.  For example, if
         /// the yAxis extent is 0.5, then the agent should remain between
-        /// 0.5 above and 0.5 below the surface of the mesh.</p>
-        /// <p>The extents remains constant over the life of the object.</p>
+        /// 0.5 above and 0.5 below the surface of the mesh.</para>
+        /// <para>The extents remains constant over the life of the object.</para>
         /// </remarks>
         /// <returns>The extents.</returns>
         public float[] GetQueryExtents()
@@ -399,10 +399,10 @@ namespace org.critterai.nav
         /// The navmesh query used by the manager.
         /// </summary>
         /// <remarks>
-        /// <p>The configuration of this query makes it useful only for
+        /// <para>The configuration of this query makes it useful only for
         /// local pathfinding queries. (Its search size is limited.) Also,
         /// it is marked as <see cref="NavmeshQuery.IsRestricted">
-        /// restricted.</see></p>
+        /// restricted.</see></para>
         /// </remarks>
         public NavmeshQuery Query { get { return mQuery; } }
     }
