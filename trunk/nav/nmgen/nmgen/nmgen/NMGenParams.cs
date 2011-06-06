@@ -28,23 +28,24 @@ namespace org.critterai.nmgen
     /// Specifies a configuration to use when building navigation mesh data.
     /// </summary>
     /// <remarks>
-    /// <p>The is a convenience class that represents an aggregation of 
+    /// <para>The is a convenience class that represents an aggregation of 
     /// settings used at different stages in the build process.  In some cases 
     /// the values are expected to be derived by the build process. In some
     /// cases settings are irrelavent.  It all depends on the particular
-    /// build process being used/implemented.</p>
-    /// <p>There is no such thing as a 'zero' configuration.  So the
-    /// default constructor initializes all values to basic valid values.</p>
-    /// <p>All fields are public in order to support Unity serialization.  
+    /// build process being used/implemented.</para>
+    /// <para>There is no such thing as a 'zero' configuration.  So the
+    /// default constructor initializes all values to basic valid values.</para>
+    /// <para>All fields are public in order to support Unity serialization.  
     /// But it is best to set the fields using the properties since
-    /// they will enforce valid min/max limits.</p>
-    /// <p>All properties and methods will auto-limit parameters
+    /// they will enforce valid min/max limits.</para>
+    /// <para>All properties and methods will auto-limit parameters
     /// to valid values. For example, if the <see cref="TileSize"/> property
-    /// is set to -1, the field will be set to the minimum allowed value of 0.
-    /// </p>
-    /// <p>Fields are minimally documented.  See the property documentation
-    /// for details.</p>
-    /// <p>Compatible with Unity serialization.</p>
+    /// is set to -1, the field will be limited to the minimum allowed 
+    /// value of 0.
+    /// </para>
+    /// <para>Field members are minimally documented.  See the 
+    /// property member documentation for details.</para>
+    /// <para>Compatible with Unity serialization.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     [Serializable]
@@ -159,7 +160,7 @@ namespace org.critterai.nmgen
         /// The width of the heightfield along the x-axis.
         /// [Limit: >0] [Units: XZCellSize]
         /// </summary>
-        /// <remarks><p>Often a derived value.</p></remarks>
+        /// <remarks><para>Often a derived value.</para></remarks>
         public int Width
         {
             get { return width; }
@@ -170,7 +171,7 @@ namespace org.critterai.nmgen
         /// The depth of the heightfield along the z-axis.
         /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
-        /// <remarks><p>Often a derived value.</p></remarks>
+        /// <remarks><para>Often a derived value.</para></remarks>
         public int Depth
         {
             get { return depth; }
@@ -243,7 +244,7 @@ namespace org.critterai.nmgen
         /// [Units: World]
         /// </summary>
         /// <remarks>
-        /// <p>Also the 'grid size' or 'voxel size'.</p>
+        /// <para>Also the 'grid size' or 'voxel size'.</para>
         /// </remarks>
         public float XZCellSize
         {
@@ -256,7 +257,7 @@ namespace org.critterai.nmgen
         /// [Limit >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
-        /// <p>Also the 'voxel size' for the y-axis.</p>
+        /// <para>Also the 'voxel size' for the y-axis.</para>
         /// </remarks>
         public float YCellSize
         {
@@ -271,9 +272,9 @@ namespace org.critterai.nmgen
         /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <p>Permits detection of overhangs in the source geometry that make 
-        /// the geometry below un-walkable.</p>
-        /// <p>Usually the maximum client height.</p></remarks>
+        /// <para>Permits detection of overhangs in the source geometry that make 
+        /// the geometry below un-walkable.</para>
+        /// <para>Usually the maximum client height.</para></remarks>
         public int WalkableHeight
         {
             get { return walkableHeight; }
@@ -285,9 +286,9 @@ namespace org.critterai.nmgen
         /// [Limit: >=0] [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <p>Allows the mesh to flow over low lying obstructions such as
-        /// curbs and up/down stairways.</p>
-        /// <p>Usually set to how far up/down an agent can step.</p>
+        /// <para>Allows the mesh to flow over low lying obstructions such as
+        /// curbs and up/down stairways.</para>
+        /// <para>Usually set to how far up/down an agent can step.</para>
         /// </remarks>
         public int WalkableStep
         {
@@ -340,8 +341,8 @@ namespace org.critterai.nmgen
         /// mesh. [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <p>Extra vertices will be inserted if needed.</p>
-        /// <p>A value of zero disabled this feature.</p>
+        /// <para>Extra vertices will be inserted if needed.</para>
+        /// <para>A value of zero disabled this feature.</para>
         /// </remarks>
         public int MaxEdgeLength
         {
@@ -354,7 +355,7 @@ namespace org.critterai.nmgen
         /// the source geometry. [Limit: >=0] [Units: World]
         /// </summary>
         /// <remarks>
-        /// <p>Applies only to the xz-plane.</p>
+        /// <para>Applies only to the xz-plane.</para>
         /// </remarks>
         public float EdgeMaxDeviation
         {
@@ -389,8 +390,8 @@ namespace org.critterai.nmgen
         /// [Limit: >=0] [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <p>Prevents the formation of meshes that are too small to be
-        /// of use.</p>
+        /// <para>Prevents the formation of meshes that are too small to be
+        /// of use.</para>
         /// </remarks>
         public int MinRegionArea
         {

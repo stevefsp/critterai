@@ -50,11 +50,11 @@ namespace org.critterai.nmgen
         /// Represents the null region.
         /// </summary>
         /// <remarks>
-        /// <p>When a data item is given this region it is considered
-        /// to have been removed from the the data set.</p>
-        /// <p>Examples: When applied to a poygon, it indicates the polygon 
+        /// <para>When a data item is given this region it is considered
+        /// to have been removed from the the data set.</para>
+        /// <para>Examples: When applied to a poygon, it indicates the polygon 
         /// should be culled from the final mesh. When applied to an edge,
-        /// it means the edge is a solid wall.</p>
+        /// it means the edge is a solid wall.</para>
         /// </remarks>
         public const byte NullRegion = 0;
 
@@ -62,8 +62,8 @@ namespace org.critterai.nmgen
         /// Represents a null area.
         /// </summary>
         /// <remarks>
-        /// <p>When a data item is given this value it is considered to 
-        /// no longer be assigned to a usable area.</p>
+        /// <para>When a data item is given this value it is considered to 
+        /// no longer be assigned to a usable area.</para>
         /// </remarks>
         public const byte NullArea = 0;
 
@@ -82,7 +82,7 @@ namespace org.critterai.nmgen
         /// The minimum value for parameters that define walkable height.
         /// </summary>
         /// <remarks>
-        /// Dependancies between parameters may limit the minimum value 
+        /// Dependencies between parameters may limit the minimum value 
         /// to a higher value.
         /// </remarks>
         public const int MinWalkableHeight = 3;
@@ -231,7 +231,7 @@ namespace org.critterai.nmgen
         /// Builds an aggregate triangle mesh from a detail mesh.
         /// </summary>
         /// <remarks>
-        /// <p>All duplicate vertices are merged.</p>
+        /// <para>All duplicate vertices are merged.</para>
         /// </remarks>
         /// <param name="source">The detail mesh to extract the triangle mesh
         /// from.</param>

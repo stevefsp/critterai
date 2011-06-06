@@ -27,12 +27,12 @@ namespace org.critterai.nmgen
     /// Respresents a span within a <see cref="CompactHeightfield"/> object.
     /// </summary>
     /// <remarks>
-    /// <p>The span represents open, unobstructed space within a heightfield
-    /// column.</p>
-    /// <p>See the <see cref="CompactHeightfield"/> class' documentation for 
-    /// a discussion of iterating spans and searching span connections.</p>
-    /// <p>Useful instances of this type can only by obtained from a
-    /// <see cref="CompactHeightfield"/> object.</p>
+    /// <para>The span represents open, unobstructed space within a heightfield
+    /// column.</para>
+    /// <para>See the <see cref="CompactHeightfield"/> class' documentation for 
+    /// a discussion of iterating spans and searching span connections.</para>
+    /// <para>Useful instances of this type can only by obtained from a
+    /// <see cref="CompactHeightfield"/> object.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct CompactSpan
@@ -64,9 +64,9 @@ namespace org.critterai.nmgen
         /// heightfield's base.)
         /// </summary>
         /// <remarks>
-        /// <p>The span's floor height in world units can be derived as follows:
+        /// <para>The span's floor height in world units can be derived as follows:
         /// <br/>
-        /// <code>fieldBoundsMin[1] + (Floor * fieldYCellSize)</code></p>
+        /// <code>fieldBoundsMin[1] + (Floor * fieldYCellSize)</code></para>
         /// </remarks>
         public ushort Floor { get { return mFloor; } }
 
@@ -74,11 +74,11 @@ namespace org.critterai.nmgen
         /// The id of the region the span belongs to.
         /// </summary>
         /// <remarks>
-        /// <p>Non-null regions consist of connected, non-overlapping walkable 
-        /// spans.</p>
-        /// <p>A value of <see cref="NMGen.NullRegion"/> indicates the
+        /// <para>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans.</para>
+        /// <para>A value of <see cref="NMGen.NullRegion"/> indicates the
         /// span is not part of any region, or region data has
-        /// not been built.</p>
+        /// not been built.</para>
         /// </remarks>
         public ushort Region { get { return mRegion; } }
 
@@ -95,9 +95,9 @@ namespace org.critterai.nmgen
         /// Gets neighbor connection data for the specified direction.
         /// </summary>
         /// <remarks>
-        /// <p>Can be used to locate the neighbor span in the data structure.
+        /// <para>Can be used to locate the neighbor span in the data structure.
         /// See the <see cref="CompactHeightfield"/> documentation for details.
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="direction">The direction. 
         /// [Limits: 0 &lt;= value &lt; 4]
@@ -114,10 +114,10 @@ namespace org.critterai.nmgen
         /// span's floor.)
         /// </summary>
         /// <remarks>
-        /// <p>The span's height in world units can be derived as follows:
+        /// <para>The span's height in world units can be derived as follows:
         /// <br/>
         /// <c>fieldBoundsMin[1] + ((Floor + Height) * fieldYCellSize)
-        /// </c></p>
+        /// </c></para>
         /// </remarks>
         public byte Height { get { return (byte)(mPacked >> 24); } }
 
@@ -125,8 +125,8 @@ namespace org.critterai.nmgen
         /// Gets the standard width offset for the specified direction.
         /// </summary>
         /// <remarks>
-        /// <p>The direction value will be automatically wrapped.  So the
-        /// a value of 6 will be interpreted as 2.</p>
+        /// <para>The direction value will be automatically wrapped.  So the
+        /// a value of 6 will be interpreted as 2.</para>
         /// </remarks>
         /// <param name="direction">The direction.
         /// [Limits: 0 &lt;= value &lt; 4]</param>
@@ -141,8 +141,8 @@ namespace org.critterai.nmgen
         /// Gets the standard depth offset for the specified direction.
         /// </summary>
         /// <remarks>
-        /// <p>The direction value will be automatically wrapped.  So the
-        /// a value of 6 will be interpreted as 2.</p>
+        /// <para>The direction value will be automatically wrapped.  So the
+        /// a value of 6 will be interpreted as 2.</para>
         /// </remarks>
         /// <param name="direction">The direction.
         /// [Limits: 0 &lt;= value &lt; 4]</param>

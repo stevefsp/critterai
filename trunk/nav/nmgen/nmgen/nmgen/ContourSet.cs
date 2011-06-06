@@ -29,10 +29,10 @@ namespace org.critterai.nmgen
     /// Represents a group of related <see cref="Contour">contours</see>.
     /// </summary>
     /// <remarks>
-    /// <p>A contour set is usually generated from a single
+    /// <para>A contour set is usually generated from a single
     /// <see cref="CompactHeightfield"/>.  All contours share the minimum
-    /// bounds and cell sizes of the set.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// bounds and cell sizes of the set.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class ContourSet
         : IManagedObject
@@ -55,8 +55,8 @@ namespace org.critterai.nmgen
         /// The width/depth increment of each cell. (On the xz-plane.)
         /// </summary>
         /// <remarks>
-        /// <p>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</p>
+        /// <para>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</para>
         /// </remarks>
         public float XZCellSize { get { return root.xzCellSize; } }
 
@@ -64,8 +64,8 @@ namespace org.critterai.nmgen
         /// The height increment of each cell. (On the y-axis.)
         /// </summary> 
         /// <remarks>
-        /// <p>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</p>
+        /// <para>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</para>
         /// </remarks>
         public float YCellSize { get { return root.yCellSize; } }
 
@@ -84,8 +84,8 @@ namespace org.critterai.nmgen
         /// The minimum bounds of the set in world space. [Form: (x, y, z)]
         /// </summary>
         /// <remarks>
-        /// <p>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</p>
+        /// <para>See <see cref="Contour"/> for information on how the bounds and  
+        /// cell sizes are applied to member contours.</para>
         /// </remarks>
         /// <returns>The minimum bounds of the set.
         /// </returns>
@@ -181,13 +181,13 @@ namespace org.critterai.nmgen
         /// <see cref="CompactHeightfield"/>.
         /// </summary>
         /// <remarks>
-        /// <p>The raw contours will match the region outlines exactly.  The
+        /// <para>The raw contours will match the region outlines exactly.  The
         /// edgeMaxDeviation and maxEdgeLength parameters control how closely
-        /// the simplified contours will match the raw contours.</p>
-        /// <p>Simplified contours are generated such that the vertices for
+        /// the simplified contours will match the raw contours.</para>
+        /// <para>Simplified contours are generated such that the vertices for
         /// portals between areas match up.  (They are considered
-        /// mandatory vertices.)</p>
-        /// <p>Setting maxEdgeLength to zero will disabled the feature.</p>
+        /// mandatory vertices.)</para>
+        /// <para>Setting maxEdgeLength to zero will disabled the feature.</para>
         /// </remarks>
         /// <param name="context">The context to use for the build.</param>
         /// <param name="field">The field to use for the build.

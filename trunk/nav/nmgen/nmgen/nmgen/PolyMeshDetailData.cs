@@ -27,7 +27,11 @@ namespace org.critterai.nmgen
     /// Represents data for a <see cref="PolyMeshDetail"/> object.
     /// </summary>
     /// <remarks>
-    /// <p>This class is not compatible with Unity serialization.</p>
+    /// <para>The detail mesh is made up of triangle sub-meshes which provide
+    /// extra height detail for each polygon in its assoicated polygon
+    /// mesh.</para>
+    /// <para>See the individual field definitions for details related to
+    /// the structure of the mesh.</para>
     /// </remarks>
     /// <seealso cref="PolyMeshDetail"/>
     [Serializable]
@@ -39,11 +43,13 @@ namespace org.critterai.nmgen
         /// * meshCount] [Size: >= 4 * meshCount]
         /// </summary>
         /// <remarks>
-        /// <p>Maximum number of vertices per sub-mesh: 127<br/>
-        /// Maximum number of triangles per sub-mesh: 255</p>
-        /// <p>An example of iterating the triangles in a sub-mesh. (Where
-        /// iMesh is the index for the sub-mesh within detailMesh.)</p>
+        /// <para>Maximum number of vertices per sub-mesh: 127<br/>
+        /// Maximum number of triangles per sub-mesh: 255</para>
+        /// </remarks>
+        /// <example>
+        /// <para>An example of iterating the triangles in a sub-mesh.</para>
         /// <code>
+        ///     // Where iMesh is the index for the sub-mesh within detailMesh
         ///     int pMesh = iMesh * 4;
         ///     int pVertBase = meshes[pMesh + 0] * 3;
         ///     int pTriBase = meshes[pMesh + 2] * 4;
@@ -63,7 +69,7 @@ namespace org.critterai.nmgen
         ///        }
         ///    }
         /// </code>
-        /// </remarks>
+        /// </example>
         public uint[] meshes;
 
         /// <summary>
@@ -72,14 +78,14 @@ namespace org.critterai.nmgen
         /// [Size: >= 3 * vertCount]
         /// </summary>
         /// <remarks>
-        /// <p>The vertices are grouped by sub-mesh and will contain duplicates
-        /// since each sub-mesh is independantly defined.</p>
-        /// <p>The first group of vertices for each sub-mesh are in the same
+        /// <para>The vertices are grouped by sub-mesh and will contain duplicates
+        /// since each sub-mesh is independently defined.</para>
+        /// <para>The first group of vertices for each sub-mesh are in the same
         /// order as the vertices for the sub-mesh's associated 
         /// <see cref="PolyMesh"/> polygon.  These vertices are followed by 
         /// any additional detail vertices.  So it the associated polygon has 
         /// 5 vertices, the sub-mesh will have a minimum of 5 vertices and the 
-        /// first 5 vertices will be equivalent to the 5 polygon vertices.</p>
+        /// first 5 vertices will be equivalent to the 5 polygon vertices.</para>
         /// </remarks>
         public float[] verts;
 
@@ -89,35 +95,35 @@ namespace org.critterai.nmgen
         /// [Size: >= 4 * triCount]
         /// </summary>
         /// <remarks>
-        /// <p>The triangles are grouped by sub-mesh.</p>
-        /// <p><b>Vertices</b></p>
-        /// <p> The vertex indices in the triangle array are local to the
+        /// <para>The triangles are grouped by sub-mesh.</para>
+        /// <para><b>Vertices</b></para>
+        /// <para> The vertex indices in the triangle array are local to the
         /// sub-mesh, not global.  To translate into an global index in the
         /// vertices array, the values must be offset by the sub-mesh's base
-        /// vertex index.</p>
-        /// <p>
-        /// Example: If the baseVertexIndex for the sub-mesh is 5 and the
-        /// triangle entry is (4, 8, 7, 0), then the actual indices for
-        /// the vertices are (4 + 5, 8 + 5, 7 + 5).
-        /// </p>
-        /// <p><b>Flags</b></p>
-        /// <p>The flags entry indicates which edges are internal and which
-        /// are external to the sub-mesh.</p>
+        /// vertex index.</para>
+        /// <para>
+        /// Example: If the <c>baseVertexIndex</c> for the sub-mesh is 5 and the
+        /// triangle entry is <c>(4, 8, 7, 0)</c>, then the actual indices for
+        /// the vertices are <c>(4 + 5, 8 + 5, 7 + 5)</c>.
+        /// </para>
+        /// <para><b>Flags</b></para>
+        /// <para>The flags entry indicates which edges are internal and which
+        /// are external to the sub-mesh.</para>
         ///
-        /// <p>Internal edges connect to other triangles within the same
+        /// <para>Internal edges connect to other triangles within the same
         /// sub-mesh.
         /// External edges represent portals to other sub-meshes or the null
-        /// region.</p>
+        /// region.</para>
         ///
-        /// <p>Each flag is stored in a 2-bit position.  Where position 0 is the
-        /// lowest 2-bits and position 4 is the highest 2-bits:</p>
+        /// <para>Each flag is stored in a 2-bit position.  Where position 0 is the
+        /// lowest 2-bits and position 4 is the highest 2-bits:</para>
         ///
-        /// <p>Position 0: Edge AB (>> 0)<br />
+        /// <para>Position 0: Edge AB (>> 0)<br />
         /// Position 1: Edge BC (>> 2)<br />
         /// Position 2: Edge CA (>> 4)<br />
-        /// Position 4: Unused</p>
+        /// Position 4: Unused</para>
         ///
-        /// <p>Testing can be performed as follows:</p>
+        /// <para>Testing can be performed as follows:</para>
         /// <code>
         /// if (((flag >> 2) &amp; 0x3) == 0)
         /// {
@@ -128,29 +134,30 @@ namespace org.critterai.nmgen
         public byte[] tris;
 
         /// <summary>
-        /// The sub-mesh count.
+        /// The sub-mesh count. [Limit: > 0]
         /// </summary>
         public int meshCount;
 
         /// <summary>
-        /// The vertex count.
+        /// The vertex count. [Limit: >= 3]
         /// </summary>
         public int vertCount;
 
         /// <summary>
-        /// The triangle count.
+        /// The triangle count. [Limit > 0]
         /// </summary>
         public int triCount;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the object will
-        /// hold.</param>
-        /// <param name="maxTris">The maximum triangles the object will
-        /// hold.</param>
-        /// <param name="maxMeshes">The maximum sub-meshes the object
-        /// will hold.</param>
+        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// will hold.
+        /// [Limit: >= 3]</param>
+        /// <param name="maxTris">The maximum triangles the triangle buffer
+        /// will hold. [Limit: > 0]</param>
+        /// <param name="maxMeshes">The maximum sub-meshes the mesh
+        /// buffer will hold. [Limit: > 0]</param>
         public PolyMeshDetailData(int maxVerts
             , int maxTris
             , int maxMeshes)
@@ -170,12 +177,13 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Clears all object data and resizes the buffers.
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the object will
-        /// hold.</param>
-        /// <param name="maxTris">The maximum triangles the object will
-        /// hold.</param>
-        /// <param name="maxMeshes">The maximum sub-meshes the object
-        /// will hold.</param>
+        /// <param name="maxVerts">The maximum vertices the vertex buffer
+        /// will hold.
+        /// [Limit: >= 3]</param>
+        /// <param name="maxTris">The maximum triangles the triangle buffer
+        /// will hold. [Limit: > 0]</param>
+        /// <param name="maxMeshes">The maximum sub-meshes the mesh
+        /// buffer will hold. [Limit: > 0]</param>
         public void Reset(int maxVerts
             , int maxTris
             , int maxMeshes)

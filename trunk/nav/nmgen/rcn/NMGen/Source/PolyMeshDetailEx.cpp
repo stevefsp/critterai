@@ -259,7 +259,7 @@ extern "C"
          * Remember: The detailMesh->tris array has a stride of 4
          * (3 indices + flags)
          *
-         * The detail meshes are completely independant, which results
+         * The detail meshes are completely independent, which results
          * in duplicate verts.  The flattening process will remove
          * the duplicates.
          */

@@ -28,8 +28,8 @@ namespace org.critterai.nmgen
     /// arrays.)
     /// </summary>
     /// <remarks>
-    /// <p>Contour vertices take the form (x, y, z, r).  The r-value can contain
-    /// these flags.</p>
+    /// <para>Contour vertices take the form (x, y, z, r).  The r-value can contain
+    /// these flags.</para>
     /// </remarks>
     [Flags]
     public enum ContourFlags

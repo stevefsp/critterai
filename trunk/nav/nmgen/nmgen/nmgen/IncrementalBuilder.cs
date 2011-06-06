@@ -30,12 +30,12 @@ namespace org.critterai.nmgen
     /// an incremental manner.
     /// </summary>
     /// <remarks>
-    /// <p>This class is useful for instances where not all the build steps
+    /// <para>This class is useful for instances where not all the build steps
     /// should occur in a single step.  (Such as when a GUI needs to
     /// provid feedback.)  The time to perform each increment will not be
     /// equal.  Rather the increments are broken down by steps in the build
-    /// process.  E.g. Voxelize geometry, build regions, etc.</p>
-    /// <p>Each instance can be used to perform only a single build.</p>
+    /// process.  E.g. Voxelize geometry, build regions, etc.</para>
+    /// <para>Each instance can be used to perform only a single build.</para>
     /// </remarks>
     public sealed class IncrementalBuilder
     {
@@ -152,9 +152,9 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Performs a single build step.
         /// </summary>
-        /// <remarks><p>The result state will represent either a finished state
+        /// <remarks><para>The result state will represent either a finished state
         /// or the build step that will be performed during the next call to
-        /// the method.</p></remarks>
+        /// the method.</para></remarks>
         /// <returns>The state at the end of the build step.</returns>
         public BuildState Build()
         {

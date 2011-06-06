@@ -31,12 +31,12 @@ namespace org.critterai.nmgen
     /// A heightfield representing obstructed space.
     /// </summary>
     /// <remarks>
-    /// <p>When used in the context of a heighfield, the term voxel
+    /// <para>When used in the context of a heighfield, the term voxel
     /// refers to an area <see cref="XZCellSize"/> in width, 
     /// <see cref="XZCellSize"/> in depth, and <see cref="YCellSize"/>
-    /// in height.</p>
-    /// <p>TODO: Link to detailed discussion of heightfields.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// in height.</para>
+    /// <para>TODO: Link to detailed discussion of heightfields.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Heightfield
@@ -96,10 +96,10 @@ namespace org.critterai.nmgen
         /// The width/depth size of each cell. (On the xz-plane.)
         /// </summary>
         /// <remarks>
-        /// <p>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</p>
-        /// <p>A width or depth value within the field can be converted
-        /// to world units as follows:</p>
+        /// <para>The smallest span can be 
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</para>
+        /// <para>A width or depth value within the field can be converted
+        /// to world units as follows:</para>
         /// <code>
         /// boundsMin[0] + (width * XZCellSize)
         /// boundsMin[2] + (depth * XZCellSize)
@@ -111,10 +111,10 @@ namespace org.critterai.nmgen
         /// The height increments for span data.  (On the y-axis.)
         /// </summary>
         /// <remarks>
-        /// <p>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</p>
-        /// <p>A height within the field is converted to world units
-        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></p>
+        /// <para>The smallest span can be 
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</para>
+        /// <para>A height within the field is converted to world units
+        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></para>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -232,9 +232,9 @@ namespace org.critterai.nmgen
         /// Gets the spans within the specified column.
         /// </summary>
         /// <remarks>
-        /// <p>The spans will be ordered from lowest height to highest.</p>
-        /// <p>The <see cref="GetSpanBuffer"/> method can be used to
-        /// get a properly sized buffer.</p>
+        /// <para>The spans will be ordered from lowest height to highest.</para>
+        /// <para>The <see cref="GetSpanBuffer"/> method can be used to
+        /// get a properly sized buffer.</para>
         /// </remarks>
         /// <param name="widthIndex">The width index. 
         /// [Limits: 0 &lt;= value &lt; <see cref="Width"/>]</param>
@@ -262,13 +262,13 @@ namespace org.critterai.nmgen
         /// within walkableStep of a walkable neihbor.
         /// </summary>
         /// <remarks>
-        /// <p>Example of test: 
+        /// <para>Example of test: 
         /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) &lt; walkableStep
         /// </c>
-        /// </p>
-        /// <p>Allows the formation of walkable regions that will flow over low
+        /// </para>
+        /// <para>Allows the formation of walkable regions that will flow over low
         /// lying objects such as curbs, and up structures such as stairways.
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableStep">The maximum allowed difference between
@@ -290,13 +290,13 @@ namespace org.critterai.nmgen
         /// Marks spans that are ledges as not-walkable.
         /// </summary>
         /// <remarks>
-        /// <p>A ledge is a span with neighbor whose maximum further away than
+        /// <para>A ledge is a span with neighbor whose maximum further away than
         /// walkableStep.  Example: 
         /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) > walkableStep</c>
-        /// </p>
-        /// <p>This method removes the impact of the overestimation of
+        /// </para>
+        /// <para>This method removes the impact of the overestimation of
         /// conservative voxelization so the resulting mesh will not have 
-        /// regions hanging in the air over ledges.</p>
+        /// regions hanging in the air over ledges.</para>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableHeight">The maximum floor to ceiling height
@@ -325,9 +325,9 @@ namespace org.critterai.nmgen
         /// span is less than the specified height.
         /// </summary>
         /// <remarks>
-        /// <p>For this method, the clearance above the span is the distance
+        /// <para>For this method, the clearance above the span is the distance
         /// from the span's maximum to the next higher span's minimum.
-        /// (Same column.)</p>
+        /// (Same column.)</para>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="walkableHeight">The maximum allowed floor to ceiling
@@ -407,9 +407,9 @@ namespace org.critterai.nmgen
         /// Voxelizes the provided triangles into the heightfield.
         /// </summary>
         /// <remarks>
-        /// <p>Unlike many other methods in the library, the arrays must
+        /// <para>Unlike many other methods in the library, the arrays must
         /// be sized exactly to the content.  If you need to pass buffers,
-        /// use the method that takes a <see cref="TriangleMesh"/> object.</p>
+        /// use the method that takes a <see cref="TriangleMesh"/> object.</para>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]

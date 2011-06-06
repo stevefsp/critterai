@@ -28,8 +28,8 @@ namespace org.critterai.nmgen
     /// <see cref="CompactHeightfield"/> object.
     /// </summary>
     /// <remarks>
-    /// <p>Useful instances of this type can only by obtained from a
-    /// <see cref="CompactHeightfield"/> object.</p>
+    /// <para>Useful instances of this type can only by obtained from a
+    /// <see cref="CompactHeightfield"/> object.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct CompactCell
