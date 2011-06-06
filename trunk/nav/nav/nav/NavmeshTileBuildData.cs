@@ -29,18 +29,12 @@ namespace org.critterai.nav
     /// Represents the data used to build a <see cref="NavmeshTile"/>.
     /// </summary>
     /// <remarks>
-    /// <p>This class marshals data between the navigation mesh generation
-    /// pipeline and the navigation system.  Refer to the following documents
-    /// for information on the data it contains:</p>
-    /// <p>
-    /// <a href="http://www.critterai.org/projects/cainav/common/detailmesh_def.html">
-    /// The Polygon Mesh</a><br/>
-    /// <a href="http://www.critterai.org/projects/cainav/common/detailmesh_def.html">
-    /// The Detail Mesh</a><br/>
-    /// <a href="http://www.critterai.org/projects/cainav/common/offmeshconns.html">
-    /// Off-Mesh Connections</a><br/>
-    /// </p>
-    /// <p>The standard data load process is as follows:</p>
+    /// <para>This class marshals data between the navigation mesh generation
+    /// pipeline and the navigation system. See <see cref="PolyMeshData"/>
+    /// and <see cref="PolyMeshDetailData"/> for details related to mesh
+    /// structure.
+    /// </para>
+    /// <para>The standard load process is as follows:</para>
     /// <ol>
     /// <li>Construct the object.</li>
     /// <li><see cref="LoadBase"/></li>
@@ -48,12 +42,12 @@ namespace org.critterai.nav
     /// <li><see cref="LoadDetail"/> (Optional.)</li>
     /// <li><see cref="LoadConns"/> (Optional.)</li>
     /// </ol>
-    /// <p>The design permits re-use of the data buffers for multiple tile
+    /// <para>The design permits re-use of the data buffers for multiple tile
     /// builds.  Just set the buffer sizes to the maximum size required then
     /// use the load methods to reload the data as needed.  The only restriction
     /// is that all polygon data must be have the same maximum vertices
-    /// per polygon.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// per polygon.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTileBuildData
@@ -385,9 +379,9 @@ namespace org.critterai.nav
         /// Constructor.
         /// </summary>
         /// <remarks>
-        /// <p>If invalid parameter values are supplied the resulting object
+        /// <para>If invalid parameter values are supplied the resulting object
         /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</p>
+        /// size values set to zero.)</para>
         /// </remarks>
         /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
         /// </param>
@@ -431,9 +425,9 @@ namespace org.critterai.nav
         /// Constructor. (No off-mesh connections.)
         /// </summary>
         /// <remarks>
-        /// <p>If invalid parameter values are supplied the resulting object
+        /// <para>If invalid parameter values are supplied the resulting object
         /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</p>
+        /// size values set to zero.)</para>
         /// </remarks>
         /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
         /// </param>
@@ -474,9 +468,9 @@ namespace org.critterai.nav
         /// Constructor. (No detail mesh.)
         /// </summary>
         /// <remarks>
-        /// <p>If invalid parameter values are supplied the resulting object
+        /// <para>If invalid parameter values are supplied the resulting object
         /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</p>
+        /// size values set to zero.)</para>
         /// </remarks>
         /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
         /// </param>
@@ -514,9 +508,9 @@ namespace org.critterai.nav
         /// Constructor. (No detail mesh or off-mesh connections.)
         /// </summary>
         /// <remarks>
-        /// <p>If invalid parameter values are supplied the resulting object
+        /// <para>If invalid parameter values are supplied the resulting object
         /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</p>
+        /// size values set to zero.)</para>
         /// </remarks>
         /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
         /// </param>

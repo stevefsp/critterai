@@ -27,8 +27,8 @@ namespace org.critterai.nav
     /// The height detail mesh for a polygon in a <see cref="NavmeshTile"/>.
     /// </summary>
     /// <remarks>
-    /// <p>All indices refer to the vertex and triangle data in the
-    /// associated <see cref="NavmeshTile"/>.</p>
+    /// <para>All indices refer to the vertex and triangle data in the
+    /// associated <see cref="NavmeshTile"/>.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshDetailMesh

@@ -27,7 +27,7 @@ namespace org.critterai.nav
     /// Polygon data for a polygon in a navigation mesh tile.
     /// </summary>
     /// <remarks>
-    /// <p>This structure is provided for debug purposes.</p>
+    /// <para>This structure is provided for debug purposes.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshPoly
@@ -44,9 +44,9 @@ namespace org.critterai.nav
         /// Indices to the polygon's vertices.
         /// </summary>
         /// <remarks>
-        /// <p>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</p>
-        /// <p>The indices refer vertices in the polygon's 
-        /// <see cref="NavmeshTileData">tile</see>.</p>
+        /// <para>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</para>
+        /// <para>The indices refer vertices in the polygon's 
+        /// <see cref="NavmeshTileData">tile</see>.</para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray
             , SizeConst = Navmesh.MaxAllowedVertsPerPoly)]
@@ -57,17 +57,17 @@ namespace org.critterai.nav
         /// edge.
         /// </summary>
         /// <remarks>
-        /// <p>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</p>
-        /// <p>Each entry represents data for the edge starting at the
+        /// <para>Length: <see cref="Navmesh.MaxAllowedVertsPerPoly"/>.</para>
+        /// <para>Each entry represents data for the edge starting at the
         /// vertex of the same index.  E.g. The entry at index n represents
-        /// the edge data for vertex[n] to vertex[n+1].</p>
-        /// <p>A value of zero indicates the edge has no polygon connection.
-        /// (It makes up the border of the navigation mesh.)</p>
-        /// <p>The polygon id can be found as follows:
-        /// <c>(int)neighborPolyRefs[n] &amp; 0xff</c></p>
-        /// <p>The edge is an external (portal) edge if the following test
+        /// the edge data for vertex[n] to vertex[n+1].</para>
+        /// <para>A value of zero indicates the edge has no polygon connection.
+        /// (It makes up the border of the navigation mesh.)</para>
+        /// <para>The polygon id can be found as follows:
+        /// <c>(int)neighborPolyRefs[n] &amp; 0xff</c></para>
+        /// <para>The edge is an external (portal) edge if the following test
         /// is TRUE: 
-        /// <c>(neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</c></p>
+        /// <c>(neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</c></para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray
             , SizeConst = Navmesh.MaxAllowedVertsPerPoly)]
@@ -82,9 +82,9 @@ namespace org.critterai.nav
         /// The number of vertices in the polygon.
         /// </summary>
         /// <remarks>
-        /// <p>The value will be between 3 and 
+        /// <para>The value will be between 3 and 
         /// <see cref="Navmesh.MaxAllowedVertsPerPoly"/> inclusive for 
-        /// standard polygons, and 2 for off-mesh connections.</p>
+        /// standard polygons, and 2 for off-mesh connections.</para>
         /// </remarks>
 	    public byte vertCount;
 

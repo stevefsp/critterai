@@ -26,16 +26,16 @@ using org.critterai.interop;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Provides core pathfinding functionality for navigation meshs.
+    /// Provides core pathfinding functionality for navigation meshes.
     /// </summary>
     /// <remarks>
-    /// <p>In the context of this class: A wall is a polygon segment that
+    /// <para>In the context of this class: A wall is a polygon segment that
     /// is considered impassable.  A portal is a passable segment between
-    /// polygons.</p>
-    /// <p>For methods that support undersized buffers, if the buffer is too
+    /// polygons.</para>
+    /// <para>For methods that support undersized buffers, if the buffer is too
     /// small to hold the entire result set the return status of the method will 
-    /// include the <see cref="NavStatus.BufferTooSmall"/> flag.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// include the <see cref="NavStatus.BufferTooSmall"/> flag.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class NavmeshQuery
         : ManagedObject
@@ -51,9 +51,9 @@ namespace org.critterai.nav
         /// If TRUE, certain methods are disabled.
         /// </summary>
         /// <remarks>
-        /// <p>Certain methods are generally not safe for use by multiple
+        /// <para>Certain methods are generally not safe for use by multiple
         /// clients.  These methods will fail if the object is marked as 
-        /// restricted.</p>
+        /// restricted.</para>
         /// </remarks>
         public bool IsRestricted { get { return mIsRestricted; } }
 
@@ -92,8 +92,8 @@ namespace org.critterai.nav
         /// unmanaged resources for locally owned objects.
         /// </summary>
         /// <remarks>
-        /// <p>This method is not projected by the <see cref="IsRestricted"/>
-        /// feature.</p>
+        /// <para>This method is not projected by the <see cref="IsRestricted"/>
+        /// feature.</para>
         /// </remarks>
         public override void RequestDisposal()
         {
@@ -114,11 +114,11 @@ namespace org.critterai.nav
         /// Finds the polygon nearest to the specified point.
         /// </summary>
         /// <remarks>
-        /// <p>If the search box does not intersect any polygons the search
+        /// <para>If the search box does not intersect any polygons the search
         /// will return success, but the result polyRef will be zero.  So always 
-        /// check the result polyRef before using the nearest point data.</p>
-        /// <p>The detail mesh is used to correct the y-value of the nearest
-        /// point.</p>
+        /// check the result polyRef before using the nearest point data.</para>
+        /// <para>The detail mesh is used to correct the y-value of the nearest
+        /// point.</para>
         /// </remarks>
         /// <param name="searchPoint">The center of the search box.</param>
         /// <param name="extents">The search distance along each axis.
@@ -148,14 +148,14 @@ namespace org.critterai.nav
         /// Returns the wall segments for the specified polygon.
         /// </summary>
         /// <remarks>
-        /// <p>A segment that is normally a portal will be included in the
+        /// <para>A segment that is normally a portal will be included in the
         /// result set if the filter results in the neighbor polygon
         /// being considered impassable.
-        /// </p>
-        /// <p>The vertex buffer must be sized for the maximum segments per
+        /// </para>
+        /// <para>The vertex buffer must be sized for the maximum segments per
         /// polygon of the source navigation mesh.
-        /// Usually: 6 * <see cref="Navmesh.MaxAllowedVertsPerPoly"/></p>
-        /// <p>The segments can be used for simple 2D collision detection.</p>
+        /// Usually: 6 * <see cref="Navmesh.MaxAllowedVertsPerPoly"/></para>
+        /// <para>The segments can be used for simple 2D collision detection.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id for the polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -184,16 +184,16 @@ namespace org.critterai.nav
         /// excluding portals.
         /// </summary>
         /// <remarks>
-        /// <p>If the segmentPolyRefs parameter is provided, then all polygon
+        /// <para>If the segmentPolyRefs parameter is provided, then all polygon
         /// segments will be returned.  If the parameter is null, then only 
-        /// the wall segments are returned.</p>
-        /// <p>A segment that is normally a portal will be included in the
+        /// the wall segments are returned.</para>
+        /// <para>A segment that is normally a portal will be included in the
         /// result set as a wall if the filter results in the neighbor polygon
         /// being considered impassable.
-        /// </p>
-        /// <p>The vertex and polyRef buffers must be sized for the maximum 
+        /// </para>
+        /// <para>The vertex and polyRef buffers must be sized for the maximum 
         /// segments per polygon of the source navigation mesh.
-        /// Usually: <see cref="Navmesh.MaxAllowedVertsPerPoly"/></p>
+        /// Usually: <see cref="Navmesh.MaxAllowedVertsPerPoly"/></para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -225,12 +225,12 @@ namespace org.critterai.nav
         /// Finds the polygons that overlap the search box.
         /// </summary>
         /// <remarks>
-        /// <p>If no polygons are found, the method will return success with
-        /// a result count of zero.</p>
-        /// <p>If the result buffer is too small to hold the entire result set
+        /// <para>If no polygons are found, the method will return success with
+        /// a result count of zero.</para>
+        /// <para>If the result buffer is too small to hold the entire result set
         /// the buffer will be filled to capacity.  The method of 
         /// choosing which polygons from the full set are included in the 
-        /// partial result set is undefined.</p>
+        /// partial result set is undefined.</para>
         /// </remarks>
         /// <param name="searchPoint">The center of the query box.
         /// [Form: (x, y, z)]</param>
@@ -261,29 +261,29 @@ namespace org.critterai.nav
         /// Finds the polygons within the graph that touch the specified circle.
         /// </summary>
         /// <remarks>
-        /// <p>At least one result buffer must be provided.</p>
-        /// <p>The order of the result set is from least to highest
-        /// cost to reach the polygon.</p>
-        /// <p>The primary use case for this method is for performing
+        /// <para>At least one result buffer must be provided.</para>
+        /// <para>The order of the result set is from least to highest
+        /// cost to reach the polygon.</para>
+        /// <para>The primary use case for this method is for performing
         /// Dijkstra searches.  Candidate polygons are found
-        /// by searching the graph beginning at the start polygon.</p>
-        /// <p>If a polygon is not found via the graph search,
+        /// by searching the graph beginning at the start polygon.</para>
+        /// <para>If a polygon is not found via the graph search,
         /// even if it intersects the search circle, it will not be included
-        /// in the result set. Example scenario:</p>
-        /// <p>polyA is the start polygon.<br/>
+        /// in the result set. Example scenario:</para>
+        /// <para>polyA is the start polygon.<br/>
         /// polyB shares an edge with polyA. (Is adjacent.)<br/>
         /// polyC shares an edge with polyB, but not with polyA<br/>
         /// Even if the search circle overlaps polyC, it will not
         /// be included in the result set unless polyB is also in the set.
-        /// </p>
-        /// <p>The value of the center point is used as the start point 
+        /// </para>
+        /// <para>The value of the center point is used as the start point 
         /// for cost calculations.  It is not projected onto the surface of the
-        /// mesh, so its y-value will effect the costs.</p>
-        /// <p>Intersection tests occur in 2D.  All polygons and the
+        /// mesh, so its y-value will effect the costs.</para>
+        /// <para>Intersection tests occur in 2D.  All polygons and the
         /// search circle are projected onto the xz-plane.  So the y-value of 
-        /// the center point does not effect intersection tests.</p>
-        /// <p>If the buffers are to small to hold the entire result set, they
-        /// will be filled to capacity.</p>
+        /// the center point does not effect intersection tests.</para>
+        /// <para>If the buffers are to small to hold the entire result set, they
+        /// will be filled to capacity.</para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the polygon to 
         /// start the search at.</param>
@@ -339,21 +339,21 @@ namespace org.critterai.nav
         /// specified convex polygon.
         /// </summary>
         /// <remarks>
-        /// <p>The order of the result set is from least to highest
-        /// cost.</p>
-        /// <p>At least one result buffer must be provided.</p>
-        /// <p>The primary use case for this method is for performing
+        /// <para>The order of the result set is from least to highest
+        /// cost.</para>
+        /// <para>At least one result buffer must be provided.</para>
+        /// <para>The primary use case for this method is for performing
         /// Dijkstra searches.  Candidate polygons are found
-        /// by searching the graph beginning at the start polygon.</p>
-        /// <p>The same intersection test restrictions that apply to 
-        /// the circle version of this method apply to this method.</p>
-        /// <p>The 3D centroid of the polygon is used as the start position for
-        /// cost calculations.</p>
-        /// <p>Intersection tests occur in 2D.  All polygons are projected
+        /// by searching the graph beginning at the start polygon.</para>
+        /// <para>The same intersection test restrictions that apply to 
+        /// the circle version of this method apply to this method.</para>
+        /// <para>The 3D centroid of the polygon is used as the start position for
+        /// cost calculations.</para>
+        /// <para>Intersection tests occur in 2D.  All polygons are projected
         /// onto the xz-plane.  So the y-values of the vertices do not effect
-        /// intersection tests.</p>
-        /// <p>If the buffers are is too small to hold the entire result set,
-        /// they will be filled to capacity.</p>
+        /// intersection tests.</para>
+        /// <para>If the buffers are is too small to hold the entire result set,
+        /// they will be filled to capacity.</para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the polygon to start 
         /// the search at.</param>
@@ -409,23 +409,23 @@ namespace org.critterai.nav
         /// neighborhood around the specified point.
         /// </summary>
         /// <remarks>
-        /// <p>This method is optimized for a small query radius and small 
-        /// number of result polygons.</p>
-        /// <p>The order of the result set is from least to highest cost.</p>
-        /// <p>At least one result buffer must be provided.</p>
-        /// <p>The primary use case for this method is for performing
+        /// <para>This method is optimized for a small query radius and small 
+        /// number of result polygons.</para>
+        /// <para>The order of the result set is from least to highest cost.</para>
+        /// <para>At least one result buffer must be provided.</para>
+        /// <para>The primary use case for this method is for performing
         /// Dijkstra searches.  Candidate polygons are found
-        /// by searching the graph beginning at the start polygon.</p>
-        /// <p>The same intersection test restrictions that apply to 
-        /// the FindPoly mehtods apply to this method.</p>
-        /// <p>The value of the center point is used as the start point 
+        /// by searching the graph beginning at the start polygon.</para>
+        /// <para>The same intersection test restrictions that apply to 
+        /// the FindPoly mehtods apply to this method.</para>
+        /// <para>The value of the center point is used as the start point 
         /// for cost calculations.  It is not projected onto the surface of the
-        /// mesh, so its y-value will effect the costs.</p>
-        /// <p>Intersection tests occur in 2D.  All polygons and the
+        /// mesh, so its y-value will effect the costs.</para>
+        /// <para>Intersection tests occur in 2D.  All polygons and the
         /// search circle are projected onto the xz-plane.  So the y-value of 
-        /// the center point does not effect intersection tests.</p>
-        /// <p>If the buffers are is too small to hold the entire result set,
-        /// they will be filled to capacity.</p>
+        /// the center point does not effect intersection tests.</para>
+        /// <para>If the buffers are is too small to hold the entire result set,
+        /// they will be filled to capacity.</para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the polygon to 
         /// start the search at.</param>
@@ -473,10 +473,10 @@ namespace org.critterai.nav
         /// Finds the closest point on the specified polygon.
         /// </summary>
         /// <remarks>
-        /// <p>Uses the height detail to provide the most accurate information.
-        /// </p>
-        /// <p>The source point does not have to be within the bounds of the
-        /// navigation mesh.</p>
+        /// <para>Uses the height detail to provide the most accurate information.
+        /// </para>
+        /// <para>The source point does not have to be within the bounds of the
+        /// navigation mesh.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="sourcePoint">The position to search from.
@@ -499,16 +499,16 @@ namespace org.critterai.nav
         /// source point is outside the polygon's xz-column.
         /// </summary>
         /// <remarks>
-        /// <p>Much faster than <see cref="GetNearestPoint" />.</p>
-        /// <p>If the provided point lies within the polygon's xz-column
+        /// <para>Much faster than <see cref="GetNearestPoint" />.</para>
+        /// <para>If the provided point lies within the polygon's xz-column
         /// (above or below), then the source and result points will be equal
-        /// </p>
-        /// <p>The boundary point will be the polygon boundary, not the height
+        /// </para>
+        /// <para>The boundary point will be the polygon boundary, not the height
         /// corrected detail boundary.  Use <see cref="GetPolyHeight"/> if 
         /// needed.
-        /// </p>
-        /// <p>The source point does not have to be within the bounds of the
-        /// navigation mesh.</p>
+        /// </para>
+        /// <para>The source point does not have to be within the bounds of the
+        /// navigation mesh.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="sourcePoint">The point to check. [Form: (x, y, z)]
@@ -555,13 +555,13 @@ namespace org.critterai.nav
         /// polygon wall.
         /// </summary>
         /// <remarks>
-        /// <p>The closest point is not height adjusted using the detail data. 
-        /// Use <see cref="GetPolyHeight"/> if needed.</p>
-        /// <p>The distance will equal the search radius if there is no wall 
+        /// <para>The closest point is not height adjusted using the detail data. 
+        /// Use <see cref="GetPolyHeight"/> if needed.</para>
+        /// <para>The distance will equal the search radius if there is no wall 
         /// within the radius.  In this case the values of closestPoint 
-        /// and normal are undefined.</p>
-        /// <p>The normal will become unpredicable if the distance is a
-        /// very small number.</p>
+        /// and normal are undefined.</para>
+        /// <para>The normal will become unpredicable if the distance is a
+        /// very small number.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="searchPoint">The center of the search circle.
@@ -597,13 +597,13 @@ namespace org.critterai.nav
         /// Finds the polygon path from the start to the end polygon.
         /// </summary>
         /// <remarks>
-        /// <p>If the end polygon cannot be reached, then the last polygon
-        /// is the nearest one found to the end polygon.</p>
-        /// <p>If the path buffer is to small to hold the result, it will
+        /// <para>If the end polygon cannot be reached, then the last polygon
+        /// is the nearest one found to the end polygon.</para>
+        /// <para>If the path buffer is to small to hold the result, it will
         /// be filled as far as possible from the start polygon toward the
-        /// end polygon.</p>
-        /// <p>The start and end points are used to calculate
-        /// traversal costs. (y-values matter.)</p>
+        /// end polygon.</para>
+        /// <para>The start and end points are used to calculate
+        /// traversal costs. (y-values matter.)</para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the start polygon.
         /// </param>
@@ -642,11 +642,11 @@ namespace org.critterai.nav
         /// Returns TRUE if the polygon refernce is in the current closed list.
         /// </summary>
         /// <remarks>
-        /// <p>The closed list is the list of polygons that were fully evaluated
-        /// during a find operation.</p>
-        /// <p>All methods prefixed with "Find" and all sliced path methods
+        /// <para>The closed list is the list of polygons that were fully evaluated
+        /// during a find operation.</para>
+        /// <para>All methods prefixed with "Find" and all sliced path methods
         /// generate a closed list.  The content of the list will persist 
-        /// until the next find/sliced method is called.</p>
+        /// until the next find/sliced method is called.</para>
         /// </remarks>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <returns>TRUE if the polgyon is in the current closed list.
@@ -661,37 +661,37 @@ namespace org.critterai.nav
         /// from the start point toward the end point.
         /// </summary>
         /// <remarks>
-        /// <p>This method is meant to be used for quick short distance checks.
-        /// </p>
-        /// <p>If the path buffer is too small to hold the result, it will
+        /// <para>This method is meant to be used for quick short distance checks.
+        /// </para>
+        /// <para>If the path buffer is too small to hold the result, it will
         /// be filled as far as possible from the start point toward the
-        /// end point.</p>
-        /// <p><b>Using the Hit Paramter</b></p>
-        /// <p>If the hit parameter is a very high value (>1E38), then
+        /// end point.</para>
+        /// <para><b>Using the Hit Paramter</b></para>
+        /// <para>If the hit parameter is a very high value (>1E38), then
         /// the ray has hit the end point.  In this case the path represents a 
         /// valid corridor to the end point and the value of hitNormal is 
         /// undefined.
-        /// </p>
-        /// <p>If the hit parameter is zero, then the start point is on the
-        /// border that was hit and the value of hitNormal is undefined.</p>
-        /// <p>If <c>0 &lt; hitParameter &lt; 1.0 </c>
-        /// then the following applies:</p>
+        /// </para>
+        /// <para>If the hit parameter is zero, then the start point is on the
+        /// border that was hit and the value of hitNormal is undefined.</para>
+        /// <para>If <c>0 &lt; hitParameter &lt; 1.0 </c>
+        /// then the following applies:</para>
         /// <code>
         /// distanceToHitBorder = distanceToEndPoint * hitParameter<br/>
         /// hitPoint = startPoint + (endPoint - startPoint) * hitParameter
         /// </code>
-        /// <p><b>Use Case Restriction</b></p>
-        /// <p>The raycast ignores the y-value of the end point.  (2D check)
+        /// <para><b>Use Case Restriction</b></para>
+        /// <para>The raycast ignores the y-value of the end point.  (2D check)
         /// This places significant limits on how it can be used.
-        /// Example scenario:</p>
-        /// <p>Consider a scene where there is a main floor with a second
+        /// Example scenario:</para>
+        /// <para>Consider a scene where there is a main floor with a second
         /// floor balcony that hangs over the main floor.  So the first floor
         /// mesh extends below the balcony mesh.  The start point is somewhere 
-        /// on the first floor.  The end point is on the balcony.</p>
-        /// <p>The raycast will search toward the end point along the first 
+        /// on the first floor.  The end point is on the balcony.</para>
+        /// <para>The raycast will search toward the end point along the first 
         /// floor mesh.  If it reaches the end point's xz-coordinates it will 
         /// indicate 'no hit', meaning it reached the end point.
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the start polygon.
         /// </param>
@@ -740,24 +740,24 @@ namespace org.critterai.nav
         /// within the polygon corridor.
         /// </summary>
         /// <remarks>
-        /// <p>This method peforms what is often called 'string pulling'.</p>
-        /// <p>If the provided result buffers are too small for the entire
+        /// <para>This method peforms what is often called 'string pulling'.</para>
+        /// <para>If the provided result buffers are too small for the entire
         /// result set, they will be filled as far as possible from the 
-        /// start point toward the end point.</p>
-        /// <p>The start point is clamped to the first polygon in 
+        /// start point toward the end point.</para>
+        /// <para>The start point is clamped to the first polygon in 
         /// the path, and the end point is clamped to the last. So the start 
         /// and end points should be within or very near the first and last 
         /// polygons respectively.  The pathStart and pathCount parameters can 
         /// be adjusted to restrict the usable portion of the the path to 
-        /// meet this requirement. (See the example below.)</p>
-        /// <p>The returned polygon references represent the reference id of 
+        /// meet this requirement. (See the example below.)</para>
+        /// <para>The returned polygon references represent the reference id of 
         /// the polygon that is entered at the associated path point.  The 
-        /// reference id associated with the end point will always be zero.</p>
-        /// <p>Example use case for adjusting the straight path during
-        /// locomotion:</p>
-        /// <p>Senario: The path consists of polygons A, B, C, D, with the
-        /// start point in A and the end point in D.</p>
-        /// <p>The first call to the method will return straight waypoints for 
+        /// reference id associated with the end point will always be zero.</para>
+        /// <para>Example use case for adjusting the straight path during
+        /// locomotion:</para>
+        /// <para>Senario: The path consists of polygons A, B, C, D, with the
+        /// start point in A and the end point in D.</para>
+        /// <para>The first call to the method will return straight waypoints for 
         /// the entire path:<br/>
         /// <code>
         /// query.GetStraightPath(startPoint, endPoint
@@ -766,8 +766,8 @@ namespace org.critterai.nav
         ///     , straigthPath, null, null
         ///     , out straightCount);
         /// </code>
-        /// </p>
-        /// <p>If the agent moves into polygon B and needs to recaclulate its
+        /// </para>
+        /// <para>If the agent moves into polygon B and needs to recaclulate its
         /// straight path for some reason, it can call the method as
         /// follows using the original path buffer:<br/>
         /// <code>
@@ -776,7 +776,7 @@ namespace org.critterai.nav
         ///     , 1, 3   // pathStart, pathCount  &lt;- Note the changes here.
         ///     , straigthPath, null, null
         ///     , out straightCount);
-        /// </code></p>
+        /// </code></para>
         /// </remarks>
         /// <param name="startPoint">The start point.</param>
         /// <param name="endPoint">The end point.</param>
@@ -835,21 +835,21 @@ namespace org.critterai.nav
         /// the navigation mesh.
         /// </summary>
         /// <remarks>
-        /// <p>This method is optimized for small delta movement and a small
+        /// <para>This method is optimized for small delta movement and a small
         /// number of polygons. If used for too great a distance, the
-        /// result set will form an incomplete path.</p>
-        /// <p>The result point will equal the end point if the end
+        /// result set will form an incomplete path.</para>
+        /// <para>The result point will equal the end point if the end
         /// is reached. Otherwise the closest reachable point will be 
-        /// returned.</p>
-        /// <p>The result position is not projected to the surface of the
+        /// returned.</para>
+        /// <para>The result position is not projected to the surface of the
         /// navigation mesh.  If that is needed, use 
-        /// <see cref="GetPolyHeight"/>.</p>
-        /// <p>This method treats the end point in the same manner as the
+        /// <see cref="GetPolyHeight"/>.</para>
+        /// <para>This method treats the end point in the same manner as the
         /// <see cref="Raycast"/> method.  (As a 2D point.) 
-        /// See that method's documentation for details on the impact.</p>
-        /// <p>If the result buffer is too small to hold the entire result
+        /// See that method's documentation for details on the impact.</para>
+        /// <para>If the result buffer is too small to hold the entire result
         /// set, it will be filled as far as possible from the start point
-        /// toward the end point.</p>
+        /// toward the end point.</para>
         /// </remarks>
         /// <param name="startPolyRef">The reference id of the start polygon.
         /// </param>
@@ -889,12 +889,12 @@ namespace org.critterai.nav
         /// Initializes a sliced path find query.
         /// </summary>
         /// <remarks>
-        /// <p>This method will fail if <see cref="IsRestricted"/> is TRUE.</p>
-        /// <p>WARNING: Calling any other query methods besides the other
+        /// <para>This method will fail if <see cref="IsRestricted"/> is TRUE.</para>
+        /// <para>WARNING: Calling any other query methods besides the other
         /// sliced path methods before finalizing this query may result
-        /// in corrupted data.</p>
-        /// <p>The filter is stored and used for the duration of the query.</p>
-        /// <p>The standard use case:</p>
+        /// in corrupted data.</para>
+        /// <para>The filter is stored and used for the duration of the query.</para>
+        /// <para>The standard use case:</para>
         /// <ol>
         /// <li>Initialize the sliced path query</li>
         /// <li>Call <see cref="UpdateSlicedFindPath"/> until its status
@@ -932,7 +932,7 @@ namespace org.critterai.nav
         /// Continues a sliced path find query.
         /// </summary>
         /// <remarks>
-        /// <p>This method will fail if <see cref="IsRestricted"/> is TRUE.</p>
+        /// <para>This method will fail if <see cref="IsRestricted"/> is TRUE.</para>
         /// </remarks>
         /// <param name="maxIterations">The maximum number of iterations
         /// to perform.</param>
@@ -954,7 +954,7 @@ namespace org.critterai.nav
         /// Finalizes and returns the results of the sliced path query.
         /// </summary>
         /// <remarks>
-        /// <p>This method will fail if <see cref="IsRestricted"/> is TRUE.</p>
+        /// <para>This method will fail if <see cref="IsRestricted"/> is TRUE.</para>
         /// </remarks>
         /// <param name="path">An ordered list of polygons representing the
         /// path. [Form: (polyRef) * pathCount]</param>

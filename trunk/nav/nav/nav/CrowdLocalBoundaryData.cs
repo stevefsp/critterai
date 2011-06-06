@@ -26,7 +26,7 @@ namespace org.critterai.nav
     /// <summary>
     /// Boundary data for crowd agents.
     /// </summary>
-    ///<remarks><p>Minimal available documentation.</p></remarks>
+    ///<remarks><para>Minimal available documentation.</para></remarks>
     [StructLayout(LayoutKind.Sequential)]
     public class LocalBoundaryData
     {

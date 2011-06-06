@@ -31,11 +31,11 @@ namespace org.critterai.nav
     /// managed by a crowd manager.
     /// </summary>
     /// <remarks>
-    /// <p>Minimal available documentation.</p>
-    /// <p>This type has been implemented as a class with public fields
+    /// <para>Minimal available documentation.</para>
+    /// <para>This type has been implemented as a class with public fields
     /// in order to support Unity serialization. Care must be taken
     /// to not set the fields to invalid values, or to share references
-    /// inappropriatly.</p>
+    /// inappropriatly.</para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

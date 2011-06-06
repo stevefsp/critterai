@@ -28,7 +28,7 @@ namespace org.critterai.nav
     /// Path corridor data.
     /// </summary>
     /// <remarks>
-    /// <p>Used as a buffer for corridor data returned by other classes.</p>
+    /// <para>Used as a buffer for corridor data returned by other classes.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public class PathCorridorData
@@ -54,7 +54,7 @@ namespace org.critterai.nav
         /// An ordered list of polygon references representing the corridor.
         /// </summary>
         /// <remarks>
-        /// <p>[Form: (polyRef) * <see cref="pathCount"/></p>
+        /// <para>[Form: (polyRef) * <see cref="pathCount"/></para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxPathSize)]
         public uint[] path = new uint[MaxPathSize];
