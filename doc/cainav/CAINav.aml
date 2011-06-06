@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c7241703-3cf0-49c9-ad94-4b00d6c75741" revisionNumber="1">
+  <developerConceptualDocument 
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>
+        <application>CAINav</application> is a navigation system for use with .NET and  
+        <token>UnityPro</token> on Windows. It provides navigation mesh generation,  pathfinding, 
+        and local steering functionality.
+	  </para>
+	  <para>
+	  At the core of <application>CAINav</application> is  the well regarded <token>RecastNavigation</token> code by 
+	  <token>Mikko</token>. This library is mostly about adapting Recast Navigation for use with .NET and Unity. 
+	  So most of the low-level functionality is courtesy of Mikko's work.
+	  </para>
+	  <alert class="warning">
+		<para>This is an alpha release meant for use by early adopters.</para>
+		<para>Not all features have undergone rigorous testing. Some features have little documentation. 
+		Expect frequent changes to the API and potentially breaking changes to Unity components. 
+		E.g. Unity components may need to be deleted and re-created when migrating to a new release.</para>
+		<para>Any feedback provided through the <token>DiscussionGroup</token> will be much appreciated.</para>
+	  </alert>
+    </introduction>
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="NMGen">
+	
+      <title>NMGen: Navigation Mesh Generation</title>
+	  
+      <content>
+      
+		<list class="bullet">
+		  <listItem>Generates polygon meshes representing the traversable surface of arbitrary source 
+		  geometry.</listItem>
+		  <listItem>Independent of the pathfinding and steering components, providing  more options for 
+		  workflow and distribution.</listItem>
+		  <listItem>An easy to use build process. All that is needed is a configuration and some source 
+		  geometry.</listItem>
+		  <listItem>The ability to customize the build process to meet your needs.</listItem>
+		  <listItem>Various mesh serialization options.</listItem>
+		</list>
+		
+        <alert class="note">
+          <para>Yes, NMGen can still build 
+          <link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7#triangles">triangle meshes</link>.
+          </para>
+        </alert>
+		
+      </content>
+    
+    </section>
+	
+    <section address="NMQuery">
+	
+      <title>NMQuery: Pathfinding</title>
+	  
+      <content>
+		<list class="bullet">
+		  <listItem>A* and Dijsktra searches.</listItem>
+		  <listItem>Various local environment queries for fast, no search movement.</listItem>
+		  <listItem>Custom connections between  different areas of the mesh for non-standard movement. 
+		  (Off-mesh connections.)</listItem>
+		  <listItem>The ability to enable/disable polygons on a per agent basis. (Polygon filtering.)</listItem>
+		  <listItem>The ability to define polygon traversal costs on a per agent basis.</listItem>
+		  <listItem>Tiling and layering of  meshes to help deal with large and/or highly vertical geometry.
+		  </listItem>
+		  <listItem>Various navigation mesh serialization options.</listItem>
+		</list>
+      </content>
+    
+    </section>
+	
+    <section address="CrowdManager">
+	
+      <title>NMCrowd: Local Steering</title>
+	  
+      <content>
+		<list class="bullet">
+		  <listItem>Local steering/collision avoidance for up to 20 agents.</listItem>
+		  <listItem>Independent agents that respond to the presence of other agents.</listItem>
+		  <listItem>Following behavior and moving as a group.</listItem>
+		</list>
+      </content>
+    
+    </section>
+	
+    <section address="Miscellany">
+	
+      <title>Miscellany</title>
+	  
+      <content>
+		<list class="bullet">
+		  <listItem>A core .NET API with no Unity dependencies.</listItem>
+		  <listItem>Can be used as a Unity plug-in.</listItem>
+		  <listItem>Optional ease-of-use components for Unity.</listItem>
+		  <listItem>Unity
+		  <externalLink>
+		    <linkText>plug-in deployment restrictions</linkText>
+			<linkUri>http://unity3d.com/support/documentation/Manual/Plugins.html</linkUri>
+		  </externalLink>
+		  apply. E.g. Can't be deployed to the Unity web player.</listItem>
+		  <listItem><application>CAINav</application> cannot be used in the Unity Editor on the Mac OS, 
+		  or at runtime on any platform other than Windows. This is not a technical limitation, but is 
+		  due to the lack of non-Windows systems for builds and testing.
+		  </listItem>
+		  <listItem>The current release does not include Unity utilities for  generating large area meshes 
+		  or for extracting geometry from Terrain objects. So you will need implement your own solutions 
+		  for dealing with  those use cases.</listItem>
+		  <listItem>The navigation mesh does not support insertion of temporary obstacles, though there are 
+		  some ways of mimicking that type of behavior.</listItem>
+		</list>
+      </content>
+    
+    </section>
+	
+    <section address="featureExplorer">
+	
+      <title>Feature Explorer</title>
+	  
+      <content>
+	  
+		<para>The <application>Feature Explorer</application> will let you play around with some of 
+		the navigation features. Sometimes in ways you shouldn't. Simply extract the contents and run
+		the executable. It provides lots of nice debug visualizations.</para>
+		
+		<alert class="note"><para>
+		 Kaspersky Internet Security may report a
+		  <externalLink>
+			<linkText>PDM.Keylogger security warning</linkText>
+			<linkUri>http://forum.unity3d.com/threads/36180-PDM.Keylogger-problem</linkUri>
+		  </externalLink>
+		  when <application>Feature Explorer</application> is run. Kaspersky must not like the way 
+		  Unity detects keyboard input, because I certainly haven't included any viruses. Honest...really...
+		</para></alert>
+		
+	    <alert class="note">
+		  <para><application>Feature Explorer</application> has been tested on 64-bit Windows 7 and 32-bit 
+		  Windows Vista.</para>
+		</alert>
+		<para/>
+		<token>CAINavExplorerDownload</token> (Download/Zip)
+		<para/>
+      </content>
+    
+    </section>
+	
+  </developerConceptualDocument>
+</topic>

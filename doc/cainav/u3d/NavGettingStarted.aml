@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f2198e94-b490-4919-ad15-e4c9b82ae1e9" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+
+      <para>This page provides information on adding navigation components to a scene using the
+      Unity Editor.</para>
+      
+      <alert class="note">
+      <para>See <link xlink:href="e81146c4-0143-4cde-ad55-fe1fd1049cbc#upAndRunning">
+      Getting CAINav Up and Running</link> if you need to import CAINav into your project.</para>
+      </alert>
+      
+      <para>The basic process for getting navigation up and running is as follows:</para>
+      
+	  <list class="ordered">
+		<listItem>Generate a <codeEntityReference>T:BakedPolyMesh</codeEntityReference>.</listItem>
+		<listItem>Add a NavmeshTileBridge component to the scene and assign
+		the BakedPolyMesh to it.</listItem>
+		<listItem>Add a <codeEntityReference>T:BakedNavmesh</codeEntityReference> component to the 
+		scene and assign the NavmeshTileBridge to it.</listItem>
+		<listItem>Bake the navigation mesh.</listItem>
+		<listItem>Add a <codeEntityReference>T:NavManager</codeEntityReference> to the scene and assign
+		the BakedNavmesh to it.</listItem>
+	  </list>
+      
+      <para>At runtime, the <codeEntityReference>T:NavManager</codeEntityReference> provides the following objects
+      for use by your scripts.</para>
+      
+      <list class="bullet">
+        <listItem><codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference></listItem>
+        <listItem><codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference></listItem>
+        <listItem><codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference></listItem>
+        <listItem>An extents array. (Used by various query methods.)</listItem>
+      </list>
+
+      <alert class="note">
+        <para>The navigation manager also provides a <token>CrowdManager</token> object.  But the 
+        CrowdManager is currently experimental.</para>
+      </alert>
+      
+    </introduction>
+   
+    <section address="makingItEasy">
+      <title>Making it Easier</title>
+      <content>
+      
+        <para>While you can add each component to the scene manually, the menu items under 
+        <ui>GameObject->Create CAI</ui> make it much easier. The 
+        <ui>Navigation Manger</ui> and <ui>Navmesh</ui> menu items provide various options.</para>
+
+        <para>If you select the <ui>Navigation Manager</ui> menu item you'll get the following dialog:</para>
+        
+        <alert class="note">
+        <para>The avoidance and agent configuration options only apply to the 
+        <token>CrowdManager</token>.</para>
+        </alert>
+        
+        <mediaLink><image xlink:href="U3D-NavManagerOptions"/></mediaLink>
+        
+        <para>If you select the default options, you'll get a structure similar to this:</para>
+        
+        <mediaLink><image xlink:href="U3D-NavManagerStructure"/></mediaLink>
+        
+        <alert class="note">
+        <para>Technically, once the navigation mesh is baked, the 
+        <codeEntityReference>T:BakedPolyMesh</codeEntityReference> and NavmeshTileBridge components 
+        can be deleted.</para>
+        </alert>
+        
+      </content>
+     
+    </section>
+    
+    <section address="nextSteps">
+      <title>Where to Go Next</title>
+      <content>
+      
+        <para>While the Unity components help get you started, you'll still need scripting to implement use of
+        the navigation features.  To do this you'll need to become familiar with
+        <codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>.  
+        Besides the API documentation, a good place to start is to download and play around 
+        with <link xlink:href="c7241703-3cf0-49c9-ad94-4b00d6c75741#featureExplorer">Feature Explorer</link>.</para>
+        
+      </content>
+     
+    </section>
+ 
+  </developerConceptualDocument>
+</topic>
