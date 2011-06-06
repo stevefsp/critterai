@@ -29,10 +29,10 @@ namespace org.critterai.nmgen
     /// Represents a layer within a <see cref="HeightfieldLayerSet"/>.
     /// </summary>
     /// <remarks>
-    /// <p>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</p>
-    /// <p>Instances of this class can only be obtained from a
-    /// <see cref="HeightfieldLayerSet"/>.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <para>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</para>
+    /// <para>Instances of this class can only be obtained from a
+    /// <see cref="HeightfieldLayerSet"/>.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class HeightfieldLayer
@@ -169,8 +169,8 @@ namespace org.critterai.nmgen
         /// disposal.)
         /// </summary>
         /// <remarks>
-        /// <p>A <see cref="HeightfieldLayerSet"/> always owns and manages 
-        /// objects of this type.</p>
+        /// <para>A <see cref="HeightfieldLayerSet"/> always owns and manages 
+        /// objects of this type.</para>
         /// </remarks>
         public void RequestDisposal()
         {

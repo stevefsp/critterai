@@ -32,17 +32,23 @@ namespace org.critterai.nmgen
     /// a navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <p>The polygon mesh is made up of convex, potentailly overlapping
-    /// polygons of with varying vertex counts.  Each polygon can have extra 
-    /// meta-data representing region and area membership, as well as user 
-    /// defined flags.
-    /// </p>
-    /// <p>This object is normally built using one of the standard build 
+    /// <para>Represents a mesh of potentially overlapping convex polygons of 
+    ///  between three and <see cref="MaxVertsPerPoly"/> vertices. The mesh 
+    ///  exists within the context of an axis-aligned bounding box (AABB) 
+    ///  with vertices laid out in an evenly spaced grid based on xz-plane 
+    ///  and y-axis cells.
+    /// </para>
+    /// <para>This class is moslty opaque.  The <see cref="PolyMeshData"/> 
+    /// class provides the ability to inspect and update the content.</para>
+    /// <para>This object is normally built using one of the standard build 
     /// processes.  E.g. <see cref="Build"/> 
-    /// and <see cref="NMGen.BuildPolyMesh"/>.</p>
-    /// <p>This class is not compatible with Unity serialization.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// and <see cref="NMGen.BuildPolyMesh"/>.</para>
+    /// <para>This class is not compatible with Unity serialization.
+    /// The <see cref="GetSerializedData"/> method can be used for
+    /// manual serialization within Unity.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
+    /// <seealso cref="PolyMeshData"/>
     [Serializable]
     public sealed class PolyMesh
         : ManagedObject, ISerializable
@@ -76,8 +82,8 @@ namespace org.critterai.nmgen
         /// The maximum number of vertices per polygon.  
         /// </summary>
         /// <remarks>
-        /// <p>Individual polygons can vary in size from three to this number
-        /// of vertices.</p>
+        /// <para>Individual polygons can vary in size from three to this number
+        /// of vertices.</para>
         /// </remarks>
         public int MaxVertsPerPoly { get { return root.maxVertsPerPoly; } }
 
@@ -184,11 +190,12 @@ namespace org.critterai.nmgen
         /// ready to load with data. (See: <see cref="Load"/>)
         /// </summary>
         /// <param name="maxVerts">The maximum veritices the vertex buffer
-        /// can hold.</param>
+        /// can hold. [Limit: >= 3]</param>
         /// <param name="maxPolys">The maximum polygons the polygon buffer
-        /// can hold.</param>
+        /// can hold. [Limit: > 0]</param>
         /// <param name="maxVertsPerPoly">The maximum allowed vertices for a
-        /// polygon.</param>
+        /// polygon.[Limits: 3 &lt;= value &lt;= 
+        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]</param>
         public PolyMesh(int maxVerts, int maxPolys, int maxVertsPerPoly)
             : base(AllocType.Local)
         {
@@ -376,10 +383,10 @@ namespace org.critterai.nmgen
         /// Loads the data from the mesh buffers into the data object.
         /// </summary>
         /// <remarks>
-        /// <p>A new buffer will be returned ff the buffer argument is NULL.</p>
-        /// <p>The buffer will be automatically resized if it is too small
-        /// to hold the result.</p>
-        /// <p>Only the used portions of the mesh buffers are copied.</p>
+        /// <para>A new buffer will be returned if the buffer argument is NULL.</para>
+        /// <para>The buffer will be automatically resized if it is too small
+        /// to hold the result.</para>
+        /// <para>Only the used portions of the mesh buffers are copied.</para>
         /// </remarks>
         /// <param name="buffer">A buffer to load the data into.</param>
         /// <returns>A reference to the mesh data.</returns>
@@ -497,20 +504,25 @@ namespace org.critterai.nmgen
         /// Builds polygon mesh from the provided contours.
         /// </summary>
         /// <remarks>
-        /// <p>The values of the CellSize-based parameters will be converted
-        /// to world units.</p>
+        /// <para>The values of the CellSize-based parameters will be converted
+        /// to world units.</para>
         /// </remarks>
         /// <param name="context">The context to use for the operation.</param>
         /// <param name="contours">The contours to use to build the mesh.
         /// </param>
         /// <param name="maxVertsPerPoly">The maximum allowed vertices for
-        /// a polygon.</param>
+        /// a polygon. [Limits: 3 &lt;= value &lt;= 
+        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]</param>
         /// <param name="walkableHeight">The walkable height used to build
-        /// the contour data. [Units: YCellSize]</param>
+        /// the contour data. 
+        /// [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
+        /// [Units: YCellSize]</param>
         /// <param name="walkableRadius">The radius used to erode the
-        /// walkable area covered by the contours. [Units: XZCellSize]</param>
+        /// walkable area covered by the contours. 
+        /// [Limit: >= 0]
+        /// [Units: XZCellSize]</param>
         /// <param name="walkableStep">The walkable step used to build
-        /// the contour data. [Units: YCellSize]</param>
+        /// the contour data. [Limit: >= 0] [Units: YCellSize]</param>
         /// <returns>The generated polygon mesh, or NULL if there were errors.
         /// </returns>
         public static PolyMesh Build(BuildContext context

@@ -29,18 +29,18 @@ namespace org.critterai.nmgen
     /// Represents a simple, non-overlapping contour in voxel space.
     /// </summary>
     /// <remarks>
-    /// <p>While the height of the border will vary, the contour will always
-    /// form a simple polygon when projected onto the xz-plane.</p>
-    /// <p>Minimum bounds and cell size information is needed in order to
-    /// translate vertex coordinates into world space.</p>
+    /// <para>While the height of the border will vary, the contour will always
+    /// form a simple polygon when projected onto the xz-plane.</para>
+    /// <para>Minimum bounds and cell size information is needed in order to
+    /// translate vertex coordinates into world space.</para>
     /// <code>
     /// worldX = boundsMin[0] + vertX * xzCellSize
     /// worldY = boundsMin[1] + vertY * yCellSize
     /// worldZ = boundsMin[2] + vertZ * xzCellSize
     /// </code>
-    /// <p>A contour only exists within the context of a 
-    /// <see cref="ContourSet"/>.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <para>A contour only exists within the context of a 
+    /// <see cref="ContourSet"/>.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Contour
@@ -79,8 +79,8 @@ namespace org.critterai.nmgen
         /// The region id associated with the contour.
         /// </summary>
         /// <remarks>
-        /// <p>Note: The <see cref="RegionMask"/> is not associated with this 
-        /// field.</p>
+        /// <para>Note: The <see cref="RegionMask"/> is not associated with this 
+        /// field.</para>
         /// </remarks>
         public ushort Region { get { return mRegion; } }
 
@@ -119,8 +119,8 @@ namespace org.critterai.nmgen
         /// disposal.)
         /// </summary>
         /// <remarks>
-        /// <p>Objects of this type are always owned by a 
-        /// <see cref="ContourSet"/> object, which manages its disposal.</p>
+        /// <para>Objects of this type are always owned by a 
+        /// <see cref="ContourSet"/> object, which manages its disposal.</para>
         /// </remarks>
         public void RequestDisposal()
         {
@@ -132,21 +132,21 @@ namespace org.critterai.nmgen
         /// into the specified buffer.
         /// </summary>
         /// <remarks>
-        /// <p>The simplified contour is a version of the raw contour with
+        /// <para>The simplified contour is a version of the raw contour with
         /// all 'unnecessary' vertices removed.  Whether a vertex is
-        /// considered unnecessary depends on the contour build process.</p>
-        /// <p>The data is represented as follows: 
-        /// <c>(x, y, z, r) * VertCount</c>.</p>
-        /// <p>A contour edge is formed by the current and next vertex. The
+        /// considered unnecessary depends on the contour build process.</para>
+        /// <para>The data is represented as follows: 
+        /// <c>(x, y, z, r) * VertCount</c>.</para>
+        /// <para>A contour edge is formed by the current and next vertex. The
         /// r-value indicates the region and connection information for
-        /// the edge.</p>
-        /// <p>The region id is obtained by applying <see cref="RegionMask"/>.
-        /// E.g. <c>regionId = (vert[i * 4 + 3] &amp; RegionMask)</c></p>
-        /// <p>The edge is not connected if the region id is 
-        /// <see cref="NMGen.NullRegion"/>.</p>
-        /// <p>If the r-value has the <see cref="ContourFlags.AreaBorder"/>
+        /// the edge.</para>
+        /// <para>The region id is obtained by applying <see cref="RegionMask"/>.
+        /// E.g. <c>regionId = (vert[i * 4 + 3] &amp; RegionMask)</c></para>
+        /// <para>The edge is not connected if the region id is 
+        /// <see cref="NMGen.NullRegion"/>.</para>
+        /// <para>If the r-value has the <see cref="ContourFlags.AreaBorder"/>
         /// flag set, then the edge represents an change in area as well
-        /// as region.</p>
+        /// as region.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>
@@ -166,8 +166,8 @@ namespace org.critterai.nmgen
         /// into the specified buffer.
         /// </summary>
         /// <remarks>
-        /// <p>See the <see cref="GetVerts"/> method for details on the
-        /// element layout.</p>
+        /// <para>See the <see cref="GetVerts"/> method for details on the
+        /// element layout.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>

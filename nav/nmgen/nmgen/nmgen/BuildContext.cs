@@ -30,10 +30,10 @@ namespace org.critterai.nmgen
     /// Provides logging functionality.
     /// </summary>
     /// <remarks>
-    /// <p>The message buffer can hold a maximum of 1000 messages
+    /// <para>The message buffer can hold a maximum of 1000 messages
     /// comprised of 12,000 characters.  Any messages added after the
-    /// buffer limit is reached will be ignored.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// buffer limit is reached will be ignored.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class BuildContext
         : IManagedObject

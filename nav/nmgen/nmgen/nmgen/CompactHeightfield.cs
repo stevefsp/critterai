@@ -31,10 +31,10 @@ namespace org.critterai.nmgen
     /// the solid surfaces of a voxel field.
     /// </summary>
     /// <remarks>
-    /// <p>For this tpe of heightfield, the spans represent the floor
-    /// and ceiling of the open spaces.</p>
-    /// <p>Data is stored in a compact, efficient manner.</p>
-    /// <p>The following process can be used to iterate spans:</p>
+    /// <para>For this tpe of heightfield, the spans represent the floor
+    /// and ceiling of the open spaces.</para>
+    /// <para>Data is stored in a compact, efficient manner.</para>
+    /// <para>The following process can be used to iterate spans:</para>
     /// <code>
     /// 
     /// int w = chf.Width;
@@ -83,19 +83,19 @@ namespace org.critterai.nmgen
     ///     }
     /// }
     /// </code>
-    /// <p>Spans contain neighbor connection data that can be used to
+    /// <para>Spans contain neighbor connection data that can be used to
     /// locate axis-neighbors.  Axis neighbors are spans that are offset
-    /// offset from the current cell column as follows:</p>
-    /// <p>Direction 0 = (-1, 0)<br/>
+    /// offset from the current cell column as follows:</para>
+    /// <para>Direction 0 = (-1, 0)<br/>
     /// Direction 1 = (0, 1)<br/>
     /// Direction 2 = (1, 0)<br/>
-    /// Direction 3 = (0, -1)</p>
-    /// <p>These standard offset can be obtained from the 
+    /// Direction 3 = (0, -1)</para>
+    /// <para>These standard offset can be obtained from the 
     /// <see cref="CompactSpan.GetDirOffsetX"/> and 
-    /// <see cref="CompactSpan.GetDirOffsetZ"/> methods.</p>
-    /// <p>See the previous example code for information on how to use
-    /// connection information.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <see cref="CompactSpan.GetDirOffsetZ"/> methods.</para>
+    /// <para>See the previous example code for information on how to use
+    /// connection information.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class CompactHeightfield
@@ -152,10 +152,10 @@ namespace org.critterai.nmgen
         /// The width/depth size of each cell. (On the xz-plane.)
         /// </summary>
         /// <remarks>
-        /// <p>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</p>
-        /// <p>A width or depth value within the field can be converted
-        /// to world units as follows:</p>
+        /// <para>The smallest span can be 
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</para>
+        /// <para>A width or depth value within the field can be converted
+        /// to world units as follows:</para>
         /// <code>
         /// boundsMin[0] + (width * XZCellSize)
         /// boundsMin[2] + (depth * XZCellSize)
@@ -167,10 +167,10 @@ namespace org.critterai.nmgen
         /// The height increments for span data.  (On the y-axis.)
         /// </summary>
         /// <remarks>
-        /// <p>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</p>
-        /// <p>A height within the field is converted to world units
-        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></p>
+        /// <para>The smallest span can be 
+        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</para>
+        /// <para>A height within the field is converted to world units
+        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></para>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -198,8 +198,8 @@ namespace org.critterai.nmgen
         /// The maximum distance value for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <p>The value is only useful if the distance field has been
-        /// built.</p>
+        /// <para>The value is only useful if the distance field has been
+        /// built.</para>
         /// </remarks>
         public ushort MaxDistance { get { return mMaxDistance; } }
 
@@ -207,7 +207,7 @@ namespace org.critterai.nmgen
         /// The maximum region id for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <p>The value is only useful if the regions have been built.</p>
+        /// <para>The value is only useful if the regions have been built.</para>
         /// </remarks>
         public ushort MaxRegion { get { return mMaxRegions; } }
 
@@ -294,11 +294,11 @@ namespace org.critterai.nmgen
         /// provided buffer.
         /// </summary>
         /// <remarks>
-        /// <p>This data is only available after the distance field has
-        /// been built.</p>
-        /// <p>Each value represents the estimated distance of the span
+        /// <para>This data is only available after the distance field has
+        /// been built.</para>
+        /// <para>Each value represents the estimated distance of the span
         /// from the nearest boundary/obstruction. The index is the same
-        /// as for the span data.  E.g. span[i], distance[i]</p>
+        /// as for the span data.  E.g. span[i], distance[i]</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= SpanCount]</param>
@@ -323,9 +323,9 @@ namespace org.critterai.nmgen
         /// Loads the heightfield's area data into the provided buffer.
         /// </summary>
         /// <remarks>
-        /// <p>Each value represents the id of the area the span belongs to.
+        /// <para>Each value represents the id of the area the span belongs to.
         /// The index is the same as for the span data.  
-        /// E.g. span[i], area[i]</p>
+        /// E.g. span[i], area[i]</para>
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= SpanCount]</param>
@@ -356,10 +356,10 @@ namespace org.critterai.nmgen
         /// radius.
         /// </summary>
         /// <remarks>
-        /// <p>Basically, any spans that are closer to a boundary or obstruction
-        /// than the specified radius are marked as unwalkable.</p>
-        /// <p>This method is usually called immediately after the heightfield
-        /// has been created.</p>
+        /// <para>Basically, any spans that are closer to a boundary or obstruction
+        /// than the specified radius are marked as unwalkable.</para>
+        /// <para>This method is usually called immediately after the heightfield
+        /// has been created.</para>
         /// </remarks>
         /// <param name="context">The context to use during the operation.
         /// </param>
@@ -392,8 +392,8 @@ namespace org.critterai.nmgen
         /// box. (AABB)
         /// </summary>
         /// <remarks>
-        /// <p>The method will return FALSE if the AABB is completely outside
-        /// of the heightfield.</p>
+        /// <para>The method will return FALSE if the AABB is completely outside
+        /// of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -425,11 +425,11 @@ namespace org.critterai.nmgen
         /// polygon.
         /// </summary>
         /// <remarks>
-        /// <p>The y-values of the polygon vertices are ignored.  So the
+        /// <para>The y-values of the polygon vertices are ignored.  So the
         /// polygon is effectively projected onto the xz-plane at yMin, 
-        /// then extruded to yMax.</p>
-        /// <p>The method will return FALSE if the polygon is completely outside
-        /// of the heightfield.</p>
+        /// then extruded to yMax.</para>
+        /// <para>The method will return FALSE if the polygon is completely outside
+        /// of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -460,8 +460,8 @@ namespace org.critterai.nmgen
         /// Applied the area id to all spans within the specified cylinder.
         /// </summary>
         /// <remarks>
-        /// <p>The method will return FALSE if the cylinder is completely 
-        /// outside of the heightfield.</p>
+        /// <para>The method will return FALSE if the cylinder is completely 
+        /// outside of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -492,10 +492,10 @@ namespace org.critterai.nmgen
         /// Builds the distance field for the heightfield.
         /// </summary>
         /// <remarks>
-        /// <p>This method must be called before attempting to build
-        /// region data.</p>
-        /// <p>The distance data is avaiable via <see cref="MaxDistance"/>
-        /// and <see cref="GetDistanceData"/>.</p>
+        /// <para>This method must be called before attempting to build
+        /// region data.</para>
+        /// <para>The distance data is avaiable via <see cref="MaxDistance"/>
+        /// and <see cref="GetDistanceData"/>.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -512,16 +512,16 @@ namespace org.critterai.nmgen
         /// partitioning.
         /// </summary>
         /// <remarks>
-        /// <p>Non-null regions consist of connected, non-overlapping walkable 
-        /// spans that form a single contour.</p>
-        /// <p>The region data is available via <see cref="MaxRegion"/>
-        /// and <see cref="GetSpanData"/>.</p>
-        /// <p>If multiple regions form an area which is smaller than
+        /// <para>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans that form a single contour.</para>
+        /// <para>The region data is available via <see cref="MaxRegion"/>
+        /// and <see cref="GetSpanData"/>.</para>
+        /// <para>If multiple regions form an area which is smaller than
         /// minRegionArea, all spans in the regions are set to
-        /// <see cref="NMGen.NullRegion"/>.</p>
-        /// <p>Watershed partitioning can result in smaller than necessary
+        /// <see cref="NMGen.NullRegion"/>.</para>
+        /// <para>Watershed partitioning can result in smaller than necessary
         /// regions, especially in diagonal corridors.  mergeRegionArea
-        /// helps reduce unecessarily small regions.</p>
+        /// helps reduce unecessarily small regions.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -551,16 +551,16 @@ namespace org.critterai.nmgen
         /// partitioning.
         /// </summary>
         /// <remarks>
-        /// <p>Non-null regions consist of connected, non-overlapping walkable 
-        /// spans that form a single contour.</p>
-        /// <p>The region data is available via <see cref="MaxRegion"/>
-        /// and <see cref="GetSpanData"/>.</p>
-        /// <p>If multiple regions form an area which is smaller than
+        /// <para>Non-null regions consist of connected, non-overlapping walkable 
+        /// spans that form a single contour.</para>
+        /// <para>The region data is available via <see cref="MaxRegion"/>
+        /// and <see cref="GetSpanData"/>.</para>
+        /// <para>If multiple regions form an area which is smaller than
         /// minRegionArea, all spans in the regions are set to
-        /// <see cref="NMGen.NullRegion"/>.</p>
-        /// <p>Partitioning can result in smaller than necessary
+        /// <see cref="NMGen.NullRegion"/>.</para>
+        /// <para>Partitioning can result in smaller than necessary
         /// regions.  mergeRegionArea helps reduce unecessarily small regions.
-        /// </p>
+        /// </para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>

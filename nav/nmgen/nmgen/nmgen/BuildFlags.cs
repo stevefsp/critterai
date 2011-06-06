@@ -43,8 +43,8 @@ namespace org.critterai.nmgen
         /// Tesselate wall edges during the contour build.
         /// </summary>
         /// <remarks>
-        /// <p>Equivalent to the same value in 
-        /// <see cref="ContourBuildFlags"/>.</p>
+        /// <para>Equivalent to the same value in 
+        /// <see cref="ContourBuildFlags"/>.</para>
         /// </remarks>
         TessellateWallEdges = 0x001,
 
@@ -52,8 +52,8 @@ namespace org.critterai.nmgen
         /// Tessellate area edges during the contour build.
         /// </summary>
         /// <remarks>
-        /// <p>Equivalent to the same value in 
-        /// <see cref="ContourBuildFlags"/>.</p>
+        /// <para>Equivalent to the same value in 
+        /// <see cref="ContourBuildFlags"/>.</para>
         /// </remarks>
         TessellateAreaEdges = 0x002,
 

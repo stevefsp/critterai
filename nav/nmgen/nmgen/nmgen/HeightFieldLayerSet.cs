@@ -30,8 +30,8 @@ namespace org.critterai.nmgen
     /// <see cref="CompactHeightfield"/>.
     /// </summary>
     /// <remarks>
-    /// <p>Undocumented: Equivalent to Recast: rcHeightfieldLayerSet.</p>
-    /// <p>Behavior is undefined if an object is used after disposal.</p>
+    /// <para>Undocumented: Equivalent to Recast: rcHeightfieldLayerSet.</para>
+    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class HeightfieldLayerSet
         : IManagedObject
