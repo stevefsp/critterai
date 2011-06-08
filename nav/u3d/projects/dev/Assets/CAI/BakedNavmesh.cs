@@ -24,7 +24,7 @@ using org.critterai.nav;
 using org.critterai.nav.u3d;
 
 /// <summary>
-/// A navigation mesh that is bkaed at design time and creates a
+/// A navigation mesh that is baked at design time and creates a
 /// <see cref="Navmesh"/> object at run-time.
 /// </summary>
 /// <remarks>
