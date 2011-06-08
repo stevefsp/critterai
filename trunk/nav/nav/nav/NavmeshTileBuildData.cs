@@ -30,10 +30,8 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>This class marshals data between the navigation mesh generation
-    /// pipeline and the navigation system. See 
-    /// <see cref="org.critterai.nmgen.PolyMeshData"/> and
-    /// <see cref="org.critterai.nmgen.PolyMeshDetailData"/> for details 
-    /// related to mesh structure.
+    /// pipeline and the navigation system.  The NMGen PolyMesh and
+    /// PolyMeshDetail classes provide details on data stucture and limits.
     /// </para>
     /// <para>The standard load process is as follows:</para>
     /// <ol>
