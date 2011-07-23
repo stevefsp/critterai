@@ -22,11 +22,12 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Globalization;
 
 namespace org.critterai.geom
 {
     /// <summary>
-    /// Provides some simple Wavefront utility methods.
+    /// Provides some limited Wavefront utility methods. (Very limited.)
     /// </summary>
     /// <remarks>
     /// <para>Only a small subset of Wavefront information is supported.</para>
@@ -40,6 +41,8 @@ namespace org.critterai.geom
     /// </blockquote>
     /// <para>The f entries are expected to be in one of the following forms: 
     /// </para>
+    /// <para>(Note that only triangles are supported.  Quads are not
+    /// supported.)</para>
     /// <blockquote>
     /// "f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3"<br/>
     /// "f v1 v2 v3"
@@ -72,9 +75,12 @@ namespace org.critterai.geom
             for (int p = 0; p < vertices.Length; p += 3)
             {
                 sb.Append("v " 
-                    + (vertices[p + 0] * xFactor) + " " 
-                    + vertices[p + 1] + " " 
-                    + vertices[p + 2] + "\n");
+                    + (vertices[p + 0] * xFactor)
+                        .ToString(CultureInfo.InvariantCulture) + " "
+                    + vertices[p + 1]
+                        .ToString(CultureInfo.InvariantCulture) + " "
+                    + vertices[p + 2]
+                        .ToString(CultureInfo.InvariantCulture) + "\n");
             }
             for (int p = 0; p < triangles.Length; p += 3)
             {
@@ -82,16 +88,22 @@ namespace org.critterai.geom
                 if (reverseWrap)
                 {
                     sb.Append("f "
-                        + (triangles[p + 0] + 1) + " "
-                        + (triangles[p + 2] + 1) + " "
-                        + (triangles[p + 1] + 1) + "\n");
+                        + (triangles[p + 0] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 2] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 1] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + "\n");
                 }
                 else
                 {
                     sb.Append("f "
-                        + (triangles[p + 0] + 1) + " "
-                        + (triangles[p + 1] + 1) + " "
-                        + (triangles[p + 2] + 1) + "\n");
+                        + (triangles[p + 0] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 1] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 2] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + "\n");
                 }
             }
             return sb.ToString();
@@ -138,7 +150,8 @@ namespace org.critterai.geom
                     for (int i = 1; i < 4; i++)
                     {
                         string token = tokens[i];
-                        lverts.Add(float.Parse(token));
+                        lverts.Add(
+                            float.Parse(token, CultureInfo.InvariantCulture));
                     }
                 }
                 else if (s.StartsWith("f "))
@@ -153,7 +166,8 @@ namespace org.critterai.geom
                         string[] subtokens = rs.Split(token);
                         // Subtraction converts from 1-based index to 
                         // zero-based index.
-                        lindices.Add(int.Parse(subtokens[0]) - 1);
+                        lindices.Add(int.Parse(subtokens[0]
+                            , CultureInfo.InvariantCulture) - 1);
                     }
                 }
             }
