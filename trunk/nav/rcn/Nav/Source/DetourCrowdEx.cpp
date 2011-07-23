@@ -280,7 +280,7 @@ extern "C"
         , const float dt
         , rcnCrowdAgentCoreData* coreData)
     {
-        crowd->update(dt, nullptr);
+        crowd->update(dt, 0);
 
         for (int i = 0; i < crowd->getAgentCount(); i++)
         {
