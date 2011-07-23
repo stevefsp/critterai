@@ -23,6 +23,8 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.nav;
 using org.critterai.nav.u3d;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 /// Custom inspector for <see cref="BakedNavmesh"/>.
@@ -31,13 +33,12 @@ using org.critterai.nav.u3d;
 public class BakedNavmeshEditor
     : Editor
 {
-    private bool mForceDirty = false;
-
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
     public override void OnInspectorGUI()
     {
+        bool mForceDirty = false;
         BakedNavmesh targ = (BakedNavmesh)target;
 
         EditorGUIUtility.LookLikeControls(125);
@@ -75,6 +76,7 @@ public class BakedNavmeshEditor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();
+
         EditorGUILayout.BeginHorizontal();
 
         if (!IsReadyToBuild(targ))
@@ -83,14 +85,67 @@ public class BakedNavmeshEditor
             mForceDirty = true;
         GUI.enabled = true;
 
-        if (!targ.HasNavmesh())
-            GUI.enabled = false;
-        if (GUILayout.Button("Clear Mesh") && targ.HasNavmesh())
+        GUI.enabled = targ.HasNavmesh();
+        if (GUILayout.Button("Clear Mesh"))
         {
             targ.ClearMesh();
             mForceDirty = true;
         }
         GUI.enabled = true;
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Separator();
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUI.enabled = targ.HasNavmesh();
+        if (GUILayout.Button("Save"))
+        {
+            string filePath = EditorUtility.SaveFilePanel(
+                "Save Navigation Mesh"
+                , ""
+                , targ.name
+                , "navmesh");
+            SaveMesh(targ, filePath);
+        }
+        GUI.enabled = true;
+
+        if (GUILayout.Button("Load"))
+        {
+            string filePath = EditorUtility.OpenFilePanel(
+                "Select Serialized Navmesh"
+                , ""
+                , "navmesh");
+            if (LoadMesh(targ, filePath))
+                mForceDirty = true;
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUI.enabled = targ.HasNavmesh();
+        if (GUILayout.Button("Save Bytes"))
+        {
+            string filePath = EditorUtility.SaveFilePanel(
+                "Save Navigation Mesh As Bytes"
+                , ""
+                , targ.name
+                , "navmeshb");
+            SaveMeshBytes(targ, filePath);
+        }
+        GUI.enabled = true;
+
+        if (GUILayout.Button("Load Bytes"))
+        {
+            string filePath = EditorUtility.OpenFilePanel(
+                "Select Byte Serialized Navigation Mesh"
+                , ""
+                , "navmeshb");
+            if (LoadMeshBytes(targ, filePath))
+                mForceDirty = true;
+        }
 
         EditorGUILayout.EndHorizontal();
 
@@ -101,9 +156,139 @@ public class BakedNavmeshEditor
         }
     }
 
+    private static bool LoadMeshBytes(BakedNavmesh targ, string filePath)
+    {
+        string msg = null;
+
+        if (filePath.Length == 0)
+            return false;
+
+        FileStream fs = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Open);
+            System.Object obj = formatter.Deserialize(fs);
+
+            // Roundabout load method is used for error detection.
+
+            Navmesh nm;
+            NavStatus status = Navmesh.Build((byte[])obj, out nm);
+            if (NavUtil.Failed(status))
+                msg = status.ToString();
+            else if (!targ.Bake(nm))
+                msg = "Could not load mesh. Internal error?";
+        }
+        catch (System.Exception ex)
+        {
+            msg = ex.Message;
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+
+        if (msg != null)
+        {
+            Debug.LogError(targ.name + ": BakedNavmesh: Load bytes failed: " 
+                + msg);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool LoadMesh(BakedNavmesh targ, string filePath)
+    {
+        string msg = null;
+
+        if (filePath.Length == 0)
+            return false;
+
+        FileStream fs = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Open);
+
+            if (!targ.Bake((Navmesh)formatter.Deserialize(fs)))
+                msg = "Could not load mesh. Internal error?";
+        }
+        catch (System.Exception ex)
+        {
+            msg = ex.Message;
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+
+        if (msg != null)
+        {
+            Debug.LogError(targ.name + ": BakedNavmesh: Load failed: " + msg);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void SaveMesh(BakedNavmesh targ, string filePath)
+    {
+        if (filePath.Length == 0 || !targ.HasNavmesh())
+            return;
+
+        FileStream fs = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Create);
+            formatter.Serialize(fs, targ.GetNavmesh());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError(targ.name + ": BakedNavmesh: Save failed: "
+                + ex.Message);
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+    }
+
+    private static void SaveMeshBytes(BakedNavmesh targ, string filePath)
+    {
+        if (filePath.Length == 0 || !targ.HasNavmesh())
+            return;
+
+        FileStream fs = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Create);
+            formatter.Serialize(fs, targ.GetNavmesh().GetSerializedMesh());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError(targ.name + ": BakedNavmesh: Save bytes failed: "
+                + ex.Message);
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+    }
+
     private static bool BuildMesh(BakedNavmesh targ)
     {
-        string pre = targ.name + ": NavmeshBuilder: Build aborted: ";
+        string pre = targ.name + ": BakedNavmesh: Bake aborted: ";
 
         NavmeshTileBuildData buildData = 
             targ.sourceData.GetTileBuildData(false);
@@ -118,8 +303,6 @@ public class BakedNavmeshEditor
         Navmesh mesh;
         NavStatus status = Navmesh.Build(buildData, out mesh);
 
-        // Debug.Log(NavmeshDebug.ToString(mesh.GetTile(0).GetHeader()));
-
         if (NavUtil.Failed(status))
         {
             Debug.LogError(pre + "Status flags: " + status.ToString());
@@ -128,7 +311,7 @@ public class BakedNavmeshEditor
 
         if (!targ.Bake(mesh))
         {
-            Debug.LogError(pre + "Could not load mesh into builder."
+            Debug.LogError(pre + "Could not load mesh."
                 + " Internal error?");
             return false;
         }
