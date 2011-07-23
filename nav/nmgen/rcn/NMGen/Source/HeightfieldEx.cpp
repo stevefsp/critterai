@@ -40,11 +40,11 @@ extern "C"
         , const float ch)
     {
         if (!bmin || !bmax)
-            return nullptr;
+            return 0;
 
         rcHeightfield* hf = rcAllocHeightfield();
         if (!hf)
-            return nullptr;
+            return 0;
 
         if (rcCreateHeightfield(0
             , *hf
@@ -59,7 +59,7 @@ extern "C"
         }
 
         rcFreeHeightField(hf);
-        return nullptr;
+        return 0;
     }
 
     EXPORT_API void nmhfFreeField(rcHeightfield* hf)
