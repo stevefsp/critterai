@@ -45,8 +45,8 @@ namespace org.critterai.geom
         /// the provided GameObjects (including children).  
         /// </summary>
         /// <remarks>
-        /// <para>The output parameters will be null if the method return value is 
-        /// FALSE.</para>
+        /// <para>The output parameters will be null if the method return value 
+        /// is FALSE.</para>
         /// <para>Vertices will be in world space coordinates.</para>
         /// </remarks>
         /// <param name="sources">An array of GameObjects cointaining the 
@@ -134,8 +134,23 @@ namespace org.critterai.geom
                                 && mesh.triangles.Length > 0)
                             {
                                 filterList.Add(filter);
-                                vertexCount += mesh.vertexCount;
-                                triangleCount += mesh.triangles.Length;
+
+                                for (int iSubMesh = 0
+                                    ; iSubMesh < mesh.subMeshCount
+                                    ; ++iSubMesh )
+                                {
+                                    /*
+                                     * Note: The vertex sizing method is not
+                                     * particularly good.  There is no
+                                     * easy method of detecting sub-mesh
+                                     * vertex count. So the vertext count will
+                                     * be overestimated for meshes with 
+                                     * sub-meshes.
+                                     */
+                                    vertexCount += mesh.vertexCount;
+                                    triangleCount += 
+                                        mesh.GetTriangles(iSubMesh).Length;
+                                }
                             }
                         }
                     }
@@ -163,13 +178,15 @@ namespace org.critterai.geom
             if (filters.Length == 0)
                 return;
 
-            CombineInstance[] combine;
+            
             int iStart = 0;
             Mesh mesh = new Mesh();
             int iVertOffset = 0;
             int pTriOffset = 0;
             while (iStart < filters.Length)
             {
+                CombineInstance[] combine;
+
                 iStart = GetFilterBatch(filters, iStart, out combine);
 
                 mesh.CombineMeshes(combine, true, true);
@@ -198,16 +215,17 @@ namespace org.critterai.geom
         }
 
         /// <summary>
-        /// Returns an array of CombineInstance structures suitable for combining.
-        /// (Vertex count will not exceed the maximum allowed for a Mesh object.)
+        /// Returns an array of CombineInstance structures suitable for 
+        /// combining. (Vertex count will not exceed the maximum allowed for a 
+        /// Mesh object.)
         /// </summary>
         /// <param name="filters">The list of MeshFilters to use. (All filters
         /// must have meshes attached.)</param>
         /// <param name="startIndex">The index of the filter to start the
         /// batching process at. (The filter's mesh will be included in the 
         /// result.)</param>
-        /// <param name="combinedInstances">An array of CombineInstance structures
-        /// batched from the filters.</param>
+        /// <param name="combinedInstances">An array of CombineInstance 
+        /// structures batched from the filters.</param>
         /// <returns>The next index value higher than the last filter included
         /// in the batch.</returns>
         private static int GetFilterBatch(MeshFilter[] filters
@@ -215,6 +233,7 @@ namespace org.critterai.geom
             , out CombineInstance[] combinedInstances)
         {
             int meshCount = 1;
+            int subMeshCount = filters[startIndex].sharedMesh.subMeshCount; 
             int vertCount = filters[startIndex].sharedMesh.vertexCount;
             for (int i = startIndex + 1; i < filters.Length; i++)
             {
@@ -223,14 +242,30 @@ namespace org.critterai.geom
                     break;
                 vertCount += count;
                 meshCount++;
+                subMeshCount += filters[i].sharedMesh.subMeshCount;
             }
 
-            combinedInstances = new CombineInstance[meshCount];
-            for (int i = 0; i < meshCount; i++)
+            combinedInstances = new CombineInstance[subMeshCount];
+
+            for (int filterOffset = 0, iCombinedInstance = 0
+                ; filterOffset < meshCount
+                ; filterOffset++)
             {
-                combinedInstances[i].mesh = filters[startIndex + i].sharedMesh;
-                combinedInstances[i].transform
-                    = filters[startIndex + i].transform.localToWorldMatrix;
+                MeshFilter filter = filters[startIndex + filterOffset];
+                Mesh sharedMesh = filter.sharedMesh;
+
+                for (int iSubMesh = 0
+                    ; iSubMesh < sharedMesh.subMeshCount
+                    ; ++iSubMesh)
+                {
+                    combinedInstances[iCombinedInstance].mesh = sharedMesh;
+                    combinedInstances[iCombinedInstance].subMeshIndex = 
+                        iSubMesh;
+                    combinedInstances[iCombinedInstance].transform = 
+                        filter.transform.localToWorldMatrix;
+
+                    iCombinedInstance++;
+                }                
             }
 
             return startIndex + meshCount;
