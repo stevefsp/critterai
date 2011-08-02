@@ -266,7 +266,7 @@ extern "C"
         return DT_SUCCESS;
     }
 
-    EXPORT_API dtStatus rcnInitTiledDTNavMesh(dtNavMeshParams* params
+    EXPORT_API dtStatus dtnmInitTiledNavMesh(dtNavMeshParams* params
         , dtNavMesh** ppNavMesh)
     {
         if (!params)
@@ -323,7 +323,7 @@ extern "C"
 
     }
 
-    EXPORT_API void freeDTNavMesh(dtNavMesh** pNavMesh)
+    EXPORT_API void dtnmFreeNavMesh(dtNavMesh** pNavMesh)
     {
         dtFreeNavMesh(*pNavMesh);
     }

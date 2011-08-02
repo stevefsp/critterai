@@ -26,82 +26,88 @@ namespace org.critterai.nav.rcn
 {
     internal static class NavmeshTileEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmBuildTileData")]
-        public static extern bool BuildTileData(NavmeshTileBuildData sourceData
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtnmBuildTileData(NavmeshTileBuildData sourceData
             , [In, Out] NavmeshTileData resultTile);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmBuildTileDataRaw")]
-        public static extern bool BuildTileData([In] byte[] rawData
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtnmBuildTileDataRaw([In] byte[] rawData
             , int dataSize
             , [In, Out] NavmeshTileData resultTile);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmFreeTileData")]
-        public static extern void FreeEx(NavmeshTileData tileData);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtnmFreeTileData(NavmeshTileData tileData);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileRef")]
-        public static extern uint GetTileRef(IntPtr navmesh, IntPtr tile);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern uint dtnmGetTileRef(IntPtr navmesh, IntPtr tile);
 
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileStateSize")]
-        public static extern int GetTileStateSize(IntPtr navmesh, IntPtr tile);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileStateSize(IntPtr navmesh, IntPtr tile);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmStoreTileState")]
-        public static extern NavStatus GetTileState(IntPtr navmesh
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtnmStoreTileState(IntPtr navmesh
             , IntPtr tile
             , [In, Out] byte[] stateData
             , int dataSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmRestoreTileState")]
-        public static extern NavStatus SetTileState(IntPtr navmesh
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtnmRestoreTileState(IntPtr navmesh
             , IntPtr tile
             , [In] byte[] stateData
             , int dataSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileHeader")]
-        public static extern IntPtr GetTileHeader(IntPtr tile);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtnmGetTileHeader(IntPtr tile);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetPolyRefBase")]
-        public static extern uint GetBasePolyRef(IntPtr navmesh, IntPtr tile);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern uint dtnmGetPolyRefBase(IntPtr navmesh, IntPtr tile);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileVerts")]
-        public static extern int GetTileVerts(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileVerts(IntPtr tile
             , [In, Out] float[] verts
             , int vertsSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTilePolys")]
-        public static extern int GetTilePolys(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTilePolys(IntPtr tile
             , [In, Out] NavmeshPoly[] polys
             , int polysSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailVerts")]
-        public static extern int GetTileDetailVerts(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileDetailVerts(IntPtr tile
             , [In, Out] float[] verts
             , int vertsSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailTris")]
-        public static extern int GetTileDetailTris(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileDetailTris(IntPtr tile
             , [In, Out] byte[] tris
             , int trisSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileDetailMeshes")]
-        public static extern int GetTileDetailMeshes(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileDetailMeshes(IntPtr tile
             , [In, Out] NavmeshDetailMesh[] detailMeshes
             , int meshesSize);
 
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileLinks")]
-        public static extern int GetTileLinks(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileLinks(IntPtr tile
             , [In, Out] NavmeshLink[] links
             , int linksSize);
 
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileBVTree")]
-        public static extern int GetTileBVTree(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileBVTree(IntPtr tile
             , [In, Out] NavmeshBVNode[] nodes
             , int nodesSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnmGetTileConnections")]
-        public static extern int GetTileConnections(IntPtr tile
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtnmGetTileConnections(IntPtr tile
             , [In, Out] NavmeshConnection[] conns
             , int connsSize);
     }

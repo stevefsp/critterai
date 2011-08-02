@@ -26,29 +26,35 @@ namespace org.critterai.nav.rcn
 {
     internal static class CrowdAgentEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetAgentParams")]
-        public static extern void GetParams(IntPtr agent
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcaGetAgentParams(IntPtr agent
             , ref CrowdAgentParams config);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetAgentCorners")]
-        public static extern void GetCorners(IntPtr agent
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcaGetAgentCorners(IntPtr agent
             , [In, Out] CrowdCornerData resultData);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetAgentCoreData")]
-        public static extern void GetCoreData(IntPtr agent
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcaGetAgentCoreData(IntPtr agent
             , [In, Out] CrowdAgentCoreState resultData);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetAgentNeighbors")]
-        public static extern int GetNeighbors(IntPtr agent
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtcaGetAgentNeighbors(IntPtr agent
             , [In, Out] CrowdNeighbor[] neighbors
             , int neighborsSize);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetPathCorridorData")]
-        public static extern void GetPathCorridor(IntPtr agent
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcaGetPathCorridorData(IntPtr agent
             , [In, Out] PathCorridorData corridor);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcaGetLocalBoundary")]
-        public static extern void GetLocalBoundary(IntPtr agent
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcaGetLocalBoundary(IntPtr agent
             , [In, Out] LocalBoundaryData boundary);
     }
 }

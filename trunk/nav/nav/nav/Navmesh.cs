@@ -117,7 +117,7 @@ namespace org.critterai.nav
                 return;
             
             byte[] data = (byte[])info.GetValue(DataKey, typeof(byte[]));
-            NavmeshEx.BuildMesh(data, data.Length, ref root);
+            NavmeshEx.dtnmBuildDTNavMeshFromRaw(data, data.Length, ref root);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace org.critterai.nav
         {
             if (root != IntPtr.Zero)
             {
-                NavmeshEx.FreeEx(ref root);
+                NavmeshEx.dtnmFreeNavMesh(ref root);
                 root = IntPtr.Zero;
             }
         }
@@ -158,7 +158,7 @@ namespace org.critterai.nav
         public NavmeshParams GetConfig()
         {
             NavmeshParams result = new NavmeshParams();
-            NavmeshEx.GetParams(root, result);
+            NavmeshEx.dtnmGetParams(root, result);
             return result;
         }
 
@@ -186,7 +186,7 @@ namespace org.critterai.nav
 
             resultTileRef = 0;
 
-            return NavmeshEx.AddTile(root
+            return NavmeshEx.dtnmAddTile(root
                 , tileData
                 , desiredTileRef
                 , ref resultTileRef);
@@ -200,7 +200,7 @@ namespace org.critterai.nav
         /// </returns>
         public NavStatus RemoveTile(uint tileRef)
         {
-            return NavmeshEx.RemoveTile(root, tileRef);
+            return NavmeshEx.dtnmRemoveTile(root, tileRef);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace org.critterai.nav
         {
             x = 0;
             z = 0;
-            NavmeshEx.DeriveTileLocation(root, position, ref x, ref z);
+            NavmeshEx.dtnmCalcTileLoc(root, position, ref x, ref z);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace org.critterai.nav
         /// <returns>The tile at the specified grid location.</returns>
         public NavmeshTile GetTile(int x, int z, int layer)
         {
-            IntPtr tile = NavmeshEx.GetTile(root, x, z, layer);
+            IntPtr tile = NavmeshEx.dtnmGetTileAt(root, x, z, layer);
             if (tile == IntPtr.Zero)
                 return null;
             return new NavmeshTile(this, tile);
@@ -244,7 +244,7 @@ namespace org.critterai.nav
         {
             IntPtr[] tiles = new IntPtr[buffer.Length];
 
-            int tileCount = NavmeshEx.GetTiles(root, x, z, tiles, tiles.Length);
+            int tileCount = NavmeshEx.dtnmGetTilesAt(root, x, z, tiles, tiles.Length);
 
             for (int i = 0; i < tileCount; i++)
             {
@@ -264,7 +264,7 @@ namespace org.critterai.nav
         /// location.</returns>
         public uint GetTileRef(int x, int z, int layer)
         {
-            return NavmeshEx.GetTileRef(root, x, z, layer);
+            return NavmeshEx.dtnmGetTileRefAt(root, x, z, layer);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace org.critterai.nav
         /// <returns>The tile, or NULL if none was found.</returns>
         public NavmeshTile GetTileByRef(uint tileRef)
         {
-            IntPtr tile = NavmeshEx.GetTileByRef(root, tileRef);
+            IntPtr tile = NavmeshEx.dtnmGetTileByRef(root, tileRef);
             if (tile == IntPtr.Zero)
                 return null;
             return new NavmeshTile(this, tile);
@@ -287,7 +287,7 @@ namespace org.critterai.nav
         /// mesh.</returns>
         public int GetMaxTiles()
         {
-            return NavmeshEx.GetMaxTiles(root);
+            return NavmeshEx.dtnmGetMaxTiles(root);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace org.critterai.nav
         /// </returns>
         public NavmeshTile GetTile(int tileIndex)
         {
-            IntPtr tile = NavmeshEx.GetTile(root, tileIndex);
+            IntPtr tile = NavmeshEx.dtnmGetTile(root, tileIndex);
             if (tile == IntPtr.Zero)
                 return null;
             return new NavmeshTile(this, tile);
@@ -321,7 +321,7 @@ namespace org.critterai.nav
             IntPtr pTile = IntPtr.Zero;
             IntPtr pPoly = IntPtr.Zero;
 
-            NavStatus status = NavmeshEx.GetTileAndPoly(root
+            NavStatus status = NavmeshEx.dtnmGetTileAndPolyByRef(root
                 , polyRef
                 , ref pTile
                 , ref pPoly);
@@ -350,7 +350,7 @@ namespace org.critterai.nav
         /// <returns>TRUE if the provided reference id valid.</returns>
         public bool IsValidPolyRef(uint polyRef)
         {
-            return NavmeshEx.IsValidPolyRef(root, polyRef);
+            return NavmeshEx.dtnmIsValidPolyRef(root, polyRef);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace org.critterai.nav
             , float[] startPoint
             , float[] endPoint)
         {
-            return NavmeshEx.GetConnEndpoints(root
+            return NavmeshEx.dtnmGetConnectionEndPoints(root
                 , startPolyRef
                 , connectionPolyRef
                 , startPoint
@@ -394,7 +394,7 @@ namespace org.critterai.nav
         /// <returns>The off-mesh connection.</returns>
         public NavmeshConnection GetConnectionByRef(uint polyRef)
         {
-            IntPtr conn = NavmeshEx.GetConnectionByRef(root, polyRef);
+            IntPtr conn = NavmeshEx.dtnmGetOffMeshConnectionByRef(root, polyRef);
 
             NavmeshConnection result;
             if (conn == IntPtr.Zero)
@@ -416,7 +416,7 @@ namespace org.critterai.nav
         public NavStatus GetPolyFlags(uint polyRef, out ushort flags)
         {
             flags = 0;
-            return NavmeshEx.GetPolyFlags(root, polyRef, ref flags);
+            return NavmeshEx.dtnmGetPolyFlags(root, polyRef, ref flags);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace org.critterai.nav
         /// </returns>
         public NavStatus SetPolyFlags(uint polyRef, ushort flags)
         {
-            return NavmeshEx.SetPolyFlags(root, polyRef, flags);
+            return NavmeshEx.dtnmSetPolyFlags(root, polyRef, flags);
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace org.critterai.nav
         public NavStatus GetPolyArea(uint polyRef, out byte area)
         {
             area = 0;
-            return NavmeshEx.GetPolyArea(root, polyRef, ref area);
+            return NavmeshEx.dtnmGetPolyArea(root, polyRef, ref area);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace org.critterai.nav
         /// </returns>
         public NavStatus SetPolyArea(uint polyRef, byte area)
         {
-            return NavmeshEx.SetPolyArea(root, polyRef, area);
+            return NavmeshEx.dtnmSetPolyArea(root, polyRef, area);
         }
 
         /// <summary>
@@ -469,14 +469,14 @@ namespace org.critterai.nav
             IntPtr data = IntPtr.Zero;
             int dataSize = 0;
 
-            NavmeshEx.GetSerializedNavmesh(root, ref data, ref dataSize);
+            NavmeshEx.dtnmGetDTNavMeshRawData(root, ref data, ref dataSize);
 
             if (dataSize == 0)
                 return null;
 
             byte[] resultData = UtilEx.ExtractArrayByte(data, dataSize);
 
-            NavmeshEx.FreeSerializedNavmeshEx(ref data);
+            NavmeshEx.dtnmFreeDTNavMeshRawData(ref data);
 
             return resultData;
         }
@@ -509,7 +509,7 @@ namespace org.critterai.nav
         {
             IntPtr navMesh = IntPtr.Zero;
 
-            NavStatus status = NavmeshEx.BuildMesh(buildData
+            NavStatus status = NavmeshEx.dtnmBuildSingleTileMesh(buildData
                 , ref navMesh);
 
             if (NavUtil.Succeeded(status))
@@ -539,7 +539,7 @@ namespace org.critterai.nav
 
             IntPtr root = IntPtr.Zero;
 
-            NavStatus status = NavmeshEx.BuildMesh(serializedMesh
+            NavStatus status = NavmeshEx.dtnmBuildDTNavMeshFromRaw(serializedMesh
                 , serializedMesh.Length
                 , ref root);
 
@@ -572,7 +572,7 @@ namespace org.critterai.nav
 
             IntPtr root = IntPtr.Zero;
 
-            NavStatus status = NavmeshEx.BuildMesh(config, ref root);
+            NavStatus status = NavmeshEx.dtnmInitTiledNavMesh(config, ref root);
 
             if (NavUtil.Succeeded(status))
                 resultMesh = new Navmesh(root);

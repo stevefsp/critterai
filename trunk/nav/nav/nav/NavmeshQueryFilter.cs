@@ -85,8 +85,8 @@ namespace org.critterai.nav
         /// <returns>The traversal cost of the area.</returns>
         public float this[int index]
         {
-            get { return NavmeshQueryFilterEx.GetAreaCost(root, index); }
-            set { NavmeshQueryFilterEx.SetAreaCost(root, index, value); }
+            get { return NavmeshQueryFilterEx.dtqfGetAreaCost(root, index); }
+            set { NavmeshQueryFilterEx.dtqfSetAreaCost(root, index, value); }
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace org.critterai.nav
         /// </remarks>
         public ushort IncludeFlags
         {
-            get { return NavmeshQueryFilterEx.GetIncludeFlags(root); }
-            set { NavmeshQueryFilterEx.SetIncludeFlags(root, value); }
+            get { return NavmeshQueryFilterEx.dtqfGetIncludeFlags(root); }
+            set { NavmeshQueryFilterEx.dtqfSetIncludeFlags(root, value); }
         }
 
         /// <summary>
@@ -112,8 +112,8 @@ namespace org.critterai.nav
         /// excluded by a query.</remarks>
         public ushort ExcludeFlags
         {
-            get { return NavmeshQueryFilterEx.GetExcludeFlags(root); }
-            set { NavmeshQueryFilterEx.SetExcludeFlags(root, value); }
+            get { return NavmeshQueryFilterEx.dtqfGetExcludeFlags(root); }
+            set { NavmeshQueryFilterEx.dtqfSetExcludeFlags(root, value); }
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace org.critterai.nav
         public NavmeshQueryFilter()
             : base(AllocType.Local)
         {
-            root = NavmeshQueryFilterEx.Alloc();
+            root = NavmeshQueryFilterEx.dtqfAlloc();
             mAreaCount = Navmesh.MaxAreas;
         }
 
@@ -142,7 +142,7 @@ namespace org.critterai.nav
         public NavmeshQueryFilter(int areaCount)
             : base(AllocType.Local) 
         {
-            root = NavmeshQueryFilterEx.Alloc();
+            root = NavmeshQueryFilterEx.dtqfAlloc();
             mAreaCount = Math.Min(Navmesh.MaxAreas, mAreaCount);
         }
 
@@ -173,7 +173,7 @@ namespace org.critterai.nav
         {
             // Note: There is no external unmanaged allocation.
             if (root != IntPtr.Zero && ResourceType == AllocType.Local)
-                NavmeshQueryFilterEx.Free(root);
+                NavmeshQueryFilterEx.dtqfFree(root);
             root = IntPtr.Zero;
         }
     }

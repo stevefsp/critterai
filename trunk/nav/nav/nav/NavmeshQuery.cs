@@ -98,7 +98,7 @@ namespace org.critterai.nav
         public override void RequestDisposal()
         {
             if (ResourceType == AllocType.External)
-                NavmeshQueryEx.FreeEx(ref root);
+                NavmeshQueryEx.dtnqFree(ref root);
             root = IntPtr.Zero;
         }
 
@@ -136,7 +136,7 @@ namespace org.critterai.nav
             , float[] resultPoint)
         {
             resultPolyRef = 0;
-            return NavmeshQueryEx.GetNearestPoly(root
+            return NavmeshQueryEx.dtqFindNearestPoly(root
                 , searchPoint
                 , extents
                 , filter.root
@@ -170,7 +170,7 @@ namespace org.critterai.nav
             , out int segmentCount)
         {
             segmentCount = 0;
-            return NavmeshQueryEx.GetPolyWallSegments(root
+            return NavmeshQueryEx.dtqGetPolyWallSegments(root
                 , polyRef
                 , filter.root
                 , resultSegments
@@ -212,7 +212,7 @@ namespace org.critterai.nav
             , out int segmentCount)
         {
             segmentCount = 0;
-            return NavmeshQueryEx.GetPolyWallSegments(root
+            return NavmeshQueryEx.dtqGetPolyWallSegments(root
                 , polyRef
                 , filter.root
                 , resultSegments
@@ -248,7 +248,7 @@ namespace org.critterai.nav
             , out int resultCount)
         {
             resultCount = 0;
-            return NavmeshQueryEx.GetPolys(root
+            return NavmeshQueryEx.dtqQueryPolygons(root
                 , searchPoint
                 , extents
                 , filter.root
@@ -322,7 +322,7 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.FindPolys(root
+            return NavmeshQueryEx.dtqFindPolysAroundCircle(root
                 , startPolyRef
                 , centerPoint
                 , radius
@@ -392,7 +392,7 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.FindPolys(root
+            return NavmeshQueryEx.dtqFindPolysAroundShape(root
                 , startPolyRef
                 , vertices
                 , vertices.Length / 3
@@ -458,7 +458,7 @@ namespace org.critterai.nav
             if (maxCount == 0)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.GetPolysLocal(root
+            return NavmeshQueryEx.dtqFindLocalNeighbourhood(root
                 , startPolyRef
                 , centerPoint
                 , radius
@@ -488,7 +488,7 @@ namespace org.critterai.nav
             , float[] sourcePoint
             , float[] resultPoint)
         {
-            return NavmeshQueryEx.GetNearestPoint(root
+            return NavmeshQueryEx.dtqClosestPointOnPoly(root
                 , polyRef
                 , sourcePoint
                 , resultPoint);
@@ -520,7 +520,7 @@ namespace org.critterai.nav
             , float[] sourcePoint
             , float[] resultPoint)
         {
-            return NavmeshQueryEx.GetNearestPointF(root
+            return NavmeshQueryEx.dtqClosestPointOnPolyBoundary(root
                 , polyRef
                 , sourcePoint
                 , resultPoint);
@@ -544,7 +544,7 @@ namespace org.critterai.nav
             , out float height)
         {
             height = 0;
-            return NavmeshQueryEx.GetPolyHeight(root
+            return NavmeshQueryEx.dtqGetPolyHeight(root
                 , polyRef
                 , point
                 , ref height);
@@ -583,7 +583,7 @@ namespace org.critterai.nav
             , float[] normal)
         {
             distance = 0;
-            return NavmeshQueryEx.FindDistanceToWall(root
+            return NavmeshQueryEx.dtqFindDistanceToWall(root
                 , polyRef
                 , searchPoint
                 , searchRadius
@@ -627,7 +627,7 @@ namespace org.critterai.nav
             , out int pathCount)
         {
             pathCount = 0;
-            return NavmeshQueryEx.FindPath(root
+            return NavmeshQueryEx.dtqFindPath(root
                 , startPolyRef
                 , endPolyRef
                 , startPoint
@@ -653,7 +653,7 @@ namespace org.critterai.nav
         /// </returns>
         public bool IsInClosedList(uint polyRef)
         {
-            return NavmeshQueryEx.IsInClosedList(root, polyRef);
+            return NavmeshQueryEx.dtqIsInClosedList(root, polyRef);
         }
 
         /// <summary>
@@ -723,7 +723,7 @@ namespace org.critterai.nav
 
             int maxCount = (path == null ? 0 : path.Length);
 
-            return NavmeshQueryEx.Raycast(root
+            return NavmeshQueryEx.dtqRaycast(root
                 , startPolyRef
                 , startPoint
                 , endPoint
@@ -817,7 +817,7 @@ namespace org.critterai.nav
             if (maxPath < 1)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshQueryEx.GetStraightPath(root
+            return NavmeshQueryEx.dtqFindStraightPath(root
                 , startPoint
                 , endPoint
                 , path
@@ -874,7 +874,7 @@ namespace org.critterai.nav
             , out int visitedCount)
         {
             visitedCount = 0;
-            return NavmeshQueryEx.MoveAlongSurface(root
+            return NavmeshQueryEx.dtqMoveAlongSurface(root
                 , startPolyRef
                 , startPoint
                 , endPoint
@@ -920,7 +920,7 @@ namespace org.critterai.nav
         {
             if (mIsRestricted)
                 return NavStatus.Failure;
-            return NavmeshQueryEx.InitSlicedFindPath(root
+            return NavmeshQueryEx.dtqInitSlicedFindPath(root
                 , startPolyRef
                 , endPolyRef
                 , startPoint
@@ -945,7 +945,7 @@ namespace org.critterai.nav
             actualIterations = 0;
             if (mIsRestricted)
                 return NavStatus.Failure;
-            return NavmeshQueryEx.UpdateSlicedFindPath(root
+            return NavmeshQueryEx.dtqUpdateSlicedFindPath(root
                 , maxIterations
                 , ref actualIterations);
         }
@@ -966,7 +966,7 @@ namespace org.critterai.nav
             pathCount = 0;
             if (mIsRestricted)
                 return NavStatus.Failure;
-            return NavmeshQueryEx.FinalizeSlicedFindPath(root
+            return NavmeshQueryEx.dtqFinalizeSlicedFindPath(root
                 , path
                 , ref pathCount
                 , path.Length);
@@ -990,7 +990,7 @@ namespace org.critterai.nav
         {
             IntPtr query = IntPtr.Zero;
 
-            NavStatus status = NavmeshQueryEx.BuildNavmeshQuery(
+            NavStatus status = NavmeshQueryEx.dtnqBuildDTNavQuery(
                 navmesh.root
                 , maximumNodes
                 , ref query);

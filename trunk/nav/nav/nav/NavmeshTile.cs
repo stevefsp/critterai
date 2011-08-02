@@ -65,7 +65,7 @@ namespace org.critterai.nav
         {
             if (mOwner.IsDisposed)
                 return 0;
-            return NavmeshTileEx.GetTileRef(mOwner.root, mTile);
+            return NavmeshTileEx.dtnmGetTileRef(mOwner.root, mTile);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace org.critterai.nav
         {
             if (mOwner.IsDisposed)
                 return 0;
-            return NavmeshTileEx.GetBasePolyRef(mOwner.root, mTile);
+            return NavmeshTileEx.dtnmGetPolyRefBase(mOwner.root, mTile);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace org.critterai.nav
         {
             if (mOwner.IsDisposed)
                 return 0;
-            return NavmeshTileEx.GetTileStateSize(mOwner.root, mTile);
+            return NavmeshTileEx.dtnmGetTileStateSize(mOwner.root, mTile);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshTileEx.GetTileState(mOwner.root
+            return NavmeshTileEx.dtnmStoreTileState(mOwner.root
                 , mTile
                 , buffer
                 , buffer.Length);
@@ -125,7 +125,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || stateData == null)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
-            return NavmeshTileEx.SetTileState(mOwner.root
+            return NavmeshTileEx.dtnmRestoreTileState(mOwner.root
                 , mTile
                 , stateData
                 , stateData.Length);
@@ -142,7 +142,7 @@ namespace org.critterai.nav
                 return new NavmeshTileHeader();
             }
 
-            IntPtr header = NavmeshTileEx.GetTileHeader(mTile);
+            IntPtr header = NavmeshTileEx.dtnmGetTileHeader(mTile);
 
             if (header == IntPtr.Zero)
             {
@@ -164,7 +164,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTilePolys(mTile
+            return NavmeshTileEx.dtnmGetTilePolys(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -180,7 +180,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileVerts(mTile
+            return NavmeshTileEx.dtnmGetTileVerts(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -196,7 +196,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileDetailVerts(mTile
+            return NavmeshTileEx.dtnmGetTileDetailVerts(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -212,7 +212,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileDetailTris(mTile
+            return NavmeshTileEx.dtnmGetTileDetailTris(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -228,7 +228,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileDetailMeshes(mTile
+            return NavmeshTileEx.dtnmGetTileDetailMeshes(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -244,7 +244,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileLinks(mTile
+            return NavmeshTileEx.dtnmGetTileLinks(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -260,7 +260,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileBVTree(mTile
+            return NavmeshTileEx.dtnmGetTileBVTree(mTile
                 , buffer
                 , buffer.Length);
         }
@@ -276,7 +276,7 @@ namespace org.critterai.nav
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
 
-            return NavmeshTileEx.GetTileConnections(mTile
+            return NavmeshTileEx.dtnmGetTileConnections(mTile
                 , buffer
                 , buffer.Length);
         }

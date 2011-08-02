@@ -26,16 +26,22 @@ namespace org.critterai.nav.rcn
 {
     internal static class NavmeshQueryEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "rcnBuildDTNavQuery")]
-        public static extern NavStatus BuildNavmeshQuery(IntPtr navmesh
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtnqBuildDTNavQuery(IntPtr navmesh
             , int maxNodes
             , ref IntPtr resultQuery);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtnqFree")]
-        public static extern void FreeEx(ref IntPtr query);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtnqFree(ref IntPtr query);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqGetPolyWallSegments")]
-        public static extern NavStatus GetPolyWallSegments(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqGetPolyWallSegments(IntPtr query
             , uint polyRef
             , IntPtr filter
             , [In, Out] float[] segmentVerts
@@ -43,28 +49,28 @@ namespace org.critterai.nav.rcn
             , ref int segmentCount
             , int maxSegments);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindNearestPoly")]
-        public static extern NavStatus GetNearestPoly(IntPtr query
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindNearestPoly(IntPtr query
             , [In] float[] position
             , [In] float[] extents
 		    , IntPtr filter
 		    , ref uint nearestPolyRef
             , [In, Out] float[] nearestPoint);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqClosestPointOnPoly")]
-        public static extern NavStatus GetNearestPoint(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqClosestPointOnPoly(IntPtr query
             , uint polyRef
             , [In] float[] position
             , [In, Out] float[] resultPoint);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqClosestPointOnPolyBoundary")]
-        public static extern NavStatus GetNearestPointF(IntPtr query 
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqClosestPointOnPolyBoundary(IntPtr query 
             , uint polyRef
             , [In] float[] position
             , [In, Out] float[] resultPoint);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqQueryPolygons")]
-        public static extern NavStatus GetPolys(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqQueryPolygons(IntPtr query
                 , [In] float[] position
                 , [In] float[] extents
                 , IntPtr filter
@@ -72,8 +78,8 @@ namespace org.critterai.nav.rcn
                 , ref int resultCount
                 , int maxResult);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPolysAroundCircle")]
-        public static extern NavStatus FindPolys(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindPolysAroundCircle(IntPtr query
                 , uint startPolyRef
                 , [In] float[] position
                 , float radius
@@ -84,8 +90,8 @@ namespace org.critterai.nav.rcn
                 , ref int resultCount
                 , int maxResult);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPolysAroundShape")]
-        public static extern NavStatus FindPolys(IntPtr query 
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindPolysAroundShape(IntPtr query 
             , uint startPolyRef
             , [In] float[] verts
             , int vertCount
@@ -96,8 +102,8 @@ namespace org.critterai.nav.rcn
 	        , ref int resultCount
             , int maxResult);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqFindLocalNeighbourhood")]
-        public static extern NavStatus GetPolysLocal(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindLocalNeighbourhood(IntPtr query
             , uint startPolyRef
             , [In] float[] position
             , float radius
@@ -107,14 +113,14 @@ namespace org.critterai.nav.rcn
             , ref int resultCount
             , int maxResult);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqGetPolyHeight")]
-        public static extern NavStatus GetPolyHeight(IntPtr query
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqGetPolyHeight(IntPtr query
             , uint polyRef
             , [In] float[] position
             , ref float height);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindDistanceToWall")]
-        public static extern NavStatus FindDistanceToWall(IntPtr query
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindDistanceToWall(IntPtr query
             , uint polyRef
             , [In] float[] position
             , float searchRadius
@@ -123,8 +129,8 @@ namespace org.critterai.nav.rcn
             , [In, Out] float[] closestPoint
             , [In, Out] float[] normal);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindPath")]
-        public static extern NavStatus FindPath(IntPtr query 
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindPath(IntPtr query 
             , uint startPolyRef
             , uint endPolyRef
 		    , [In] float[] startPosition
@@ -134,12 +140,12 @@ namespace org.critterai.nav.rcn
             , ref int pathCount
             , int maxPath);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqIsInClosedList")]
-        public static extern bool IsInClosedList(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtqIsInClosedList(IntPtr query
             , uint polyRef);
 	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqRaycast")]
-        public static extern NavStatus Raycast(IntPtr query
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqRaycast(IntPtr query
             , uint startPolyRef
             , [In] float[] startPosition
             , [In] float[] endPosition
@@ -150,8 +156,8 @@ namespace org.critterai.nav.rcn
             , ref int pathCount
             , int maxPath);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtqFindStraightPath")]
-        public static extern NavStatus GetStraightPath(IntPtr query
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindStraightPath(IntPtr query
             , [In] float[] startPosition
             , [In] float[] endPosition
 		    , [In] uint[] path
@@ -163,8 +169,8 @@ namespace org.critterai.nav.rcn
 	        , ref int straightPathCount
             , int maxStraightPath);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqMoveAlongSurface")]
-        public static extern NavStatus MoveAlongSurface(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqMoveAlongSurface(IntPtr query
             , uint startPolyRef
             , [In] float[] startPosition
             , [In] float[] endPosition
@@ -174,21 +180,21 @@ namespace org.critterai.nav.rcn
             , ref int visitedCount
             , int maxVisited);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqInitSlicedFindPath")]
-        public static extern NavStatus InitSlicedFindPath(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqInitSlicedFindPath(IntPtr query
             , uint startPolyRef
             , uint endPolyRef
             , [In] float[] startPosition
             , [In] float[] endPosition
             , IntPtr filter);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqUpdateSlicedFindPath")]
-        public static extern NavStatus UpdateSlicedFindPath(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqUpdateSlicedFindPath(IntPtr query
             , int maxIterations
             , ref int actualIterations);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqFinalizeSlicedFindPath")]
-        public static extern NavStatus FinalizeSlicedFindPath(IntPtr query
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFinalizeSlicedFindPath(IntPtr query
             , [In, Out] uint[] path
             , ref int pathCount
             , int maxPath);

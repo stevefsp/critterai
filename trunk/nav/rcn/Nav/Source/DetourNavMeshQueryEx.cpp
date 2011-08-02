@@ -25,7 +25,7 @@
 
 extern "C"
 {
-    EXPORT_API dtStatus rcnBuildDTNavQuery(dtNavMesh* pNavMesh
+    EXPORT_API dtStatus dtnqBuildDTNavQuery(dtNavMesh* pNavMesh
         , const int maxNodes
         , dtNavMeshQuery** ppNavQuery)
     {

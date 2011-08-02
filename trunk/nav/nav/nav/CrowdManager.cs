@@ -151,7 +151,7 @@ namespace org.critterai.nav
             maxAgents = Math.Max(1, maxAgents);
             maxAgentRadius = Math.Max(0, maxAgentRadius);
 
-            root = CrowdManagerEx.Alloc(maxAgents
+            root = CrowdManagerEx.dtcDetourCrowdAlloc(maxAgents
                 , maxAgentRadius
                 , navmesh.root);
 
@@ -164,13 +164,13 @@ namespace org.critterai.nav
             mAgents = new CrowdAgent[maxAgents];
             agentStates = new CrowdAgentCoreState[maxAgents];
 
-            IntPtr ptr = CrowdManagerEx.GetQueryFilter(root);
+            IntPtr ptr = CrowdManagerEx.dtcGetFilter(root);
             mFilter = new NavmeshQueryFilter(ptr, AllocType.ExternallyManaged);
 
-            ptr = CrowdManagerEx.GetProximityGrid(root);
+            ptr = CrowdManagerEx.dtcGetGrid(root);
             mGrid = new CrowdProximityGrid(ptr);
 
-            ptr = CrowdManagerEx.GetQuery(root);
+            ptr = CrowdManagerEx.dtcGetNavMeshQuery(root);
             mQuery = new NavmeshQuery(ptr, true, AllocType.ExternallyManaged);
         }
 
@@ -209,7 +209,7 @@ namespace org.critterai.nav
                     mAgents[i] = null;
                 }
 
-                CrowdManagerEx.FreeEx(root);
+                CrowdManagerEx.dtcDetourCrowdFree(root);
                 root = IntPtr.Zero;
             }
         }
@@ -233,7 +233,7 @@ namespace org.critterai.nav
             if (IsDisposed || index < 0 || index >= MaxAvoidanceParams)
                 return false;
 
-            CrowdManagerEx.SetAvoidanceParams(root, index, config);
+            CrowdManagerEx.dtcSetObstacleAvoidanceParams(root, index, config);
 
             return true;
         }
@@ -254,7 +254,7 @@ namespace org.critterai.nav
             if (!IsDisposed && index >= 0 && index < MaxAvoidanceParams)
             {
                 CrowdAvoidanceParams result = new CrowdAvoidanceParams();
-                CrowdManagerEx.GetAvoidanceParams(root
+                CrowdManagerEx.dtcGetObstacleAvoidanceParams(root
                     , index
                     , result);
 
@@ -309,7 +309,7 @@ namespace org.critterai.nav
             IntPtr ptr = IntPtr.Zero;
             CrowdAgentCoreState initialState = new CrowdAgentCoreState();
 
-            int index = CrowdManagerEx.AddAgent(root
+            int index = CrowdManagerEx.dtcAddAgent(root
                 , position
                 , ref agentParams
                 , ref ptr
@@ -338,7 +338,7 @@ namespace org.critterai.nav
             {
                 if (mAgents[i] == agent)
                 {
-                    CrowdManagerEx.RemoveAgent(root, agent.managerIndex);
+                    CrowdManagerEx.dtcRemoveAgent(root, agent.managerIndex);
                     agent.Dispose();
                     mAgents[i] = null;
                     // Don't need to do anything about the core data array.
@@ -356,7 +356,7 @@ namespace org.critterai.nav
             if (IsDisposed)
                 return;
 
-            CrowdManagerEx.Update(root, deltaTime, agentStates);
+            CrowdManagerEx.dtcUpdate(root, deltaTime, agentStates);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace org.critterai.nav
             if (IsDisposed)
                 return null;
             float[] result = new float[3];
-            CrowdManagerEx.GetQueryExtents(root, result);
+            CrowdManagerEx.dtcGetQueryExtents(root, result);
             return result;
         }
         /// <summary>
@@ -387,7 +387,7 @@ namespace org.critterai.nav
         {
             if (IsDisposed)
                 return -1;
-            return CrowdManagerEx.GetVelocitySampleCount(root);
+            return CrowdManagerEx.dtcGetVelocitySampleCount(root);
         }
 
         /// <summary>
