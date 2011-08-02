@@ -62,12 +62,12 @@ namespace org.critterai.nmgen
             {
                 if (IsDisposed)
                     return false;
-                return BuildContextEx.GetLogEnabled(root); 
+                return BuildContextEx.nmbcGetLogEnabled(root); 
             }
             set 
             {
                 if (!IsDisposed)
-                    BuildContextEx.SetLogEnabled(root, value); 
+                    BuildContextEx.nmbcEnableLog(root, value); 
             }
         }
 
@@ -80,7 +80,7 @@ namespace org.critterai.nmgen
             {
                 if (IsDisposed)
                     return 0;
-                return BuildContextEx.GetMessageCount(root); 
+                return BuildContextEx.nmbcGetMessageCount(root); 
             }
         }
 
@@ -99,7 +99,7 @@ namespace org.critterai.nmgen
         {
             if (root != IntPtr.Zero)
             {
-                BuildContextEx.FreeEx(root);
+                BuildContextEx.nmbcFreeContext(root);
                 root = IntPtr.Zero;
             }
         }
@@ -110,7 +110,7 @@ namespace org.critterai.nmgen
         public void ResetLog()
         {
             if (!IsDisposed)
-                BuildContextEx.ResetLog(root);
+                BuildContextEx.nmbcResetLog(root);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace org.critterai.nmgen
         public void Log(string message)
         {
             if (!IsDisposed && message != null && message.Length > 0)
-                BuildContextEx.Log(root, message);
+                BuildContextEx.nmbcLog(root, message);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace org.critterai.nmgen
 
             byte[] buffer = new byte[12000];
 
-            int messageCount = BuildContextEx.GetMessagePool(root
+            int messageCount = BuildContextEx.nmbcGetMessagePool(root
                 , buffer
                 , buffer.Length);
 
@@ -159,7 +159,7 @@ namespace org.critterai.nmgen
         /// <param name="logEnabled">The initial logging state.</param>
         public BuildContext(bool logEnabled)
         {
-            root = BuildContextEx.Alloc(logEnabled);
+            root = BuildContextEx.nmbcAllocateContext(logEnabled);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace org.critterai.nmgen
         public static void LoadTestMessages(BuildContext context, int count)
         {
             if (context != null && !context.IsDisposed)
-                BuildContextEx.TestContext(context.root, Math.Min(100, count));
+                BuildContextEx.nmgTestContext(context.root, Math.Min(100, count));
         }
     }
 }

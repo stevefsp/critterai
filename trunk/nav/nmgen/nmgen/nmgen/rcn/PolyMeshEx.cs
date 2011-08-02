@@ -36,8 +36,8 @@ namespace org.critterai.nmgen.rcn
          * 
          */
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmBuildSerializedData")]
-        public static extern bool Build([In] byte[] meshData
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpmBuildSerializedData([In] byte[] meshData
             , int dataSize
             , ref PolyMeshEx polyMesh
             , ref int maxVerts
@@ -45,11 +45,11 @@ namespace org.critterai.nmgen.rcn
             , ref float walkableRadius
             , ref float walkableStep);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmFreeMeshData")]
-        internal static extern bool FreeEx(ref PolyMeshEx polyMesh);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpmFreeMeshData(ref PolyMeshEx polyMesh);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmGetSerializedData")]
-        public static extern bool GetSerializedData(ref PolyMeshEx polyMesh
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpmGetSerializedData(ref PolyMeshEx polyMesh
             , int maxVerts
             , float walkableHeight
             , float waklableRadius
@@ -58,11 +58,8 @@ namespace org.critterai.nmgen.rcn
             , ref IntPtr data
             , ref int dataSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmgFreeSerializationData")]
-        public static extern void FreeSerializationData(ref IntPtr data);
-
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpmBuildFromContourSet")]
-        public static extern bool Build(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpmBuildFromContourSet(IntPtr context
             , [In] ContourSetEx cset
             , int maxVertsPerPoly
             , ref PolyMeshEx polyMesh

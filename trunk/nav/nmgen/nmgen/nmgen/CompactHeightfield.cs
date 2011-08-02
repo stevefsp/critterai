@@ -239,7 +239,7 @@ namespace org.critterai.nmgen
         {
             if (!IsDisposed)
             {
-                CompactHeightfieldEx.FreeDataEx(this);
+                CompactHeightfieldEx.nmcfFreeFieldData(this);
                 mWidth = 0;
                 mDepth = 0;
                 mBorderSize = 0;
@@ -267,7 +267,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return CompactHeightfieldEx.GetCellData(this
+            return CompactHeightfieldEx.nmcfGetCellData(this
                 , buffer
                 , buffer.Length);
         }
@@ -284,7 +284,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return CompactHeightfieldEx.GetSpanData(this
+            return CompactHeightfieldEx.nmcfGetSpanData(this
                 , buffer
                 , buffer.Length);
         }
@@ -369,7 +369,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.ErodeWalkableArea(context.root
+            return CompactHeightfieldEx.nmcfErodeWalkableArea(context.root
                 , radius
                 , this);
         }
@@ -384,7 +384,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.ApplyMedianFilter(context.root, this);
+            return CompactHeightfieldEx.nmcfMedianFilterWalkableArea(context.root, this);
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return CompactHeightfieldEx.MarkArea(context.root
+            return CompactHeightfieldEx.nmcfMarkBoxArea(context.root
                 , boundsMin
                 , boundsMax
                 , area
@@ -447,7 +447,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.MarkArea(context.root
+            return CompactHeightfieldEx.nmcfMarkConvexPolyArea(context.root
                 , verts
                 , verts.Length / 3
                 , yMin
@@ -480,7 +480,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.MarkArea(context.root
+            return CompactHeightfieldEx.nmcfMarkCylinderArea(context.root
                 , centerBase
                 , radius
                 , height
@@ -504,7 +504,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.BuildDistanceField(context.root, this);
+            return CompactHeightfieldEx.nmcfBuildDistanceField(context.root, this);
         }
 
         /// <summary>
@@ -539,7 +539,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.BuildRegions(context.root
+            return CompactHeightfieldEx.nmcfBuildRegions(context.root
                 , this
                 , borderSize
                 , minRegionArea
@@ -578,7 +578,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return false;
-            return CompactHeightfieldEx.BuildRegionsMonotone(context.root
+            return CompactHeightfieldEx.nmcfBuildRegionsMonotone(context.root
                 , this
                 , borderSize
                 , minRegionArea
@@ -606,7 +606,7 @@ namespace org.critterai.nmgen
                 return null;
 
             CompactHeightfield field = new CompactHeightfield();
-            if (CompactHeightfieldEx.Build(context.root
+            if (CompactHeightfieldEx.nmcfBuildField(context.root
                 , walkableHeight
                 , walkableStep
                 , sourceField.root

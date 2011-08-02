@@ -26,35 +26,36 @@ namespace org.critterai.nmgen.rcn
 {
     internal static class BuildContextEx
     {
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcAllocateContext")]
-        public static extern IntPtr Alloc(bool logEnabled);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr nmbcAllocateContext(bool logEnabled);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcFreeContext")]
-        public static extern void FreeEx(IntPtr context);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmbcFreeContext(IntPtr context);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcGetLogEnabled")]
-        public static extern bool GetLogEnabled(IntPtr context);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmbcGetLogEnabled(IntPtr context);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcEnableLog")]
-        public static extern void SetLogEnabled(IntPtr context, bool state);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmbcEnableLog(IntPtr context, bool state);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcResetLog")]
-        public static extern void ResetLog(IntPtr context);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmbcResetLog(IntPtr context);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcGetMessageCount")]
-        public static extern int GetMessageCount(IntPtr context);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmbcGetMessageCount(IntPtr context);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcGetMessagePool")]
-        public static extern int GetMessagePool(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmbcGetMessagePool(IntPtr context
             , [In, Out] byte[] messageBuffer
             , int bufferSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmbcLog")]
-        public static extern void Log(IntPtr ctx
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmbcLog(IntPtr ctx
             , [In, MarshalAs(UnmanagedType.LPStr)] string message);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmgTestContext")]
-        public static extern void TestContext(IntPtr ctx, int count);
+        // Note: It is ok for the method prefix to be different.
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmgTestContext(IntPtr ctx, int count);
 
     }
 }

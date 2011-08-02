@@ -132,7 +132,7 @@ namespace org.critterai.nmgen
                 return false;
             }
 
-            NMGenEx.MarkWalkableTriangles(context.root
+            NMGenEx.nmgMarkWalkableTriangles(context.root
                 , walkableSlope
                 , mesh.verts
                 , mesh.vertCount
@@ -167,7 +167,7 @@ namespace org.critterai.nmgen
                 return false;
             }
 
-            NMGenEx.ClearUnwalkableTriangles(context.root
+            NMGenEx.nmgClearUnwalkableTriangles(context.root
                 , walkableSlope
                 , mesh.verts
                 , mesh.vertCount
@@ -258,7 +258,7 @@ namespace org.critterai.nmgen
             int vertCount = 0;
             int triCount = 0;
 
-            if (PolyMeshDetailEx.FlattenMesh(source
+            if (PolyMeshDetailEx.rcpdFlattenMesh(source
                 , tverts
                 , ref vertCount
                 , source.VertCount

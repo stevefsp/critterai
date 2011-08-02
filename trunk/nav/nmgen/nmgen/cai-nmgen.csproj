@@ -58,6 +58,7 @@
     <Compile Include="nmgen\rcn\ContourSetEx.cs" />
     <Compile Include="nmgen\rcn\HeightfieldLayerSetEx.cs" />
     <Compile Include="nmgen\rcn\HeightfieldEx.cs" />
+    <Compile Include="nmgen\rcn\InteropUtil.cs" />
     <Compile Include="nmgen\rcn\NMGenEx.cs" />
     <Compile Include="nmgen\NMGenParams.cs" />
     <Compile Include="nmgen\PolyMesh.cs" />

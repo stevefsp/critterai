@@ -27,19 +27,19 @@ namespace org.critterai.nmgen.rcn
     [StructLayout(LayoutKind.Sequential)]
     internal sealed class ContourSetEx
     {
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcsBuildSet")]
-        public static extern bool Build(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcsBuildSet(IntPtr context
             , [In] CompactHeightfield chf
             , float maxError
             , int maxEdgeLen
             , [In, Out] ContourSetEx cset
             , ContourBuildFlags flags);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcsFreeSetData")]
-        public static extern void FreeDataEx([In, Out] ContourSetEx cset);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmcsFreeSetData([In, Out] ContourSetEx cset);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcsGetContour")]
-        public static extern bool GetContour([In] ContourSetEx cset
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcsGetContour([In] ContourSetEx cset
             , int index
             , [In, Out] Contour result);
 

@@ -35,26 +35,23 @@ namespace org.critterai.nmgen.rcn
          * 
          */
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpdFreeMeshData")]
-        public static extern bool FreeEx([In, Out] PolyMeshDetail detailMesh);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpdFreeMeshData([In, Out] PolyMeshDetail detailMesh);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpdGetSerializedData")]
-        public static extern bool GetSerializedData(
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpdGetSerializedData(
             [In] PolyMeshDetail detailMesh
                 , bool includeBuffer
                 , ref IntPtr resultData
                 , ref int dataSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcpdBuildFromMeshData")]
-        public static extern bool Build([In] byte[] meshData
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpdBuildFromMeshData([In] byte[] meshData
         , int dataSize
         , [In, Out] PolyMeshDetail detailMesh);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmgFreeSerializationData")]
-        public static extern void FreeSerializationData(ref IntPtr data);
-
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcdtFlattenMesh")]
-        public static extern bool FlattenMesh([In] PolyMeshDetail detailMesh
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpdFlattenMesh([In] PolyMeshDetail detailMesh
             , [In, Out] float[] verts
             , ref int vertCount
             , int vertsSize
@@ -62,8 +59,8 @@ namespace org.critterai.nmgen.rcn
             , ref int triCount
             , int trisSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcdtBuildPolyMeshDetail")]
-        public static extern bool Build(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool rcpdBuildPolyMeshDetail(IntPtr context
             , ref PolyMeshEx polyMesh
             , [In] CompactHeightfield chf
             , float sampleDist
