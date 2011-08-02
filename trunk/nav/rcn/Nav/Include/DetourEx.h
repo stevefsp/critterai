@@ -28,4 +28,15 @@
 #define EXPORT_API // Otherwise don't define.
 #endif
 
+static const int MAX_RCN_PATH_CORRIDOR_SIZE = 256;
+
+struct rcnPathCorridorData
+{
+    float position[3];
+    float target[3];
+
+    dtPolyRef path[MAX_RCN_PATH_CORRIDOR_SIZE];
+    int pathCount;
+};
+
 #endif

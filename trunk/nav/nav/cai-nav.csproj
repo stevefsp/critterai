@@ -37,6 +37,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="nav\PathCorridor.cs" />
     <Compile Include="nav\CrowdCornerData.cs" />
     <Compile Include="nav\CrowdLocalBoundaryData.cs" />
     <Compile Include="nav\NavmeshTileHeader.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="nav\CrowdUpdateFlags.cs" />
     <Compile Include="nav\NavmeshTileData.cs" />
     <Compile Include="nav\NavmeshTileBuildData.cs" />
+    <Compile Include="nav\rcn\PathCorridorEx.cs" />
     <Compile Include="nav\rcn\CrowdAgentEx.cs" />
     <Compile Include="nav\rcn\NavmeshTileEx.cs" />
     <Compile Include="nav\rcn\CrowdProximityGridEx.cs" />

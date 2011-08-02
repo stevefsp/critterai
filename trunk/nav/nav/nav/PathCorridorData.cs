@@ -28,14 +28,22 @@ namespace org.critterai.nav
     /// Path corridor data.
     /// </summary>
     /// <remarks>
-    /// <para>Used as a buffer for corridor data returned by other classes.</para>
+    /// <para>Used as a buffer for corridor data returned by other classes.
+    /// </para>
+    /// <para>This class is used as an interop buffer.  Behavior is undefined
+    /// if the size of the array fields are changed after construction.</para>
     /// </remarks>
+    /// <see cref="CrowdAgent.GetCorridor"/>
+    /// <see cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
-    public class PathCorridorData
+    public sealed class PathCorridorData
     {
         /// <summary>
-        /// The size of the path buffer.
+        /// The maximum path size the class can hold.
         /// </summary>
+        /// <remarks>
+        /// <para>Used to size instance buffers.</para>
+        /// </remarks>
         public const int MaxPathSize = 256;
 
         /// <summary>
