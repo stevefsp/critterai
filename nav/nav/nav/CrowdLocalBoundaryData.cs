@@ -24,9 +24,19 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Boundary data for crowd agents.
+    /// Represents the solid navigation mesh polygon segments in the vicinity 
+    /// of a reference point.
     /// </summary>
-    ///<remarks><para>Minimal available documentation.</para></remarks>
+    /// <remarks>
+    /// <para>
+    /// Instances of this class are required by 
+    /// <see cref="CrowdAgent.GetBoundary"/>.
+    /// </para>
+    /// <para>This class is used as an interop buffer.  Behavior is undefined
+    /// if the size of the array fields are changed after construction.</para>
+    /// </remarks>
+    /// <seealso cref="CrowdAgent.GetBoundary"/>
+    /// <seealso cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
     public class LocalBoundaryData
     {
@@ -40,27 +50,31 @@ namespace org.critterai.nav
         /// <summary>
         /// The maximum allowed segments.
         /// </summary>
+        /// <remarks>Used to size the <see cref="segments"/> buffer.</remarks>
         public const int MaxSegments = 8;
 
         /// <summary>
-        /// Center. [Form: (x, y, z)]
+        /// The reference point for which the boundary data was compiled. 
+        /// [Form: (x, y, z)]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] center = new float[3];
 
         /// <summary>
-        /// Segments. [Form: (ax, ay, az, bx, by, bz) * segmentCount]
+        /// The solid navigation mesh polygon segments in the
+        /// vicinity of <see cref="center"/>.
+        /// [Form: (ax, ay, az, bx, by, bz) * <see cref="segmentCount"/>]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxSegments * 6)]
         public float[] segments = new float[MaxSegments * 6];
 
         /// <summary>
-        /// Segement count.
+        /// The number of segments in the <see cref="segments"/> field.
         /// </summary>
         public int segmentCount = 0;
 
         /// <summary>
-        /// Default constructor.
+        /// Creates an instance with properly sized buffers.
         /// </summary>
         public LocalBoundaryData() { }
     }
