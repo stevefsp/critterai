@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
@@ -6,6 +6,7 @@
 	ProjectGUID="{319D361B-147F-45AC-854E-50C06FCA3393}"
 	RootNamespace="org::critterai"
 	TargetFrameworkVersion="131072"
+	Keyword="Win32Proj"
 	>
 	<Platforms>
 		<Platform
@@ -20,9 +21,7 @@
 			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="obj\nav\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
 			ManagedExtensions="1"
-			EnableManagedIncrementalBuild="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -63,6 +62,7 @@
 				AdditionalDependencies="$(NoInherit)"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="2"
 				AssemblyDebug="1"
 				TargetMachine="1"
 			/>
@@ -93,7 +93,6 @@
 			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="obj\nav\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
 			>
@@ -137,6 +136,9 @@
 				AdditionalDependencies="$(NoInherit)"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -147,7 +149,6 @@
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
-				SuppressStartupBanner="false"
 				ValidateIntelliSense="true"
 			/>
 			<Tool
