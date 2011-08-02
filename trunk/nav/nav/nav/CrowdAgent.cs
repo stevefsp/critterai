@@ -218,14 +218,18 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the boundary data related to the agent.
+        /// Gets the local boundary data for the agent.
         /// </summary>
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
+        /// <para>This data is not updated every frame.  So 
+        /// the boundary center will not always equal the current position of
+        /// the agent.</para>
         /// </remarks>
         /// <param name="buffer">The buffer to hold the boundary
         /// data. (Out)</param>
+        /// <seealso cref="LocalBoundaryData"/>
         public void GetBoundary(LocalBoundaryData buffer)
         {
             if (!IsDisposed)
@@ -234,7 +238,6 @@ namespace org.critterai.nav
 
         /// <summary>
         /// Gets data related to the current agent neighbors.
-        /// 
         /// </summary>
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
@@ -272,7 +275,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the cordner data for the agent.
+        /// Gets the local path corridor corner data for the agent.
         /// </summary>
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
