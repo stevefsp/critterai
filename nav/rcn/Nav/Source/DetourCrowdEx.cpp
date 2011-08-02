@@ -24,18 +24,7 @@
 #include "DetourCommon.h"
 #include "DetourEx.h"
 
-static const int MAX_RCN_PATH_CORRIDOR_SIZE = 256;
 static const int MAX_LOCAL_BOUNDARY_SEGS = 8;
-
-struct rcnPathCorridorData
-{
-
-    float position[3];
-    float target[3];
-
-    dtPolyRef path[MAX_RCN_PATH_CORRIDOR_SIZE];
-    int pathCount;
-};
 
 struct rcnLocalBoundary
 {
