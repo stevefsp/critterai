@@ -97,7 +97,7 @@ namespace org.critterai.nav
         {
             if (IsDisposed)
                 return -1;
-            return CrowdProximityGridEx.GetItemCountAt(root, x, y);
+            return CrowdProximityGridEx.dtpgGetItemCountAt(root, x, y);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace org.critterai.nav
         {
             if (IsDisposed)
                 return -1;
-            return CrowdProximityGridEx.GetCellSize(root);
+            return CrowdProximityGridEx.dtpgGetCellSize(root);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace org.critterai.nav
             if (IsDisposed)
                 return null;
             int[] bounds = new int[4];
-            CrowdProximityGridEx.GetBounds(root, bounds);
+            CrowdProximityGridEx.dtpgGetBounds(root, bounds);
             return bounds;
         }
     }

@@ -57,7 +57,7 @@ namespace org.critterai.nav
         {
             maxPathSize = Math.Max(1, maxPathSize);
 
-            mRoot = PathCorridorEx.Alloc(maxPathSize);
+            mRoot = PathCorridorEx.dtpcAlloc(maxPathSize);
 
             if (mRoot == IntPtr.Zero)
                 mMaxPathSize = 0;
@@ -77,14 +77,14 @@ namespace org.critterai.nav
         {
             if (!IsDisposed)
             {
-                PathCorridorEx.Free(mRoot);
+                PathCorridorEx.dtpcFree(mRoot);
                 mRoot = IntPtr.Zero;
             }
         }
 
         public void Reset(uint polyRef, float[] position)
         {
-            PathCorridorEx.Reset(mRoot, polyRef, position);
+            PathCorridorEx.dtpcReset(mRoot, polyRef, position);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace org.critterai.nav
             , WaypointFlag[] cornerFlags
             , uint[] cornerPolys)
         {
-            return PathCorridorEx.FindCorners(mRoot
+            return PathCorridorEx.dtpcFindCorners(mRoot
                 , cornerVerts
                 , cornerFlags
                 , cornerPolys
@@ -115,7 +115,7 @@ namespace org.critterai.nav
         public void OptimizePathVisibility(float[] next
             , float optimizationRange)
         {
-            PathCorridorEx.OptimizePathVisibility(mRoot
+            PathCorridorEx.dtpcOptimizePathVisibility(mRoot
                 , next
                 , optimizationRange
                 , mQuery.root
@@ -124,7 +124,7 @@ namespace org.critterai.nav
 
         public void OptimizePathTopology()
         {
-            PathCorridorEx.OptimizePathTopology(mRoot
+            PathCorridorEx.dtpcOptimizePathTopology(mRoot
                 , mQuery.root
                 , mFilter.root);
         }
@@ -134,7 +134,7 @@ namespace org.critterai.nav
             , float[] startPosition
             , float[] endPosition)
         {
-            return PathCorridorEx.MoveOverConnection(mRoot
+            return PathCorridorEx.dtpcMoveOverOffmeshConnection(mRoot
                 , connectionRef
                 , endpointRefs
                 , startPosition
@@ -144,7 +144,7 @@ namespace org.critterai.nav
 
         public float[] MovePosition(float[] desiredPosition, float[] position)
         {
-            PathCorridorEx.MovePosition(mRoot
+            PathCorridorEx.dtpcMovePosition(mRoot
                 , desiredPosition
                 , mQuery.root
                 , mFilter.root
@@ -154,7 +154,7 @@ namespace org.critterai.nav
 
         public float[] MoveTarget(float[] desiredPosition, float[] position)
         {
-            PathCorridorEx.MoveTargetPosition(mRoot
+            PathCorridorEx.dtpcMoveTargetPosition(mRoot
                 , desiredPosition
                 , mQuery.root
                 , mFilter.root
@@ -166,39 +166,39 @@ namespace org.critterai.nav
             , uint[] path
             , int pathCount)
         {
-            PathCorridorEx.SetCorridor(mRoot, target, path, pathCount);
+            PathCorridorEx.dtpcSetCorridor(mRoot, target, path, pathCount);
         }
 
         public float[] GetPosition(float[] position)
         {
-            PathCorridorEx.GetPosition(mRoot, position);
+            PathCorridorEx.dtpcGetPos(mRoot, position);
             return position;
         }
 
         public float[] GetTarget(float[] target)
         {
-            PathCorridorEx.GetTarget(mRoot, target);
+            PathCorridorEx.dtpcGetTarget(mRoot, target);
             return target;
         }
 
         public uint GetFirstPoly()
         {
-            return PathCorridorEx.GetFirstPoly(mRoot);
+            return PathCorridorEx.dtpcGetFirstPoly(mRoot);
         }
 
         public int GetPath(uint[] buffer)
         {
-            return PathCorridorEx.GetPath(mRoot, buffer, buffer.Length);
+            return PathCorridorEx.dtpcGetPath(mRoot, buffer, buffer.Length);
         }
 
         public int GetPathCount()
         {
-            return PathCorridorEx.GetPathCount(mRoot);
+            return PathCorridorEx.dtpcGetPathCount(mRoot);
         }
 
         public bool GetData(PathCorridorData buffer)
         {
-            return PathCorridorEx.GetData(mRoot, buffer);
+            return PathCorridorEx.dtpcGetData(mRoot, buffer);
         }
     }
 }

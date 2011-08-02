@@ -26,44 +26,50 @@ namespace org.critterai.nav.rcn
 {
     internal static class CrowdManagerEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcDetourCrowdAlloc")]
-        public static extern IntPtr Alloc(int maxAgents
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtcDetourCrowdAlloc(int maxAgents
             , float maxAgentRadius
             , IntPtr navmesh);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcDetourCrowdFree")]
-        public static extern void FreeEx(IntPtr crowd);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcDetourCrowdFree(IntPtr crowd);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcSetObstacleAvoidanceParams")]
-        public static extern void SetAvoidanceParams(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcSetObstacleAvoidanceParams(IntPtr crowd
             , int index
             , [In] CrowdAvoidanceParams obstacleParams);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetObstacleAvoidanceParams")]
-        public static extern void GetAvoidanceParams(IntPtr crowd
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcGetObstacleAvoidanceParams(IntPtr crowd
             , int index
             , [In, Out] CrowdAvoidanceParams config);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcGetAgent")]
-        public static extern IntPtr GetAgent(IntPtr crowd, int idx);
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtcGetAgent(IntPtr crowd, int idx);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcGetAgentCount")]
-        public static extern int GetAgentMaxCount(IntPtr crowd);
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtcGetAgentCount(IntPtr crowd);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcAddAgent")]
-        public static extern int AddAgent(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtcAddAgent(IntPtr crowd
             , [In] float[] pos
             , ref CrowdAgentParams agentParams
             , ref IntPtr agent
             , ref CrowdAgentCoreState initialState);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcUpdateAgentParameters")]
-        public static extern void UpdateAgentParameters(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcUpdateAgentParameters(IntPtr crowd
             , int index
             , ref CrowdAgentParams agentParams);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcRemoveAgent")]
-        public static extern void RemoveAgent(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcRemoveAgent(IntPtr crowd
             , int index);
 
         /* 
@@ -72,36 +78,36 @@ namespace org.critterai.nav.rcn
          * I want the filter to be mutable and this is a dirty but quick way 
          * of doing it.
          */
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetFilter")]
-        public static extern IntPtr GetQueryFilter(IntPtr crowd);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtcGetFilter(IntPtr crowd);
 
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetQueryExtents")]
-        public static extern void GetQueryExtents(IntPtr crowd
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcGetQueryExtents(IntPtr crowd
             , [In, Out] float[] extents);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetVelocitySampleCount")]
-        public static extern int GetVelocitySampleCount(IntPtr crowd);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtcGetVelocitySampleCount(IntPtr crowd);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetGrid")]
-        public static extern IntPtr GetProximityGrid(IntPtr crowd);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtcGetGrid(IntPtr crowd);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcUpdate")]
-        public static extern void Update(IntPtr crowd
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtcUpdate(IntPtr crowd
             , float deltaTime
             , [In, Out] CrowdAgentCoreState[] coreStates);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtcGetNavMeshQuery")]
-        public static extern IntPtr GetQuery(IntPtr crowd);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtcGetNavMeshQuery(IntPtr crowd);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcRequestMoveTarget")]
-        public static extern bool RequestMoveTarget(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtcRequestMoveTarget(IntPtr crowd
             , int agentIndex
             , uint polyRef
             , [In] float[] position);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtcAdjustMoveTarget")]
-        public static extern bool AdjustMoveTarget(IntPtr crowd
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtcAdjustMoveTarget(IntPtr crowd
             , int agentIndex
             , uint polyRef
             , [In] float[] position);

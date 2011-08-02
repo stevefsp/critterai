@@ -143,7 +143,7 @@ namespace org.critterai.nav
         {
             CrowdAgentParams config = new CrowdAgentParams();
             if (!IsDisposed)
-                CrowdAgentEx.GetParams(root, ref config);
+                CrowdAgentEx.dtcaGetAgentParams(root, ref config);
             return config;
         }
 
@@ -154,7 +154,7 @@ namespace org.critterai.nav
         public void SetConfig(CrowdAgentParams config)
         {
             if (!IsDisposed)
-                CrowdManagerEx.UpdateAgentParameters(mManager.root
+                CrowdManagerEx.dtcUpdateAgentParameters(mManager.root
                     , managerIndex
                     , ref config);
         }
@@ -175,7 +175,7 @@ namespace org.critterai.nav
         {
             if (IsDisposed)
                 return false;
-            return CrowdManagerEx.RequestMoveTarget(mManager.root
+            return CrowdManagerEx.dtcRequestMoveTarget(mManager.root
                 , managerIndex
                 , polyRef
                 , targetPoint);
@@ -196,7 +196,7 @@ namespace org.critterai.nav
         {
             if (IsDisposed)
                 return false;
-            return CrowdManagerEx.AdjustMoveTarget(mManager.root
+            return CrowdManagerEx.dtcAdjustMoveTarget(mManager.root
                 , managerIndex
                 , polyRef
                 , position);
@@ -214,7 +214,7 @@ namespace org.critterai.nav
         public void GetCorridor(PathCorridorData buffer)
         {
             if (!IsDisposed)
-                CrowdAgentEx.GetPathCorridor(root, buffer);
+                CrowdAgentEx.dtcaGetPathCorridorData(root, buffer);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace org.critterai.nav
         public void GetBoundary(LocalBoundaryData buffer)
         {
             if (!IsDisposed)
-                CrowdAgentEx.GetLocalBoundary(root, buffer);
+                CrowdAgentEx.dtcaGetLocalBoundary(root, buffer);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace org.critterai.nav
                 return -1;
             }
 
-            int count = CrowdAgentEx.GetNeighbors(root
+            int count = CrowdAgentEx.dtcaGetAgentNeighbors(root
                 , buffer
                 , buffer.Length);
 
@@ -285,7 +285,7 @@ namespace org.critterai.nav
         public void GetCornerData(CrowdCornerData buffer)
         {
             if (!IsDisposed)
-                CrowdAgentEx.GetCorners(root, buffer);
+                CrowdAgentEx.dtcaGetAgentCorners(root, buffer);
         }
     }
 }

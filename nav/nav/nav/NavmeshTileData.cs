@@ -67,7 +67,7 @@ namespace org.critterai.nav
         /// <param name="buildData">The build data.</param>
         public NavmeshTileData(NavmeshTileBuildData buildData)
         {
-            NavmeshTileEx.BuildTileData(buildData, this);
+            NavmeshTileEx.dtnmBuildTileData(buildData, this);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace org.critterai.nav
         {
             if (rawTileData == null)
                 return;
-            NavmeshTileEx.BuildTileData(rawTileData
+            NavmeshTileEx.dtnmBuildTileDataRaw(rawTileData
                 , rawTileData.Length
                 , this);
         }
@@ -90,7 +90,7 @@ namespace org.critterai.nav
         ~NavmeshTileData()
         {
             if (!mIsOwned && mData != IntPtr.Zero)
-                NavmeshTileEx.FreeEx(this);
+                NavmeshTileEx.dtnmFreeTileData(this);
             mData = IntPtr.Zero;
         }
 

@@ -26,24 +26,25 @@ namespace org.critterai.nav.rcn
 {
     internal static class PathCorridorEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "rcnBuildDTNavQuery")]
-        public static extern NavStatus BuildNavmeshQuery(IntPtr navmesh
-            , int maxNodes
-            , ref IntPtr resultQuery);
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtpcAlloc")]
-        public static extern IntPtr Alloc(int maxPath);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtpcAlloc(int maxPath);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtpcFree")]
-        public static extern void Free(IntPtr corridor);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcFree(IntPtr corridor);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtpcReset")]
-        public static extern void Reset(IntPtr corridor
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcReset(IntPtr corridor
             , uint polyRef
             , [In] float[] position);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtpcFindCorners")]
-        public static extern int FindCorners(IntPtr corridor
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcFindCorners(IntPtr corridor
             , [In, Out] float[] cornerVerts
             , [In, Out] WaypointFlag[] cornerFlags
             , [In, Out] uint[] cornerPolys
@@ -51,67 +52,67 @@ namespace org.critterai.nav.rcn
             , IntPtr navquery
             , IntPtr filter);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcOptimizePathVisibility")]
-        public static extern void OptimizePathVisibility(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcOptimizePathVisibility(IntPtr corridor
              , [In] float[] next
              , float pathOptimizationRange
              , IntPtr navquery
              , IntPtr filter);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcOptimizePathTopology")]
-        public static extern bool OptimizePathTopology(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcOptimizePathTopology(IntPtr corridor
              , IntPtr navquery
              , IntPtr filter);
     	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcMoveOverOffmeshConnection")]
-        public static extern bool MoveOverConnection(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcMoveOverOffmeshConnection(IntPtr corridor
              , uint offMeshConRef
              , [In, Out] uint[] refs // size 2
              , [In, Out] float[] startPos
              , [In, Out] float[] endPos
              , IntPtr navquery);
     	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcMovePosition")]
-        public static extern void MovePosition(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcMovePosition(IntPtr corridor
             , [In] float[] npos
             , IntPtr navquery
             , IntPtr filter
             , [In, Out] float[] pos);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcMoveTargetPosition")]
-        public static extern void MoveTargetPosition(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcMoveTargetPosition(IntPtr corridor
             , [In] float[] npos
             , IntPtr navquery
             , IntPtr filter
             , [In, Out] float[] pos);
     	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcSetCorridor")]
-        public static extern void SetCorridor(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcSetCorridor(IntPtr corridor
              , [In] float[] target
              , [In] uint[] path
              , int pathCount);
     	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetPos")]
-        public static extern bool GetPosition(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcGetPos(IntPtr corridor
              , [In] float[] position);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetTarget")]
-        public static extern bool GetTarget(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcGetTarget(IntPtr corridor
              , [In] float[] target);
          	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetFirstPoly")]
-        public static extern uint GetFirstPoly(IntPtr corridor);
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern uint dtpcGetFirstPoly(IntPtr corridor);
     	
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetPath")]
-        public static extern int GetPath(IntPtr corridor
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcGetPath(IntPtr corridor
              , [In, Out] uint[] path
              , int maxPath);
 
-	    [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetPathCount")]
-        public static extern int GetPathCount(IntPtr corridor);
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcGetPathCount(IntPtr corridor);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtpcGetData")]
-        public static extern bool GetData(IntPtr corridor
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcGetData(IntPtr corridor
             , [In, Out] PathCorridorData data);
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2011 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,24 +24,12 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav.rcn
 {
-    internal static class CrowdProximityGridEx
+    internal struct InteropUtil
     {
-        /*
-         * Design note: In order to stay compatible with Unity iOS, all
-         * extern methods must be unique and match DLL entry point.
-         * (Can't use EntryPoint.)
-         */
-
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-            public static extern float dtpgGetCellSize(IntPtr grid);
-
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-            public static extern void dtpgGetBounds(IntPtr grid
-            , [In, Out] int[] bounds);
-
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-            public static extern int dtpgGetItemCountAt(IntPtr grid
-            , int x
-            , int y);
+    #if UNITY_IPHONE && !UNITY_EDITOR
+        public const string PLATFORM_DLL = "__Internal";
+    #else
+        public const string PLATFORM_DLL = "cai-nav-rcn";
+    #endif
     }
 }

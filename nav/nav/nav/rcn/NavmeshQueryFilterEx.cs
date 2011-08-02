@@ -26,33 +26,39 @@ namespace org.critterai.nav.rcn
 {
     internal static class NavmeshQueryFilterEx
     {
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfAlloc")]
-        public static extern IntPtr Alloc();
+        /*
+         * Design note: In order to stay compatible with Unity iOS, all
+         * extern methods must be unique and match DLL entry point.
+         * (Can't use EntryPoint.)
+         */
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfFree")]
-        public static extern void Free(IntPtr filter);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr dtqfAlloc();
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfSetAreaCost")]
-        public static extern void SetAreaCost(IntPtr filter
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtqfFree(IntPtr filter);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtqfSetAreaCost(IntPtr filter
             , int index
             , float cost);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfGetAreaCost")]
-        public static extern float GetAreaCost(IntPtr filter
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern float dtqfGetAreaCost(IntPtr filter
             , int index);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfSetIncludeFlags")]
-        public static extern void SetIncludeFlags(IntPtr filter
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtqfSetIncludeFlags(IntPtr filter
             , ushort flags);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfGetIncludeFlags")]
-        public static extern ushort GetIncludeFlags(IntPtr filter);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern ushort dtqfGetIncludeFlags(IntPtr filter);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfSetExcludeFlags")]
-        public static extern void SetExcludeFlags(IntPtr filter
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtqfSetExcludeFlags(IntPtr filter
             , ushort flags);
 
-        [DllImport("cai-nav-rcn", EntryPoint = "dtqfGetExcludeFlags")]
-        public static extern ushort GetExcludeFlags(IntPtr filter);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern ushort dtqfGetExcludeFlags(IntPtr filter);
     }
 }
