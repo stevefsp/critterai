@@ -156,7 +156,7 @@ namespace org.critterai.nmgen
             , float xzCellSize
             , float yCellSize)
         {
-            root = HeightfieldEx.Alloc(width
+            root = HeightfieldEx.nmhfAllocField(width
                 , depth
                 , boundsMin
                 , boundsMax
@@ -189,7 +189,7 @@ namespace org.critterai.nmgen
         {
             if (!IsDisposed)
             {
-                HeightfieldEx.FreeEx(root);
+                HeightfieldEx.nmhfFreeField(root);
                 root = IntPtr.Zero;
                 mWidth = 0;
                 mDepth = 0;
@@ -210,7 +210,7 @@ namespace org.critterai.nmgen
         {
             if (IsDisposed)
                 return 0;
-            return HeightfieldEx.GetSpanCount(root);
+            return HeightfieldEx.nmhfGetHeightFieldSpanCount(root);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return null;
 
-            int size = HeightfieldEx.GetMaxSpansInColumn(root);
+            int size = HeightfieldEx.nmhfGetMaxSpansInColumn(root);
             return new HeightfieldSpan[size];
         }
 
@@ -250,7 +250,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return -1;
 
-            return HeightfieldEx.GetSpans(root
+            return HeightfieldEx.nmhfGetSpans(root
                 , widthIndex
                 , depthIndex
                 , buffer
@@ -281,7 +281,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.FlagLowObstaclesWalkable(context.root
+            return HeightfieldEx.nmhfFilterLowHangingWalkableObstacles(context.root
                 , walkableStep
                 , root);
         }
@@ -314,7 +314,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.FlagLedgeSpansNotWalkable(context.root
+            return HeightfieldEx.nmhfFilterLedgeSpans(context.root
                 , walkableHeight
                 , walkableStep
                 , root);
@@ -340,7 +340,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.FlagLowHeightSpansNotWalkable(context.root
+            return HeightfieldEx.nmhfFilterWalkableLowHeightSpans(context.root
                 , walkableHeight
                 , root);
         }
@@ -365,7 +365,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.AddTriangle(context.root
+            return HeightfieldEx.nmhfRasterizeTriangle(context.root
                 , verts
                 , area
                 , root
@@ -393,7 +393,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.AddTriangles(context.root
+            return HeightfieldEx.nmhfRasterizeTriMesh(context.root
                 , mesh.verts
                 , mesh.vertCount
                 , mesh.tris
@@ -433,7 +433,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.AddTriangles(context.root
+            return HeightfieldEx.nmhfRasterizeTriMeshShort(context.root
                 , verts
                 , verts.Length / 3
                 , tris
@@ -466,7 +466,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
 
-            return HeightfieldEx.AddTriangles(context.root
+            return HeightfieldEx.nmhfRasterizeTriangles(context.root
                 , verts
                 , areas
                 , triCount

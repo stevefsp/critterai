@@ -64,7 +64,7 @@ namespace org.critterai.nmgen
             for (int i = 0; i < mLayerCount; i++)
             {
                 HeightfieldLayer layer = new HeightfieldLayer();
-                HeightfieldLayserSetEx.GetLayer(root, i, layer);
+                HeightfieldLayserSetEx.nmlsGetLayer(root, i, layer);
                 mLayers[i] = layer;
             }
         }
@@ -85,7 +85,7 @@ namespace org.critterai.nmgen
         {
             if (!IsDisposed)
             {
-                HeightfieldLayserSetEx.FreeEx(root);
+                HeightfieldLayserSetEx.nmlsFreeLayers(root);
                 root = IntPtr.Zero;
                 mLayerCount = 0;
                 for (int i = 0; i < mLayers.Length; i++)
@@ -124,7 +124,7 @@ namespace org.critterai.nmgen
 
             IntPtr ptr = IntPtr.Zero;
             
-            int layerCount = HeightfieldLayserSetEx.Build(context.root
+            int layerCount = HeightfieldLayserSetEx.nmlsBuildLayers(context.root
                 , field
                 , field.BorderSize
                 , field.WalkableHeight

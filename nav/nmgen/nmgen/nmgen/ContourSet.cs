@@ -139,7 +139,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return;
 
-            ContourSetEx.FreeDataEx(root);
+            ContourSetEx.nmcsFreeSetData(root);
 
             if (mContours == null)
                 return;
@@ -170,7 +170,7 @@ namespace org.critterai.nmgen
 
             Contour result = new Contour();
 
-            ContourSetEx.GetContour(root, index, result);
+            ContourSetEx.nmcsGetContour(root, index, result);
             mContours[index] = result;
 
             return result;
@@ -207,7 +207,7 @@ namespace org.critterai.nmgen
         {
             ContourSetEx root = new ContourSetEx();
 
-            if (!ContourSetEx.Build(context.root
+            if (!ContourSetEx.nmcsBuildSet(context.root
                 , field
                 , edgeMaxDeviation
                 , maxEdgeLength

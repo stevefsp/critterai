@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2011 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,27 +24,12 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nmgen.rcn
 {
-    internal static class NMGenEx
+    internal struct InteropUtil
     {
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void nmgMarkWalkableTriangles(IntPtr ctx
-            , float walkableSlopeAngle
-            , [In] float[] verts
-            , int nv
-            , [In] int[] tris
-            , int nt
-            , [In, Out] byte[] areas);
-
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void nmgClearUnwalkableTriangles(IntPtr ctx
-            , float walkableSlopeAngle
-            , [In] float[] verts
-            , int nv
-            , [In] int[] tris
-            , int nt
-            , [In, Out] byte[] areas);
-
-        [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void nmgFreeSerializationData(ref IntPtr data);
+    #if UNITY_IPHONE && !UNITY_EDITOR
+        public const string PLATFORM_DLL = "__Internal";
+    #else
+        public const string PLATFORM_DLL = "cai-nmgen-rcn";
+    #endif
     }
 }

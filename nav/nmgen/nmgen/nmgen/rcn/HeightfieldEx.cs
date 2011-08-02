@@ -26,26 +26,26 @@ namespace org.critterai.nmgen.rcn
 {
     internal static class HeightfieldEx
     {
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfAllocField")]
-        public static extern IntPtr Alloc(int width
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern IntPtr nmhfAllocField(int width
             , int depth
             , [In] float[] boundsMin
             , [In] float[] boundsMax
             , float xzCellSize
             , float yCellSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfFreeField")]
-        public static extern void FreeEx(IntPtr hf);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmhfFreeField(IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfRasterizeTriangle")]
-        public static extern bool AddTriangle(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfRasterizeTriangle(IntPtr context
             , [In] float[] verts
             , byte area
             , IntPtr hf
             , int flagMergeThreshold);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfRasterizeTriMesh")]
-        public static extern bool AddTriangles(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfRasterizeTriMesh(IntPtr context
             , [In] float[] verts
             , int vertCount
             , [In] int[] tris
@@ -54,8 +54,8 @@ namespace org.critterai.nmgen.rcn
             , IntPtr hf
             , int flagMergeThreshold);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfRasterizeTriMeshShort")]
-        public static extern bool AddTriangles(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfRasterizeTriMeshShort(IntPtr context
             , [In] float[] verts
             , int vertCount
             , [In] ushort[] tris
@@ -64,40 +64,38 @@ namespace org.critterai.nmgen.rcn
             , IntPtr hf
             , int flagMergeThreshold);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfRasterizeTriangles")]
-        public static extern bool AddTriangles(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfRasterizeTriangles(IntPtr context
             , [In] float[] verts
             , [In] byte[] areas
             , int triCount
             , IntPtr hf
             , int flagMergeThreshold);
 
-        [DllImport("cai-nmgen-rcn"
-            , EntryPoint = "nmhfFilterLowHangingWalkableObstacles")]
-        public static extern bool FlagLowObstaclesWalkable(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfFilterLowHangingWalkableObstacles(IntPtr context
             , int walkableStep
             , IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfFilterLedgeSpans")]
-        public static extern bool FlagLedgeSpansNotWalkable(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfFilterLedgeSpans(IntPtr context
             , int walkableHeight
             , int walkableStep
             , IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn"
-            , EntryPoint = "nmhfFilterWalkableLowHeightSpans")]
-        public static extern bool FlagLowHeightSpansNotWalkable(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfFilterWalkableLowHeightSpans(IntPtr context
             , int walkableHeight
             , IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfGetHeightFieldSpanCount")]
-        public static extern int GetSpanCount(IntPtr hf);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmhfGetHeightFieldSpanCount(IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfGetMaxSpansInColumn")]
-        public static extern int GetMaxSpansInColumn(IntPtr hf);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmhfGetMaxSpansInColumn(IntPtr hf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmhfGetSpans")]
-        public static extern int GetSpans(IntPtr hf
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmhfGetSpans(IntPtr hf
             , int widthIndex
             , int depthIndex
             , [In, Out] HeightfieldSpan[] spanBuffer

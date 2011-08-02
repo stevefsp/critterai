@@ -26,18 +26,18 @@ namespace org.critterai.nmgen.rcn
 {
     internal static class HeightfieldLayserSetEx
     {
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmlsBuildLayers")]
-        public static extern int Build(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int nmlsBuildLayers(IntPtr context
             , [In] CompactHeightfield chf
             , int borderSize
             , int walkableHeight
             , ref IntPtr layerSet);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmlsFreeLayers")]
-        public static extern void FreeEx(IntPtr lset);
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmlsFreeLayers(IntPtr lset);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmlsGetLayer")]
-        public static extern bool GetLayer(IntPtr lset
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmlsGetLayer(IntPtr lset
             , int index
             , [In, Out] HeightfieldLayer layer);
     }

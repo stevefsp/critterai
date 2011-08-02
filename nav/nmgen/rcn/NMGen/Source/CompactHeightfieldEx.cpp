@@ -101,7 +101,7 @@ extern "C"
         return false;
     }
 
-    EXPORT_API bool rcMarkBoxArea(nmgBuildContext* ctx
+    EXPORT_API bool nmcfMarkBoxArea(nmgBuildContext* ctx
         , const float* bmin
         , const float* bmax
         , unsigned char areaId

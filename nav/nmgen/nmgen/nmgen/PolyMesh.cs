@@ -173,7 +173,7 @@ namespace org.critterai.nmgen
 
             byte[] rawData = (byte[])info.GetValue(DataKey, typeof(byte[]));
 
-            if (!PolyMeshEx.Build(rawData
+            if (!PolyMeshEx.rcpmBuildSerializedData(rawData
                 , rawData.Length
                 , ref root
                 , ref mMaxVerts
@@ -236,7 +236,7 @@ namespace org.critterai.nmgen
         public PolyMesh(byte[] serializedMesh)
             : base(AllocType.External)
         {
-            if (!PolyMeshEx.Build(serializedMesh
+            if (!PolyMeshEx.rcpmBuildSerializedData(serializedMesh
                 , serializedMesh.Length
                 , ref root
                 , ref mMaxVerts
@@ -272,7 +272,7 @@ namespace org.critterai.nmgen
                     Marshal.FreeHGlobal(root.verts);
                 }
                 else if (ResourceType == AllocType.External)
-                    PolyMeshEx.FreeEx(ref root);
+                    PolyMeshEx.rcpmFreeMeshData(ref root);
 
                 root.Reset();
                 mMaxVerts = 0;
@@ -456,7 +456,7 @@ namespace org.critterai.nmgen
             IntPtr ptr = IntPtr.Zero;
             int dataSize = 0;
 
-            if (!PolyMeshEx.GetSerializedData(ref root
+            if (!PolyMeshEx.rcpmGetSerializedData(ref root
                 , mMaxVerts
                 , mWalkableHeight
                 , mWalkableRadius
@@ -470,7 +470,7 @@ namespace org.critterai.nmgen
 
             byte[] result = UtilEx.ExtractArrayByte(ptr, dataSize);
 
-            PolyMeshEx.FreeSerializationData(ref ptr);
+            NMGenEx.nmgFreeSerializationData(ref ptr);
 
             return result;
         }
@@ -537,7 +537,7 @@ namespace org.critterai.nmgen
 
             PolyMesh result = new PolyMesh(AllocType.External, false);
 
-            if (!PolyMeshEx.Build(context.root
+            if (!PolyMeshEx.rcpmBuildFromContourSet(context.root
                 , contours.root
                 , maxVertsPerPoly
                 , ref result.root

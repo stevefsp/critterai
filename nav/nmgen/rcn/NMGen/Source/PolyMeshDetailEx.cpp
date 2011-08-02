@@ -247,7 +247,7 @@ extern "C"
         return true;
     }
 
-    EXPORT_API bool rcdtFlattenMesh(rcPolyMeshDetail* detailMesh
+    EXPORT_API bool rcpdFlattenMesh(rcPolyMeshDetail* detailMesh
         , float* verts
         , int* vertCount
         , int vertsSize
@@ -315,7 +315,7 @@ extern "C"
         return true;
     }
 
-    EXPORT_API bool rcdtBuildPolyMeshDetail(nmgBuildContext* ctx
+    EXPORT_API bool rcpdBuildPolyMeshDetail(nmgBuildContext* ctx
         , const rcPolyMesh* mesh
         , const rcCompactHeightfield* chf
         , const float sampleDist

@@ -159,7 +159,7 @@ namespace org.critterai.nmgen
         {
             mResourceType = AllocType.External;
 
-            PolyMeshDetailEx.Build(serializedMesh
+            PolyMeshDetailEx.rcpdBuildFromMeshData(serializedMesh
                 , serializedMesh.Length
                 , this);
         }
@@ -176,7 +176,7 @@ namespace org.critterai.nmgen
                 return;
 
             byte[] rawData = (byte[])info.GetValue(DataKey, typeof(byte[]));
-            PolyMeshDetailEx.Build(rawData, rawData.Length, this);
+            PolyMeshDetailEx.rcpdBuildFromMeshData(rawData, rawData.Length, this);
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace org.critterai.nmgen
                     Marshal.FreeHGlobal(mVerts);
                 }
                 else if (ResourceType == AllocType.External)
-                    PolyMeshDetailEx.FreeEx(this);
+                    PolyMeshDetailEx.rcpdFreeMeshData(this);
 
                 mMeshes = IntPtr.Zero;
                 mTris = IntPtr.Zero;
@@ -330,7 +330,7 @@ namespace org.critterai.nmgen
             IntPtr ptr = IntPtr.Zero;
             int dataSize = 0;
 
-            if (!PolyMeshDetailEx.GetSerializedData(this
+            if (!PolyMeshDetailEx.rcpdGetSerializedData(this
                 , includeBuffer
                 , ref ptr
                 , ref dataSize))
@@ -340,7 +340,7 @@ namespace org.critterai.nmgen
 
             byte[] result = UtilEx.ExtractArrayByte(ptr, dataSize);
 
-            PolyMeshDetailEx.FreeSerializationData(ref ptr);
+            NMGenEx.nmgFreeSerializationData(ref ptr);
 
             return result;
         }
@@ -393,7 +393,7 @@ namespace org.critterai.nmgen
 
             PolyMeshDetail result = new PolyMeshDetail(AllocType.External);
 
-            if (PolyMeshDetailEx.Build(context.root
+            if (PolyMeshDetailEx.rcpdBuildPolyMeshDetail(context.root
                 , ref polyMesh.root
                 , field
                 , detailSampleDistance

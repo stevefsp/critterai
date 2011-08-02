@@ -26,46 +26,45 @@ namespace org.critterai.nmgen.rcn
 {
     internal static class CompactHeightfieldEx
     {
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfBuildField")]
-        public static extern bool Build(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfBuildField(IntPtr context
             , int walkableHeight
             , int walkableStep
             , IntPtr sourceField
             , [In, Out] CompactHeightfield compactField);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfFreeFieldData")]
-        public static extern void FreeDataEx(
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void nmcfFreeFieldData(
             [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfGetCellData")]
-        public static extern bool GetCellData([In] CompactHeightfield chf
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfGetCellData([In] CompactHeightfield chf
             , [In, Out] CompactCell[] cells
             , int cellsSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfGetSpanData")]
-        public static extern bool GetSpanData([In] CompactHeightfield chf
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfGetSpanData([In] CompactHeightfield chf
             , [In, Out] CompactSpan[] spans
             , int spansSize);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfErodeWalkableArea")]
-        public static extern bool ErodeWalkableArea(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfErodeWalkableArea(IntPtr context
             , int radius
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn"
-            , EntryPoint = "nmcfMedianFilterWalkableArea")]
-        public static extern bool ApplyMedianFilter(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfMedianFilterWalkableArea(IntPtr context
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "rcMarkBoxArea")]
-        public static extern bool MarkArea(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfMarkBoxArea(IntPtr context
             , [In] float[] bmin
             , [In] float[] bmax
             , byte areaId
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfMarkConvexPolyArea")]
-        public static extern bool MarkArea(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfMarkConvexPolyArea(IntPtr context
             , [In] float[] verts
             , int vertCount
             , float heightMin
@@ -73,27 +72,27 @@ namespace org.critterai.nmgen.rcn
             , byte areaId
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfMarkCylinderArea")]
-        public static extern bool MarkArea(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfMarkCylinderArea(IntPtr context
             , [In] float[] position
             , float radius
             , float height
             , byte area
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfBuildDistanceField")]
-        public static extern bool BuildDistanceField(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfBuildDistanceField(IntPtr context
             , [In, Out] CompactHeightfield chf);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfBuildRegions")]
-        public static extern bool BuildRegions(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfBuildRegions(IntPtr context
             , [In, Out] CompactHeightfield chf
             , int borderSize
             , int minRegionArea
             , int mergeRegionArea);
 
-        [DllImport("cai-nmgen-rcn", EntryPoint = "nmcfBuildRegionsMonotone")]
-        public static extern bool BuildRegionsMonotone(IntPtr context
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmcfBuildRegionsMonotone(IntPtr context
             , [In, Out] CompactHeightfield chf
             , int borderSize
             , int minRegionArea
