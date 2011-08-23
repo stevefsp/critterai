@@ -210,9 +210,9 @@ public class NavManager
         }
 	}
 
-    void Update()
-    {
-        if (mCrowd != null)
-            mCrowd.Update(Time.deltaTime);
-    }
+    //void Update()
+    //{
+    //    if (mCrowd != null)
+    //        mCrowd.Update(Time.deltaTime);
+    //}
 }

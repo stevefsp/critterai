@@ -28,7 +28,7 @@ using org.critterai.nav;
 /// </summary>
 [System.Serializable]
 [AddComponentMenu("CAI/Agent Navigation Config")]
-public sealed class AgentNavConfig 
+public class AgentNavConfig 
     : MonoBehaviour 
 {
     /*

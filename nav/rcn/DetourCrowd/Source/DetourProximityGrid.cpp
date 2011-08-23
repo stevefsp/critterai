@@ -24,6 +24,7 @@
 #include "DetourAlloc.h"
 #include "DetourAssert.h"
 
+
 dtProximityGrid* dtAllocProximityGrid()
 {
 	void* mem = dtAlloc(sizeof(dtProximityGrid), DT_ALLOC_PERM);

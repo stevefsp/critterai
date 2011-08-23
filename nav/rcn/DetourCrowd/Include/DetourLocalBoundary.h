@@ -24,18 +24,22 @@
 
 class dtLocalBoundary
 {
-	static const int MAX_SEGS = 8;
+	static const int MAX_LOCAL_SEGS = 8;
+	static const int MAX_LOCAL_POLYS = 16;
 	
 	struct Segment
 	{
-		float s[6];	// Segment start/end
-		float d;	// Distance for pruning.
+		float s[6];	///< Segment start/end
+		float d;	///< Distance for pruning.
 	};
 	
 	float m_center[3];
-	Segment m_segs[MAX_SEGS];
+	Segment m_segs[MAX_LOCAL_SEGS];
 	int m_nsegs;
 	
+	dtPolyRef m_polys[MAX_LOCAL_POLYS];
+	int m_npolys;
+
 	void addSegment(const float dist, const float* seg);
 	
 public:
@@ -46,6 +50,8 @@ public:
 	
 	void update(dtPolyRef ref, const float* pos, const float collisionQueryRange,
 				dtNavMeshQuery* navquery, const dtQueryFilter* filter);
+	
+	bool isValid(dtNavMeshQuery* navquery, const dtQueryFilter* filter);
 	
 	inline const float* getCenter() const { return m_center; }
 	inline int getSegmentCount() const { return m_nsegs; }
