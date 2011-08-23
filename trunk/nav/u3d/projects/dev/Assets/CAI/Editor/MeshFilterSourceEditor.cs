@@ -36,8 +36,8 @@ public class MeshFilterSourceEditor
     /// </summary>
     public override void OnInspectorGUI()
     {
-        MeshFilterSource sa = (MeshFilterSource)target;
-        GameObject[] sources = sa.sources;
+        MeshFilterSource targ = (MeshFilterSource)target;
+        GameObject[] sources = targ.sources;
 
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Separator();
@@ -56,21 +56,53 @@ public class MeshFilterSourceEditor
         if (count != sources.Length)
         {
             // The number of sources needs to be changed.
-            sa.sources = new GameObject[count];
+            targ.sources = new GameObject[count];
             count = Mathf.Min(sources.Length, count);
             for (int i = 0; i < count; i++)
             {
-                sa.sources[i] = sources[i];
+                targ.sources[i] = sources[i];
             }
-            sources = sa.sources;
+            sources = targ.sources;
             mForceDirty = true;
         }
 
         for (int i = 0; i < sources.Length; i++)
         {
+            GameObject orig = sources[i];
             sources[i] = (GameObject)EditorGUILayout.ObjectField(
                 sources[i]
                 , typeof(GameObject));
+            // Note: This next check is needed because the object field
+            // allows project assets to be assigned.  But we only want
+            // scene objects.  Project assets will never show as having 
+            // geometry.  Going the extra mile and warning about empty
+            // scene objects as well.
+            if (sources[i] != null && sources[i] != orig)
+            {
+                bool hasGeometry = false;
+                MeshFilter[] filters = 
+                    sources[i].GetComponentsInChildren<MeshFilter>();
+                foreach (MeshFilter filter in filters)
+                {
+                    if (filter.sharedMesh != null)
+                    {
+                        hasGeometry = true;
+                        break;
+                    }
+                }
+                if (!hasGeometry)
+                {
+                    Debug.LogWarning(string.Format(
+                        "{0}: {1} does not contain any source geometry."
+                            + " This is OK if geometry is going to be added"
+                            + " later. This warning can also be triggered if"
+                            + " {1} is a project asset (rather than a scene"
+                            + "  object) which is not supported."
+                        , targ.name
+                        , sources[i].name)
+                        , sources[i]);
+                }
+            }
         }
 
         EditorGUILayout.Separator();

@@ -30,17 +30,33 @@ using org.critterai.nav;
 public class AgentNavConfigEditor
     : Editor
 {
-    private bool mForceDirty = false;
 
-    private bool mDisplayAvoidance = false;
+    private static bool mDisplayAvoidance = false;
 
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
     public override void OnInspectorGUI()
     {
+        if (DrawInspectorGUI((AgentNavConfig)target))
+        {
+            EditorUtility.SetDirty(target);
+        }
+    }
 
-        AgentNavConfig targ = (AgentNavConfig)target;
+    private static CrowdUpdateFlags HandleUpdateFlag(CrowdUpdateFlags flags
+        , string name
+        , CrowdUpdateFlags flag)
+    {
+        if (EditorGUILayout.Toggle(name, (flags & flag) != 0))
+            flags |= flag;
+        else
+            flags &= ~flag;
+        return flags;
+    }
+
+    public static bool DrawInspectorGUI(AgentNavConfig targ)
+    {
         EditorGUIUtility.LookLikeControls(150);
 
         EditorGUILayout.Separator();
@@ -112,7 +128,7 @@ public class AgentNavConfigEditor
 
         EditorGUILayout.Separator();
 
-        AvoidanceConfigSet asource = 
+        AvoidanceConfigSet asource =
             (targ.manager == null ? null : targ.manager.avoidanceSource);
 
         if (asource == null)
@@ -147,22 +163,7 @@ public class AgentNavConfigEditor
 
         EditorGUILayout.Separator();
 
-        if (GUI.changed || mForceDirty)
-        {
-            EditorUtility.SetDirty(target);
-            mForceDirty = false;
-        }
-    }
-
-    private CrowdUpdateFlags HandleUpdateFlag(CrowdUpdateFlags flags
-        , string name
-        , CrowdUpdateFlags flag)
-    {
-        if (EditorGUILayout.Toggle(name, (flags & flag) != 0))
-            flags |= flag;
-        else
-            flags &= ~flag;
-        return flags;
+        return GUI.changed;
     }
 
 }
