@@ -58,18 +58,34 @@ public class NavManagerEditor
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PrefixLabel("Navmesh Source");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.navmeshSource = (BakedNavmesh)EditorGUILayout.ObjectField(
             targ.navmeshSource
             , typeof(BakedNavmesh));
+#else
+        targ.navmeshSource = (BakedNavmesh)EditorGUILayout.ObjectField(
+            targ.navmeshSource
+            , typeof(BakedNavmesh)
+            , true);
+#endif
 
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PrefixLabel("Avoidance Source");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.avoidanceSource = (AvoidanceConfigSet)EditorGUILayout.ObjectField(
             targ.avoidanceSource
             , typeof(AvoidanceConfigSet));
+#else
+        targ.avoidanceSource = (AvoidanceConfigSet)EditorGUILayout.ObjectField(
+            targ.avoidanceSource
+            , typeof(AvoidanceConfigSet)
+            , true);
+#endif
 
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Separator();
