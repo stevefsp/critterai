@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,62 +25,56 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\Release\cai-nmgen-u3d-editor.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Release\cai-nmgen-u3d-editor.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\BakedPolyMeshEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\Editor\BakedPolyMeshEditor.cs">
       <Link>BakedPolyMeshEditor.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\MeshFilterSourceEditor.cs">
-      <Link>MeshFilterSourceEditor.cs</Link>
-    </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\NMGenBuildConfigEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\Editor\NMGenBuildConfigEditor.cs">
       <Link>NMGenBuildConfigEditor.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\NMGenEditorFlags.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\Editor\NMGenEditorFlags.cs">
       <Link>NMGenEditorFlags.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\PolyMeshWizard.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\Editor\PolyMeshWizard.cs">
       <Link>PolyMeshWizard.cs</Link>
-    </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\TaggedMeshFilterSourceEditor.cs">
-      <Link>TaggedMeshFilterSourceEditor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\nmgen\nmgen\cai-nmgen.csproj">
+    <ProjectReference Include="..\nmgen\cai-nmgen.csproj">
       <Project>{B21C63E7-29BC-4B73-A1FA-AC140A04A8FD}</Project>
       <Name>cai-nmgen</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\nmgen\rcn\cai-nmgen-rcn.vcproj">
+    <ProjectReference Include="..\nmgen-rcn\cai-nmgen-rcn.vcproj">
       <Project>{B783B817-8746-4D54-A6CC-664C0A73186F}</Project>
       <Name>cai-nmgen-rcn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\util\u3d\cai-util-u3d.csproj">
+    <ProjectReference Include="..\util-u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\util\util\cai-util.csproj">
+    <ProjectReference Include="..\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\nmgen\cai-nmgen-u3d.csproj">
+    <ProjectReference Include="..\nmgen-u3d\cai-nmgen-u3d.csproj">
       <Project>{ED1FBED4-3B9F-4BB5-B973-50E1476FBFE9}</Project>
       <Name>cai-nmgen-u3d</Name>
     </ProjectReference>

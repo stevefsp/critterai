@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="Nav\Include;Recast\Include;Detour\Include;DetourCrowd\Include"
+				AdditionalIncludeDirectories="..\..\..\src\nav-rcn\Nav\Include;..\..\..\src\nav-rcn\Detour\Include;..\..\..\src\nav-rcn\DetourCrowd\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -113,7 +113,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="Nav\Include;Detour\Include;DetourCrowd\Include"
+				AdditionalIncludeDirectories="..\..\..\src\nav-rcn\Nav\Include;..\..\..\src\nav-rcn\Detour\Include;..\..\..\src\nav-rcn\DetourCrowd\Include"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -177,27 +177,27 @@
 			Name="DetourSource"
 			>
 			<File
-				RelativePath="Detour\Source\DetourAlloc.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourAlloc.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Source\DetourCommon.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourCommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Source\DetourNavMesh.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourNavMesh.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Source\DetourNavMeshBuilder.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourNavMeshBuilder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Source\DetourNavMeshQuery.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourNavMeshQuery.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Source\DetourNode.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Source\DetourNode.cpp"
 				>
 			</File>
 		</Filter>
@@ -205,11 +205,11 @@
 			Name="NavHeaders"
 			>
 			<File
-				RelativePath=".\Nav\Include\DetourEx.h"
+				RelativePath="..\..\..\src\nav-rcn\.\Nav\Include\DetourEx.h"
 				>
 			</File>
 			<File
-				RelativePath="Nav\Include\DetourNavMeshEx.h"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Include\DetourNavMeshEx.h"
 				>
 			</File>
 		</Filter>
@@ -217,35 +217,35 @@
 			Name="DetourHeaders"
 			>
 			<File
-				RelativePath="Detour\Include\DetourAlloc.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourAlloc.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourAssert.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourAssert.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourCommon.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourCommon.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourNavMesh.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourNavMesh.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourNavMeshBuilder.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourNavMeshBuilder.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourNavMeshQuery.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourNavMeshQuery.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourNode.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourNode.h"
 				>
 			</File>
 			<File
-				RelativePath="Detour\Include\DetourStatus.h"
+				RelativePath="..\..\..\src\nav-rcn\Detour\Include\DetourStatus.h"
 				>
 			</File>
 		</Filter>
@@ -253,27 +253,27 @@
 			Name="NavSource"
 			>
 			<File
-				RelativePath="Nav\Source\DetourCrowdEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Source\DetourCrowdEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Nav\Source\DetourNavMeshBuildEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Source\DetourNavMeshBuildEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Nav\Source\DetourNavmeshEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Source\DetourNavmeshEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Nav\Source\DetourNavMeshQueryEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Source\DetourNavMeshQueryEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Nav\Source\DetourPathCorridorEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\.\Nav\Source\DetourPathCorridorEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Nav\Source\DetourQueryFilterEx.cpp"
+				RelativePath="..\..\..\src\nav-rcn\Nav\Source\DetourQueryFilterEx.cpp"
 				>
 			</File>
 		</Filter>
@@ -281,27 +281,27 @@
 			Name="CrowdHeaders"
 			>
 			<File
-				RelativePath="DetourCrowd\Include\DetourCrowd.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourCrowd.h"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Include\DetourLocalBoundary.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourLocalBoundary.h"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Include\DetourObstacleAvoidance.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourObstacleAvoidance.h"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Include\DetourPathCorridor.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourPathCorridor.h"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Include\DetourPathQueue.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourPathQueue.h"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Include\DetourProximityGrid.h"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Include\DetourProximityGrid.h"
 				>
 			</File>
 		</Filter>
@@ -309,27 +309,27 @@
 			Name="CroudSource"
 			>
 			<File
-				RelativePath="DetourCrowd\Source\DetourCrowd.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourCrowd.cpp"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Source\DetourLocalBoundary.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourLocalBoundary.cpp"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Source\DetourObstacleAvoidance.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourObstacleAvoidance.cpp"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Source\DetourPathCorridor.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourPathCorridor.cpp"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Source\DetourPathQueue.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourPathQueue.cpp"
 				>
 			</File>
 			<File
-				RelativePath="DetourCrowd\Source\DetourProximityGrid.cpp"
+				RelativePath="..\..\..\src\nav-rcn\DetourCrowd\Source\DetourProximityGrid.cpp"
 				>
 			</File>
 		</Filter>

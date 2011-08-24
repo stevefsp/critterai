@@ -39,26 +39,58 @@
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorUtil.cs" />
-    <Compile Include="geom\MeshUtil.cs" />
-    <Compile Include="geom\Circle.cs" />
-    <Compile Include="geom\PointLineRelType.cs" />
-    <Compile Include="geom\Line2.cs" />
-    <Compile Include="geom\LineRelType.cs" />
-    <Compile Include="geom\Polygon3.cs" />
-    <Compile Include="geom\Rectangle2.cs" />
-    <Compile Include="geom\Triangle2.cs" />
-    <Compile Include="geom\Triangle3.cs" />
-    <Compile Include="GLUtil.cs" />
-    <Compile Include="U3DUtil.cs" />
-    <Compile Include="Vector2Util.cs" />
-    <Compile Include="Vector3Util.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\ColorUtil.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\DebugDraw.cs">
+      <Link>DebugDraw.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\DSGeometry.cs">
+      <Link>DSGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\MeshUtil.cs">
+      <Link>geom\MeshUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Circle.cs">
+      <Link>geom\Circle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\PointLineRelType.cs">
+      <Link>geom\PointLineRelType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Line2.cs">
+      <Link>geom\Line2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\LineRelType.cs">
+      <Link>geom\LineRelType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Polygon3.cs">
+      <Link>geom\Polygon3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Rectangle2.cs">
+      <Link>geom\Rectangle2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Triangle2.cs">
+      <Link>geom\Triangle2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Triangle3.cs">
+      <Link>geom\Triangle3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\GLUtil.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\MeshFilterSource.cs">
+      <Link>MeshFilterSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\TaggedMeshFilterSource.cs">
+      <Link>TaggedMeshFilterSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\U3DUtil.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\Vector2Util.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\Vector3Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="geom\Wavefront.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\geom\Wavefront.cs">
+      <Link>geom\Wavefront.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\util\cai-util.csproj">

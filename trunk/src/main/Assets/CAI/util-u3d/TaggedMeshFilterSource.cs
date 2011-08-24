@@ -22,7 +22,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using org.critterai.geom;
-using org.critterai.nmgen.u3d;
 using org.critterai;
 
 /// <summary>
