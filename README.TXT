@@ -1,21 +1,28 @@
->> General <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>> Directory Layout <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+build
 
-The main directory structure is generally broken down by project then platform/language.
+    Contains build scripts and Visual Studio projects for active projects.
 
-For example: 
+doc
 
-The java utility project is under util/java.
-The Unity3D utility project is under util/u3d.
+    Documentation source and project files.
 
->> Java Specific <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+legacy
 
+    Older projects that are no longer being actively worked on.
 
-Ant for builds.
-JUnit for testing.
+src
 
+    Source for active projects.
 
->> .NET Specific <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    The source directory layout is a bit odd.  Most C# source is located
+    under  /src/main/Assets/CAI.  This layout mimics the layout within
+    a Unity project.  It is structured in this way to support easy source
+    deployment to non-Windows Unity projects which can't use the pre-compiled
+    DLL's.
+
+>> .NET Notes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 No automatic builds or packaging.
 Visual Studio Test for testing.
@@ -33,7 +40,7 @@ Sandcastle Styles Patch
 http://sandcastlestyles.codeplex.com/ - Home Page
 http://sandcastlestyles.codeplex.com/releases/view/47767 - Patch Used
 
->> Unity Specific <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>> Unity Notes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 Projects targeted to the 'u3d' platform depend on Unity (http://unity3d.com/).
