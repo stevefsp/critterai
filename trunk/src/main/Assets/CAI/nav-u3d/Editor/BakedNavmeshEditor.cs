@@ -70,9 +70,13 @@ public class BakedNavmeshEditor
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PrefixLabel("Tile Data Source");
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.sourceData = (DSTileData)EditorGUILayout.ObjectField(
             targ.sourceData, typeof(DSTileData));
-         
+#else
+        targ.sourceData = (DSTileData)EditorGUILayout.ObjectField(
+            targ.sourceData, typeof(DSTileData), true);
+#endif
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();

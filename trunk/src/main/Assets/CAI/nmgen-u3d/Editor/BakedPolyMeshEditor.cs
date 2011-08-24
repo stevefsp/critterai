@@ -116,16 +116,35 @@ public class BakedPolyMeshEditor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("Configuration Source");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.buildConfig = (NMGenBuildConfig)EditorGUILayout.ObjectField(
             targ.buildConfig
             , typeof(NMGenBuildConfig));
+#else
+        targ.buildConfig = (NMGenBuildConfig)EditorGUILayout.ObjectField(
+            targ.buildConfig
+            , typeof(NMGenBuildConfig)
+            , true);
+#endif
+
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("Geometry Source");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
+
         targ.geomSource = (DSGeometry)EditorGUILayout.ObjectField(
             targ.geomSource
             , typeof(DSGeometry));
+#else
+        targ.geomSource = (DSGeometry)EditorGUILayout.ObjectField(
+            targ.geomSource
+            , typeof(DSGeometry)
+            , true);
+#endif
+
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();

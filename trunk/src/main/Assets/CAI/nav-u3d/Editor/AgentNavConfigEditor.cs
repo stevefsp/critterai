@@ -64,8 +64,14 @@ public class AgentNavConfigEditor
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PrefixLabel("Navigation Manager");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.manager = (NavManager)EditorGUILayout.ObjectField(targ.manager
             , typeof(NavManager));
+#else
+        targ.manager = (NavManager)EditorGUILayout.ObjectField(targ.manager
+            , typeof(NavManager), true);
+#endif
 
         EditorGUILayout.EndHorizontal();
 

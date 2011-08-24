@@ -69,9 +69,16 @@ public class MeshFilterSourceEditor
         for (int i = 0; i < sources.Length; i++)
         {
             GameObject orig = sources[i];
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
             sources[i] = (GameObject)EditorGUILayout.ObjectField(
                 sources[i]
                 , typeof(GameObject));
+#else
+            sources[i] = (GameObject)EditorGUILayout.ObjectField(
+                sources[i]
+                , typeof(GameObject)
+                , true);
+#endif
             // Note: This next check is needed because the object field
             // allows project assets to be assigned.  But we only want
             // scene objects.  Project assets will never show as having 
