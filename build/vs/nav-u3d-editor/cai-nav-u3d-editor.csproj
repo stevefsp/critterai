@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,56 +25,56 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\Release\cai-nav-u3d-editor.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Release\cai-nav-u3d-editor.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\AgentNavConfigEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\AgentNavConfigEditor.cs">
       <Link>AgentNavConfigEditor.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\AvoidanceConfigSetEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\AvoidanceConfigSetEditor.cs">
       <Link>AvoidanceConfigSetEditor.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\BakedNavmeshEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\BakedNavmeshEditor.cs">
       <Link>BakedNavmeshEditor.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\Editor\NavManagerEditor.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\NavManagerEditor.cs">
       <Link>NavManagerEditor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\rcn\cai-nav-rcn.vcproj">
+    <ProjectReference Include="..\nav-rcn\cai-nav-rcn.vcproj">
       <Project>{319D361B-147F-45AC-854E-50C06FCA3393}</Project>
       <Name>cai-nav-rcn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\util\u3d\cai-util-u3d.csproj">
+    <ProjectReference Include="..\util-u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\nav\cai-nav.csproj">
+    <ProjectReference Include="..\nav\cai-nav.csproj">
       <Project>{E86A77DF-D270-4A68-9BFE-E5690440921F}</Project>
       <Name>cai-nav</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\util\util\cai-util.csproj">
+    <ProjectReference Include="..\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\nav\cai-nav-u3d.csproj">
+    <ProjectReference Include="..\nav-u3d\cai-nav-u3d.csproj">
       <Project>{66D600B7-FB99-45AC-BEC8-5A2982A5D722}</Project>
       <Name>cai-nav-u3d</Name>
     </ProjectReference>

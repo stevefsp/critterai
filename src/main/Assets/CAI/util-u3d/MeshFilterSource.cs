@@ -22,7 +22,6 @@
 using UnityEngine;
 using org.critterai.geom;
 using org.critterai;
-using org.critterai.nmgen.u3d;
 
 /// <summary>
 /// Recursively searches an array of game objects for MeshFilters and combines

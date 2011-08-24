@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="obj\nmgen\$(ConfigurationName)"
 			ConfigurationType="2"
 			ManagedExtensions="1"
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="NMGen\Include;Recast\Include;Detour\Include;DetourCrowd\Include"
+				AdditionalIncludeDirectories="..\..\..\src\nmgen-rcn\NMGen\Include;..\..\..\src\nmgen-rcn\Recast\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -90,7 +90,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)"
 			IntermediateDirectory="obj\nmgen\$(ConfigurationName)"
 			ConfigurationType="2"
 			ManagedExtensions="1"
@@ -113,7 +113,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="NMGen\Include;Recast\Include;Detour\Include"
+				AdditionalIncludeDirectories="..\..\..\src\nmgen-rcn\NMGen\Include;..\..\..\src\nmgen-rcn\Recast\Include"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -177,43 +177,43 @@
 			Name="RecastSource"
 			>
 			<File
-				RelativePath="Recast\Source\Recast.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\Recast.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastAlloc.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastAlloc.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastArea.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastArea.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastContour.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastContour.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastFilter.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastFilter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastLayers.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastLayers.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastMesh.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastMesh.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastMeshDetail.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastMeshDetail.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastRasterization.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastRasterization.cpp"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Source\RecastRegion.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Source\RecastRegion.cpp"
 				>
 			</File>
 		</Filter>
@@ -221,7 +221,7 @@
 			Name="NMGenHeaders"
 			>
 			<File
-				RelativePath="NMGen\Include\NMGen.h"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Include\NMGen.h"
 				>
 			</File>
 		</Filter>
@@ -229,15 +229,15 @@
 			Name="RecastHeaders"
 			>
 			<File
-				RelativePath="Recast\Include\Recast.h"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Include\Recast.h"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Include\RecastAlloc.h"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Include\RecastAlloc.h"
 				>
 			</File>
 			<File
-				RelativePath="Recast\Include\RecastAssert.h"
+				RelativePath="..\..\..\src\nmgen-rcn\Recast\Include\RecastAssert.h"
 				>
 			</File>
 		</Filter>
@@ -245,35 +245,35 @@
 			Name="NMGenSource"
 			>
 			<File
-				RelativePath="NMGen\Source\BuildContext.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\BuildContext.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\CompactHeightfieldEx.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\CompactHeightfieldEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\ContoursEx.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\ContoursEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\HeightfieldEx.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\HeightfieldLayerSet.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\HeightfieldLayerSet.cpp"
 				>
 			</File>
 			<File
-				RelativePath="NMGen\Source\NMGen.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\NMGen.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\PolyMeshDetailEx.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshDetailEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NMGen\Source\PolyMeshEx.cpp"
+				RelativePath="..\..\..\src\nmgen-rcn\NMGen\Source\PolyMeshEx.cpp"
 				>
 			</File>
 		</Filter>

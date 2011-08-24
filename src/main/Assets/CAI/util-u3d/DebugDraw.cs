@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using org.critterai.nmgen;
 
 namespace org.critterai.u3d
 {

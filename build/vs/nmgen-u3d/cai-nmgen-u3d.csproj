@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,60 +25,51 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\Release\cai-nmgen-u3d.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Release\cai-nmgen-u3d.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Boo.Lang, Version=2.0.9.5, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\unity\Boo.Lang.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Mono\lib\mono\unity\Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\projects\dev\Assets\CAI\BakedPolyMesh.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\BakedPolyMesh.cs">
       <Link>BakedPolyMesh.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\DSGeometry.cs">
-      <Link>DSGeometry.cs</Link>
-    </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\MeshFilterSource.cs">
-      <Link>MeshFilterSource.cs</Link>
-    </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\NMGenBuildConfig.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\NMGenBuildConfig.cs">
       <Link>NMGenBuildConfig.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\NMGenBuildParams.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\NMGenBuildParams.cs">
       <Link>NMGenBuildParams.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\NMGenDebug.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\NMGenDebug.cs">
       <Link>NMGenDebug.cs</Link>
     </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\NMGenUtil.cs">
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen-u3d\NMGenUtil.cs">
       <Link>NMGenUtil.cs</Link>
-    </Compile>
-    <Compile Include="..\projects\dev\Assets\CAI\TaggedMeshFilterSource.cs">
-      <Link>TaggedMeshFilterSource.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\util\u3d\cai-util-u3d.csproj">
+    <ProjectReference Include="..\util-u3d\cai-util-u3d.csproj">
       <Project>{F93F5FC8-D49A-432A-9B6F-CFD1051F0331}</Project>
       <Name>cai-util-u3d</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\util\util\cai-util.csproj">
+    <ProjectReference Include="..\util\cai-util.csproj">
       <Project>{65BE45B3-6FD4-4DA9-B39E-A2DD1E6A153D}</Project>
       <Name>cai-util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\nmgen\nmgen\cai-nmgen.csproj">
+    <ProjectReference Include="..\nmgen\cai-nmgen.csproj">
       <Project>{B21C63E7-29BC-4B73-A1FA-AC140A04A8FD}</Project>
       <Name>cai-nmgen</Name>
     </ProjectReference>
