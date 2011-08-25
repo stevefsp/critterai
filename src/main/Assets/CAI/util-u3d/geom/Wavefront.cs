@@ -140,8 +140,6 @@ namespace org.critterai.geom
             foreach (string line in lines)
             {
                 lineCount++;
-                string errPrefix = "Invalid vertex entry at line " 
-                    + lineCount + ".";
                 string s = line.Trim();
                 string[] tokens = null;
                 if (s.StartsWith("v "))

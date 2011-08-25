@@ -423,8 +423,6 @@ namespace org.critterai.nmgen
             buffer.walkableRadius = mWalkableRadius;
             buffer.borderSize = root.borderSize;
 
-            int count = root.polyCount;
-
             UtilEx.Copy(root.polys
                 , buffer.polys
                 , root.polyCount * 2 * root.maxVertsPerPoly);

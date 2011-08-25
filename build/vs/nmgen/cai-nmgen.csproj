@@ -68,8 +68,8 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nmgen\rcn\HeightfieldEx.cs">
       <Link>rcn\HeightfieldEx.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen\rcn\InteropUtil.cs">
-      <Link>rcn\InteropUtil.cs</Link>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nmgen\rcn\NMGenInteropUtil.cs">
+      <Link>rcn\NMGenInteropUtil.cs</Link>
     </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nmgen\rcn\NMGenEx.cs">
       <Link>rcn\NMGenEx.cs</Link>

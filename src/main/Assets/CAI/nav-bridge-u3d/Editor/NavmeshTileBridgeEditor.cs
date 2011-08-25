@@ -52,8 +52,14 @@ public class NavmeshTileBridgeEditor
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PrefixLabel("PolyMesh Source");
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
         targ.sourcePolyMesh = (BakedPolyMesh)EditorGUILayout.ObjectField(
             targ.sourcePolyMesh, typeof(BakedPolyMesh));
+#else
+        targ.sourcePolyMesh = (BakedPolyMesh)EditorGUILayout.ObjectField(
+            targ.sourcePolyMesh, typeof(BakedPolyMesh), true);
+#endif
 
         EditorGUILayout.EndHorizontal();
 

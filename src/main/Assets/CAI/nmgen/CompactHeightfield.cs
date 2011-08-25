@@ -24,6 +24,9 @@ using System.Runtime.InteropServices;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
 
+// Unity is improperly indicating that mSpan is unused.
+#pragma warning disable 414
+
 namespace org.critterai.nmgen
 {
     /// <summary>
@@ -102,8 +105,8 @@ namespace org.critterai.nmgen
         : IManagedObject
     {
         private int mWidth = 0;
-        private int mDepth = 0;	
-	    private int mSpanCount = 0;						
+        private int mDepth = 0;
+	    private int mSpanCount = 0;	
 	    private int mWalkableHeight = 0;
         private int mWalkableStep = 0;	
 	    private int mBorderSize = 0;	
@@ -620,3 +623,5 @@ namespace org.critterai.nmgen
 
     }
 }
+
+#pragma warning restore 414	
