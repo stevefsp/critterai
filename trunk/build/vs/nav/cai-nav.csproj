@@ -46,8 +46,8 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\CrowdUpdateFlags.cs" />
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\NavmeshTileData.cs" />
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\NavmeshTileBuildData.cs" />
-    <Compile Include="..\..\..\src\main\Assets\CAI\nav\rcn\InteropUtil.cs">
-      <Link>rcn\InteropUtil.cs</Link>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav\rcn\NavInteropUtil.cs">
+      <Link>rcn\NavInteropUtil.cs</Link>
     </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\rcn\PathCorridorEx.cs">
       <Link>rcn\PathCorridorEx.cs</Link>

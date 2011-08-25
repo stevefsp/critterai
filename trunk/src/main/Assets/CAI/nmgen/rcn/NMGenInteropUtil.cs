@@ -22,6 +22,10 @@
 using System;
 using System.Runtime.InteropServices;
 
+// Note: The file name does not match the element name because Unity
+// doesn't support multiple script files with the same name.  And the
+// entity name exists in multiple namespaces.
+
 namespace org.critterai.nmgen.rcn
 {
     internal struct InteropUtil
