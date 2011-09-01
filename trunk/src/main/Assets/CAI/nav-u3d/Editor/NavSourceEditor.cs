@@ -23,10 +23,10 @@ using UnityEngine;
 using UnityEditor;
 
 /// <summary>
-/// Custom inspector for <see cref="NavManager"/>.
+/// Custom inspector for <see cref="NavSource"/>.
 /// </summary>
-[CustomEditor(typeof(NavManager))]
-public class NavManagerEditor
+[CustomEditor(typeof(NavSource))]
+public class NavSourceEditor
     : Editor
 {
     private bool mForceDirty = false;
@@ -36,7 +36,7 @@ public class NavManagerEditor
     /// </summary>
     public override void OnInspectorGUI()
     {
-        NavManager targ = (NavManager)target;
+        NavSource targ = (NavSource)target;
 
         EditorGUIUtility.LookLikeControls(125);
 
@@ -47,7 +47,7 @@ public class NavManagerEditor
 
         if (targ.navmeshSource == null)
             state = "No navmesh source.";
-        else if (!targ.navmeshSource.HasNavmesh())
+        else if (!targ.navmeshSource.HasNavmesh)
             state = "No navmesh data.";
         else if (targ.enableCrowdManager && targ.avoidanceSource == null)
             state = "No avoidance source.";

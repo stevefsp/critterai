@@ -48,7 +48,7 @@ public class BakedNavmeshEditor
         const string label = "State";
         string state;
 
-        if (targ.HasNavmesh())
+        if (targ.HasNavmesh)
             state = "Baked";
         else if (targ.sourceData == null)
             state = "No tile source.";
@@ -89,7 +89,7 @@ public class BakedNavmeshEditor
             mForceDirty = true;
         GUI.enabled = true;
 
-        GUI.enabled = targ.HasNavmesh();
+        GUI.enabled = targ.HasNavmesh;
         if (GUILayout.Button("Clear Mesh"))
         {
             targ.ClearMesh();
@@ -103,7 +103,7 @@ public class BakedNavmeshEditor
 
         EditorGUILayout.BeginHorizontal();
 
-        GUI.enabled = targ.HasNavmesh();
+        GUI.enabled = targ.HasNavmesh;
         if (GUILayout.Button("Save"))
         {
             string filePath = EditorUtility.SaveFilePanel(
@@ -127,31 +127,7 @@ public class BakedNavmeshEditor
 
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
-
-        GUI.enabled = targ.HasNavmesh();
-        if (GUILayout.Button("Save Bytes"))
-        {
-            string filePath = EditorUtility.SaveFilePanel(
-                "Save Navigation Mesh As Bytes"
-                , ""
-                , targ.name
-                , "navmeshb");
-            SaveMeshBytes(targ, filePath);
-        }
-        GUI.enabled = true;
-
-        if (GUILayout.Button("Load Bytes"))
-        {
-            string filePath = EditorUtility.OpenFilePanel(
-                "Select Byte Serialized Navigation Mesh"
-                , ""
-                , "navmeshb");
-            if (LoadMeshBytes(targ, filePath))
-                mForceDirty = true;
-        }
-
-        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Separator();
 
         if (GUI.changed || mForceDirty)
         {
@@ -160,49 +136,49 @@ public class BakedNavmeshEditor
         }
     }
 
-    private static bool LoadMeshBytes(BakedNavmesh targ, string filePath)
-    {
-        string msg = null;
+    //private static bool LoadMeshBytes(BakedNavmesh targ, string filePath)
+    //{
+    //    string msg = null;
 
-        if (filePath.Length == 0)
-            return false;
+    //    if (filePath.Length == 0)
+    //        return false;
 
-        FileStream fs = null;
-        BinaryFormatter formatter = new BinaryFormatter();
+    //    FileStream fs = null;
+    //    BinaryFormatter formatter = new BinaryFormatter();
 
-        try
-        {
-            fs = new FileStream(filePath, FileMode.Open);
-            System.Object obj = formatter.Deserialize(fs);
+    //    try
+    //    {
+    //        fs = new FileStream(filePath, FileMode.Open);
+    //        System.Object obj = formatter.Deserialize(fs);
 
-            // Roundabout load method is used for error detection.
+    //        // Roundabout load method is used for error detection.
 
-            Navmesh nm;
-            NavStatus status = Navmesh.Build((byte[])obj, out nm);
-            if (NavUtil.Failed(status))
-                msg = status.ToString();
-            else if (!targ.Bake(nm))
-                msg = "Could not load mesh. Internal error?";
-        }
-        catch (System.Exception ex)
-        {
-            msg = ex.Message;
-        }
-        finally
-        {
-            if (fs != null)
-                fs.Close();
-        }
+    //        Navmesh nm;
+    //        NavStatus status = Navmesh.Build((byte[])obj, out nm);
+    //        if (NavUtil.Failed(status))
+    //            msg = status.ToString();
+    //        else if (!targ.Bake(nm))
+    //            msg = "Could not load mesh. Internal error?";
+    //    }
+    //    catch (System.Exception ex)
+    //    {
+    //        msg = ex.Message;
+    //    }
+    //    finally
+    //    {
+    //        if (fs != null)
+    //            fs.Close();
+    //    }
 
-        if (msg != null)
-        {
-            Debug.LogError(targ.name + ": BakedNavmesh: Load bytes failed: " 
-                + msg);
-            return false;
-        }
+    //    if (msg != null)
+    //    {
+    //        Debug.LogError(targ.name + ": BakedNavmesh: Load bytes failed: " 
+    //            + msg);
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
     private static bool LoadMesh(BakedNavmesh targ, string filePath)
     {
@@ -242,7 +218,7 @@ public class BakedNavmeshEditor
 
     private static void SaveMesh(BakedNavmesh targ, string filePath)
     {
-        if (filePath.Length == 0 || !targ.HasNavmesh())
+        if (filePath.Length == 0 || !targ.HasNavmesh)
             return;
 
         FileStream fs = null;
@@ -265,30 +241,30 @@ public class BakedNavmeshEditor
         }
     }
 
-    private static void SaveMeshBytes(BakedNavmesh targ, string filePath)
-    {
-        if (filePath.Length == 0 || !targ.HasNavmesh())
-            return;
+    //private static void SaveMeshBytes(BakedNavmesh targ, string filePath)
+    //{
+    //    if (filePath.Length == 0 || !targ.HasNavmesh)
+    //        return;
 
-        FileStream fs = null;
-        BinaryFormatter formatter = new BinaryFormatter();
+    //    FileStream fs = null;
+    //    BinaryFormatter formatter = new BinaryFormatter();
 
-        try
-        {
-            fs = new FileStream(filePath, FileMode.Create);
-            formatter.Serialize(fs, targ.GetNavmesh().GetSerializedMesh());
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError(targ.name + ": BakedNavmesh: Save bytes failed: "
-                + ex.Message);
-        }
-        finally
-        {
-            if (fs != null)
-                fs.Close();
-        }
-    }
+    //    try
+    //    {
+    //        fs = new FileStream(filePath, FileMode.Create);
+    //        formatter.Serialize(fs, targ.GetNavmesh().GetSerializedMesh());
+    //    }
+    //    catch (System.Exception ex)
+    //    {
+    //        Debug.LogError(targ.name + ": BakedNavmesh: Save bytes failed: "
+    //            + ex.Message);
+    //    }
+    //    finally
+    //    {
+    //        if (fs != null)
+    //            fs.Close();
+    //    }
+    //}
 
     private static bool BuildMesh(BakedNavmesh targ)
     {

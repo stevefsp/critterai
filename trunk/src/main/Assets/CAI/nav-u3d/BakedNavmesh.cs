@@ -73,9 +73,9 @@ public sealed class BakedNavmesh
     /// TRUE if the navigation mesh is available. (Has been baked.)
     /// </summary>
     /// <returns>TRUE if the navigation mesh is available.</returns>
-    public bool HasNavmesh()
+    public bool HasNavmesh
     {
-        return (mDataPack != null && mDataPack.Length > 0);
+        get { return (mDataPack != null && mDataPack.Length > 0); }
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public sealed class BakedNavmesh
     /// data.</returns>
     public Navmesh GetNavmesh()
     {
-        if (!HasNavmesh())
+        if (!HasNavmesh)
             return null;
 
         Navmesh result;
@@ -124,7 +124,7 @@ public sealed class BakedNavmesh
 
     void OnRenderObject()
     {
-        if (!mDisplayMesh || !HasNavmesh())
+        if (!mDisplayMesh || !HasNavmesh)
             return;
 
         // The disposal check is necessary because of Unity behavior.  

@@ -39,9 +39,9 @@ public class AgentNavConfig
      */
 
     /// <summary>
-    /// The <see cref="NavManager"/> agents are to use.
+    /// The <see cref="NavSource"/> that agents are to use.
     /// </summary>
-    public NavManager manager;
+    public NavSource manager;
 
     /// <summary>
     /// Agent radius. [Limit: >= 0]

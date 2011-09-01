@@ -26,6 +26,7 @@ using org.critterai.geom;
 using org.critterai.nmgen.u3d;
 using org.critterai;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 /// Custom inspector for <see cref="BakedPolyMesh"/>.
@@ -34,6 +35,9 @@ using System.IO;
 public class BakedPolyMeshEditor
     : Editor
 {
+    private const string PolyExtension = "polymesh";
+    private const string DetailExtension = "detailmesh";
+
     private static bool mDisplayDetails = false;
     private const int DefaultLabelWidth = 150;
     private bool mForceDirty = false;
@@ -209,9 +213,37 @@ public class BakedPolyMeshEditor
             GUI.enabled = true;
         }
 
-        EditorGUILayout.Separator();
         EditorGUILayout.EndVertical();
 
+        EditorGUILayout.Separator();
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUI.enabled = targ.HasMesh;
+        if (GUILayout.Button("Save"))
+        {
+            string filePath = EditorUtility.SaveFilePanel(
+                "Save Polygon Mesh"
+                , ""
+                , targ.name
+                , PolyExtension);
+            SaveMesh(targ, filePath);
+        }
+        GUI.enabled = true;
+
+        if (GUILayout.Button("Load"))
+        {
+            string filePath = EditorUtility.OpenFilePanel(
+                "Select Polygon Mesh"
+                , ""
+                , PolyExtension);
+            if (LoadMesh(targ, filePath))
+                mForceDirty = true;
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Separator();
         mForceDirty = (GUI.changed || mForceDirty);
 
         if (GUI.changed || mForceDirty)
@@ -223,12 +255,12 @@ public class BakedPolyMeshEditor
         }
     }
 
-    private bool IsReadyToBuild(BakedPolyMesh targ)
+    private static bool IsReadyToBuild(BakedPolyMesh targ)
     {
         return !(targ.buildConfig == null || targ.geomSource == null);
     }
 
-    private bool BuildMesh(BakedPolyMesh targ)
+    private static bool BuildMesh(BakedPolyMesh targ)
     {
         const string ProgressTitle = "Building poly mesh...";
 
@@ -334,9 +366,100 @@ public class BakedPolyMeshEditor
         return true;
     }
 
-    private string GetVectorString(float[] v)
+    private static bool LoadMesh(BakedPolyMesh targ, string filePath)
     {
-        return string.Format("[{0,0:F3}, {1,0:F3}, {2,0:F3}]"
-            , v[0], v[1], v[2]);
+        string msg = null;
+
+        if (filePath.Length == 0)
+            return false;
+
+        FileStream fs = null;
+        FileStream fsd = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Open);
+            fsd = new FileStream(GetDetailPath(filePath), FileMode.Open);
+
+            if (!targ.Bake((PolyMesh)formatter.Deserialize(fs)
+                , (PolyMeshDetail)formatter.Deserialize(fsd)
+                , 0, Vector3.zero, Vector3.zero))
+            {
+                msg = "Could not load mesh. Internal error?";
+            }
+        }
+        catch (System.Exception ex)
+        {
+            msg = ex.Message;
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+
+        if (msg != null)
+        {
+            Debug.LogError(targ.name + ": BakedPolyMesh: Load failed: " + msg);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void SaveMesh(BakedPolyMesh targ, string filePath)
+    {
+        if (filePath.Length == 0 || !targ.HasMesh)
+            return;
+
+        FileStream fs = null;
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        // Poly Mesh
+        try
+        {
+            fs = new FileStream(filePath, FileMode.Create);
+            formatter.Serialize(fs, targ.GetPolyMesh());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError(targ.name + ": BakedPolyMesh: Poly Mesh: Save failed: "
+                + ex.Message, targ);
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+
+        // Detail Mesh
+        try
+        {
+            fs = new FileStream(GetDetailPath(filePath), FileMode.Create);
+            formatter.Serialize(fs, targ.GetDetailMesh());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError(targ.name 
+                + ": BakedPolyMesh: Detail Mesh: Save failed: "
+                + ex.Message, targ);
+        }
+        finally
+        {
+            if (fs != null)
+                fs.Close();
+        }
+    }
+
+    private static string GetDetailPath(string polyPath)
+    {
+        string result = polyPath;
+        if (polyPath.EndsWith("." + PolyExtension))
+        {
+            result = polyPath.Substring(0
+                , polyPath.Length - PolyExtension.Length - 1);
+        }
+        return result + "." + DetailExtension;
     }
 }
