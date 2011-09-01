@@ -23,7 +23,7 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.nmgen.u3d.editor;
 
-public sealed class NavManagerWizard
+public sealed class NavSourceWizard
     : EditorWindow
 {
 
@@ -59,7 +59,7 @@ public sealed class NavManagerWizard
 
         if (GUILayout.Button("Create"))
         {
-            NavManager manager;
+            NavSource manager;
             Selection.activeGameObject = Build(mNMGenFlags
                 , mIncludeNavmesh
                 , mIncludeAvoidance
@@ -81,7 +81,7 @@ public sealed class NavManagerWizard
         , bool includeNavmesh
         , bool includeAvoidanceConfig
         , bool includeAgentConfig
-        , out NavManager manager)
+        , out NavSource data)
     {
         BakedNavmesh navmesh = null;
         GameObject goNavmesh = null; 
@@ -89,26 +89,26 @@ public sealed class NavManagerWizard
         if (includeNavmesh)
             goNavmesh = NavmeshWizard.Build(flags, out navmesh);
 
-        GameObject goManager = new GameObject("NavManager");
+        GameObject goData = new GameObject("NavSource");
 
-        manager = goManager.AddComponent<NavManager>();
+        data = goData.AddComponent<NavSource>();
 
-        manager.navmeshSource = navmesh;
+        data.navmeshSource = navmesh;
 
         if (goNavmesh != null)
-            goNavmesh.transform.parent = goManager.transform;
+            goNavmesh.transform.parent = goData.transform;
 
         if (includeAvoidanceConfig)
         {
             AvoidanceConfigSet aconfig =
-                goManager.AddComponent<AvoidanceConfigSet>();
+                goData.AddComponent<AvoidanceConfigSet>();
 
-            manager.avoidanceSource = aconfig;
-            manager.enableCrowdManager = true;
+            data.avoidanceSource = aconfig;
+            data.enableCrowdManager = true;
         }
         else
         {
-            manager.enableCrowdManager = false;
+            data.enableCrowdManager = false;
         }
 
         if (includeAgentConfig)
@@ -116,19 +116,19 @@ public sealed class NavManagerWizard
             GameObject goAgentConfig = new GameObject("AgentConfig");
             AgentNavConfig agentConfig 
                 = goAgentConfig.AddComponent<AgentNavConfig>();
-            goAgentConfig.transform.parent = goManager.transform;
-            agentConfig.manager = manager;
+            goAgentConfig.transform.parent = goData.transform;
+            agentConfig.manager = data;
         }
 
-        return goManager;
+        return goData;
     }
 
-    [MenuItem("GameObject/Create CAI/Navigation Manager", false, 0)]
-    public static void AddManager()
+    [MenuItem("GameObject/Create CAI/Navigation Source", false, 0)]
+    public static void CreateNavSource()
     {
-        NavManagerWizard window = EditorWindow.GetWindow<NavManagerWizard>(
+        NavSourceWizard window = EditorWindow.GetWindow<NavSourceWizard>(
             true
-            , "NavManager Options"
+            , "NavSource Options"
             , true);
 
         window.position = new Rect(100, 100, 250, 250);
