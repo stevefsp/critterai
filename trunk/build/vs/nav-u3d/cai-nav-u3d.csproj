@@ -58,11 +58,11 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavDebug.cs">
       <Link>NavDebug.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavManager.cs">
-      <Link>NavManager.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavmeshPoint.cs">
       <Link>NavmeshPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavSource.cs">
+      <Link>NavSource.cs</Link>
     </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\U3DNavmeshQuery.cs">
       <Link>U3DNavmeshQuery.cs</Link>

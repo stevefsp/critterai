@@ -52,8 +52,8 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\BakedNavmeshEditor.cs">
       <Link>BakedNavmeshEditor.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\NavManagerEditor.cs">
-      <Link>NavManagerEditor.cs</Link>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\Editor\NavSourceEditor.cs">
+      <Link>NavSourceEditor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
