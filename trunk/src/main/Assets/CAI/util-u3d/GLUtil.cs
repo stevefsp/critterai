@@ -53,58 +53,5 @@ namespace org.critterai
                 return mSimpleMaterial;
             }
         }
-
-        /// <summary>
-        /// Draws the provided triangle mesh in a manner suitable for 
-        /// debug visualizations. 
-        /// (Wiremesh with a low alpha transparent surface.)
-        /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="vertices">The vertices.</param>
-        /// <param name="triangles">The triangle indices.</param>
-        /// <param name="drawColor">The base color to use. (Alpha is ignored.)
-        /// </param>
-        public static void DrawTriMesh(float[] vertices
-            , int[] triangles
-            , Color drawColor)
-        {
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            drawColor.a = 0.25f;
-
-            GL.Begin(GL.TRIANGLES);
-            GL.Color(drawColor);
-            for (int p = 0; p < triangles.Length; p += 3)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
-                        , vertices[triangles[p + i] * 3 + 1]
-                        , vertices[triangles[p + i] * 3 + 2]);
-                }
-            }
-            GL.End();
-
-            drawColor.a = 0.4f;
-
-            for (int p = 0; p < triangles.Length; p += 3)
-            {
-                GL.Begin(GL.LINES);
-                GL.Color(drawColor);
-                for (int i = 0; i < 3; i++)
-                {
-                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
-                        , vertices[triangles[p + i] * 3 + 1]
-                        , vertices[triangles[p + i] * 3 + 2]);
-                }
-                GL.Vertex3(vertices[triangles[p] * 3 + 0]
-                    , vertices[triangles[p] * 3 + 1]
-                    , vertices[triangles[p] * 3 + 2]);
-                GL.End();
-            }
-        }
     }
 }
