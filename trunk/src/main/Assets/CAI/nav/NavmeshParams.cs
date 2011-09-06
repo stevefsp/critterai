@@ -100,8 +100,7 @@ namespace org.critterai.nav
             this.tileWidth = Math.Max(MinTileSize, tileWidth);
             this.tileDepth = Math.Max(MinTileSize, tileDepth);
             this.maxTiles = Math.Max(1, maxTiles);
-            this.maxPolysPerTile = Math.Max(3
-                , Math.Min(Navmesh.MaxAllowedVertsPerPoly, maxPolysPerTile));
+            this.maxPolysPerTile = Math.Max(1, maxPolysPerTile);
         }
 
         internal NavmeshParams() { }
