@@ -382,8 +382,12 @@ public class BakedPolyMeshEditor
             fs = new FileStream(filePath, FileMode.Open);
             fsd = new FileStream(GetDetailPath(filePath), FileMode.Open);
 
-            if (!targ.Bake((PolyMesh)formatter.Deserialize(fs)
-                , (PolyMeshDetail)formatter.Deserialize(fsd)
+            PolyMesh pm = 
+                new PolyMesh((byte[])formatter.Deserialize(fs));
+            PolyMeshDetail dm =
+                new PolyMeshDetail((byte[])formatter.Deserialize(fsd));
+
+            if (!targ.Bake(pm, dm
                 , 0, Vector3.zero, Vector3.zero))
             {
                 msg = "Could not load mesh. Internal error?";
@@ -420,7 +424,8 @@ public class BakedPolyMeshEditor
         try
         {
             fs = new FileStream(filePath, FileMode.Create);
-            formatter.Serialize(fs, targ.GetPolyMesh());
+            formatter.Serialize(fs
+                , targ.GetPolyMesh().GetSerializedData(true));
         }
         catch (System.Exception ex)
         {
@@ -437,7 +442,8 @@ public class BakedPolyMeshEditor
         try
         {
             fs = new FileStream(GetDetailPath(filePath), FileMode.Create);
-            formatter.Serialize(fs, targ.GetDetailMesh());
+            formatter.Serialize(fs
+                , targ.GetDetailMesh().GetSerializedData(true));
         }
         catch (System.Exception ex)
         {
