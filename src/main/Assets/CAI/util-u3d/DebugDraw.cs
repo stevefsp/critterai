@@ -1,7 +1,31 @@
-﻿using UnityEngine;
+﻿/*
+ * Copyright (c) 2011 Stephen A. Pratt
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+using UnityEngine;
 
 namespace org.critterai.u3d
 {
+    /// <summary>
+    /// Provides various drawing methods suitable for debug views.
+    /// </summary>
     public static class DebugDraw
     {
         private const int CircleSegments = 40;
@@ -22,13 +46,25 @@ namespace org.critterai.u3d
                             (float)i / (float)CircleSegments * Mathf.PI * 2;
                         mDir[i * 2] = Mathf.Cos(a);
                         mDir[i * 2 + 1] = Mathf.Sin(a);
-                        // Debug.Log(mDir[i * 2]);
                     }
                 }
                 return mDir;
             }
         }
 
+        /// <summary>
+        /// Draws a partially transparent diamond at the specified position.
+        /// </summary>
+        /// <remarks>
+        /// <para>A <paramref name="scale"/> of 1.0 will result in a diamond with a
+        /// width and height of 2.0. (Each diamond point will be 1.0 from 
+        /// the position.)</para>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="position">The position.</param>
+        /// <param name="scale">The scale of the diamond.</param>
+        /// <param name="color">The color of the diamond.</param>
         public static void DiamondMarker(Vector3 position
             , float scale
             , Color color)
@@ -135,6 +171,50 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Draws an X-marker at the specified position.
+        /// </summary>
+        /// <remarks>
+        /// <para>A <paramref name="scale"/> of 1.0 will result in a marker with a
+        /// width and height of 2.0. (Each point of the x-marker will be 1.0 
+        /// from the position.)</para>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="position">The position.</param>
+        /// <param name="scale">The scale of the marker.</param>
+        /// <param name="color">The color of the marker.</param>
+        public static void XMarker(Vector3 position
+            , float scale
+            , Color color)
+        {
+            GLUtil.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+
+            GL.Color(color);
+
+            GL.Vertex(position + Vector3.right * scale);
+            GL.Vertex(position + Vector3.left * scale);
+            GL.Vertex(position + Vector3.forward * scale);
+            GL.Vertex(position + Vector3.back * scale);
+            GL.Vertex(position + Vector3.up * scale * 2);
+            GL.Vertex(position + Vector3.down * scale * 2);
+
+            GL.End();
+        }
+
+        /// <summary>
+        /// Draws the specified line segments.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="segments">The line segments.
+        /// [(ax, ay, ax, bx, by, bz) * <paramref name="segmentCount"/>]</param>
+        /// <param name="segmentCount">The number of segments.</param>
+        /// <param name="color">The color of the segments.</param>
         public static void Segments(float[] segments
             , int segmentCount
             , Color color)
@@ -157,6 +237,18 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Draws an outlined and filled, partially transparent convex polygon.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="verts">The polygon vertices.
+        /// [(x, y, z) * <paramref name="vertCount"/>]</param>
+        /// <param name="vertCount">The number of vertices.</param>
+        /// <param name="color">The color of the polygon. 
+        /// (The alpha is ignored.)</param>
         public static void ConvexPoly(float[] verts
             , int vertCount
             , Color color)
@@ -198,6 +290,18 @@ namespace org.critterai.u3d
 
         }
 
+        /// <summary>
+        /// Draws a wireframe bounding box representing the extents.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="position">The center of the bounding box.</param>
+        /// <param name="extents">The extents of the bounding box. [(x, y, z)]
+        /// </param>
+        /// <param name="color">The color of the bounding box. 
+        /// (The alpha is ignored.)</param>
         public static void Extents(Vector3 position
             , float[] extents
             , Color color)
@@ -276,6 +380,16 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Draws an unfilled circle on the xz-plane.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="position">The position.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="color">The colore of the circle's boundary.</param>
         public static void Circle(Vector3 position, float radius, Color color)
         {
             float[] dir = Dir;
@@ -299,6 +413,22 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Draws an arrow.
+        /// </summary>
+        /// <remarks>
+        /// <para>The arrow head can be attached to end A and/or end B of the
+        /// specified line segment.</para>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="pointA">The A end of the arrow.</param>
+        /// <param name="pointB">The B end of the arrow.</param>
+        /// <param name="headScaleA">The scale of the A end arrow head.
+        /// (Or zero for no head.)</param>
+        /// <param name="headScaleB">The scale of the B end arrow head.
+        /// (Or zero for no head.)</param>
+        /// <param name="color">The color of the arrow.</param>
         public static void Arrow(Vector3 pointA
             , Vector3 pointB
             , float headScaleA
@@ -345,6 +475,61 @@ namespace org.critterai.u3d
                 , start.y + az.y * headScale - ax.y * headScale / 3
                 , start.z + az.z * headScale - ax.z * headScale / 3);
         	 
+        }
+
+        /// <summary>
+        /// Draws the provided triangle mesh in a manner suitable for 
+        /// debug visualizations. 
+        /// (Wiremesh with a partially transparent surface.)
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="vertices">The vertices. 
+        /// [(x, y, z) * vertexCount]</param>
+        /// <param name="triangles">The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * triangleCount)</param>
+        /// <param name="drawColor">The color of the mesh. (Alpha is ignored.)
+        /// </param>
+        public static void DrawTriMesh(float[] vertices
+            , int[] triangles
+            , Color drawColor)
+        {
+            GLUtil.SimpleMaterial.SetPass(0);
+
+            drawColor.a = 0.25f;
+
+            GL.Begin(GL.TRIANGLES);
+            GL.Color(drawColor);
+            for (int p = 0; p < triangles.Length; p += 3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
+                        , vertices[triangles[p + i] * 3 + 1]
+                        , vertices[triangles[p + i] * 3 + 2]);
+                }
+            }
+            GL.End();
+
+            drawColor.a = 0.4f;
+
+            for (int p = 0; p < triangles.Length; p += 3)
+            {
+                GL.Begin(GL.LINES);
+                GL.Color(drawColor);
+                for (int i = 0; i < 3; i++)
+                {
+                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
+                        , vertices[triangles[p + i] * 3 + 1]
+                        , vertices[triangles[p + i] * 3 + 2]);
+                }
+                GL.Vertex3(vertices[triangles[p] * 3 + 0]
+                    , vertices[triangles[p] * 3 + 1]
+                    , vertices[triangles[p] * 3 + 2]);
+                GL.End();
+            }
         }
     }
 }
