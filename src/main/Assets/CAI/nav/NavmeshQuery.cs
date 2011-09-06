@@ -661,6 +661,19 @@ namespace org.critterai.nav
         }
 
         /// <summary>
+        /// Returns true if the polygon reference is valid and passes the 
+        /// filter restrictions.
+        /// </summary>
+        /// <param name="polyRef">A polygon reference id.</param>
+        /// <param name="filter">The filter to apply to the query.</param>
+        /// <returns>True if the polygon reference is valid and passes the 
+        /// filter restrictions.</returns>
+        public bool IsValidPolyRef(uint polyRef, NavmeshQueryFilter filter)
+        {
+            return NavmeshQueryEx.dtqIsValidPolyRef(root, polyRef, filter.root);
+        }
+
+        /// <summary>
         /// Casts a 'walkability' ray along the surface of the navigation mesh
         /// from the start point toward the end point.
         /// </summary>
