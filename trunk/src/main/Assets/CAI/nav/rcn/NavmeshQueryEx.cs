@@ -143,6 +143,11 @@ namespace org.critterai.nav.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtqIsInClosedList(IntPtr query
             , uint polyRef);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtqIsValidPolyRef(IntPtr query
+            , uint polyRef
+            , IntPtr filter);
 	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqRaycast(IntPtr query

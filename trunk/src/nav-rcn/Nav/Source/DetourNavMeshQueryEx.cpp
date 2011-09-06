@@ -233,6 +233,13 @@ extern "C"
         return query->isInClosedList(ref);
     }
 
+    EXPORT_API bool dtqIsValidPolyRef(dtNavMeshQuery* query
+        , dtPolyRef ref
+        , const dtQueryFilter* filter)
+    {
+        return query->isValidPolyRef(ref, filter);
+    }
+
 	EXPORT_API dtStatus dtqRaycast(dtNavMeshQuery* query
         , dtPolyRef startRef
         , const float* startPos
