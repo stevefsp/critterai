@@ -141,6 +141,18 @@ namespace org.critterai.nav.rcn
             , int maxPath);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindPathExt(IntPtr query
+            , ref uint startPolyRef
+            , ref uint endPolyRef
+            , [In, Out] float[] startPosition
+            , [In, Out] float[] endPosition
+            , [In] float[] extents
+            , IntPtr filter
+            , [In, Out] uint[] resultPath
+            , ref int pathCount
+            , int maxPath);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtqIsInClosedList(IntPtr query
             , uint polyRef);
 

@@ -614,12 +614,12 @@ namespace org.critterai.nav
         /// <param name="endPolyRef">The reference id of the end polygon.
         /// </param>
         /// <param name="startPoint">A point within the start polygon.
-        /// [Form: (x, y, z)]</param>
+        /// [(x, y, z)]</param>
         /// <param name="endPoint">A point within the end polygon.
-        /// [Form: (x, y, z)]</param>
+        /// [(x, y, z)]</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPath">An ordered list of reference ids in the
-        /// path. (Start to end.) [Form: (polyRef) * pathCount]</param>
+        /// path. (Start to end.) [(polyRef) * pathCount] [Out]</param>
         /// <param name="pathCount">The number of polygons in the path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus FindPath(uint startPolyRef
@@ -636,6 +636,89 @@ namespace org.critterai.nav
                 , endPolyRef
                 , startPoint
                 , endPoint
+                , filter.root
+                , resultPath
+                , ref pathCount
+                , resultPath.Length);
+        }
+
+        /// <summary>
+        /// Finds the polygon path from the start to the end polygon, searching
+        /// for points not on the navigation mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is useful if the polygon reference of either the
+        /// <paramref name="start"/> or <paramref name="end"/> point is not 
+        /// known. If both points have a polygon reference of zero, then this
+        /// method is equivalent to the following:</para>
+        /// <ol>
+        /// <li>Call <see cref="GetNearestPoly"/> using the 
+        /// <paramref name="start"/> point.</li>
+        /// <li>Call <see cref="GetNearestPoly"/> using the 
+        /// <paramref name="end"/> point.</li>
+        /// <li>Call the normal find path using the two new 
+        /// start and end points.
+        /// </li>
+        /// </ol>
+        /// <para><em>A point search will only be performed for points with a
+        /// polygon reference of zero.</em> If a point search is reqired, the
+        /// point and its polygon reference parameter become output parameters.
+        /// The point will be snapped to the navigation mesh.</para>
+        /// <para>This method may return a partial result, even if there
+        /// is a failure.  If there is no failure, it will at least
+        /// perform the required point searches.  It will then perform the find
+        /// path operation if the point searches successful.</para>
+        /// <para>Checking the return results:</para>
+        /// <ul>
+        /// <li>If the <paramref name="pathCount"/> is greater than zero, then
+        /// the path and all required point searches succeeded.</li>
+        /// <li>If the overall operation failed, but a point with 
+        /// an input polygon reference of zero has an output polygon reference
+        /// that is non-zero, then that point's search succeeded.</li>
+        /// </ul>
+        /// <para>For the path results:</para>
+        /// <para>If the end polygon cannot be reached, then the last polygon
+        /// is the nearest one found to the end polygon.</para>
+        /// <para>If the path buffer is to small to hold the result, it will
+        /// be filled as far as possible from the start polygon toward the
+        /// end polygon.</para>
+        /// <para>The start and end points are used to calculate
+        /// traversal costs. (y-values matter.)</para>
+        /// </remarks>
+        /// <param name="startPolyRef">The reference id of the start polygon.
+        /// (An input value of zero triggers a search.)</param>
+        /// <param name="endPolyRef">The reference id of the end polygon.
+        /// (An input value of zero triggers a search.)</param>
+        /// <param name="startPoint">A point within the start polygon.
+        /// ([(x, y, z)] [In] (Also Out if <paramref name="startPolyRef"/>
+        /// is zero.)]</param>
+        /// <param name="endPoint">A point within the end polygon.
+        /// [(x, y, z)]  [In] (Also Out if <paramref name="endPolyRef"/>
+        /// is zero.)]</param>
+        /// <param name="extents">The search extents to use if the start
+        /// or end point polygon reference is zero.</param>
+        /// <param name="filter">The filter to apply to the query.</param>
+        /// <param name="resultPath">An ordered list of reference ids in the
+        /// path. (Start to end.) [(polyRef) * pathCount] [Out]</param>
+        /// <param name="pathCount">The number of polygons in the path.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
+        public NavStatus FindPath(ref uint startPolyRef
+            , ref uint endPolyRef
+            , float[] startPoint
+            , float[] endPoint
+            , float[] extents
+            , NavmeshQueryFilter filter
+            , uint[] resultPath
+            , out int pathCount)
+        {
+            pathCount = 0;
+            return NavmeshQueryEx.dtqFindPathExt(root
+                , ref startPolyRef
+                , ref endPolyRef
+                , startPoint
+                , endPoint
+                , extents
                 , filter.root
                 , resultPath
                 , ref pathCount

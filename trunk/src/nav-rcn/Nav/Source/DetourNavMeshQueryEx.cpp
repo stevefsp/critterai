@@ -227,6 +227,53 @@ extern "C"
             , maxPath);
     }
 
+    EXPORT_API dtStatus dtqFindPathExt(dtNavMeshQuery* query 
+        , dtPolyRef* startRef
+        , dtPolyRef* endRef
+		, float* startPos
+        , float* endPos
+        , const float* extents
+		, const dtQueryFilter* filter
+		, dtPolyRef* path
+        , int* pathCount
+        , const int maxPath)
+    {
+        if (*startRef == 0)
+        {
+            dtStatus status = query->findNearestPoly(startPos
+                , extents
+                , filter
+                , startRef
+                , startPos);
+            if (dtStatusFailed(status))
+                return status;
+        }
+
+        if (*endRef == 0)
+        {
+            dtStatus status = query->findNearestPoly(endPos
+                , extents
+                , filter
+                , endRef
+                , endPos);
+            if (dtStatusFailed(status))
+                return status;
+        }
+
+        if (*startRef == 0 || *endRef == 0)
+            // One of the searches failed. 
+            return DT_FAILURE | DT_INVALID_PARAM;
+
+        return query->findPath(*startRef
+            , *endRef
+            , (const float*)startPos
+            , (const float*)endPos
+            , filter
+            , path
+            , pathCount
+            , maxPath);
+    }
+
 	EXPORT_API bool dtqIsInClosedList(dtNavMeshQuery* query
         , dtPolyRef ref)
     {

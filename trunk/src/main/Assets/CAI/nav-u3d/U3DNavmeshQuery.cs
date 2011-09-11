@@ -433,6 +433,9 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Finds the polygon path from the start to the end polygon.
         /// </summary>
+        /// <remarks>
+        /// This method will fail if the polygon reference of either the start
+        /// or end points is zero.</remarks>
         /// <param name="start">The start of the path.</param>
         /// <param name="end">The goal of the path.</param>
         /// <param name="filter">The filter to apply to the query.</param>
@@ -453,6 +456,44 @@ namespace org.critterai.nav.u3d
                 , filter
                 , resultPath
                 , out pathCount);
+        }
+
+        /// <summary>
+        /// Finds the polygon path from the start to the end point.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method will attempt to snap the start and end points
+        /// to the mesh if either has a polygon reference of zero.</para>
+        /// </remarks>
+        /// <param name="start">The start of the path.</param>
+        /// <param name="end">The goal of the path.</param>
+        /// <param name="extents">The search extents to use if the start
+        /// and/or end points need to be located.</param>
+        /// <param name="filter">The filter to apply to the query.</param>
+        /// <param name="resultPath">An ordered list of reference ids in the
+        /// path. (Start to end.) [Form: (polyRef) * pathCount]</param>
+        /// <param name="pathCount">The number of polygons in the path.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
+        public NavStatus FindPath(ref NavmeshPoint start
+            , ref NavmeshPoint end
+            , float[] extents
+            , NavmeshQueryFilter filter
+            , uint[] resultPath
+            , out int pathCount)
+        {
+            NavStatus status = mRoot.FindPath(ref start.polyRef
+                , ref end.polyRef
+                , Vector3Util.GetVector(start.point, vbuffA)
+                , Vector3Util.GetVector(end.point, vbuffB)
+                , extents
+                , filter
+                , resultPath
+                , out pathCount);
+
+            start.point = Vector3Util.GetVector(vbuffA);
+            end.point = Vector3Util.GetVector(vbuffB);
+
+            return status;
         }
 
         /// <summary>
