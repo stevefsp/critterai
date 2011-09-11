@@ -82,6 +82,21 @@ namespace org.critterai
         }
 
         /// <summary>
+        /// Gets the distance between the specified points on the xz-plane. 
+        /// (Ignores y-axis.)
+        /// </summary>
+        /// <param name="u">Vector u.</param>
+        /// <param name="v">Vector v.</param>
+        /// <returns>The distance between the specified points on the 
+        /// xz-plane.</returns>
+        public static float GetDistance2D(Vector3 u, Vector3 v)
+        {
+            float dx = v.x - u.x;
+            float dz = v.z - u.z;
+            return Mathf.Sqrt(dx * dx + dz * dz);
+        }
+
+        /// <summary>
         /// Returns the square of the length of the vector.
         /// </summary>
         /// <param name="x">The x-value of the vector (x, y, z).</param>
@@ -128,7 +143,7 @@ namespace org.critterai
                 , float vx, float vy, float vz
                 , float tolerance)
         {
-            tolerance = Math.Max(0, tolerance);
+            tolerance = Mathf.Max(0, tolerance);
             if (vx < ux - tolerance || vx > ux + tolerance)
                 return false;
             if (vy < uy - tolerance || vy > uy + tolerance)
@@ -317,12 +332,12 @@ namespace org.critterai
             maxBounds = vectors[0];
             for (int i = 1; i < vectors.Length; i++)
             {
-                minBounds.x = Math.Min(minBounds.x, vectors[i].x);
-                minBounds.y = Math.Min(minBounds.y, vectors[i].y);
-                minBounds.z = Math.Min(minBounds.z, vectors[i].z);
-                maxBounds.x = Math.Max(maxBounds.x, vectors[i].x);
-                maxBounds.y = Math.Max(maxBounds.y, vectors[i].y);
-                maxBounds.z = Math.Max(maxBounds.z, vectors[i].z);
+                minBounds.x = Mathf.Min(minBounds.x, vectors[i].x);
+                minBounds.y = Mathf.Min(minBounds.y, vectors[i].y);
+                minBounds.z = Mathf.Min(minBounds.z, vectors[i].z);
+                maxBounds.x = Mathf.Max(maxBounds.x, vectors[i].x);
+                maxBounds.y = Mathf.Max(maxBounds.y, vectors[i].y);
+                maxBounds.z = Mathf.Max(maxBounds.z, vectors[i].z);
             }
         }
 
@@ -356,12 +371,12 @@ namespace org.critterai
 
             for (int p = 3; p < flatVectors.Length; p += 3)
             {
-                bounds[0] = Math.Min(bounds[0], flatVectors[p + 0]);
-                bounds[1] = Math.Min(bounds[1], flatVectors[p + 1]);
-                bounds[2] = Math.Min(bounds[2], flatVectors[p + 2]);
-                bounds[3] = Math.Max(bounds[3], flatVectors[p + 0]);
-                bounds[4] = Math.Max(bounds[4], flatVectors[p + 1]);
-                bounds[5] = Math.Max(bounds[5], flatVectors[p + 2]);
+                bounds[0] = Mathf.Min(bounds[0], flatVectors[p + 0]);
+                bounds[1] = Mathf.Min(bounds[1], flatVectors[p + 1]);
+                bounds[2] = Mathf.Min(bounds[2], flatVectors[p + 2]);
+                bounds[3] = Mathf.Max(bounds[3], flatVectors[p + 0]);
+                bounds[4] = Mathf.Max(bounds[4], flatVectors[p + 1]);
+                bounds[5] = Mathf.Max(bounds[5], flatVectors[p + 2]);
             }
 
             return bounds;
