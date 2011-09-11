@@ -50,5 +50,16 @@ namespace org.critterai.nav.u3d
             this.polyRef = polyRef;
             this.point = point;
         }
+
+        /// <summary>
+        /// Returns a standard string representation of point.
+        /// </summary>
+        /// <returns>A standard string representation of point.</returns>
+        public override string ToString()
+        {
+            return string.Format("[{0:F3}, {1:F3}, {2:F3}] (Ref: {3})"
+                , point.x, point.y, point.z, polyRef);
+        }
+
     }
 }

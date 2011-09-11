@@ -52,6 +52,9 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\BakedNavmesh.cs">
       <Link>BakedNavmesh.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\CrowdAgentDebug.cs">
+      <Link>CrowdAgentDebug.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\DSTileData.cs">
       <Link>DSTileData.cs</Link>
     </Compile>

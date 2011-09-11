@@ -28,8 +28,8 @@ namespace org.critterai.nav.u3d
     /// Provides methods useful for debugging navigation.
     /// </summary>
     /// <remarks>
-    /// <para>All draw methods in this class use GL.  So they should generally be
-    /// called from within OnRenderObject().</para></remarks>
+    /// <para>All draw methods in this class use GL.  So they should generally 
+    /// be called from within the OnRenderObject() method.</para></remarks>
     public static class NavDebug
     {
         /// <summary>
