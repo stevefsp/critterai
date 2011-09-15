@@ -88,55 +88,95 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
         /// <param name="ux">The x-value of the vector (ux, uy).</param>
         /// <param name="uy">The y-value of the vector (ux, uy).</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
-        /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if each of the associated elements are 
-        /// within the specified tolerance of each other.
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
         /// </returns>
         public static bool SloppyEquals(float ux, float uy
-            , float vx, float vy
-            , float tolerance)
+                , float vx, float vy
+                , float tolerance)
         {
-            tolerance = Math.Max(0, tolerance);
-            return !(Math.Abs(ux - vx) > tolerance 
-                || Math.Abs(uy - vy) > tolerance);
+            // Duplicating code for performance reasons.
+            float dx = ux - vx;
+            float dy = uy - vy;
+            return (dx * dx + dy * dy) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
-        /// <param name="u">Vector v</param>
-        /// <param name="v">Vector u</param>
-        /// <param name="tolerance">The tolerance for the test. </param>
-        /// <returns>TRUE if each of the associated elements are
-        /// within the specified tolerance of each other.
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
+        /// <param name="u">Vector U.</param>
+        /// <param name="v">Vector V.</param>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(Vector2 u, Vector2 v, float tolerance)
+        public static bool SloppyEquals(Vector3 u
+                , Vector3 v
+                , float tolerance)
         {
-            return SloppyEquals(u.x, u.y, v.x, v.y, tolerance);
+            // Duplicating code for performance reasons.
+            float dx = u.x - v.x;
+            float dy = u.y - v.y;
+            float dz = u.z - v.z;
+            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance.
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
-        /// <param name="u">Vector v</param>
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
+        /// <param name="u">Vector U.</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
-        /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if each of the associated elements are 
-        /// within the specified tolerance of each other.
+        /// <param name="vz">The z-value of the vector (vx, vy).</param>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(Vector2 u, float vx, float vy, float tolerance)
+        public static bool SloppyEquals(Vector3 u
+                , float vx, float vy
+                , float tolerance)
         {
-            return SloppyEquals(u.x, u.y, vx, vy, tolerance);
+            // Duplicating code for performance reasons.
+            float dx = u.x - vx;
+            float dy = u.y - vy;
+            return (dx * dx + dy * dy) <= tolerance * tolerance;
         }
 
         /// <summary>
