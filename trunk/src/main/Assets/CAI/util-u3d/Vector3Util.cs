@@ -127,71 +127,108 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other.
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
         /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
         /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
         /// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
         /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the associated elements are  within the 
-        /// specified tolerance of each other</returns>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
+        /// </returns>
         public static bool SloppyEquals(float ux, float uy, float uz
                 , float vx, float vy, float vz
                 , float tolerance)
         {
-            tolerance = Mathf.Max(0, tolerance);
-            if (vx < ux - tolerance || vx > ux + tolerance)
-                return false;
-            if (vy < uy - tolerance || vy > uy + tolerance)
-                return false;
-            if (vz < uz - tolerance || vz > uz + tolerance)
-                return false;
-            return true;
+            // Duplicating code for performance reasons.
+            float dx = ux - vx;
+            float dy = uy - vy;
+            float dz = uz - vz;
+            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other. 
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
-        /// <param name="u">Vector u</param>
-        /// <param name="v">Vector v</param>
-        /// <param name="tolerance">The tolerance for the test.</param>
-        /// <returns>TRUE if the associated elements are  within the 
-        /// specified tolerance of each other</returns>
-        public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
+        /// <param name="u">Vector U.</param>
+        /// <param name="v">Vector V.</param>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
+        /// </returns>
+        public static bool SloppyEquals(Vector3 u
+                , Vector3 v
+                , float tolerance)
         {
-            return SloppyEquals(u.x, u.y, u.z, v.x, v.y, v.z, tolerance);
+            // Duplicating code for performance reasons.
+            float dx = u.x - v.x;
+            float dy = u.y - v.y;
+            float dz = u.z - v.z;
+            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other.
+        /// Determines whether or not the provided vectors are equal within
+        /// the specified tolerance.
         /// </summary>
-        /// <param name="u">Vector u</param>
+        /// <remarks>
+        /// <para>
+        /// Change in beahvior:  Prior to version 0.4, the area of equality 
+        /// for this method was an axis-aligned bounding box at the tip of
+        /// the vector. As of version 0.4 the area of equality is a sphere.
+        /// This change was made to improve performance.
+        /// </para>
+        /// </remarks>
+        /// <param name="u">Vector U.</param>
         /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <param name="tolerance">The tolerance for the test.  </param>
-        /// <returns>TRUE if the associated elements are  within the 
-        /// specified tolerance of each other</returns>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
+        /// </param>
+        /// <returns>True if the provided vectors similar enough to be
+        /// considered equal.
+        /// </returns>
         public static bool SloppyEquals(Vector3 u
-            , float vx, float vy, float vz
-            , float tolerance)
+                , float vx, float vy, float vz
+                , float tolerance)
         {
-            return SloppyEquals(u.x, u.y, u.z, vx, vy, vz, tolerance);
+            // Duplicating code for performance reasons.
+            float dx = u.x - vx;
+            float dy = u.y - vy;
+            float dz = u.z - vz;
+            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the two vectors are within range
+        /// Determines whether or not the two points are within range
         /// of each other based on a xz-plane radius and a y-axis height.
         /// </summary>
         /// <remarks>
-        /// <para>This is essentially a cylinder inclusion test where one 
-        /// vector defines the centroid of the cylinder.</para>
+        /// <para>Essentially, one point defines the centroid of the cylinder 
+        /// and the other in tested for inclusion.</para>
         /// </remarks>
         /// <param name="u">A position.</param>
         /// <param name="v">A position.</param>
@@ -199,10 +236,10 @@ namespace org.critterai
         /// <param name="height">The allowed y-axis delta.</param>
         /// <returns>TRUE if the two vectors are within the xz-radius and 
         /// y-height of each other.</returns>
-        public static bool IsInRange(Vector3 u, Vector3 v
+        public static bool IsInRange(Vector3 a, Vector3 b
             , float radius, float height)
         {
-            Vector3 d = v - u;
+            Vector3 d = b - a;
             return (d.x * d.x + d.z * d.z) < radius * radius
                 && Mathf.Abs(d.y) < height;
         }
