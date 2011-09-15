@@ -70,6 +70,9 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\U3DNavmeshQuery.cs">
       <Link>U3DNavmeshQuery.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\U3DPathCorridor.cs">
+      <Link>U3DPathCorridor.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
