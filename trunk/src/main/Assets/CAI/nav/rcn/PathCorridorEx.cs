@@ -114,5 +114,11 @@ namespace org.critterai.nav.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtpcGetData(IntPtr corridor
             , [In, Out] PathCorridorData data);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcIsValid(IntPtr corridor
+            , int maxLookAhead
+            , IntPtr navquery
+            , IntPtr filter);
     }
 }

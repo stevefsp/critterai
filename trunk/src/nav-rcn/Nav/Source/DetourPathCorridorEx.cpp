@@ -210,4 +210,14 @@ extern "C"
 
         return true;
     }
+
+	EXPORT_API bool dtpcIsValid(dtPathCorridor* corridor
+		, const int maxLookAhead
+		, dtNavMeshQuery* navquery
+		, const dtQueryFilter* filter)
+	{
+		if (corridor)
+			return corridor->isValid(maxLookAhead, navquery, filter);
+		return false;
+	}
 }
