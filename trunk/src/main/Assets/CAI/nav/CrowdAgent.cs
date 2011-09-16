@@ -208,13 +208,27 @@ namespace org.critterai.nav
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
+        /// <para>WARNING: The buffer object must be sized to
+        /// a maximum path size equal to 
+        /// <see cref="PathCorridorData.MarshalBufferSize"/>!</para>
+        /// <para>
         /// </remarks>
         /// <param name="buffer">
-        /// The buffer to hold the corridor data. (Out)</param>
-        public void GetCorridor(PathCorridorData buffer)
+        /// The buffer to load with the corridor data.
+        /// [Size: Maximum Path Size = 
+        /// <see cref="PathCorridorData.MarshalBufferSize"/>] [Out]</param>
+        /// <returns>False if there are parameter errors.</returns>
+        public bool GetCorridor(PathCorridorData buffer)
         {
-            if (!IsDisposed)
-                CrowdAgentEx.dtcaGetPathCorridorData(root, buffer);
+            // Only a partial validation.
+            if (IsDisposed
+                || buffer == null
+                || buffer.path.Length != PathCorridorData.MarshalBufferSize)
+            {
+                return false;
+            }
+            CrowdAgentEx.dtcaGetPathCorridorData(root, buffer);
+            return true;
         }
 
         /// <summary>
@@ -280,12 +294,27 @@ namespace org.critterai.nav
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
+        /// <para>WARNING: The buffer object must be sized to
+        /// <see cref="CornerData.MarshalBufferSize"/>!</para>
+        /// <para>
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load with corner data.</param>
-        public void GetCornerData(CrowdCornerData buffer)
+        /// <param name="buffer">The buffer to load with corner data. 
+        /// [Size: Maximum Corners = <see cref="CornerData.MarshalBufferSize"/>]
+        /// [Out]
+        /// </param>
+        /// <returns>False if there are parameter errors.</returns>
+        public bool GetCornerData(CornerData buffer)
         {
-            if (!IsDisposed)
-                CrowdAgentEx.dtcaGetAgentCorners(root, buffer);
+            // This is only a partial argument validation.
+            if (IsDisposed
+                || buffer == null
+                || buffer.polyRefs.Length != CornerData.MarshalBufferSize)
+            {
+                return false;
+            }
+            CrowdAgentEx.dtcaGetAgentCorners(root, buffer);
+            return true;
         }
     }
 }
