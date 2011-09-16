@@ -91,11 +91,9 @@ namespace org.critterai.nav.u3d
                 , Vector3Util.GetVector(position.point, vbuffA));
         }
 
-        public int FindCorners(float[] cornerVerts
-            , WaypointFlag[] cornerFlags
-            , uint[] cornerPolys)
+        public int FindCorners(CornerData buffer)
         {
-            return mRoot.FindCorners(cornerVerts, cornerFlags, cornerPolys);
+            return mRoot.FindCorners(buffer);
         }
 
         public void OptimizePathVisibility(Vector3 next

@@ -30,21 +30,20 @@ namespace org.critterai.nav
     /// <remarks>
     /// <para>Used as a buffer for corridor data returned by other classes.
     /// </para>
-    /// <para>This class is used as an interop buffer.  Behavior is undefined
-    /// if the size of the array fields are changed after construction.</para>
+    /// <para>
+    /// Certain methods which take objects of this type require a fixed buffer 
+    /// size equal to <see cref="MarshalBufferSize"/>.  So be careful when 
+    /// initializing and using objects of this type.
+    /// </para>
     /// </remarks>
-    /// <see cref="CrowdAgent.GetCorridor"/>
-    /// <see cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class PathCorridorData
     {
         /// <summary>
-        /// The maximum path size the class can hold.
+        /// The required maximum path size required to use with interop
+        /// method calls.
         /// </summary>
-        /// <remarks>
-        /// <para>Used to size instance buffers.</para>
-        /// </remarks>
-        public const int MaxPathSize = 256;
+        public const int MarshalBufferSize = 256;
 
         /// <summary>
         /// The current position within the path corridor. [Form: (x, y, z)]
@@ -64,8 +63,8 @@ namespace org.critterai.nav
         /// <remarks>
         /// <para>[Form: (polyRef) * <see cref="pathCount"/></para>
         /// </remarks>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxPathSize)]
-        public uint[] path = new uint[MaxPathSize];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
+        public uint[] path;
 
         /// <summary>
         /// The number of polygons in the path.
@@ -73,8 +72,22 @@ namespace org.critterai.nav
         public int pathCount;
 
         /// <summary>
-        /// Constructor.
+        /// Creates an object with buffers sized for use with interop method 
+        /// calls. (Maximum Path Size = <see cref="MarshalBufferSize"/>)
         /// </summary>
-        public PathCorridorData() { }
+        public PathCorridorData() 
+        {
+            path = new uint[MarshalBufferSize];
+        }
+
+        /// <summary>
+        /// Creates an object with a non-standard buffer size.
+        /// </summary>
+        /// <param name="maxPathSize">The maximum path size the buffer
+        /// can hold.</param>
+        public PathCorridorData(int maxPathSize)
+        {
+            path = new uint[maxPathSize];
+        }
     }
 }

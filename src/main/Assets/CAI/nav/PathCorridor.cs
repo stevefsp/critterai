@@ -169,7 +169,7 @@ namespace org.critterai.nav
         /// <para>
         /// This is the method used to plan local movement within the corridor.
         /// One or more corners can be detected in order to plan movement. It
-        /// is performs essentially the same function as 
+        /// performs essentially the same function as 
         /// <see cref="NavmeshQuery.GetStraightPath"/>.
         /// </para>
         /// <para>Due to internal optimizations, the maximum 
@@ -181,23 +181,16 @@ namespace org.critterai.nav
         /// on the same maximum corner count. E.g. The flag and polygon buffers 
         /// are different sizes.</para>
         /// </remarks>
-        /// <param name="cornerVerts">The resulting corner vertices.
-        /// [(x, y, z) * cornerCount]</param>
-        /// <param name="cornerFlags">Flags describing each corner.
-        /// [(flat) * cornerCount]
-        /// </param>
-        /// <param name="cornerPolys">The reference id of the polygon that is 
-        /// being entered at the corner. [(polyRef) * cornerCount] </param>
+        /// <param name="buffer">The buffer to load the results into.
+        /// [Size: Maximum Corners > 1]</param>
         /// <returns>The number of corners returned in the buffers.</returns>
-        public int FindCorners(float[] cornerVerts
-            , WaypointFlag[] cornerFlags
-            , uint[] cornerPolys)
+        public int FindCorners(CornerData buffer)
         {
             return PathCorridorEx.dtpcFindCorners(mRoot
-                , cornerVerts
-                , cornerFlags
-                , cornerPolys
-                , cornerPolys.Length
+                , buffer.verts
+                , buffer.flags
+                , buffer.polyRefs
+                , buffer.polyRefs.Length
                 , mQuery.root
                 , mFilter.root);
         }
@@ -455,11 +448,27 @@ namespace org.critterai.nav
         /// exceeds <see cref="PathCorridorData.MaxPathSize"/>.  In this case,
         /// use the individual accessors. (E.g. <see cref="GetPath"/>)</para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.</param>
+        /// <param name="buffer">The buffer to load the data into.
+        /// [Size: Maximum Path Size >= <see cref="GetPathCount"/>]</param>
         /// <returns>False if the operation failed.</returns>
         public bool GetData(PathCorridorData buffer)
         {
-            return PathCorridorEx.dtpcGetData(mRoot, buffer);
+            // Only performs a partial parameter validation.
+            if (buffer == null
+                || buffer.path == null
+                || buffer.path.Length < 1)
+            {
+                return false;
+            }
+
+            if (buffer.path.Length == PathCorridorData.MarshalBufferSize)
+                return PathCorridorEx.dtpcGetData(mRoot, buffer);
+
+            buffer.pathCount = GetPath(buffer.path);
+            buffer.position = GetPosition(buffer.position);
+            buffer.target = GetTarget(buffer.target);
+
+            return true;
         }
     }
 }

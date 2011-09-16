@@ -35,18 +35,15 @@ namespace org.critterai.nav
     /// <para>
     /// If path straightening does not result in any corners (e.g. path end
     /// point is visible) then the <see cref="cornerCount"/> will be zero.  So
-    /// a <see cref="cornerCount"/> can't be used to detect 'no path'.</para>
+    /// <see cref="cornerCount"/> can't be used to detect 'no path'.</para>
     /// <para>
-    /// Instances of this class are required by 
-    /// <see cref="CrowdAgent.GetCornerData"/>.
+    /// Certain methods which take objects of this type require a fixed buffer 
+    /// size equal to <see cref="MarshalBufferSize"/>.  So be careful when 
+    /// initializing and using objects of this type.
     /// </para>
-    /// <para>This class is used as an interop buffer.  Behavior is undefined
-    /// if the size of the array fields are changed after construction.</para>
     /// </remarks>
-    /// <seealso cref="CrowdAgent.GetCornerData"/>
-    /// <seealso cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
-    public class CrowdCornerData
+    public class CornerData
     {
         /*
          * Design note:
@@ -56,26 +53,23 @@ namespace org.critterai.nav
          */
 
         /// <summary>
-        /// The maximum number of corners the corner fields
-        /// can hold.
+        /// The required maximum number of corners required to use with interop
+        /// method calls.
         /// </summary>
-        /// <remarks>
-        /// <para>Used to size instance buffers.</para>
-        /// </remarks>
-        public const int MaxCorners = 4;
+        public const int MarshalBufferSize = 4;
 
         /// <summary>
         /// The corner vertices. [Form: (x, y, z) * <see cref="cornerCount"/>]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * MaxCorners)]
-        public float[] verts = new float[3 * MaxCorners];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * MarshalBufferSize)]
+        public float[] verts;
 
         /// <summary>
         /// The <see cref="WaypointFlag"/>'s for each corner.
         /// [Form: (flag) * <see cref="cornerCount"/>]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
-        public WaypointFlag[] flags = new WaypointFlag[MaxCorners];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
+        public WaypointFlag[] flags;
 
         /// <summary>
         /// The navigation mesh polygon references for each corner.
@@ -84,13 +78,36 @@ namespace org.critterai.nav
         /// <remarks>
         /// The reference is for the polygon being entered at the corner.
         /// </remarks>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxCorners)]
-        public uint[] polyRefs = new uint[MaxCorners];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
+        public uint[] polyRefs;
 
         /// <summary>
         /// Number of corners in the local path.
-        /// [Limits: 0 &lt;= value &lt;= <see cref="MaxCorners"/>]
+        /// [Limits: 0 &lt;= value &lt;= maxCorners]
         /// </summary>
         public int cornerCount = 0;
+
+        /// <summary>
+        /// Creates an object with buffers sized for use with interop method 
+        /// calls. (Maximum Corners = <see cref="MarshalBufferSize"/>)
+        /// </summary>
+        public CornerData()
+        {
+            verts = new float[3 * MarshalBufferSize];
+            flags = new WaypointFlag[MarshalBufferSize];
+            polyRefs = new uint[MarshalBufferSize];
+        }
+
+        /// <summary>
+        /// Creates an object with a non-standard buffer size.
+        /// </summary>
+        /// <param name="maxCorners">The maximum number of corners the
+        /// buffers can hold.</param>
+        public CornerData(int maxCorners)
+        {
+            verts = new float[3 * maxCorners];
+            flags = new WaypointFlag[maxCorners];
+            polyRefs = new uint[maxCorners];
+        }
     }
 }
