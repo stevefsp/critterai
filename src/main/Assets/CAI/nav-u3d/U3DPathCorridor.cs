@@ -25,11 +25,12 @@ using UnityEngine;
 namespace org.critterai.nav.u3d
 {
     /// <summary>
-    /// Provides a Unity friendly interface to the NavmeshQuery class.
+    /// Provides a Unity friendly interface to the <see cref="PathCorridor"/> 
+    /// class.
     /// </summary>
     /// <remarks>
-    /// <para>See the <see cref="NavmeshQuery"/> class for detailed descriptions 
-    /// of the methods common to the two classes.</para>
+    /// <para>See the <see cref="PathCorridor"/> class for detailed descriptions 
+    /// of the methods common to both classes.</para>
     /// <para>While this is technically a convenience class, it is implemented
     /// in such a way that its features will have the minimum possible negative
     /// impact performance and memory.</para>
@@ -176,6 +177,11 @@ namespace org.critterai.nav.u3d
         public int GetPathCount()
         {
             return mRoot.GetPathCount();
+        }
+
+        public bool IsValid(int maxLookAhead)
+        {
+            return mRoot.IsValid(maxLookAhead);
         }
 
         public bool GetData(PathCorridorData buffer)
