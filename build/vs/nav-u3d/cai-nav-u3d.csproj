@@ -58,6 +58,9 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\DSTileData.cs">
       <Link>DSTileData.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavGroup.cs">
+      <Link>NavAsset.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav-u3d\NavDebug.cs">
       <Link>NavDebug.cs</Link>
     </Compile>

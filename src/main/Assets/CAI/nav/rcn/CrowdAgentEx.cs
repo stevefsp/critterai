@@ -38,7 +38,7 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtcaGetAgentCorners(IntPtr agent
-            , [In, Out] CrowdCornerData resultData);
+            , [In, Out] CornerData resultData);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtcaGetAgentCoreData(IntPtr agent

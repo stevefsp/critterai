@@ -55,27 +55,31 @@ public class AgentNavConfigEditor
         return flags;
     }
 
+    /// <summary>
+    /// Draws the standard inspector GUI for the specified configuration.
+    /// </summary>
+    /// <remarks>
+    /// <para>Expected to be called during the Editor.OnInspectorGUI() 
+    /// or equivalent method.</para>
+    /// </remarks>
+    /// <param name="targ">The inspector target.</param>
+    /// <returns>True if GUI contect was changed.</returns>
     public static bool DrawInspectorGUI(AgentNavConfig targ)
     {
         EditorGUIUtility.LookLikeControls(150);
 
         EditorGUILayout.Separator();
 
-        EditorGUILayout.BeginHorizontal();
-
-        EditorGUILayout.PrefixLabel("Navigation Source");
-
 #if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
-        targ.manager = (NavSource)EditorGUILayout.ObjectField(targ.manager
-            , typeof(NavSource));
+        targ.configSet = (AvoidanceConfigSet)EditorGUILayout.ObjectField(
+            targ.configSet
+            , typeof(AvoidanceConfigSet));
 #else
-        targ.manager = (NavSource)EditorGUILayout.ObjectField(targ.manager
-            , typeof(NavSource), true);
+        targ.configSet = (AvoidanceConfigSet)EditorGUILayout.ObjectField(
+            targ.configSet
+            , typeof(AvoidanceConfigSet)
+            , false);
 #endif
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Separator();
 
         targ.maxPathSize = Mathf.Max(1, EditorGUILayout.IntField("Max Path Size"
             , targ.maxPathSize));
@@ -115,7 +119,7 @@ public class AgentNavConfigEditor
             , CrowdUpdateFlags.AnticipateTurns);
 
         flags = HandleUpdateFlag(flags
-            , "Obstancle Avoidance"
+            , "Obstacle Avoidance"
             , CrowdUpdateFlags.ObstacleAvoidance);
 
         flags = HandleUpdateFlag(flags
@@ -134,8 +138,7 @@ public class AgentNavConfigEditor
 
         EditorGUILayout.Separator();
 
-        AvoidanceConfigSet asource =
-            (targ.manager == null ? null : targ.manager.avoidanceSource);
+        AvoidanceConfigSet asource = targ.configSet;
 
         if (asource == null)
         {

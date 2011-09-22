@@ -73,14 +73,14 @@ namespace org.critterai.nav.rcn
              , IntPtr navquery);
     	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtpcMovePosition(IntPtr corridor
+        public static extern uint dtpcMovePosition(IntPtr corridor
             , [In] float[] npos
             , IntPtr navquery
             , IntPtr filter
             , [In, Out] float[] pos);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtpcMoveTargetPosition(IntPtr corridor
+        public static extern uint dtpcMoveTargetPosition(IntPtr corridor
             , [In] float[] npos
             , IntPtr navquery
             , IntPtr filter
@@ -93,15 +93,18 @@ namespace org.critterai.nav.rcn
              , int pathCount);
     	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern bool dtpcGetPos(IntPtr corridor
+        public static extern uint dtpcGetPos(IntPtr corridor
              , [In] float[] position);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern bool dtpcGetTarget(IntPtr corridor
+        public static extern uint dtpcGetTarget(IntPtr corridor
              , [In] float[] target);
          	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern uint dtpcGetFirstPoly(IntPtr corridor);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern uint dtpcGetLastPoly(IntPtr corridor);
     	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtpcGetPath(IntPtr corridor

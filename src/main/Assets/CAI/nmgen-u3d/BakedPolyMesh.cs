@@ -28,10 +28,6 @@ using org.critterai;
 /// A polygon mesh that is baked at design time and creates
 /// <see cref="PolyMesh"/> and <see cref="PolyMeshDetail"/> objects at run-time.
 /// </summary>
-/// <remarks>
-/// <para>This component provides means of serializing polygon mesh data
-/// in the Unity.</para>
-/// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
 [AddComponentMenu("CAI/Baked PolyMesh")]

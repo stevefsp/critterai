@@ -211,7 +211,6 @@ namespace org.critterai.nav
         /// <para>WARNING: The buffer object must be sized to
         /// a maximum path size equal to 
         /// <see cref="PathCorridorData.MarshalBufferSize"/>!</para>
-        /// <para>
         /// </remarks>
         /// <param name="buffer">
         /// The buffer to load with the corridor data.

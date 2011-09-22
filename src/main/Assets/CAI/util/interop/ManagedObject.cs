@@ -29,7 +29,7 @@ namespace org.critterai.interop
         : IManagedObject
     {
         /// <summary>
-        /// The type of unmanaged resource in the object.
+        /// The type of unmanaged resource used by the object.
         /// </summary>
         private readonly AllocType mResourceType;
 

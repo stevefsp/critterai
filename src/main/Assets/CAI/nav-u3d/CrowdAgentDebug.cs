@@ -76,31 +76,14 @@ namespace org.critterai.nav.u3d
             , Color.yellow.b
             , 0.66f);
 
-        /// <summary>
-        /// The color to use when drawing corner visualizations.
-        /// </summary>
-        public static Color cornerColor = new Color(Color.blue.r
-            , Color.blue.g
-            , Color.blue.b
-            , 0.66f);
-
-        /// <summary>
-        /// the color to use when drawing corridor visualizations.
-        /// </summary>
-        public static Color corridorColor = new Color(Color.yellow.r
-            , Color.yellow.g
-            , Color.yellow.b
-            , 0.33f);
-
         private Navmesh navmesh;
 
         // Various buffers.  (Reduces GC impact.)
         private CrowdNeighbor[] neighbors = 
             new CrowdNeighbor[CrowdNeighbor.MaxNeighbors];
         private LocalBoundaryData boundary = new LocalBoundaryData();
-        private CrowdCornerData corners = new CrowdCornerData();
+        private CornerData corners = new CornerData();
         private PathCorridorData corridor = new PathCorridorData();
-        private float[] tileVerts;
 
         /// <summary>
         /// Constructor.
@@ -110,7 +93,6 @@ namespace org.critterai.nav.u3d
         public CrowdAgentDebug(Navmesh navmesh) 
         {
             this.navmesh = navmesh;
-            tileVerts = new float[3 * navmesh.GetTile(0).GetHeader().vertCount];
         }
 
         /// <summary>
@@ -119,11 +101,14 @@ namespace org.critterai.nav.u3d
         /// <param name="agent">The agent to draw.</param>
         public void DrawAll(CrowdAgent agent)
         {
+            agent.GetCornerData(corners);
+            agent.GetCorridor(corridor);
+
             // Order matters.
-            DrawCorridor(agent);
+            NavDebug.Draw(navmesh, corridor);
             DrawNeighbors(agent);
             DrawLocalBoundary(agent);
-            DrawCorners(agent);
+            NavDebug.Draw(corners);
             DrawBase(agent);
         }
 
@@ -136,7 +121,7 @@ namespace org.critterai.nav.u3d
             Vector3 pos = Vector3Util.GetVector(agent.Position);
             CrowdAgentParams config = agent.GetConfig();
             
-            DebugDraw.Circle(pos, config.radius, baseColor);
+            DebugDraw.Circle(pos, config.radius, neighborColor);
 
             Vector3 v = Vector3Util.GetVector(agent.DesiredVelocity);
             DebugDraw.Arrow(pos + Vector3.up * config.height
@@ -206,92 +191,6 @@ namespace org.critterai.nav.u3d
             }
 
             GL.End();
-        }
-
-        /// <summary>
-        /// Draws agent corner information.
-        /// </summary>
-        /// <param name="agent">The agent to draw.</param>
-        public void DrawCorners(CrowdAgent agent)
-        {
-            agent.GetCornerData(corners);
-
-            if (corners.cornerCount == 0)
-                return;
-
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            for (int i = 0; i < corners.cornerCount; i++)
-            {
-                DebugDraw.XMarker(Vector3Util.GetVector(corners.verts, i)
-                    , 0.2f, cornerColor);
-            }
-        }
-
-        /// <summary>
-        /// Draws agent corridor information.
-        /// </summary>
-        /// <param name="agent">The agent to draw.</param>
-        public void DrawCorridor(CrowdAgent agent)
-        {
-            agent.GetCorridor(corridor);
-
-            if (corridor.pathCount == 0)
-                return;
-
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            for (int iPoly = 0; iPoly < corridor.pathCount; iPoly++ )
-            {
-                NavmeshTile tile;
-                NavmeshPoly poly;
-                navmesh.GetTileAndPoly(corridor.path[iPoly], out tile, out poly);
-
-                if (poly.Type == NavmeshPolyType.OffMeshConnection)
-                    continue;
-
-                NavmeshTileHeader header = tile.GetHeader();
-                if (tileVerts.Length < 3 * header.vertCount)
-                    // Resize.
-                    tileVerts = new float[3 * header.vertCount];
-
-                tile.GetVerts(tileVerts);
-
-                GL.Begin(GL.TRIANGLES);
-                GL.Color(corridorColor);
-
-                int pA = poly.indices[0] * 3;
-                for (int i = 2; i < poly.vertCount; i++)
-                {
-                    int pB = poly.indices[i - 1] * 3;
-                    int pC = poly.indices[i] * 3;
-
-                    GL.Vertex3(tileVerts[pA + 0]
-                        , tileVerts[pA + 1]
-                        , tileVerts[pA + 2]);
-
-                    GL.Vertex3(tileVerts[pB + 0]
-                        , tileVerts[pB + 1]
-                        , tileVerts[pB + 2]);
-
-                    GL.Vertex3(tileVerts[pC + 0]
-                        , tileVerts[pC + 1]
-                        , tileVerts[pC + 2]);
-                }
-                GL.End();
-
-                // Not drawing boundaries since it would obscure other agent
-                // debug data.
-            }
-
-            Vector3 v = Vector3Util.GetVector(corridor.position);
-            DebugDraw.XMarker(v, 0.8f, baseColor);
-
-            v = Vector3Util.GetVector(corridor.target);
-            DebugDraw.XMarker(v, 0.8f, baseColor);
-            DebugDraw.Circle(v, 0.8f, baseColor);
-            DebugDraw.Circle(v, 0.4f, baseColor);
-            DebugDraw.Circle(v, 0.2f, baseColor);
         }
     }
 }

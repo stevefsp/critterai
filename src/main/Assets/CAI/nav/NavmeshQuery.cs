@@ -117,10 +117,9 @@ namespace org.critterai.nav
         /// <para>If the search box does not intersect any polygons the search
         /// will return success, but the result polyRef will be zero.  So always 
         /// check the result polyRef before using the nearest point data.</para>
-        /// <para>This method is not suitable for use with a large search
-        /// extents.  Specifically, this method may not return the correct 
-        /// result if the extents is so large that it overlaps
-        /// more than 128 polygons on the navigation mesh.</para>
+        /// <warning>This function is not suitable for large area searches.  If the search
+        /// extents overlaps more than 128 polygons it may return an invalid result.
+        /// </warning>
         /// <para>The detail mesh is used to correct the y-value of the nearest
         /// point.</para>
         /// </remarks>

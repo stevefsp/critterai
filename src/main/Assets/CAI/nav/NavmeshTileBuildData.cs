@@ -860,7 +860,7 @@ namespace org.critterai.nav
         /// Returns a copy of the vertex information for each polygon.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyVertCount * 3"/>]</param>
+        /// [Size: >= <see cref="PolyVertCount"/> * 3]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetPolyVerts(ushort[] buffer)
         {
@@ -878,7 +878,7 @@ namespace org.critterai.nav
         /// Returns a copy of polygon and neighbor information. 
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount * 2 * MaxVertsPerPoly"/>]</param>
+        /// [Size: >= <see cref="PolyCount"/>  * 2 * <see cref="MaxVertsPerPoly"/>]</param>
         /// <returns>The number of polygons returned, or -1 on error.</returns>
         public int GetPolys(ushort[] buffer)
         {
@@ -932,7 +932,7 @@ namespace org.critterai.nav
         /// Returns a copy of the sub-mesh data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount * 4"/>]</param>
+        /// [Size: >= <see cref="PolyCount"/>] * 4</param>
         /// <returns>The number of sub-meshes returned, or -1 on error.
         /// </returns>
         public int GetDetailMeshes(uint[] buffer)
@@ -951,7 +951,7 @@ namespace org.critterai.nav
         /// Returns a copy of the triangle/flag data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="DetailTriCount * 4"/>]</param>
+        /// [Size: >= <see cref="DetailTriCount"/> * 4]</param>
         /// <returns>The number of triangles returned, or -1 on error.</returns>
         public int GetDetailTris(byte[] buffer)
         {
@@ -969,7 +969,7 @@ namespace org.critterai.nav
         /// Returns a copy of the vertex data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="DetailVertCount * 3"/>]</param>
+        /// [Size: >= <see cref="DetailVertCount"/> * 3]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetDetailVerts(float[] buffer)
         {
@@ -987,7 +987,7 @@ namespace org.critterai.nav
         /// Returns a copy of the off-mesh connection vertices.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount * 3 * 2"/>]</param>
+        /// [Size: >= <see cref="ConnCount"/> * 6]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetConnVerts(float[] buffer)
         {

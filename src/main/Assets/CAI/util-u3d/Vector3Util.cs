@@ -230,8 +230,8 @@ namespace org.critterai
         /// <para>Essentially, one point defines the centroid of the cylinder 
         /// and the other in tested for inclusion.</para>
         /// </remarks>
-        /// <param name="u">A position.</param>
-        /// <param name="v">A position.</param>
+        /// <param name="a">A position.</param>
+        /// <param name="b">A position.</param>
         /// <param name="radius">The allowed radius on the xz-plane.</param>
         /// <param name="height">The allowed y-axis delta.</param>
         /// <returns>TRUE if the two vectors are within the xz-radius and 

@@ -24,8 +24,8 @@ using System;
 namespace org.critterai.nmgen.u3d.editor
 {
     /// <summary>
-    /// Options flags specifying the components to be included in a 
-    /// polygon component structure.
+    /// Option flags specifying the components to be included in a 
+    /// polygon mesh component structure.
     /// </summary>
     [Flags]
     public enum PolyMeshEditorFlags : uint

@@ -23,8 +23,8 @@ using UnityEngine;
 using org.critterai.nav;
 
 /// <summary>
-/// A set of <see cref="CrowdAvoidanceParams"/> configurations to be used
-/// with a <see cref="CrowdManager"/>.
+/// A set of <see cref="CrowdAvoidanceParams"/> configurations for use
+/// with a <see cref="CrowdManager"/> object.
 /// </summary>
 [AddComponentMenu("CAI/Avoidance Config Set")]
 public class AvoidanceConfigSet 

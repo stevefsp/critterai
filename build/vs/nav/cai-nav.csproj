@@ -37,8 +37,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\src\main\Assets\CAI\nav\CornerData.cs">
+      <Link>CornerData.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\PathCorridor.cs" />
-    <Compile Include="..\..\..\src\main\Assets\CAI\nav\CrowdCornerData.cs" />
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\CrowdLocalBoundaryData.cs" />
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\NavmeshTileHeader.cs" />
     <Compile Include="..\..\..\src\main\Assets\CAI\nav\NavmeshTile.cs" />
