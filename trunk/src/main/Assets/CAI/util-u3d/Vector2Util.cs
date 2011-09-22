@@ -163,7 +163,6 @@ namespace org.critterai
         /// <param name="u">Vector U.</param>
         /// <param name="vx">The x-value of the vector (vx, vy).</param>
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
-        /// <param name="vz">The z-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
         /// <returns>True if the provided vectors similar enough to be

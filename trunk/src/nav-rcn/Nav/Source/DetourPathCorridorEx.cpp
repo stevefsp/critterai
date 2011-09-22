@@ -26,190 +26,204 @@
 
 extern "C"
 {
-    EXPORT_API dtPathCorridor* dtpcAlloc(const int maxPath)
-    {
-        dtPathCorridor* corridor = new dtPathCorridor();
-        if (corridor)
-            corridor->init(maxPath);
-        return corridor;
-    }
+	EXPORT_API dtPathCorridor* dtpcAlloc(const int maxPath)
+	{
+		dtPathCorridor* corridor = new dtPathCorridor();
+		if (corridor)
+			corridor->init(maxPath);
+		return corridor;
+	}
 
-    EXPORT_API void dtpcFree(dtPathCorridor* corridor)
-    {
-        if (corridor)
-            corridor->~dtPathCorridor();
-    }
+	EXPORT_API void dtpcFree(dtPathCorridor* corridor)
+	{
+		if (corridor)
+			corridor->~dtPathCorridor();
+	}
 
-    EXPORT_API void dtpcReset(dtPathCorridor* corridor
-            , dtPolyRef ref, const float* pos)
-    {
-        if (corridor && pos)
-            corridor->reset(ref, pos);
-    }
+	EXPORT_API void dtpcReset(dtPathCorridor* corridor
+			, dtPolyRef ref, const float* pos)
+	{
+		if (corridor && pos)
+			corridor->reset(ref, pos);
+	}
 
-    EXPORT_API int dtpcFindCorners(dtPathCorridor* corridor
-        , float* cornerVerts
-        , unsigned char* cornerFlags
-        , dtPolyRef* cornerPolys
-        , const int maxCorners
-        , dtNavMeshQuery* navquery
-        , const dtQueryFilter* filter)
-    {
-        if (corridor)
-            return corridor->findCorners(cornerVerts
-                , cornerFlags
-                , cornerPolys
-                , maxCorners
-                , navquery
-                , filter);
+	EXPORT_API int dtpcFindCorners(dtPathCorridor* corridor
+		, float* cornerVerts
+		, unsigned char* cornerFlags
+		, dtPolyRef* cornerPolys
+		, const int maxCorners
+		, dtNavMeshQuery* navquery
+		, const dtQueryFilter* filter)
+	{
+		if (corridor)
+			return corridor->findCorners(cornerVerts
+				, cornerFlags
+				, cornerPolys
+				, maxCorners
+				, navquery
+				, filter);
 
-        return 0;
-    }
+		return 0;
+	}
 
 	 EXPORT_API void dtpcOptimizePathVisibility(dtPathCorridor* corridor
-         , const float* next
-         , const float pathOptimizationRange
-         , dtNavMeshQuery* navquery
-         , const dtQueryFilter* filter)
-     {
-        if (corridor)
-            corridor->optimizePathVisibility(next
-            , pathOptimizationRange
-            , navquery
-            , filter);
-     }
+		 , const float* next
+		 , const float pathOptimizationRange
+		 , dtNavMeshQuery* navquery
+		 , const dtQueryFilter* filter)
+	 {
+		if (corridor)
+			corridor->optimizePathVisibility(next
+			, pathOptimizationRange
+			, navquery
+			, filter);
+	 }
 
 	 EXPORT_API bool dtpcOptimizePathTopology(dtPathCorridor* corridor
-         , dtNavMeshQuery* navquery
-         , const dtQueryFilter* filter)
-     {
-        if (corridor)
-            return corridor->optimizePathTopology(navquery, filter);
-        return false;
-     }
+		 , dtNavMeshQuery* navquery
+		 , const dtQueryFilter* filter)
+	 {
+		if (corridor)
+			return corridor->optimizePathTopology(navquery, filter);
+		return false;
+	 }
 	
 	 EXPORT_API bool dtpcMoveOverOffmeshConnection(dtPathCorridor* corridor
-         , dtPolyRef offMeshConRef
-         , dtPolyRef* refs
-         , float* startPos
-         , float* endPos
-         , dtNavMeshQuery* navquery)
-     {
-        if (corridor)
-            return corridor->moveOverOffmeshConnection(offMeshConRef
-            , refs
-            , startPos
-            , endPos
-            , navquery);
-        return false;
-     }
+		 , dtPolyRef offMeshConRef
+		 , dtPolyRef* refs
+		 , float* startPos
+		 , float* endPos
+		 , dtNavMeshQuery* navquery)
+	 {
+		if (corridor)
+			return corridor->moveOverOffmeshConnection(offMeshConRef
+			, refs
+			, startPos
+			, endPos
+			, navquery);
+		return false;
+	 }
 	
-	 EXPORT_API void dtpcMovePosition(dtPathCorridor* corridor
-         , const float* npos
-         , dtNavMeshQuery* navquery
-         , const dtQueryFilter* filter
-         , float* pos)
-     {
-        if (!corridor)
-            return;
+	 EXPORT_API dtPolyRef dtpcMovePosition(dtPathCorridor* corridor
+		 , const float* npos
+		 , dtNavMeshQuery* navquery
+		 , const dtQueryFilter* filter
+		 , float* pos)
+	 {
+		if (!corridor)
+			return 0;
 
-        corridor->movePosition(npos, navquery, filter);
-        if (pos)
-            dtVcopy(pos, corridor->getPos());
-     }
+		corridor->movePosition(npos, navquery, filter);
 
-	 EXPORT_API void dtpcMoveTargetPosition(dtPathCorridor* corridor
-         , const float* npos
-         , dtNavMeshQuery* navquery
-         , const dtQueryFilter* filter
-         , float* pos)
-     {
-        if (!corridor)
-            return;
+		if (pos)
+			dtVcopy(pos, corridor->getPos());
 
-        corridor->moveTargetPosition(npos, navquery, filter);
-        if (pos)
-            dtVcopy(pos, corridor->getTarget());
-     }
+		return corridor->getFirstPoly();
+	 }
+
+	 EXPORT_API dtPolyRef dtpcMoveTargetPosition(dtPathCorridor* corridor
+		 , const float* npos
+		 , dtNavMeshQuery* navquery
+		 , const dtQueryFilter* filter
+		 , float* pos)
+	 {
+		if (!corridor)
+			return 0;
+
+		corridor->moveTargetPosition(npos, navquery, filter);
+
+		if (pos)
+			dtVcopy(pos, corridor->getTarget());
+
+		return corridor->getLastPoly();
+
+	 }
 	
 	 EXPORT_API void dtpcSetCorridor(dtPathCorridor* corridor
-         , const float* target
-         , const dtPolyRef* polys
-         , const int npolys)
-     {
-        if (corridor)
-            corridor->setCorridor(target, polys, npolys);
-     }
+		 , const float* target
+		 , const dtPolyRef* polys
+		 , const int npolys)
+	 {
+		if (corridor)
+			corridor->setCorridor(target, polys, npolys);
+	 }
 	
-	 EXPORT_API bool dtpcGetPos(dtPathCorridor* corridor
-         , float* pos)
-     {
-        if (!corridor || !pos)
-            return false;
+	 EXPORT_API dtPolyRef dtpcGetPos(dtPathCorridor* corridor
+		 , float* pos)
+	 {
+		if (!corridor || !pos)
+			return 0;
 
-        dtVcopy(pos, corridor->getPos());
-        return true;
-     }
+		dtVcopy(pos, corridor->getPos());
+		return corridor->getFirstPoly();
+	 }
 
-	 EXPORT_API bool dtpcGetTarget(dtPathCorridor* corridor
-         , float* target)
-     {
-        if (!corridor || !target)
-            return false;
+	 EXPORT_API dtPolyRef dtpcGetTarget(dtPathCorridor* corridor
+		 , float* target)
+	 {
+		if (!corridor || !target)
+			return 0;
 
-        dtVcopy(target, corridor->getTarget());
-        return true;
-     }
-     	
+		dtVcopy(target, corridor->getTarget());
+		return corridor->getLastPoly();
+	 }
+	 	
 	 EXPORT_API dtPolyRef dtpcGetFirstPoly(dtPathCorridor* corridor)
-     {
-        if (corridor)
-            return corridor->getFirstPoly();
-        return 0;
-     }
+	 {
+		if (corridor)
+			return corridor->getFirstPoly();
+		return 0;
+	 }
+
+	 EXPORT_API dtPolyRef dtpcGetLastPoly(dtPathCorridor* corridor)
+	 {
+		if (corridor)
+			return corridor->getLastPoly();
+		return 0;
+	 }
 	
 	 EXPORT_API int dtpcGetPath(dtPathCorridor* corridor
-         , dtPolyRef* path
-         , int maxPath)
-     {
-        if (!corridor || !path || maxPath < 1)
-            return 0;
+		 , dtPolyRef* path
+		 , int maxPath)
+	 {
+		if (!corridor || !path || maxPath < 1)
+			return 0;
 
-        int count = dtMin(maxPath, corridor->getPathCount());
+		int count = dtMin(maxPath, corridor->getPathCount());
 
-        memcpy(path, corridor->getPath(), sizeof(dtPolyRef) * count);
+		memcpy(path, corridor->getPath(), sizeof(dtPolyRef) * count);
 
-        return count;
-     }
+		return count;
+	 }
 
 	 EXPORT_API int dtpcGetPathCount(dtPathCorridor* corridor)
-     {
-        if (corridor)
-            return corridor->getPathCount();
-        return 0;
-     }
+	 {
+		if (corridor)
+			return corridor->getPathCount();
+		return 0;
+	 }
 
-    EXPORT_API bool dtpcGetData(dtPathCorridor* corridor
-        , rcnPathCorridorData* result)
-    {
-        if (!corridor 
-            || !result 
-            || corridor->getPathCount() > MAX_RCN_PATH_CORRIDOR_SIZE)
-        {
-            return false;
-        }
+	EXPORT_API bool dtpcGetData(dtPathCorridor* corridor
+		, rcnPathCorridorData* result)
+	{
+		if (!corridor 
+			|| !result 
+			|| corridor->getPathCount() > MAX_RCN_PATH_CORRIDOR_SIZE)
+		{
+			return false;
+		}
 
-        int count = corridor->getPathCount();
+		int count = corridor->getPathCount();
 
-        result->pathCount = count;
-        dtVcopy(result->position, corridor->getPos());
-        dtVcopy(result->target, corridor->getTarget());
-        memcpy(&result->path[0]
-            , corridor->getPath()
-            , sizeof(dtPolyRef) * count);
+		result->pathCount = count;
+		dtVcopy(result->position, corridor->getPos());
+		dtVcopy(result->target, corridor->getTarget());
+		memcpy(&result->path[0]
+			, corridor->getPath()
+			, sizeof(dtPolyRef) * count);
 
-        return true;
-    }
+		return true;
+	}
 
 	EXPORT_API bool dtpcIsValid(dtPathCorridor* corridor
 		, const int maxLookAhead

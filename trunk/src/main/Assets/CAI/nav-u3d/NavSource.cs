@@ -26,10 +26,18 @@ using org.critterai.nav.u3d;
 
 /// <summary>
 /// A centralized component used to configure and share common navigation
-/// objects.
+/// resources.
 /// </summary>
 /// <remarks>
-/// <para>The navigation objects are initialized during the Awake operation.</para>
+/// <para> Any request for the navigation objects will result in an
+/// immediate initialization.  Otherwise the navigation objects are 
+/// automaticaly initialized during the <c>Awake()</c> operation.</para>
+/// <para>
+/// The configuration is essentially immutable after initialization.
+/// E.g. Changing the navigation mesh source, the maximum query nodes, etc.
+/// has no effect.  Only misuse, such as manually disposing a resource,
+/// will trigger a reinitialization.
+/// </para>
 /// </remarks>
 [System.Serializable]
 [AddComponentMenu("CAI/Navigation Source")]
@@ -38,12 +46,13 @@ public class NavSource
 {
     /// <summary>
     /// The navigation mesh to be used by the query objects and
-    /// <see cref="Crowd"/>.
+    /// <see cref="CrowdManager"/>.
     /// </summary>
     public BakedNavmesh navmeshSource = null;
 
     /// <summary>
-    /// The avoidance configuration to be used by the <see cref="Crowd"/>.
+    /// The avoidance configuration to be used by the 
+    /// <see cref="CrowdManager"/>.
     /// </summary>
     /// <remarks>
     /// <para>Required if <see cref="enableCrowdManager"/> is TRUE.</para>
@@ -53,148 +62,112 @@ public class NavSource
     /// <summary>
     /// The maximum search nodes to use for the query object.
     /// </summary>
-    /// <remarks><para>Does not apply to the <see cref="Crowd"/>.
+    /// <remarks><para>Does not apply to the <see cref="CrowdManager"/>.
     /// </para></remarks>
     public int maxQueryNodes = 2048;
 
     /// <summary>
-    /// TRUE if the <see cref="Crowd"/> should be created.
+    /// TRUE if the <see cref="CrowdManager"/> should be created.
     /// </summary>
     public bool enableCrowdManager = true;
 
     /// <summary>
-    /// The maximum number agents the <see cref="Crowd"/> will support.
+    /// The maximum number agents the <see cref="CrowdManager"/> will support.
     /// </summary>
     public int maxCrowdAgents = 10;
 
     /// <summary>
-    /// The maximum agent radius the <see cref="Crowd"/> will support.
+    /// The maximum agent radius the <see cref="CrowdManager"/> will support.
     /// </summary>
     public float maxAgentRadius = 0.5f;
 
     /// <summary>
-    /// The initial value of <see cref="DefaultExtents"/>.
+    /// The initial value of the search extents.
     /// </summary>
     /// <remarks>
-    /// <para>Not applicable if <see cref="enableCrowdManager"/> is TRUE. In that
-    /// case the <see cref="Crowd"/> extents will be used.</para>
+    /// <para>This field is ignored if <see cref="enableCrowdManager"/> is TRUE. 
+    /// In that case the <see cref="CrowdManager"/> extents will be used.</para>
     /// </remarks>
     public Vector3 initialExtents = new Vector3(1, 1, 1);
 
     [System.NonSerialized]
-    private float[] mDefaultExtents = null;
-
-    [System.NonSerialized]
-    private Navmesh mNavmeshRoot = null;
-
-    [System.NonSerialized]
-    private NavmeshQuery mQueryRoot = null;
-
-    [System.NonSerialized]
-    private CrowdManager mCrowd = null;
-
-    [System.NonSerialized]
-    private NavmeshQueryFilter mDefaultFilter = null;
-
-    [System.NonSerialized]
-    private U3DNavmeshQuery mQuery = null;
+    private NavGroup mNavGroup = new NavGroup();
 
     /// <summary>
     /// TRUE if the the manager's assets have been created and are ready for
     /// use.
     /// </summary>
     /// <remarks>
-    /// <para>If not manually initialized ealier, the manager is initialized 
-    /// during its Awake() method. So the assest are expected to be available 
-    /// during the clients' Start() method.
+    /// <para>This property doen't only indicate if the resources have been
+    /// initialized.  It also indicates if any have been manually disposed.
     /// </para>
     /// </remarks>
     public bool IsActive
     {
         get
         {
-            return (mQueryRoot != null
-                && !mQueryRoot.IsDisposed
-                && !mNavmeshRoot.IsDisposed
-                && (mCrowd == null 
-                    || (!mCrowd.IsDisposed && enabled)));
+            return (mNavGroup.query != null
+                && !mNavGroup.query.IsDisposed
+                && !mNavGroup.mesh.IsDisposed
+                && (mNavGroup.crowd == null 
+                    || (!mNavGroup.crowd.IsDisposed)));
         }
     }
 
     /// <summary>
-    /// The navigation mesh used by the query and <see cref="Crowd"/> objects.
+    /// The navigation resources provided by the source.
     /// </summary>
-    public Navmesh Navmesh { get { return mNavmeshRoot; } }
-
-    /// <summary>
-    /// The root <see cref="NavmeshQuery"/> object used by 
-    /// <see cref="Query"/>.
-    /// </summary>
-    public NavmeshQuery QueryRoot { get { return mQueryRoot; } }
-
-    /// <summary>
-    /// The shared <see cref="U3DNavmeshQuery"/> object.
-    /// </summary>
-    public U3DNavmeshQuery Query { get { return mQuery; } }
-
-    /// <summary>
-    /// The shared <see cref="CrowdManager"/> object.
-    /// </summary>
-    public CrowdManager Crowd { get { return mCrowd; } }
-
-    /// <summary>
-    /// The shared default extents. (A reference, not a copy.)
-    /// [Form: (x, y, x)]
-    /// </summary>
-    public float[] DefaultExtents { get { return mDefaultExtents; } }
-
-    /// <summary>
-    /// The default shared <see cref="NavmeshQueryFilter"/>.
-    /// </summary>
-    public NavmeshQueryFilter DefaultFilter 
-    { 
-        get { return mDefaultFilter; }
-        set { mDefaultFilter = value; }
+    /// <remarks>
+    /// <para>The resources will be initialized if they are not already
+    /// available.</para>
+    /// </remarks>
+    public NavGroup NavGroup
+    {
+        get
+        {
+            if (!IsActive)
+                InitializeOnce();
+            return mNavGroup;
+        }
     }
 
     /// <summary>
-    /// Creates all navigation objects.
+    /// Creates all navigation objects. (Don't call if already active!)
     /// </summary>
-    /// <remarks>
-    /// <para>If active, all existing objects are disposed and new
-    /// objects created.</para>
-    /// </remarks>
-    /// <returns>True if all objects were successfully created.</returns>
-    public bool Initialize()
+    private bool InitializeOnce()
     {
         if (navmeshSource == null || !navmeshSource.HasNavmesh)
         {
-            Debug.LogError(name + ": Aborted query creation. No navmesh.");
-            return false;
-        }
-
-        Reset();
-
-        mNavmeshRoot = navmeshSource.GetNavmesh();
-        NavStatus status
-            = NavmeshQuery.Build(mNavmeshRoot, maxQueryNodes, out mQueryRoot);
-        if (NavUtil.Failed(status))
-        {
-            mNavmeshRoot = null;
-            Debug.LogError(name + ": Aborted query creation: "
-                + status.ToString());
+            Debug.LogError(name 
+                + ": Aborted initialization. Souce has no navmesh.");
             return false;
         }
 
         if (enableCrowdManager && avoidanceSource == null)
         {
-            mNavmeshRoot = null;
-            Debug.LogError(name + ": Aborted crowd manager creation."
-                + " No avoidance configuration.");
+            Debug.LogError(name + ": Aborted initialization."
+                + " Avoidance configuration is not available.");
             return false;
         }
 
-        mQuery = new U3DNavmeshQuery(mQueryRoot);
+        Navmesh mNavmeshRoot = navmeshSource.GetNavmesh();
+        NavmeshQuery mQueryRoot;
+        NavStatus status
+            = NavmeshQuery.Build(mNavmeshRoot, maxQueryNodes, out mQueryRoot);
+        if (NavUtil.Failed(status))
+        {
+            mNavmeshRoot = null;
+            Debug.LogError(name 
+                + ": Aborted initialization. Failed query creation: "
+                + status.ToString());
+            return false;
+        }
+
+        U3DNavmeshQuery mQuery = new U3DNavmeshQuery(mQueryRoot);
+        CrowdManager mCrowd = null;
+
+        float[] mDefaultExtents;
+        NavmeshQueryFilter mDefaultFilter;
 
         if (enableCrowdManager)
         {
@@ -217,34 +190,19 @@ public class NavSource
             mDefaultFilter = new NavmeshQueryFilter();
         }
 
-        return true;
-    }
+        mNavGroup = new NavGroup(mNavmeshRoot
+            , mQuery
+            , mCrowd
+            , mDefaultFilter
+            , mDefaultExtents, false);
 
-    /// <summary>
-    /// Disposes of all navigation objects.
-    /// </summary>
-    public void Reset()
-    {
-        if (IsActive)
-        {
-            mDefaultExtents = null;
-            if (mCrowd != null)
-                mCrowd.RequestDisposal();
-            mCrowd = null;
-            mDefaultFilter.RequestDisposal();
-            mDefaultFilter = null;
-            mQueryRoot.RequestDisposal();
-            mQueryRoot = null;
-            mQuery = null;
-            mNavmeshRoot.RequestDisposal();
-            mNavmeshRoot = null;
-        }
+        return true;
     }
 
 	void Awake() 
     {
         if (IsActive)
             return;
-        Initialize();
+        InitializeOnce();
 	}
 }

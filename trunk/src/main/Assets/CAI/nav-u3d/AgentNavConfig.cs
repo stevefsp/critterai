@@ -39,9 +39,9 @@ public class AgentNavConfig
      */
 
     /// <summary>
-    /// The <see cref="NavSource"/> that agents are to use.
+    /// The agent configuration set. (Optional)
     /// </summary>
-    public NavSource manager;
+    public AvoidanceConfigSet configSet = null;
 
     /// <summary>
     /// Agent radius. [Limit: >= 0]

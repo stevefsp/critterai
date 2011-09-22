@@ -114,10 +114,8 @@ public sealed class NavSourceWizard
         if (includeAgentConfig)
         {
             GameObject goAgentConfig = new GameObject("AgentConfig");
-            AgentNavConfig agentConfig 
-                = goAgentConfig.AddComponent<AgentNavConfig>();
+            goAgentConfig.AddComponent<AgentNavConfig>();
             goAgentConfig.transform.parent = goData.transform;
-            agentConfig.manager = data;
         }
 
         return goData;

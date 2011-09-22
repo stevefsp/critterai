@@ -176,5 +176,28 @@ namespace org.critterai.nav
                 NavmeshQueryFilterEx.dtqfFree(root);
             root = IntPtr.Zero;
         }
+
+        /// <summary>
+        /// Creates a new filter with the same state as the current filter.
+        /// </summary>
+        /// <returns>A clone of the current filter.</returns>
+        public NavmeshQueryFilter Clone()
+        {
+            if (IsDisposed)
+                return null;
+
+            int count = this.AreaCount;
+
+            NavmeshQueryFilter result = new NavmeshQueryFilter(count);
+            result.ExcludeFlags = this.ExcludeFlags;
+            result.IncludeFlags = this.IncludeFlags;
+
+            for (int i = 0; i < count; i++)
+            {
+                result[i] = this[i];
+            }
+
+            return result;
+        }
     }
 }

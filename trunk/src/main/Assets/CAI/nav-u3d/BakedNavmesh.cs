@@ -27,10 +27,6 @@ using org.critterai.nav.u3d;
 /// A navigation mesh that is baked at design time and creates a
 /// <see cref="Navmesh"/> object at run-time.
 /// </summary>
-/// <remarks>
-/// <para>This component provides a means of serializing navigation mesh data
-/// in the Unity.</para>
-/// </remarks>
 [System.Serializable]
 [ExecuteInEditMode]
 [AddComponentMenu("CAI/Baked Navmesh")]
@@ -56,7 +52,7 @@ public sealed class BakedNavmesh
     private byte[] mDataPack = null;
 
     /// <summary>
-    /// TRUE to display the debug visualization.
+    /// True to display the debug visualization.
     /// </summary>
     public bool DisplayMesh
     {
