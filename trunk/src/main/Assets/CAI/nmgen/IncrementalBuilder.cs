@@ -109,6 +109,14 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <remarks>
+        /// <para>WARNING: Don't forget to set the easily overlooked tile size
+        /// and bounds properties in the <paramref name="config"/>
+        /// object!  These properties don't have any valid default values 
+        /// and using the configuration without setting them will result in 
+        /// empty meshes.
+        /// </para>
+        /// </remarks>
         /// <param name="trace">TRUE if detailed trace messages should be
         /// recored during the build process.</param>
         /// <param name="config">The build configuration.</param>

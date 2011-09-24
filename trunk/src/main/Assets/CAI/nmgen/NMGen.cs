@@ -182,6 +182,14 @@ namespace org.critterai.nmgen
         /// Creates <see cref="PolyMesh"/> and <see cref="PolyMeshDetail"/>
         /// data from the specified source geometry.
         /// </summary>
+        /// <remarks>
+        /// <para>WARNING: Don't forget to set the easily overlooked tile size
+        /// and bounds properties in the <paramref name="config"/>
+        /// object!  These properties don't have any valid default values 
+        /// and using the configuration without setting them will result in 
+        /// empty meshes.
+        /// </para>
+        /// </remarks>
         /// <param name="config">The configuration to use for the build.</param>
         /// <param name="buildFlags">Flags indicating the optional build
         /// steps to peform.</param>
