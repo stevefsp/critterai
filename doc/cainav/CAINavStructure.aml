@@ -221,7 +221,7 @@
 		</para>
 		
 		<para>Unity Component: 
-		<codeEntityReference qualifyHint="false">T:NavManager</codeEntityReference>
+		<codeEntityReference qualifyHint="false">T:NavSource</codeEntityReference>
 		</para>
        
         <mediaLink>
@@ -273,7 +273,7 @@
 		</para>
 		
 		<para>Unity Component: 
-		<codeEntityReference qualifyHint="false">T:NavManager</codeEntityReference>
+		<codeEntityReference qualifyHint="false">T:NavSource</codeEntityReference>
 		</para>
         
         <alert class="warning">

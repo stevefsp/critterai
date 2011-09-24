@@ -26,7 +26,7 @@
       
         <para>Consider an <token>AABB</token> at an arbitrary location in 
         <externalLink>
-	      <linkText>euclidian space</linkText>
+	      <linkText>euclidean space</linkText>
 	      <linkUri>http://en.wikipedia.org/wiki/Euclidean_space</linkUri>
 	      <linkTarget>_blank</linkTarget>
 	    </externalLink>. Its bounds are defined by a minimum and maximum vertex.</para>
@@ -113,6 +113,17 @@
 	  </content>
 	  
 	</section>
+    
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference>
+	
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGenIntro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->
+		<link xlink:href="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6"/> <!-- NMGenBuildRecommendations -->
+	
+	</relatedTopics>
     
   </developerConceptualDocument>
 </topic>

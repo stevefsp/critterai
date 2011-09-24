@@ -268,5 +268,18 @@
 	    
 	  </section>
     
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>	
+		<codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
+
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGenIntro -->
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
+		<link xlink:href="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6"/> <!-- NMGenBuildRecommendations -->
+	
+	</relatedTopics>
+    
   </developerConceptualDocument>
 </topic>

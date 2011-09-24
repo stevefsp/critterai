@@ -303,15 +303,17 @@
     
     <relatedTopics>
     
-    <codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>
-    <codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
-    <codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
-    <codeEntityReference>T:org.critterai.nmgen.u3d.NMGenBuildParams</codeEntityReference>
-    <codeEntityReference>T:NMGenBuildConfig</codeEntityReference>
-    
-    <link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/>    
-    <link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/>
-    
+			<codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>
+			<codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nmgen.u3d.NMGenBuildParams</codeEntityReference>
+			<codeEntityReference>T:NMGenBuildConfig</codeEntityReference> <!-- In root namespace. -->
+			
+			<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGenIntro -->
+			<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
+			<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->
+			<link xlink:href="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6"/> <!-- NMGenBuildRecommendations -->
+
     </relatedTopics>
     
   </developerConceptualDocument>

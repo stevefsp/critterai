@@ -5,18 +5,27 @@
     <ddue:linkUri>http://code.google.com/p/critterai/downloads/list</ddue:linkUri>
 </ddue:externalLink></item>
   <item id="CAINavExplorerDownload"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>Feature Explorer</ddue:linkText>
-    <ddue:linkUri>http://www.critterai.org/projects/cainav/CAINav-FeatureExplorer.zip</ddue:linkUri>
+    <ddue:linkText>Sample Pack</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/downloads/list</ddue:linkUri>
 </ddue:externalLink></item>
+  <item id="CrowdManager"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.CrowdManager
+</ddue:codeEntityReference></item>
   <item id="DetailMesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nmgen.PolyMeshDetail</ddue:codeEntityReference></item>
   <item id="Navmesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nav.Navmesh
 </ddue:codeEntityReference></item>
+  <item id="NavmeshQuery"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.NavmeshQuery
+</ddue:codeEntityReference></item>
+  <item id="PathCorridor"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.PathCorridor
+</ddue:codeEntityReference></item>
   <item id="PolyMesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nmgen.PolyMesh
 </ddue:codeEntityReference></item>
-  <item id="CrowdManager"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-T:org.critterai.nav.CrowdManager
+  <item id="NavmeshQueryFilter"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nav.NavmeshQueryFilter
 </ddue:codeEntityReference></item>
 </content>

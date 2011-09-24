@@ -23,9 +23,22 @@
       
         <para>Implemented by <token>PolyMesh</token></para>
         
-        <para>The polygon mesh is made up of convex polygons with between three and six vertices. 
-        Each polygon also includes edge link data, and user-defined polygon flags and area ids.
-        Flags and area ids provide per agent accessibility and traversal cost information.</para>
+        <para>The polygon mesh is made up of convex polygons with between three and 
+		<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference>
+		vertices. Each polygon also includes edge link data, and user-defined area ids and polygon flags.</para>
+		
+		<para>Area Ids and Flags:</para>
+		
+		<para>The area ids will be used to determine traversal cost in the navigation mesh.  So they are normally
+		assigned based on surface type.  E.g. Difficult to move across versus easy to move across.</para>
+		
+		<para>The flags will be used to determine accessibility of the polygon, allowing polygons to be turned on
+		and off depending on a navigation filter.  (See <token>NavmeshQueryFilter</token>).</para>
+		
+		<para>Flags and area ids are normally defined in a generic fashion since their effect on navigation is
+		specific to the filter used by individual navigation clients, not a global filter.  So, for example, one
+		client can consider a flag to indicate the polygon is blocked, while another client can ignore the flag.
+		Also each client can use different costs for the same area id.</para>
         
         <para>For a polygon mesh created using the standard build process:</para>
         
@@ -143,6 +156,20 @@
       </content>
       
     </section>
+
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nmgen.NMGen</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
+	
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->
+		<link xlink:href="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6"/> <!-- NMGenBuildRecommendations -->
+		<link xlink:href="fa09a9f3-7d31-4441-8f03-80adfddf8d48"/> <!-- NMGenUnity -->
+	
+	</relatedTopics>
 
   </developerConceptualDocument>
 </topic>
