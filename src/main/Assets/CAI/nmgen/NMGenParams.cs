@@ -35,14 +35,18 @@ namespace org.critterai.nmgen
     /// build process being used/implemented.</para>
     /// <para>There is no such thing as a 'zero' configuration.  So the
     /// default constructor initializes all values to basic valid values.</para>
+    /// <para>WARNING: Don't forget to set the easily overlooked tile size
+    /// and bounds properties before using the configutration!  These
+    /// properties don't have any valid default values and using the 
+    /// configuration without setting them will result in empty meshes.
+    /// </para>
     /// <para>All fields are public in order to support Unity serialization.  
     /// But it is best to set the fields using the properties since
     /// they will enforce valid min/max limits.</para>
     /// <para>All properties and methods will auto-limit parameters
     /// to valid values. For example, if the <see cref="TileSize"/> property
     /// is set to -1, the field will be limited to the minimum allowed 
-    /// value of 0.
-    /// </para>
+    /// value of 0.</para>
     /// <para>Field members are minimally documented.  See the 
     /// property member documentation for details.</para>
     /// <para>Compatible with Unity serialization.</para>
