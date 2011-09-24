@@ -21,24 +21,20 @@
 		<listItem>Add a <codeEntityReference>T:BakedNavmesh</codeEntityReference> component to the 
 		scene and assign the NavmeshTileBridge to it.</listItem>
 		<listItem>Bake the navigation mesh.</listItem>
-		<listItem>Add a <codeEntityReference>T:NavManager</codeEntityReference> to the scene and assign
+		<listItem>Add a <codeEntityReference>T:NavSource</codeEntityReference> to the scene and assign
 		the BakedNavmesh to it.</listItem>
 	  </list>
       
-      <para>At runtime, the <codeEntityReference>T:NavManager</codeEntityReference> provides the following objects
+      <para>At runtime, the <codeEntityReference>T:NavSource</codeEntityReference> provides the following objects
       for use by your scripts.</para>
       
       <list class="bullet">
         <listItem><codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference></listItem>
         <listItem><codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference></listItem>
         <listItem><codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference></listItem>
+        <listItem><codeEntityReference>T:org.critterai.nav.CrowdManager</codeEntityReference> (Optional)</listItem>
         <listItem>An extents array. (Used by various query methods.)</listItem>
       </list>
-
-      <alert class="note">
-        <para>The navigation manager also provides a <token>CrowdManager</token> object.  But the 
-        CrowdManager is currently experimental.</para>
-      </alert>
       
     </introduction>
    
@@ -48,9 +44,9 @@
       
         <para>While you can add each component to the scene manually, the menu items under 
         <ui>GameObject->Create CAI</ui> make it much easier. The 
-        <ui>Navigation Manger</ui> and <ui>Navmesh</ui> menu items provide various options.</para>
+        <ui>Navigation Source</ui> and <ui>Navmesh</ui> menu items provide various options.</para>
 
-        <para>If you select the <ui>Navigation Manager</ui> menu item you'll get the following dialog:</para>
+        <para>If you select the <ui>Navigation Source</ui> menu item you'll get the following dialog:</para>
         
         <alert class="note">
         <para>The avoidance and agent configuration options only apply to the 
@@ -79,13 +75,22 @@
       
         <para>While the Unity components help get you started, you'll still need scripting to implement use of
         the navigation features.  To do this you'll need to become familiar with
-        <codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>.  
-        Besides the API documentation, a good place to start is to download and play around 
-        with <link xlink:href="c7241703-3cf0-49c9-ad94-4b00d6c75741#featureExplorer">Feature Explorer</link>.</para>
+        <codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>.</para>
+        
+        <para>A good place to start is to download and play around with the <token>CAINavExplorerDownload</token> demos.
+        You can also get an overview at <link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/>.</para>
         
       </content>
      
     </section>
+ 
+		<relatedTopics>
+		
+			<link xlink:href="e81146c4-0143-4cde-ad55-fe1fd1049cbc"/> <!-- UnityGettingStarted -->
+			<link xlink:href="fa09a9f3-7d31-4441-8f03-80adfddf8d48"/> <!-- NMGenUnity -->
+			<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
+		
+		</relatedTopics>
  
   </developerConceptualDocument>
 </topic>

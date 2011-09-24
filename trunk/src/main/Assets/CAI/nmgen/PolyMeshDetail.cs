@@ -191,7 +191,7 @@ namespace org.critterai.nmgen
         /// Loads the data into the mesh buffers, overwriting existing content.
         /// </summary>
         /// <param name="data">The data to load.</param>
-        /// <remarks>TRUE if the load was successful.</remarks>
+        /// <returns>TRUE if the load was successful.</returns>
         public bool Load(PolyMeshDetailData data)
         {
             if (IsDisposed
