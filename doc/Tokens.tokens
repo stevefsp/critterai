@@ -32,4 +32,8 @@
     <ddue:linkText>Unity Pro</ddue:linkText>
     <ddue:linkUri>http://unity3d.com/</ddue:linkUri>
 </ddue:externalLink></item>
+  <item id="IssuesList"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+    <ddue:linkText>Issues List</ddue:linkText>
+    <ddue:linkUri>http://code.google.com/p/critterai/issues/list</ddue:linkUri>
+</ddue:externalLink></item>
 </content>

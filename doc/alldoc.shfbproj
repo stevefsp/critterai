@@ -103,8 +103,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
+    <None Include="cainav\CAINavOtherPlatforms.aml" />
     <None Include="cainav\nav\CrowdManager.aml" />
-    <None Include="cainav\1b3cfec9-7cd3-444c-b83d-dfc551454822.aml" />
     <None Include="cainav\nav\PathCorridor.aml" />
     <None Include="cainav\nav\NavmeshQuery.aml" />
     <None Include="cainav\nav\Nav.aml" />
