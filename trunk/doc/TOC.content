@@ -17,4 +17,5 @@
     <Topic id="fa09a9f3-7d31-4441-8f03-80adfddf8d48" visible="True" title="The NMGen Unity Extensions" tocTitle="NMGen Extensions" linkText="The NMGen Unity Extensions" />
     <Topic id="f2198e94-b490-4919-ad15-e4c9b82ae1e9" visible="True" title="The Navigation Unity Extensions" tocTitle="Navigation Extensions" linkText="The Navigation Unity Extensions" />
   </Topic>
+  <Topic id="bb02b5c5-1ea9-4ae4-bc1f-ff0e446fb703" visible="True" title="CAINav on Non-Windows Platforms" tocTitle="Tips: Non-Windows Platforms" linkText="CAINav on Non-Windows Platforms" />
 </Topics>

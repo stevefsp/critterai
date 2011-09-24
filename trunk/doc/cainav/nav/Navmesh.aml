@@ -200,13 +200,15 @@
 		
 		<content>
 		
-			<para>The <token>Navmesh</token> class supports two types of serialization:  Standard .NET serialization using the ISerialization
-			interface, and byte serialization using the <codeEntityReference>M:org.critterai.nav.Navmesh.GetSerializedMesh</codeEntityReference> 
+			<para>The <token>Navmesh</token> class supports two types of serialization:  Standard .NET serialization using the 
+			<codeinline>ISerializable</codeinline> interface, and byte serialization using the 
+			<codeEntityReference>M:org.critterai.nav.Navmesh.GetSerializedMesh</codeEntityReference> 
 			method.  Both forms of serialization will save the structure and current state data of the mesh.</para>
 			
 			<para>Without going into details, selecting which type to use is simple:  If the navigation mesh will ever be used with <token>Unity</token> 
 			then always use the byte serialization method, even if you plan to implement your own custom serialization using .NET standards.  
-			The only time the .NET ISerialization interface should ever be used is if the navigation mesh will never be used in <token>Unity</token>.</para>
+			The only time the .NET <codeinline>ISerializable</codeinline> interface should ever be used is if the navigation mesh will never be 
+			used in <token>Unity</token>.</para>
 		
 			<para>Serializing alternate state data, without having to serialize the entire navigation mesh, is performed on a tile-by-tile basis.  Get the tile
 			from the mesh using the <codeEntityReference>M:org.critterai.nav.Navmesh.GetTile(System.Int32)</codeEntityReference> method, then use the
