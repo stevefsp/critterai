@@ -46,12 +46,14 @@ namespace org.critterai.nav
         CrowdSeparation = 4,
 
         /// <summary>
-        /// Undocumented.
+        /// Optimize visibility using 
+        /// <see cref="PathCorridor.OptimizePathVisibility(float[], float)"/> .
         /// </summary>
         OptimizeVis = 8,
 
         /// <summary>
-        /// Undocumented.
+        /// Optimize topology using 
+        /// <see cref="PathCorridor.OptimizePathTopology()"/>.
         /// </summary>
         OptimizeTopo = 16
     }

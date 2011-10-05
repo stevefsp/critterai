@@ -75,8 +75,8 @@
           class.</para>
         </alert>
         
-        <para>Triangle wrap direction is used for the detection of which face of the triangle is 
-        considered up. A picture is worth a thousand words. If your source geometry is wrapped differently 
+        <para>Triangle wrap direction on the xz-plane is used for the detection of which face of the triangle is 
+        considered up. (The y-axis is up/down.) A picture is worth a thousand words. If your source geometry is wrapped differently 
         than shown, then it will need to be translated into this format before use in the NMGen 
         build pipeline.</para>
         
@@ -121,7 +121,7 @@
       
       <content>
       
-        <para>The source geometry and build configuration is used to create two types of meshes. The 
+        <para>The source geometry and build configuration are used to create two types of meshes. The 
         polygon mesh provides the data needed for pathfinding operations. The detail mesh provides extra 
         height detail that is lacking in the polygon mesh. Together, these meshes provide the core structural
         data for the navigation mesh.</para>
@@ -275,11 +275,6 @@
 		<para>Unity Component: 
 		<codeEntityReference qualifyHint="false">T:NavSource</codeEntityReference>
 		</para>
-        
-        <alert class="warning">
-          <para>This feature is currently in an experimental state with little documentation. Only advanced 
-          users who are willing to figure it out on their own should attempt to use it.</para>
-        </alert>
         
       </content>
       

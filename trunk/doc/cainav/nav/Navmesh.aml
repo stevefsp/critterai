@@ -27,7 +27,7 @@
 		  <content>
 		  
 				<para>At the core of the navigation mesh is the tile. Tiles hold the vast majority of structural
-				and state information.  In fact, The <token>Navmesh</token> class is little more than a tile manager.
+				and state information.  In fact, the <token>Navmesh</token> class is little more than a tile manager.
 				It may consist of a single tile, or many tiles laid out in a grid that are swapped in and out
 				at runtime.</para>
 				
@@ -76,17 +76,17 @@
 				includes area ids and flags.</para>
 				
 				<para>Area ids are used to associate traversal cost to structural elements.  This effects pathfinding.  For example,
-				the area id representing marshland can have a higher cost than the area id representing hard surfaces.</para>
+				the area id representing marshland can have a higher cost than the area id representing hard surfaces such as roads.</para>
 				
 				<para>The flags can be used to control when a structural element is traversable.  For example, a
 				flag can be set on the polygon below a door to indicate that it is closed and locked.  Or a flag can indicate
 				that only agents of a particular type are allowed to traverse the element.</para>
 				
 				<para>It is important to note that area ids and flags have no meaning within the navigation mesh
-				itself.  The interpretation of the values are dependant on the particular <token>NavmeshQueryFilter</token>
+				itself.  The interpretation of the values is dependant on the particular <token>NavmeshQueryFilter</token>
 				used by each navigation client.  For example: One filter may define a cost of 10 for area id 5, while another may define 
 				a cost of 2 for the same id. One flag may be set when a door is closed with one filter checking for the flag during 
-				pathfinding, while another filter, used by a ghost, ignoring the flag completely.</para>
+				pathfinding, while another filter, used by a ghost, ignores the flag completely.</para>
 		
 		  </content>
 		

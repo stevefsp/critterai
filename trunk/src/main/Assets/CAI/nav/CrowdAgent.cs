@@ -160,12 +160,16 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Sets the move target for an agent.
+        /// Submits a new move request for the agent.
         /// </summary>
         /// <remarks>
         /// <para>This method is used when a new target is set.  Use 
-        /// <see cref="AdjustMoveTarget"/> when only small adjustments are 
+        /// <see cref="AdjustMoveTarget"/> when only small local adjustments are 
         /// needed. (Such as happens when following a moving target.)</para>
+        /// <para>The position will be constrained to the surface of the 
+        /// navigation mesh.</para>
+        /// <para>The request will be processed during the next 
+        /// <see cref="Update"/>.</para>
         /// </remarks>
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
@@ -182,12 +186,14 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Adjusts the position of an agent's move target.
+        /// Adjusts the position of an agent's current move target.
         /// </summary>
-        /// <remarks
-        /// ><para>This method expects small increments and is suitable
-        /// to call every frame.  (Such as is required when the target is
-        /// moving frequently.)</para></remarks>
+        /// <remarks>
+        /// <para>This method is used when to make small local adjustments to 
+        /// the current target. (Such as happens when following a moving 
+        /// target.) Use <see cref="RequestMoveTarget"/> when a new target is 
+        /// needed.</para>
+        /// </remarks>
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
