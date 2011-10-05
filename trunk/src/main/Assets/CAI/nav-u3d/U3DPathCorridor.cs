@@ -84,10 +84,10 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// The query filter used by the corridor.
         /// </summary>
-        public NavmeshQueryFilter Fitler
+        public NavmeshQueryFilter Filter
         {
-            get { return mRoot.Fitler; }
-            set { mRoot.Fitler = value; }
+            get { return mRoot.Filter; }
+            set { mRoot.Filter = value; }
         }
 
         /// <summary>
