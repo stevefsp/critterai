@@ -102,7 +102,7 @@
               <link xlink:href="#walkableStep">WalkableStep</link>
               for example.</para>
               
-              <para>>This parameters is primarily based on how far up/down the client can step.
+              <para>This parameter is based primarily on how far up/down the client can step.
               Start with <codeInline>maxClientStep/2.5</codeInline> and decrease the value as needed.</para>
               
               <para>Smaller values can result in a moderate increase in build times.  But the effect on 
@@ -140,7 +140,7 @@
 		    <para>Determines when a ledge in the source geometry can be traversed, rather than 
 		    acting as an obstruction.</para>
 		    
-		    <para>This parameters is normally based on how far up/down the client can step.  
+		    <para>This parameter is normally based on how far up/down the client can step.  
 		    Though often it needs to be set higher because of the way the source geometry is designed. 
 		    Start with <codeInline>ceil(maxClientStep/yCellSize)</codeInline> and adjust from there.</para>
 		    

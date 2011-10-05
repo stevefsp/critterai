@@ -71,10 +71,12 @@ namespace org.critterai.nav
         public float maxSpeed;
 
         /// <summary>
-        /// Defines how close a neighbor must be before it is considered
+        /// Defines how close a collision element must be before it is considered
         /// in steering behaviors. [Limit: > 0]
         /// </summary>
         /// <remarks>
+        /// <para>Collision elements include other agents and navigation mesh 
+        /// boundaries.</para>
         /// <para>The value is often based on the agent radius and/or
         /// and maximum speed.  E.g. radius * 8</para></remarks>
         public float collisionQueryRange;
@@ -83,9 +85,12 @@ namespace org.critterai.nav
         /// The path optimization range.
         /// </summary>
         /// <remarks>
+        /// <para>Only applicable if <see cref="updateFlags"/> includes the 
+        /// <see cref="CrowdUpdateFlags.OptimizeVis"/> flag.</para>
         /// <para>This value is often based on the agent radius. E.g. radius * 30
         /// </para>
         /// </remarks>
+        /// <seealso cref="PathCorridor.OptimizePathVisibility(float[], float)"/>
         public float pathOptimizationRange;
 
         /// <summary>

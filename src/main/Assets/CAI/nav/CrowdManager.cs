@@ -31,11 +31,39 @@ namespace org.critterai.nav
     /// Provides local steering behaviors for a group of agents.
     /// </summary>
     /// <remarks>
-    /// <para>It is important to remember that this class is meant to provide 
-    /// 'local' movement.  It is not meant to provide automatic pathfinding 
-    /// services over long distances. Agents should be given targets that are 
-    /// no more than two or three straight path corners away.  Much further
-    /// and the agent will move toward the target but may fail to find it.</para>
+    /// <para>This is the core class for all crowd features.</para>
+    /// <para>The common method for setting up the crowd is as follows:</para>
+    /// <ol>
+    /// <li>Construct the crowd object.</li>
+    /// <li>Set the avoidance configurations using 
+    /// <see cref="SetAvoidanceConfig"/>.</li>
+    /// <li>Add agents using <see cref="AddAgent"/> and make an initial 
+    /// movement request using <see cref="CrowdAgent.RequestMoveTarget"/>.</li>
+    /// </ol>
+    /// <para>A common process for managing the crowd is as follows:</para>
+    /// <ol>
+    /// <li>Call <see cref="Update"/> to allow the crowd to manage its agents.
+    /// </li>
+    /// <li>Use the <see cref="CrowdAgent"/> objects to retreive state, such 
+    /// as position.</li>
+    /// <li>Make movement requests using 
+    /// <see cref="CrowdAgent.RequestMoveTarget"/> and 
+    /// <see cref="CrowdAgent.AdjustMoveTarget"/>.</li>
+    /// <li>Repeat every frame.</li>
+    /// </ol>
+    /// <para>Some agent configuration settings can be updated using 
+    /// <see cref="CrowdAgent.SetConfig"/>.  But the crowd owns the
+    /// agent position.  So it is not possible to update an active agent's 
+    /// position.  If agent position must be fed back into the crowd, the agent 
+    /// must be removed and re-added.</para>
+    /// <para>Notes:</para>
+    /// <ul>
+    /// <li>Path related information is available for newly added agents only 
+    /// after an <see cref="Update"/> has been performed.</li>
+    /// <li>This class is meant to provide 'local' movement. There is a limit 
+    /// of 256 polygons in the path corridor. So it is not meant to provide 
+    /// automatic pathfinding services over long distances.</li>
+    /// </ul>
     /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
     public sealed class CrowdManager
@@ -215,7 +243,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Sets the avoidance configuration for a particular index.
+        /// Sets the shared avoidance configuration for a specified index.
         /// </summary>
         /// <remarks>
         /// Multiple avoidance configurations can be set for the manager with
@@ -239,7 +267,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the avoidance configuration for a particular index.
+        /// Gets the shared avoidance configuration for a specified index.
         /// </summary>
         /// <remarks>
         /// Getting a configuration for an index that has not been set will
@@ -262,34 +290,6 @@ namespace org.critterai.nav
             }
             return null;
         }
-
-        // TODO: v0.4: Remove.
-        ///// <summary>
-        ///// Gets the agent buffer containing all agents currently being
-        ///// managed by the manager.
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>The agents may be dispersed throughout the buffer with
-        ///// null entries in between. Also, there is no quarentee that the order
-        ///// of the agents will match the order they were added to the manager.
-        ///// </para>
-        ///// </remarks>
-        ///// <param name="buffer">A buffer to load with the agent data.
-        ///// [Size: >= MaxAgents]</param>
-        ///// <returns>The number of agents in the buffer.</returns>
-        //public int GetAgentBuffer(CrowdAgent[] buffer)
-        //{
-        //    if (IsDisposed || buffer.Length < mAgents.Length)
-        //        return -1;
-
-        //    int result = 0;
-        //    for (int i = 0; i < mAgents.Length; i++)
-        //    {
-        //        buffer[i] = mAgents[i];
-        //        result += (mAgents[i] == null) ? 0 : 1;
-        //    }
-        //    return result;
-        //}
 
         /// <summary>
         /// Adds an agent to the manager.

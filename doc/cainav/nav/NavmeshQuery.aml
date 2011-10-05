@@ -95,7 +95,7 @@
 					
 						<para>Even if you are planning to use <token>PathCorridor</token> or <token>CrowdManager</token>,
 						you'll always need to do long distance planning using the basic <token>NavmeshQuery</token> features.  
-						First, get a path, then straighten i.t</para>
+						First, get a path, then straighten it.</para>
 						
 						<alert class="note">
 							<para>If you are using <token>PathCorridor</token>, it will handle path straightening for you.</para>
@@ -167,7 +167,7 @@
 						if (NavUtil.Failed(status) || wpCount == 0)
 						{
 								// Handle the failure.  There should always be at least one waypoint, 
-								the goal point, for a valid point/path combination,
+								// the goal point, for a valid point/path combination,
 						}
 						
 						// Use the path and waypoints.

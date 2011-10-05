@@ -10,7 +10,7 @@
 			<para>Class: <token>CrowdManager</token></para>
 			
 			<para>The <token>NavmeshQuery</token> and <token>PathCorridor</token> classes provide perfectly good, easy to use path planning features.  But in
-			the end they only give you points that your navigation client should be moving toward.  When it comes deciding things like client velocity
+			the end they only give you points that your navigation client should be moving toward.  When it comes to deciding things like client velocity
 			and steering to avoid other clients, that is up to you to implement.  Unless, of course, you decide to use the crowd manager.</para>
 			
 			<para>Basically, you add an navigation client (agent) to the crowd manager, providing various configuration settings such as 
@@ -25,8 +25,8 @@
 			position and velocity.  So you give up direct control of the agent's movement.  It belongs to the crowd manager.</para>
 			
 			<para>The second biggest limitation revolves around the fact that the crowd manager deals with local planning.  So the agent's target should never
-			be more than approximately 32 polygons aways from its current position.  If it is, you risk your agent failing to reach its target.  So you will
-			still need to do long distance planning, and provide the crowd manager with targets that are only part of the way to the final goal.</para>
+			be more than 256 polygons aways from its current position.  If it is, you risk your agent failing to reach its target.  So you may
+			still need to do long distance planning and provide the crowd manager with intermediate targets.</para>
 			
 			<para>Other significant limitations:</para>
 			
