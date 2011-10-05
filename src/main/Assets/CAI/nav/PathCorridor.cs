@@ -38,7 +38,7 @@ namespace org.critterai.nav
     /// <li>Construct the corridor object using the <see cref="NavmeshQuery"/> 
     /// and <see cref="NavmeshQueryFilter"/> objects in use by the
     /// navigation client.</li>
-    /// <li>Optain a path from the query object.</li>
+    /// <li>Obtain a path from a <see cref="NavmeshQuery"/> object.</li>
     /// <li>Use <see cref="Reset"/> to load the client's current position. (At 
     /// the beginning of the path.)</li>
     /// <li>Use <see cref="SetCorridor"/> to load the path and target.</li>
@@ -49,9 +49,9 @@ namespace org.critterai.nav
     /// <li>If the target is moving, use <see cref="MoveTarget"/> to
     /// update the end of the corridor.  (The corridor will automatically
     /// adjust as needed.)</li>
-    /// <li>Repeat the last 3 steps to continue to move the client.</li>
+    /// <li>Repeat the previous 3 steps to continue to move the client.</li>
     /// </ol>
-    /// <para>The corridor position and goal are always constrained to 
+    /// <para>The corridor position and target are always constrained to 
     /// the navigation mesh.</para>
     /// <para>
     /// One of the difficulties in maintaining a path is that floating point
@@ -65,12 +65,12 @@ namespace org.critterai.nav
     /// target locations results in two beahviors that need to be considered:
     /// </para>
     /// <para>
-    /// Every time a move method is used there is a chance that the path will
-    /// become non-optimized.  Basically, the further the goal is moved from
-    /// its original location, and the further the position is moved outside the
-    /// original corridor, the more likely the path will become non-optimized.
-    /// This issue can be addressed by periodically running the 
-    /// <see cref="OptimizePathTopology"/> and 
+    /// Every time a move method is used there is a chance that the path will 
+    /// become non-optimial. Basically, the further 
+    /// the target is moved from its original location, and the further the 
+    /// position is moved outside the original corridor, the more likely the 
+    /// path will become non-optimal. This issue can be addressed by 
+    /// periodically running the <see cref="OptimizePathTopology"/> and 
     /// <see cref="OptimizePathVisibility"/> methods.
     /// </para>
     /// <para>
@@ -78,10 +78,12 @@ namespace org.critterai.nav
     /// <see cref="NavmeshQuery"/> methods for details.)
     /// So the most accurate use case is to move the position and target in 
     /// small increments.  If a large increment is used, then the corridor may 
-    /// not be able to accurately find the new location.  For example,
-    /// if the target is moved by a large increment, then compare the resulting
-    /// corridor target and desired target polygon references against eachother.
-    /// If the two do not match, then path replanning may be needed.</para>
+    /// not be able to accurately find the new location.  Because of this 
+    /// limiation, if a position is moved in a large increment, then compare 
+    /// the desired and resulting polygon references. If the two do not match, 
+    /// then path replanning may be needed.  E.g. If you move the target, 
+    /// check <see cref="PathCorridor.GetLastPoly()"/> to see if it is the 
+    /// expected polygon.</para>
     /// </remarks>
     public sealed class PathCorridor
         : IManagedObject
@@ -130,7 +132,7 @@ namespace org.critterai.nav
         /// means that care needs to be taken not to use the object until
         /// a new filter object has been assigned.</para>
         /// </remarks>
-        public NavmeshQueryFilter Fitler
+        public NavmeshQueryFilter Filter
         {
             get { return mFilter; }
             set { mFilter = value; }
@@ -232,13 +234,14 @@ namespace org.critterai.nav
         /// <returns>The number of corners returned in the buffers.</returns>
         public int FindCorners(CornerData buffer)
         {
-            return PathCorridorEx.dtpcFindCorners(mRoot
+            buffer.cornerCount = PathCorridorEx.dtpcFindCorners(mRoot
                 , buffer.verts
                 , buffer.flags
                 , buffer.polyRefs
                 , buffer.polyRefs.Length
                 , mQuery.root
                 , mFilter.root);
+            return buffer.cornerCount;
         }
 
         /// <summary>
@@ -246,12 +249,15 @@ namespace org.critterai.nav
         /// from the current position.
         /// </summary>
         /// <remarks>
-        /// <para>Inaccurate locomotion or dynamic obstacle avoidance can force
-        /// the client position significantly outside the original corridor.
+        /// <para>Inaccurate locomotion or dynamic obstacle avoidance can force 
+        /// the argent position significantly outside the original corridor. 
         /// Over time this can result in the formation of a non-optimal 
-        /// corridor.  This method uses an efficient local visibility search 
-        /// to try to re-optimize the corridor between the current position 
-        /// and <paramref name="next"/>.
+        /// corridor. Non-optimal paths can also form near the corners of 
+        /// tiles.</para>
+        /// <para>
+        /// This function uses an efficient local visibility search to try 
+        /// to optimize the corridor between the current position and 
+        /// <paramref name="next"/> next.
         /// </para>
         /// <para>The corridor will change only if <paramref name="next"/> is 
         /// visible from the current position and moving directly toward the
@@ -287,6 +293,11 @@ namespace org.critterai.nav
         /// <para>The more inaccurate the client movement, the more 
         /// beneficial this method becomes.  Simply adjust the frequency of
         /// the call to match the needs to the client.</para>
+        /// <para>This is a local optimization and will not necessarily effect 
+        /// the entire corridor through to the goal.  So it should normally be 
+        /// called based on a time increment rather than movement events.
+        /// For example, optimize once a second rather than only one a  
+        /// goal change or larger than normal position change.</para>
         /// </remarks>
         public void OptimizePathTopology()
         {
@@ -327,6 +338,15 @@ namespace org.critterai.nav
         /// new position.
         /// </summary>
         /// <remarks>
+        /// <para>Behavior:</para>
+        /// <ul>
+        /// <li>The movement is constrained to the surface of the navigation 
+        /// mesh.</li>
+        /// <li>The corridor is automatically adjusted (shorted or lengthened) 
+        /// in order to remain valid. </li>
+        /// <li>The new position will be located in the adjusted corridor's 
+        /// first polygon.</li>
+        /// </ul>
         /// <para>The movement is constrained to the surface of the navigation
         /// mesh.  The corridor is automatically adjusted (shorted or 
         /// lengthened) in order to remain valid.  The new position will
@@ -360,10 +380,15 @@ namespace org.critterai.nav
         /// change.
         /// </summary>
         /// <remarks>
-        /// <para>The movement is constrained to the surface of the navigation
-        /// mesh.  The corridor is automatically adjusted (shorted or 
-        /// lengthened) in order to remain valid.  The new target will
-        /// be located in the adjusted corridor's last polygon.</para>
+        /// <para>Behavior:</para>
+        /// <ul>
+        /// <li>The movement is constrained to the surface of the navigation 
+        /// mesh.</li>
+        /// <li>The corridor is automatically adjusted (shorted or lengthened) 
+        /// in order to remain valid. </li>
+        /// <li>The new target will be located in the adjusted corridor's 
+        /// last polygon.</li>
+        /// </ul>
         /// <para>The expected use case is that the desired target will
         /// be 'near' the current corridor.  What is considered 'near' depends
         /// on local polygon density, query search extents, etc.</para>
@@ -485,7 +510,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Checks the current corridor path to see if the polygon references
+        /// Checks the current corridor path to see if its polygon references
         /// remain valid.
         /// </summary>
         /// <remarks>
