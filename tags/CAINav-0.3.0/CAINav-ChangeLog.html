@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.main {
+	width: 800px;
+	padding-right: 1em;
+	padding-left: 1em;
+}
+.breaking {
+	font-weight: bolder;
+	color: #F00;
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+<h1>CAINav Change Log</h1>
+<p><a href="http://code.google.com/p/critterai/issues">Issue Tracking</a></p>
+<h2>CAINav v0.3</h2>
+<h3>Fixes</h3>
+<p>Added a console warning when objects that contain no meshes are assigned to a <code>MeshFilterSource</code> object. (Issue 11)</p>
+<p>Added a conditional compilation so 
+  scene objects are included in object selection lists for Unity 3.4+. As of this version the pre-compiled libraries still use Unity 3.3- behavior. So this change only effects Unity projects that use the source distribution or custom compiled libraries. (Issue 12)</p>
+<p> Removed the use of <code>nullptr</code> in C++ code. (Issue 12, multi-platform support.)</p>
+<p>Converted to using <code>&lt;string.h&gt;</code> in all source files. (Issue 13, multi-platform support.)</p>
+<p>Baked <code>InvariantCulture</code> into all numeric conversions. (Issue 14, internationalization.)</p>
+<p>Updated <code>MeshUtil</code> so it can handle meshes with more than one sub-mesh. (Issue 16)</p>
+<p>Fixed defect in <code>NavmeshParams</code> constructor that was resulting in an upper <code>maxPolysPerTile</code> limit of 6.</p>
+<h3>Core Changes</h3>
+<p>Updated source to  Recast Navigation r312.</p>
+<p>Added the <code>org.critterai.nav.PathCorridor</code> class.</p>
+<p>Generalized the <code>CrowdCornerData</code> structure, including refactoring its name to <code>CornerData</code>, so it can be used for multiple purposes. It is no longer restricted to a fixed buffer size. (<span class="breaking">Breaking API Change</span>)</p>
+<p>Generalized the <code>PathCorridorData</code> structure so it can be used for multiple purposes. It is no longer restricted to a fixed buffer size.</p>
+<p>Added the <code>IsValidPolyRef()</code> method to the <code>NavmeshQuery</code> and <code>U3DNavmeshQuery</code> classes.</p>
+<p>Added and new <code>FindPath()</code> overload to the <code>NavmeshQuery</code> and <code>U3DNavmeshQuery</code> classes. It  combines the find poly and find path operations into a single interop call.</p>
+<p>Added the <code>IsValid()</code> method to the <code>PathCorridor</code> and <code>U3DPathCorridor</code> classes.</p>
+<p>Reorganized source to support distribution directly to a Unity Project. The Unity appropriate .NET source now resides in /src/main/Assets/CAI. (Improves multi-platform support.)</p>
+<p>Refactored all interop method signatures to make the code base compatible with the iOS target platform. This does not result in any public API changes. (Improves multi-platform support.)</p>
+<p>Added Save/Load functionality to the <code>BakedNavmesh</code> and <code>BakedPolyMesh</code> editors. The save file format is  .NET serialized byte array. So deserialize the files as a byte array, then create objects using the appropriate  byte array constructor.</p>
+<h3>Unity Extension Changes</h3>
+<p>Added the <code>org.critterai.nav.u3d.U3DPathCorridor</code> class.</p>
+<p>Retired the <code>NavManger</code> class. Most of its functionality was moved to the new <code>NavSource</code> class. (<span class="breaking">Breaking Change: </span>Will require recreating navigation meshes in Unity.)</p>
+<p>Added the <code>org.critterai.nav.u3d.NavGroup</code> structure and updated classes to use it. (<span class="breaking">Breaking API Change</span>)</p>
+<p>Moved the <code>DrawTriMesh()</code> method from the <code>GLUtil</code> to the <code>DebugDraw</code> class.</p>
+<p>Added various new debug drawing classes and methods. See the <code>DebugDraw</code>, <code>CrowdAgentDebug</code>, and <code>NavDebug</code> classes.</p>
+<p>Added the <code>Vector3Util.GetDistance2D()</code> method.</p>
+<p>Implemented performance improvements to all vector <code>SloppyEquals()</code> methods. This change slightly alters the behavior by switching from an AABB inclusion test to a sphere inclusion test.</p>
+<h2>CIANav v0.2</h2>
+<p>Initial Release</p>
+</div>
+</body>
+</html>
