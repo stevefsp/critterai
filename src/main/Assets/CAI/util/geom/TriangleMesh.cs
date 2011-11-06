@@ -27,8 +27,8 @@ namespace org.critterai.geom
     /// A basic indexed triangle mesh.
     /// </summary>
     /// <remarks>
-    /// <para>The class arrays may represent buffers with unused space.</para></remarks>
-    public sealed class TriangleMesh
+    /// <para>The buffers may contain unused space.</para></remarks>
+    public class TriangleMesh
     {
         /// <summary>
         /// Vertices [Form: (x, y, z) * vertCount]
@@ -58,6 +58,20 @@ namespace org.critterai.geom
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="maxVerts">The maximum number of vertices the 
+        /// <see cref="verts"/> buffer needs to hold.
+        /// </param>
+        /// <param name="maxTris">The maximum number of triangles the
+        /// <see cref="tris"/> buffer needs to hold.</param>
+        public TriangleMesh(int maxVerts, int maxTris)
+        {
+            this.verts = new float[Math.Max(3, maxVerts) * 3];
+            this.tris = new int[Math.Max(3, maxTris) * 3];
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         /// <remarks>This constructor assigns the provided references
         /// to the object.  (No copying.)</remarks>
         /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]
@@ -75,6 +89,47 @@ namespace org.critterai.geom
             this.vertCount = vertCount;
             this.tris = tris;
             this.triCount = triCount;
+        }
+
+        public static bool Validate(TriangleMesh mesh, bool includeContent)
+        {
+            if (mesh == null
+                || mesh.tris == null
+                || mesh.verts == null
+                || mesh.triCount * 3 > mesh.tris.Length
+                || mesh.vertCount * 3 > mesh.verts.Length
+                || mesh.triCount < 0
+                || mesh.vertCount < 0
+                || mesh.tris.Length % 3 != 0
+                || mesh.verts.Length % 3 != 0)
+            {
+                return false;
+            }
+
+            if (!includeContent)
+                return true;
+
+            int length = mesh.triCount * 3;
+            for (int p = 0; p < length; p += 3)
+            {
+                int a = mesh.tris[p + 0];
+                int b = mesh.tris[p + 1];
+                int c = mesh.tris[p + 2];
+
+                if (a < 0 || a >= mesh.vertCount)
+                    return false;
+
+                if (b < 0 || b >= mesh.vertCount)
+                    return false;
+
+                if (c < 0 || c >= mesh.vertCount)
+                    return false;
+
+                if (a == b || b == c || c == a)
+                    return false;
+            }
+
+            return true;
         }
     }
 }
