@@ -32,6 +32,7 @@ namespace org.critterai.geom
     /// <remarks>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
+    [System.Obsolete]
     public class BoundedMesh3
         : Mesh3
     {
@@ -74,7 +75,7 @@ namespace org.critterai.geom
         /// </summary>
         public void RebuildBounds()
         {
-            Vector3Util.GetBounds(vertices, bounds);
+            Vector3Util.GetBounds(vertices, vertices.Length / 3, bounds);
         }
     }
 }

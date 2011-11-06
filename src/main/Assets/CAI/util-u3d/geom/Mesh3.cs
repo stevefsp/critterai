@@ -33,6 +33,7 @@ namespace org.critterai.geom
     /// <remarks>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
+    [System.Obsolete]
     public class Mesh3
     {
         /// <summary>

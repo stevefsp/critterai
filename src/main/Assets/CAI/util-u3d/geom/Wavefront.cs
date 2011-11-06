@@ -124,7 +124,6 @@ namespace org.critterai.geom
         /// <param name="triangles">The triangles from the wavefront data.
         /// </param>
         public static void TranslateFrom(string wavefrontText
-            , float[] outBounds
             , out float[] vertices
             , out int[] triangles)
         {
@@ -172,9 +171,6 @@ namespace org.critterai.geom
 
             vertices = lverts.ToArray();
             triangles = lindices.ToArray();
-
-            if (outBounds != null)
-                Vector3Util.GetBounds(vertices, outBounds);
 
             return;
         }
