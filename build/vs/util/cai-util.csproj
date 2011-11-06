@@ -36,6 +36,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\src\main\Assets\CAI\util\ArrayUtil.cs" />
+    <Compile Include="..\..\..\src\main\Assets\CAI\util\geom\ChunkyTriMesh.cs">
+      <Link>geom\ChunkyTriMesh.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util\geom\ChunkyTriNode.cs">
+      <Link>geom\ChunkyTriNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\src\main\Assets\CAI\util\geom\Wavefront.cs">
+      <Link>geom\Wavefront.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\src\main\Assets\CAI\util\interop\AllocType.cs">
       <Link>interop\AllocType.cs</Link>
     </Compile>
