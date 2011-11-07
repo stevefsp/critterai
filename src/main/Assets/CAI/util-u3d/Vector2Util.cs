@@ -105,7 +105,7 @@ namespace org.critterai
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
         public static bool SloppyEquals(float ux, float uy
@@ -131,21 +131,20 @@ namespace org.critterai
         /// </para>
         /// </remarks>
         /// <param name="u">Vector U.</param>
-        /// <param name="v">Vector V.</param>
+        /// <param name="v">Vector V</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(Vector3 u
-                , Vector3 v
+        public static bool SloppyEquals(Vector2 u
+                , Vector2 v
                 , float tolerance)
         {
             // Duplicating code for performance reasons.
             float dx = u.x - v.x;
             float dy = u.y - v.y;
-            float dz = u.z - v.z;
-            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
+            return (dx * dx + dy * dy) <= tolerance * tolerance;
         }
 
         /// <summary>
@@ -165,10 +164,10 @@ namespace org.critterai
         /// <param name="vy">The y-value of the vector (vx, vy).</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(Vector3 u
+        public static bool SloppyEquals(Vector2 u
                 , float vx, float vy
                 , float tolerance)
         {
@@ -177,6 +176,16 @@ namespace org.critterai
             float dy = u.y - vy;
             return (dx * dx + dy * dy) <= tolerance * tolerance;
         }
+
+        // These overloads have been removed because of potential confusion.
+        // In Unity, 2D Vector3 equality is based on the xy-values.  But
+        // equality on the xz-plane is more appropriate throughout CAINav.
+        //public static bool SloppyEquals(Vector3 u
+        //        , Vector3 v
+        //        , float tolerance)
+        //public static bool SloppyEquals(Vector3 u
+        //        , float vx, float vy
+        //        , float tolerance)
 
         /// <summary>
         /// Returns the square of the distance between the two provided 

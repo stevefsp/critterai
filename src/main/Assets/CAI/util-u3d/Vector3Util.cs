@@ -146,7 +146,7 @@ namespace org.critterai
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
         public static bool SloppyEquals(float ux, float uy, float uz
@@ -176,7 +176,7 @@ namespace org.critterai
         /// <param name="v">Vector V.</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
         public static bool SloppyEquals(Vector3 u
@@ -208,7 +208,7 @@ namespace org.critterai
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the provided vectors similar enough to be
+        /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
         public static bool SloppyEquals(Vector3 u
@@ -362,12 +362,14 @@ namespace org.critterai
         /// <param name="minBounds">The mimimum bounds of the AABB.</param>
         /// <param name="maxBounds">The maximum bounds of the AABB.</param>
         public static void GetBounds(Vector3[] vectors
+            , int vectorCount
             , out Vector3 minBounds
             , out Vector3 maxBounds)
         {
             minBounds = vectors[0];
             maxBounds = vectors[0];
-            for (int i = 1; i < vectors.Length; i++)
+
+            for (int i = 1; i < vectorCount; i++)
             {
                 minBounds.x = Mathf.Min(minBounds.x, vectors[i].x);
                 minBounds.y = Mathf.Min(minBounds.y, vectors[i].y);
@@ -393,9 +395,9 @@ namespace org.critterai
         /// Will be a reference to the bounds argument if one was provided.
         /// </returns>
         public static float[] GetBounds(float[] flatVectors
+            , int vectorCount
             , float[] bounds)
         {
-
             if (bounds == null)
                 bounds = new float[6];
 
@@ -404,9 +406,10 @@ namespace org.critterai
             bounds[2] = flatVectors[2];
             bounds[3] = flatVectors[0];
             bounds[4] = flatVectors[1];
-            bounds[5] = flatVectors[2];  
+            bounds[5] = flatVectors[2];
 
-            for (int p = 3; p < flatVectors.Length; p += 3)
+            int length = vectorCount * 3;
+            for (int p = 3; p < length; p += 3)
             {
                 bounds[0] = Mathf.Min(bounds[0], flatVectors[p + 0]);
                 bounds[1] = Mathf.Min(bounds[1], flatVectors[p + 1]);
