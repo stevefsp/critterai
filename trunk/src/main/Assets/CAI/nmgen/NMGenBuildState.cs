@@ -29,6 +29,11 @@ namespace org.critterai.nmgen
     public enum BuildState
     {
         /// <summary>
+        /// The build process is not active. (Not initialized, not ready.)
+        /// </summary>
+        Inactive,
+
+        /// <summary>
         /// The build was aborted due to an error.
         /// </summary>
         Aborted,
@@ -39,9 +44,9 @@ namespace org.critterai.nmgen
         Complete,
 
         /// <summary>
-        /// At the step to mark walkable triangles.
+        /// At the step to clear unwalkable triangles.
         /// </summary>
-        MarkWalkableTris,
+        ClearUnwalkableTris,
 
         /// <summary>
         /// At the step to build the heightfield.
@@ -57,6 +62,11 @@ namespace org.critterai.nmgen
         /// At the step to perform various optional span marking operations.
         /// </summary>
         MarkSpans,
+
+        /// <summary>
+        /// At the step to apply area markers to the heightfield.
+        /// </summary>
+        ApplyAreaMarkers,
 
         /// <summary>
         /// At the step to erode the heightfield's walkable area.
