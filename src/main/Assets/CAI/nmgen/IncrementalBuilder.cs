@@ -48,8 +48,16 @@ namespace org.critterai.nmgen
         private BuildContext mContext;
         private bool mTrace;
 
+        private InputGeometry mSource;
+
         private Object mPrimary;
         private Object mSecondary;
+
+        public bool TraceEnabled
+        {
+            get { return mTrace; }
+            set {  mTrace = value; }
+        }
 
         /// <summary>
         /// The current state of the builder.
@@ -116,6 +124,13 @@ namespace org.critterai.nmgen
         /// and using the configuration without setting them will result in 
         /// empty meshes.
         /// </para>
+        /// <para>The <typeparamref name="areas"/> parameter is optional.
+        /// If provided, it is expected to contain the area ids associated
+        /// with each triangle in the source.  The build process will only clear
+        /// the walkable area for triangles determined to be unwalkable.</para>
+        /// <para>If <typeparamref name="areas"/> is null, all walkable
+        /// triangles will be assigned an area id of 
+        /// <see cref="NMGen.WalkableArea"/>.</para>
         /// </remarks>
         /// <param name="trace">TRUE if detailed trace messages should be
         /// recored during the build process.</param>
@@ -123,31 +138,14 @@ namespace org.critterai.nmgen
         /// <param name="buildFlags">Flags indicating which optional build
         /// steps to include.</param>
         /// <param name="source">The source geometry.</param>
-        public IncrementalBuilder(bool trace
-            , NMGenParams config
-            , BuildFlags buildFlags
-            , TriangleMesh source)
+        /// <param name="areas">Area ids to apply to the source triangles.
+        /// [Size: >= triangle count] [Optional]</param>
+        public IncrementalBuilder(bool trace)
         {
+            // Note: Context logging is always on, for error reporting.
             mContext = new BuildContext(true);
-
-            if (config == null
-                || source == null
-                || source.triCount < 1)
-            {
-                mState = BuildState.Aborted;
-                mContext.Log(pre + 
-                    "Aborted at construction. Null parameters or no geometry.");
-                return;
-            }
-
             mTrace = trace;
-            mConfig = config.Clone();
-            mConfig.DeriveSizeOfGrid();
-
-            mFlags = buildFlags;
-            mPrimary = source;
-
-            mState = BuildState.MarkWalkableTris;
+            Reset();
         }
 
         /// <summary>
@@ -156,6 +154,52 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <returns>Available build messages.</returns>
         public string[] GetMessages() { return mContext.GetMessages(); }
+
+        public bool Initialize(NMGenParams config
+            , BuildFlags buildFlags
+            , InputGeometry source)
+        {
+            Reset();
+
+            if (config == null 
+                || source.mesh == null
+                || source.mesh.triCount == 0
+                || !TriangleMesh.Validate(source.mesh, false))
+            {
+                mState = BuildState.Aborted;
+                mContext.Log(pre +
+                    "Aborted at initialization. Unexpected null parameters.");
+                return false;
+            }
+
+            if (source.areas == null)
+            {
+                source.areas = 
+                    NMGen.BuildWalkableAreaBuffer(source.mesh.triCount);
+            }
+
+            mSource = source;
+            mConfig = config.Clone();
+            mConfig.DeriveSizeOfGrid();
+
+            mFlags = buildFlags;
+
+            mPrimary = source.mesh;
+            mState = BuildState.ClearUnwalkableTris;
+
+            return true;
+        }
+
+        public void Reset()
+        {
+            mContext.ResetLog();
+            mPrimary = null;
+            mSecondary = null;
+            mSource.Reset();
+            mConfig = null;
+            mFlags = 0;
+            mState = BuildState.Inactive;
+        }
 
         /// <summary>
         /// Performs a single build step.
@@ -168,8 +212,8 @@ namespace org.critterai.nmgen
         {
             switch (mState)
             {
-                case BuildState.MarkWalkableTris:
-                    MarkWalkableTris();
+                case BuildState.ClearUnwalkableTris:
+                    ClearUnwalkableTris();
                     break;
                 case BuildState.HeightfieldBuild:
                     BuildHeightfield();
@@ -179,6 +223,9 @@ namespace org.critterai.nmgen
                     break;
                 case BuildState.MarkSpans:
                     MarkSpans();
+                    break;
+                case BuildState.ApplyAreaMarkers:
+                    ApplyAreaMarkers();
                     break;
                 case BuildState.ErodeWalkableArea:
                     ErodeWalkableArea();
@@ -203,19 +250,18 @@ namespace org.critterai.nmgen
             return mState;
         }
 
-        private void MarkWalkableTris()
+        private void ClearUnwalkableTris()
         {
             TriangleMesh source = (TriangleMesh)mPrimary;
 
-            byte[] areas = new byte[source.triCount];
+            byte[] areas = (byte[])mSource.areas.Clone();
 
-            NMGen.MarkWalkableTriangles(mContext
+            NMGen.ClearUnwalkableTriangles(mContext
                 , source
                 , mConfig.walkableSlope
                 , areas);
-
             if (mTrace)
-                mContext.Log(pret + "Marked walkable triangles");
+                mContext.Log(pret + "Cleared unwalkable triangles");
 
             mSecondary = areas;
             mState = BuildState.HeightfieldBuild;
@@ -234,7 +280,7 @@ namespace org.critterai.nmgen
                 , (TriangleMesh)mPrimary
                 , (byte[])mSecondary
                 , mConfig.walkableStep);  // Merge for any spans less than step.
-
+            
             if (mTrace)
                 mContext.Log(pret + "Voxelized triangles. Span count: " 
                     + hf.GetSpanCount());
@@ -328,6 +374,21 @@ namespace org.critterai.nmgen
             }
 
             mSecondary = chf;
+
+            mState = BuildState.ApplyAreaMarkers;
+        }
+
+        private void ApplyAreaMarkers()
+        {
+            CompactHeightfield chf = (CompactHeightfield)mSecondary;
+
+            if (mSource.areaMarkers != null)
+            {
+                foreach (IAreaMarker marker in mSource.areaMarkers)
+                {
+                    marker.MarkArea(mContext, chf);
+                }
+            }
 
             if (mConfig.walkableRadius > 0)
                 mState = BuildState.ErodeWalkableArea;

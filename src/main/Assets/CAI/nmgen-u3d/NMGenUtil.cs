@@ -38,6 +38,8 @@ namespace org.critterai.nmgen.u3d
         {
             switch (state)
             {
+                case BuildState.Inactive:
+                    return "Inactive";
                 case BuildState.Aborted:
                     return "Aborted.";
                 case BuildState.CompactFieldBuild:
@@ -56,12 +58,14 @@ namespace org.critterai.nmgen.u3d
                     return "Building heightfield.";
                 case BuildState.MarkSpans:
                     return "Marking heightfield spans.";
-                case BuildState.MarkWalkableTris:
-                    return "Marking walkable triangles.";
+                case BuildState.ClearUnwalkableTris:
+                    return "Clearing unwalkable triangles.";
                 case BuildState.PolyMeshBuild:
                     return "Building polygon mesh.";
                 case BuildState.RegionBuild:
                     return "Building regions.";
+                case BuildState.ApplyAreaMarkers:
+                    return "Applying area markers.";
             }
             return "Error";  
         }
@@ -79,7 +83,9 @@ namespace org.critterai.nmgen.u3d
         {
             switch (state)
             {
-                case BuildState.MarkWalkableTris:
+                case BuildState.Inactive:
+                    return 0;
+                case BuildState.ClearUnwalkableTris:
                     return 0;
                 case BuildState.HeightfieldBuild:
                     return 0.05f;
@@ -87,12 +93,14 @@ namespace org.critterai.nmgen.u3d
                     return 0.25f;
                 case BuildState.CompactFieldBuild:
                     return 0.30f;
-                case BuildState.ErodeWalkableArea:
+                case BuildState.ApplyAreaMarkers:
                     return 0.35f;
+                case BuildState.ErodeWalkableArea:
+                    return 0.40f;
                 case BuildState.DistanceFieldBuild:
-                    return 0.45f;
-                case BuildState.RegionBuild:
                     return 0.55f;
+                case BuildState.RegionBuild:
+                    return 0.60f;
                 case BuildState.ContourBuild:
                     return 0.70f;
                 case BuildState.PolyMeshBuild:
