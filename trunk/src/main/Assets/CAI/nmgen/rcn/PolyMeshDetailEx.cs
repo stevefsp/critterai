@@ -22,6 +22,11 @@
 using System;
 using System.Runtime.InteropServices;
 using org.critterai.interop;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen.rcn
 {
@@ -52,7 +57,7 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool rcpdFlattenMesh([In] PolyMeshDetail detailMesh
-            , [In, Out] float[] verts
+            , [In, Out] Vector3[] verts
             , ref int vertCount
             , int vertsSize
             , [In, Out] int[] tris

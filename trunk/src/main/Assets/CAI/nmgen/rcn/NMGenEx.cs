@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen.rcn
 {
@@ -29,7 +34,7 @@ namespace org.critterai.nmgen.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void nmgMarkWalkableTriangles(IntPtr ctx
             , float walkableSlopeAngle
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int nv
             , [In] int[] tris
             , int nt
@@ -38,7 +43,7 @@ namespace org.critterai.nmgen.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void nmgClearUnwalkableTriangles(IntPtr ctx
             , float walkableSlopeAngle
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int nv
             , [In] int[] tris
             , int nt

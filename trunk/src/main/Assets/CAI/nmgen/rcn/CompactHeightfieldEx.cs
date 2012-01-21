@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen.rcn
 {
@@ -58,14 +63,14 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmcfMarkBoxArea(IntPtr context
-            , [In] float[] bmin
-            , [In] float[] bmax
+            , [In] ref Vector3 bmin
+            , [In] ref Vector3 bmax
             , byte areaId
             , [In, Out] CompactHeightfield chf);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmcfMarkConvexPolyArea(IntPtr context
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int vertCount
             , float heightMin
             , float heightMax
@@ -74,7 +79,7 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmcfMarkCylinderArea(IntPtr context
-            , [In] float[] position
+            , [In] ref Vector3 position
             , float radius
             , float height
             , byte area
