@@ -22,15 +22,22 @@
 
 namespace org.critterai.nmgen
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <remarks>
-    /// <para>All methods must be implemented as thread safe.
-    /// </para></remarks>
-	public interface IAreaMarker
-	{
-        bool Overlaps(float xmin, float zmin, float xmax, float zmax);
-        bool MarkArea(BuildContext context, CompactHeightfield field);
+	public interface ICHFProcessor
+    {
+        bool IsThreadSafe { get; }
+
+        /// <summary>
+        /// Indicates whether the processor should be applied before or after 
+        /// region generation.
+        /// </summary>
+        /// <remarks>
+        /// <para>A value of true indicates the processor should be applied 
+        /// after region generation. A value of false indicates the
+        /// processor should be applied immediately after field creation.</para>
+        /// <para>The <see cref="IncrementalBuilder"/> does not currently support
+        /// compact heightfield processors.  So it will ignore them.</para>
+        /// </remarks>
+        bool IsPostProcessor { get; }
+        CompactHeightfield Process(BuildContext context, CompactHeightfield item);
 	}
 }

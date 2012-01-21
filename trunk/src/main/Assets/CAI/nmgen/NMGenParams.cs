@@ -43,36 +43,20 @@ namespace org.critterai.nmgen
     /// <para>All fields are public in order to support Unity serialization.  
     /// But it is best to set the fields using the properties since
     /// they will enforce valid min/max limits.</para>
-    /// <para>All properties and methods will auto-limit parameters
+    /// <para>All properties and methods will auto-limit fields
     /// to valid values. For example, if the <see cref="TileSize"/> property
     /// is set to -1, the field will be limited to the minimum allowed 
     /// value of 0.</para>
     /// <para>Field members are minimally documented.  See the 
     /// property member documentation for details.</para>
-    /// <para>Compatible with Unity serialization.</para>
+    /// <para>Implemented as a class with public fields in order to support Unity
+    /// serialization.  Care must be taken not to set the fields to invalid
+    /// values.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     [Serializable]
     public sealed class NMGenParams
     {
-        /*
-         * Design note:
-         * 
-         * Would like this to be a structure.  But structures are not
-         * serializable in Unity.  Don't want to have to switch to a
-         * structure + class pattern unless I have to.
-         */
-
-        /// <summary>
-        /// Grid width.
-        /// </summary>
-        public int width = 0;
-
-        /// <summary>
-        /// Grid depth.
-        /// </summary>
-        public int depth = 0;
-
         /// <summary>
         /// Tile size.
         /// </summary>
@@ -92,18 +76,6 @@ namespace org.critterai.nmgen
         /// Y-axis cell size.
         /// </summary>
         public float yCellSize = 0.1f;
-
-        /// <summary>
-        /// Minimum bounds.
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMin = new float[3];
-
-        /// <summary>
-        /// Maximum bounds.
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMax = new float[3];
 
         /// <summary>
         /// Maximum walkable slope.
@@ -161,85 +133,17 @@ namespace org.critterai.nmgen
         public float detailMaxDeviation = 1;
 
         /// <summary>
-        /// The width of the heightfield along the x-axis.
-        /// [Limit: >0] [Units: XZCellSize]
-        /// </summary>
-        /// <remarks><para>Often a derived value.</para></remarks>
-        public int Width
-        {
-            get { return width; }
-            set { width = Math.Max(0, value); }
-        }
-
-        /// <summary>
-        /// The depth of the heightfield along the z-axis.
-        /// [Limit: >=0] [Units: XZCellSize]
-        /// </summary>
-        /// <remarks><para>Often a derived value.</para></remarks>
-        public int Depth
-        {
-            get { return depth; }
-            set { depth = Math.Max(0, value); }
-        }
-
-        /// <summary>
         /// The width/depth size of the tile on the xz-plane.
         /// [Limit: >=0] [Units: CellSize]
         /// </summary>
+        /// <remarks>
+        /// <para>A value of zero indicates no-tiles.  Small values are not of 
+        /// much use.  In general, non-zero values should be 
+        /// between 100 and 1000.</para></remarks>
         public int TileSize
         {
             get { return tileSize; }
             set { tileSize = Math.Max(0, value); }
-        }
-
-        /// <summary>
-        /// Gets a copy of the minimum bounds of the grid's AABB.
-        /// [Form: (x, y, z)] [Units: World]
-        /// </summary>
-        /// <returns>The maximum bounds of the grid.</returns>
-        public float[] GetBoundsMin()
-        {
-            return (float[])boundsMin.Clone();
-        }
-
-        /// <summary>
-        /// Sets the minimum bounds of the grid's AABB.
-        /// </summary>
-        /// <remarks>The values are not validated against the maximum
-        /// bounds.</remarks>
-        /// <param name="x">The x-value of the bounds.</param>
-        /// <param name="y">The y-value of the bounds.</param>
-        /// <param name="z">The z-value of the bounds.</param>
-        public void SetBoundsMin(float x, float y, float z)
-        {
-            boundsMin[0] = x;
-            boundsMin[1] = y;
-            boundsMin[2] = z;
-        }
-
-        /// <summary>
-        /// Gets a copy of the maximum bounds of the grid's AABB.
-        /// [Form: (x, y, z)] [Units: World]
-        /// </summary>
-        /// <returns>The maximum bounds of the grid.</returns>
-        public float[] GetBoundsMax()
-        {
-            return (float[])boundsMax.Clone();
-        }
-
-        /// <summary>
-        /// Sets the minimum bounds of the grid's AABB.
-        /// </summary>
-        /// <remarks>The values are not validated against the minimum
-        /// bounds.</remarks>
-        /// <param name="x">The x-value of the bounds.</param>
-        /// <param name="y">The y-value of the bounds.</param>
-        /// <param name="z">The z-value of the bounds.</param>
-        public void SetBoundsMax(float x, float y, float z)
-        {
-            boundsMax[0] = x;
-            boundsMax[1] = y;
-            boundsMax[2] = z;
         }
 
         /// <summary>
@@ -436,13 +340,85 @@ namespace org.critterai.nmgen
         /// </summary>
         public NMGenParams() { }
 
-        /// <summary>
-        /// Derive the width/depth values from the bounds and cell size values.
-        /// </summary>
-        public void DeriveSizeOfGrid()
+        public float WorldWalkableHeight
         {
-            Width = (int)((boundsMax[0] - boundsMin[0]) / xzCellSize + 0.5f);
-            Depth = (int)((boundsMax[2] - boundsMin[2]) / xzCellSize + 0.5f);
+            get { return walkableHeight * yCellSize; }
+        }
+
+        public float WorldMaxEdgeLength
+        {
+            get { return maxEdgeLength * xzCellSize; }
+        }
+
+        public float WorldMergeRegionArea
+        {
+            get { return mergeRegionArea * xzCellSize * xzCellSize; }
+        }
+
+        public float WorldMinRegionArea
+        {
+            get { return minRegionArea * xzCellSize * xzCellSize; }
+        }
+
+        public void SetWalkableHeight(float worldHeight)
+        {
+            WalkableHeight = (int)Math.Ceiling(worldHeight / yCellSize);
+        }
+
+        public float WorldWalkableRadius
+        {
+            get { return walkableRadius * xzCellSize; }
+        }
+
+        public void SetWalkableRadius(float worldRadius)
+        {
+            WalkableRadius = (int)Math.Ceiling(worldRadius / xzCellSize);
+        }
+
+        public float WorldWalkableStep
+        {
+            get { return walkableStep * yCellSize; }
+        }
+
+        public void SetWalkableStep(float worldStep)
+        {
+            WalkableStep = (int)Math.Floor(worldStep / yCellSize);
+        }
+
+        public void SetMaxEdgeLength(float worldLength)
+        {
+            MaxEdgeLength = (int)Math.Ceiling(worldLength / xzCellSize);
+        }
+
+        public void SetMergeRegionArea(float worldArea)
+        {
+            MergeRegionArea = (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
+        }
+
+        public void SetMinRegionArea(float worldArea)
+        {
+            MinRegionArea = (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
+        }
+
+        public bool IsValid()
+        {
+            return !(tileSize < 0
+                || xzCellSize < NMGen.MinCellSize
+                || yCellSize < NMGen.MinCellSize
+                || walkableHeight < NMGen.MinWalkableHeight
+                || walkableRadius < 0
+                || walkableRadius < 0
+                || walkableSlope < 0
+                || walkableSlope > NMGen.MaxAllowedSlope
+                || walkableStep < 0
+                || borderSize < 0
+                || maxEdgeLength < 0
+                || edgeMaxDeviation < 0
+                || (detailSampleDistance != 0 && detailSampleDistance < 0.9f)
+                || detailMaxDeviation < 0
+                || minRegionArea < 0
+                || mergeRegionArea < 0
+                || maxVertsPerPoly > NMGen.MaxAllowedVertsPerPoly);
         }
 
         /// <summary>
@@ -452,9 +428,6 @@ namespace org.critterai.nmgen
         public NMGenParams Clone()
         {
             NMGenParams result = new NMGenParams();
-            result.width = width;
-            result.depth = depth;
-            result.tileSize = tileSize;
             result.xzCellSize = xzCellSize;
             result.yCellSize = yCellSize;
             result.detailMaxDeviation = detailMaxDeviation;
@@ -469,17 +442,33 @@ namespace org.critterai.nmgen
             result.walkableHeight = walkableHeight;
             result.mergeRegionArea = mergeRegionArea;
             result.minRegionArea = minRegionArea;
-
-            if (boundsMax == null)
-                result.boundsMax = null;
-            else
-                result.boundsMax = GetBoundsMax();
-            if (boundsMin == null)
-                result.boundsMin = null;
-            else
-                result.boundsMin = GetBoundsMin();
+            result.tileSize = tileSize;
 
             return result;
+        }
+
+        /// <summary>
+        /// Forces all field values to within the mandatory limits.
+        /// </summary>
+        public void Clean()
+        {
+            XZCellSize = xzCellSize;
+            WalkableHeight = walkableHeight;
+            YCellSize = yCellSize;
+
+            DetailMaxDeviation = detailMaxDeviation;
+            DetailSampleDistance = detailSampleDistance;
+            EdgeMaxDeviation = edgeMaxDeviation;
+            BorderSize = borderSize;
+            MaxEdgeLength = maxEdgeLength;
+            MaxVertsPerPoly = MaxVertsPerPoly;
+            MergeRegionArea = mergeRegionArea;
+            MinRegionArea = minRegionArea;
+            WalkableRadius = walkableRadius;
+            WalkableSlope = walkableSlope;
+            WalkableStep = walkableStep;
+
+            TileSize = tileSize;
         }
     }
 }

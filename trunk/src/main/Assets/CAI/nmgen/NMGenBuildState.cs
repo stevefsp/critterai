@@ -28,10 +28,12 @@ namespace org.critterai.nmgen
     /// </summary>
     public enum BuildState
     {
+        Inactive = 0,
+
         /// <summary>
-        /// The build process is not active. (Not initialized, not ready.)
+        /// The builder is initialized and ready to start the build.
         /// </summary>
-        Inactive,
+        Initialized,
 
         /// <summary>
         /// The build was aborted due to an error.
@@ -39,8 +41,13 @@ namespace org.critterai.nmgen
         Aborted,
 
         /// <summary>
-        /// The build was completed.  Valid mesh data is available.
+        /// The build was completed.
         /// </summary>
+        /// <remarks>
+        /// It is possible to complete, but have not data.  This occurs when
+        /// the heightfield build results in no spans and means there is 
+        /// no valid triangles in the bounds of the build.
+        /// </remarks>
         Complete,
 
         /// <summary>
@@ -53,6 +60,8 @@ namespace org.critterai.nmgen
         /// </summary>
         HeightfieldBuild,
 
+        HeightfieldPostProcess,
+
         /// <summary>
         /// At the step to build the compact heightfield.
         /// </summary>
@@ -61,12 +70,18 @@ namespace org.critterai.nmgen
         /// <summary>
         /// At the step to perform various optional span marking operations.
         /// </summary>
-        MarkSpans,
+        MarkHeightfieldSpans,
 
         /// <summary>
-        /// At the step to apply area markers to the heightfield.
+        /// At the step where mid-processors are applied to the compact
+        /// heightfield.
         /// </summary>
-        ApplyAreaMarkers,
+        /// <remarks>
+        /// <para>"Mid-processors" are processors that are not marked as post processors.
+        /// The processors are run immediately after the compact heightfield is
+        /// created, before the region generation process is begun.</para>
+        /// </remarks>
+        CompactFieldMidProcess,
 
         /// <summary>
         /// At the step to erode the heightfield's walkable area.
@@ -93,9 +108,13 @@ namespace org.critterai.nmgen
         /// </summary>
         PolyMeshBuild,
 
+        PolyMeshPostProcess,
+
         /// <summary>
         /// At the step to build the detail mesh.
         /// </summary>
-        DetailMeshBuild
+        DetailMeshBuild,
+
+        DetailMeshPostProcess
     }
 }
