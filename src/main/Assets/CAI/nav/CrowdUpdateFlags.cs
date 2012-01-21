@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// Optimize visibility using 
-        /// <see cref="PathCorridor.OptimizePathVisibility(float[], float)"/> .
+        /// <see cref="PathCorridor.OptimizePathVisibility(Vector3, float)"/> .
         /// </summary>
         OptimizeVis = 8,
 

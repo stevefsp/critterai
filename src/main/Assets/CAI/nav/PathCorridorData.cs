@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -28,10 +33,10 @@ namespace org.critterai.nav
     /// Path corridor data.
     /// </summary>
     /// <remarks>
-    /// <para>Used as a buffer for corridor data returned by other classes.
+    /// <para>Used as a marshalling buffer for corridor data.
     /// </para>
     /// <para>
-    /// Certain methods which take objects of this type require a fixed buffer 
+    /// Certain methods that take objects of this type require a fixed buffer 
     /// size equal to <see cref="MarshalBufferSize"/>.  So be careful when 
     /// initializing and using objects of this type.
     /// </para>
@@ -48,14 +53,12 @@ namespace org.critterai.nav
         /// <summary>
         /// The current position within the path corridor. [Form: (x, y, z)]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] position = new float[3];
+        public Vector3 position;
 
         /// <summary>
         /// The target position within the path corridor. [Form: (x, y, z)]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] target = new float[3];
+        public Vector3 target;
 
         /// <summary>
         /// An ordered list of polygon references representing the corridor.

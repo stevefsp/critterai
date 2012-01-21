@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -50,6 +55,10 @@ namespace org.critterai.nav
          * 
          * Implemented as a class to permit use as a buffer.
          * 
+         * The layout allows for efficent marshalling on the native side
+         * of interop.  That's why the Vector and poly refs are separated
+         * rather than using NavmeshPoint;
+         * 
          */
 
         /// <summary>
@@ -61,8 +70,8 @@ namespace org.critterai.nav
         /// <summary>
         /// The corner vertices. [Form: (x, y, z) * <see cref="cornerCount"/>]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * MarshalBufferSize)]
-        public float[] verts;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
+        public Vector3[] verts;
 
         /// <summary>
         /// The <see cref="WaypointFlag"/>'s for each corner.
@@ -87,13 +96,23 @@ namespace org.critterai.nav
         /// </summary>
         public int cornerCount = 0;
 
+        public NavmeshPoint this[int index]
+        {
+            get
+            {
+                return new NavmeshPoint(polyRefs[index], verts[index]);
+            }
+        }
+
+        public int MaxCorners { get { return polyRefs.Length; } }
+
         /// <summary>
         /// Creates an object with buffers sized for use with interop method 
         /// calls. (Maximum Corners = <see cref="MarshalBufferSize"/>)
         /// </summary>
         public CornerData()
         {
-            verts = new float[3 * MarshalBufferSize];
+            verts = new Vector3[MarshalBufferSize];
             flags = new WaypointFlag[MarshalBufferSize];
             polyRefs = new uint[MarshalBufferSize];
         }
@@ -105,9 +124,60 @@ namespace org.critterai.nav
         /// buffers can hold.</param>
         public CornerData(int maxCorners)
         {
-            verts = new float[3 * maxCorners];
+            verts = new Vector3[maxCorners];
             flags = new WaypointFlag[maxCorners];
             polyRefs = new uint[maxCorners];
+        }
+
+        /// <summary>
+        /// Copies the contents of the corner buffers from the source to
+        /// destination.
+        /// </summary>
+        /// <remarks>Data will be lost if the destination buffers are too small
+        /// to hold the corners contained by the source.</remarks>
+        /// <param name="source"></param>
+        /// <param name="desitation"></param>
+        public static void Copy(CornerData source, CornerData desitation)
+        {
+            int size = Math.Min(source.MaxCorners, desitation.MaxCorners);
+
+            Array.Copy(source.flags, desitation.flags, size);
+            Array.Copy(source.polyRefs, desitation.polyRefs, size);
+            Array.Copy(source.verts, desitation.verts, size * 3);
+            desitation.cornerCount = Math.Min(size, source.cornerCount);
+        }
+
+        /// <summary>
+        /// Validates the structure of the the corner buffers. (No content
+        /// validation is performed.)
+        /// </summary>
+        /// <param name="buffer">The buffer to validate.</param>
+        /// <param name="forMarshalling">True if the buffer must be
+        /// sized for marshalling.</param>
+        /// <returns>True if the structure of the corner buffers is valid.
+        /// </returns>
+        public static bool Validate(CornerData buffer, bool forMarshalling)
+        {
+            if (buffer.flags == null
+                || buffer.polyRefs == null
+                || buffer.verts == null)
+            {
+                return false;
+            }
+
+            int size = (forMarshalling ? MarshalBufferSize : buffer.MaxCorners);
+
+            if (size == 0)
+                return false;
+
+            if (buffer.flags.Length == size
+                && buffer.polyRefs.Length == size
+                && buffer.verts.Length == 3 * size)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

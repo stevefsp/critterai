@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,10 +32,9 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>Minimal available documentation.</para>
-    /// <para>This type has been implemented as a class with public fields
-    /// in order to support Unity serialization. Care must be taken
-    /// to not set the fields to invalid values, or to share references
-    /// inappropriatly.</para>
+    /// <para>Implemented as a class with public fields in order to support Unity
+    /// serialization.  Care must be taken not to set the fields to invalid
+    /// values.</para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

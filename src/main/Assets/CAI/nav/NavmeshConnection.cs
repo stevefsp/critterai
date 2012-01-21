@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -42,8 +47,8 @@ namespace org.critterai.nav
         /// will always be within the bounds of the mesh.
         /// Vertex B is not required to be within the bounds of the mesh.
         /// </remarks>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-	    public float[] endpoints;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+	    public Vector3[] endpoints;
 
         /// <summary>
         /// The radius of the endpoints. [Limit: >=0]

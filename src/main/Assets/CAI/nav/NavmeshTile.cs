@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@ using System;
 using System.Runtime.InteropServices;
 using org.critterai.nav.rcn;
 using org.critterai.interop;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -175,7 +180,7 @@ namespace org.critterai.nav
         /// <param name="buffer">The buffer to load the results into.
         /// [Size: >= <see cref="NavmeshTileHeader.vertCount"/>]</param>
         /// <returns>The number of vertices returned.</returns>
-        public int GetVerts(float[] buffer)
+        public int GetVerts(Vector3[] buffer)
         {
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
@@ -191,7 +196,7 @@ namespace org.critterai.nav
         /// <param name="buffer">The buffer to load the results into.
         /// [Size: >= <see cref="NavmeshTileHeader.detailVertCount"/>]</param>
         /// <returns>The number of vertices returned.</returns>
-        public int GetDetailVerts(float[] buffer)
+        public int GetDetailVerts(Vector3[] buffer)
         {
             if (mOwner.IsDisposed || buffer == null)
                 return 0;
