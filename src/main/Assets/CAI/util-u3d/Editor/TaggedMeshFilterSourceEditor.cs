@@ -26,6 +26,7 @@ using UnityEditor;
 /// The custom inspector for <see cref="TaggedMeshFilterSource"/>.
 /// </summary>
 [CustomEditor(typeof(TaggedMeshFilterSource))]
+[System.Obsolete("Not used in new build process. Will be removed in v0.5")]
 public class TaggedMeshFilterSourceEditor 
     : Editor
 {

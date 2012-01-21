@@ -32,7 +32,7 @@ using org.critterai;
 /// <para>The standard triangle limit for the Unity Mesh type does not apply.</para>
 /// </remarks>
 [System.Serializable]
-[AddComponentMenu("CAI/Mesh Filter Source (Tagged)")]
+[System.Obsolete("Not used in new build process. Will be removed in v0.5")]
 public class TaggedMeshFilterSource 
     : DSGeometry 
 {
@@ -90,38 +90,11 @@ public class TaggedMeshFilterSource
     }
 
     /// <summary>
-    /// Derives the bounds for the aggregate meshes.
-    /// [Form: (minX, minY, minZ, maxX, maxY, maxZ)]
-    /// </summary>
-    /// <remarks>
-    /// This method performs a full build of the source geometry.  So
-    /// if the <see cref="TriangleMesh"/> data is going to be needed, it is best
-    /// to use <see cref="GetGeometry"/>, then derive the bounds from the
-    /// result.
-    /// </remarks>
-    /// <returns>The bounds of the aggregate meshes.</returns>
-    public override float[] GetGeometryBounds()
-    {
-        float[] bounds = new float[6];
-
-        GameObject[] sources = GetSources();
-        if (sources == null)
-            return bounds;
-
-        float[] verts;
-        int[] tris;
-        if (MeshUtil.CombineMeshFilters(sources, out verts, out tris))
-        {
-            Vector3Util.GetBounds(verts, bounds);
-        }
-        return bounds;
-    }
-
-    /// <summary>
     /// Derives an aggregate <see cref="TriangleMesh"/> from all
     /// Unity Meshes attached to the tagged GameObject's. (Recursive search.)
     /// </summary>
     /// <returns>An aggregate <see cref="TriangleMesh"/>.</returns>
+    [System.Obsolete("Not used in new build process. Will be removed in v0.5")]
     public override TriangleMesh GetGeometry()
     {
         GameObject[] sources = GetSources();
@@ -138,5 +111,23 @@ public class TaggedMeshFilterSource
         }
 
         return null;
+    }
+
+    public override TriangleMesh GetGeometry(out byte[] areas)
+    {
+        TriangleMesh result = GetGeometry();
+
+        if (result == null)
+            areas = null;
+        else
+        {
+            areas = new byte[result.triCount];
+            for (int i = 0; i < areas.Length; i++)
+            {
+                areas[i] = 63;
+            }
+        }
+
+        return result;
     }
 }
