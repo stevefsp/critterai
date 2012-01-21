@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,11 @@
 using System;
 using org.critterai.nav.rcn;
 using org.critterai.interop;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -85,7 +90,7 @@ namespace org.critterai.nav
         /// <summary>
         /// The current position of the agent. [Form: (x, y, z)]
         /// </summary>
-        public float[] Position 
+        public Vector3 Position 
         { 
             get { return mManager.agentStates[managerIndex].position; } 
         }
@@ -99,9 +104,48 @@ namespace org.critterai.nav
         }
 
         /// <summary>
+        /// The current target of the agent. [Form: (x, y, z)]
+        /// </summary>
+        /// <remarks>This is the path corridor target.</remarks>
+        public Vector3 Target
+        {
+            get { return mManager.agentStates[managerIndex].target; }
+        }
+
+        /// <summary>
+        /// The reference id of the polygon where the target resides.
+        /// </summary>
+        public uint TargetPoly
+        {
+            get { return mManager.agentStates[managerIndex].targetPoly; }
+        }
+
+        /// <summary>
+        /// The next corner in the path corridor. [Form: (x, y, z)]
+        /// </summary>
+        /// <remarks>This is the path corridor target.</remarks>
+        public Vector3 NextCorner
+        {
+            get { return mManager.agentStates[managerIndex].nextCorner; }
+        }
+
+        /// <summary>
+        /// The reference id of the polygon where the next corner resides.
+        /// </summary>
+        /// <remarks>
+        /// <para>This is the polygon being entered at the corner, or zero
+        /// if the next corner is the target.</para>
+        /// <para></para>
+        /// </remarks>
+        public uint NextCornerPoly
+        {
+            get { return mManager.agentStates[managerIndex].nextCornerPoly; }
+        }
+
+        /// <summary>
         /// The desired agent velocity. (Derived) [Form: (x, y, z)]
         /// </summary>
-        public float[] DesiredVelocity 
+        public Vector3 DesiredVelocity 
         { 
             get { return mManager.agentStates[managerIndex].desiredVelocity; } 
         }
@@ -109,7 +153,7 @@ namespace org.critterai.nav
         /// <summary>
         /// The actual agent velocity. [Form: (x, y, z)]
         /// </summary>
-        public float[] Velocity 
+        public Vector3 Velocity 
         { 
             get { return mManager.agentStates[managerIndex].velocity; } 
         }
@@ -175,14 +219,13 @@ namespace org.critterai.nav
         /// the targetPoint.</param>
         /// <param name="targetPoint">The target position.</param>
         /// <returns>TRUE if the target was successfully set.</returns>
-        public bool RequestMoveTarget(uint polyRef, float[] targetPoint)
+        public bool RequestMoveTarget(NavmeshPoint target)
         {
             if (IsDisposed)
                 return false;
             return CrowdManagerEx.dtcRequestMoveTarget(mManager.root
                 , managerIndex
-                , polyRef
-                , targetPoint);
+                , target);
         }
 
         /// <summary>
@@ -198,13 +241,12 @@ namespace org.critterai.nav
         /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
         /// <returns>TRUE if the adjustment was successfully applied.</returns>
-        public bool AdjustMoveTarget(uint polyRef, float[] position)
+        public bool AdjustMoveTarget(NavmeshPoint position)
         {
             if (IsDisposed)
                 return false;
             return CrowdManagerEx.dtcAdjustMoveTarget(mManager.root
                 , managerIndex
-                , polyRef
                 , position);
         }
 
