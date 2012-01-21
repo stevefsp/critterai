@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.geom
 {
@@ -28,12 +33,13 @@ namespace org.critterai.geom
     /// </summary>
     /// <remarks>
     /// <para>The buffers may contain unused space.</para></remarks>
+    [Serializable]
     public class TriangleMesh
     {
         /// <summary>
         /// Vertices [Form: (x, y, z) * vertCount]
         /// </summary>
-        public float[] verts;
+        public Vector3[] verts;
 
         /// <summary>
         /// Triangles [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]
@@ -59,14 +65,14 @@ namespace org.critterai.geom
         /// Constructor.
         /// </summary>
         /// <param name="maxVerts">The maximum number of vertices the 
-        /// <see cref="verts"/> buffer needs to hold.
+        /// <see cref="verts"/> buffer needs to hold. [Limit: >= 3]
         /// </param>
         /// <param name="maxTris">The maximum number of triangles the
-        /// <see cref="tris"/> buffer needs to hold.</param>
+        /// <see cref="tris"/> buffer needs to hold. [Limit: >= 1]</param>
         public TriangleMesh(int maxVerts, int maxTris)
         {
-            this.verts = new float[Math.Max(3, maxVerts) * 3];
-            this.tris = new int[Math.Max(3, maxTris) * 3];
+            this.verts = new Vector3[Math.Max(3, maxVerts)];
+            this.tris = new int[Math.Max(1, maxTris) * 3];
         }
 
         /// <summary>
@@ -80,7 +86,7 @@ namespace org.critterai.geom
         /// <param name="tris">The triangles. 
         /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
         /// <param name="triCount">The number of triangles.</param>
-        public TriangleMesh(float[] verts
+        public TriangleMesh(Vector3[] verts
             , int vertCount
             , int[] tris
             , int triCount)
@@ -91,17 +97,17 @@ namespace org.critterai.geom
             this.triCount = triCount;
         }
 
-        public static bool Validate(TriangleMesh mesh, bool includeContent)
+        public static bool Validate(Vector3[] verts, int vertCount
+            , int[] tris, int triCount
+            , bool includeContent)
         {
-            if (mesh == null
-                || mesh.tris == null
-                || mesh.verts == null
-                || mesh.triCount * 3 > mesh.tris.Length
-                || mesh.vertCount * 3 > mesh.verts.Length
-                || mesh.triCount < 0
-                || mesh.vertCount < 0
-                || mesh.tris.Length % 3 != 0
-                || mesh.verts.Length % 3 != 0)
+            if (tris == null
+                || verts == null
+                || triCount * 3 > tris.Length
+                || vertCount > verts.Length
+                || triCount < 0
+                || vertCount < 0
+                || tris.Length % 3 != 0)
             {
                 return false;
             }
@@ -109,20 +115,20 @@ namespace org.critterai.geom
             if (!includeContent)
                 return true;
 
-            int length = mesh.triCount * 3;
+            int length = triCount * 3;
             for (int p = 0; p < length; p += 3)
             {
-                int a = mesh.tris[p + 0];
-                int b = mesh.tris[p + 1];
-                int c = mesh.tris[p + 2];
+                int a = tris[p + 0];
+                int b = tris[p + 1];
+                int c = tris[p + 2];
 
-                if (a < 0 || a >= mesh.vertCount)
+                if (a < 0 || a >= vertCount)
                     return false;
 
-                if (b < 0 || b >= mesh.vertCount)
+                if (b < 0 || b >= vertCount)
                     return false;
 
-                if (c < 0 || c >= mesh.vertCount)
+                if (c < 0 || c >= vertCount)
                     return false;
 
                 if (a == b || b == c || c == a)
@@ -130,6 +136,16 @@ namespace org.critterai.geom
             }
 
             return true;
+        }
+
+        public static bool Validate(TriangleMesh mesh, bool includeContent)
+        {
+            if (mesh == null)
+                return false;
+
+            return Validate(mesh.verts, mesh.vertCount
+                , mesh.tris, mesh.triCount
+                , includeContent);
         }
     }
 }

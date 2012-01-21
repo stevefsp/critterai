@@ -23,6 +23,11 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Globalization;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.geom
 {
@@ -65,6 +70,7 @@ namespace org.critterai.geom
         /// <param name="invertXAxis">Invert the x-axis values.</param>
         /// <returns>A string representing the mesh in Wavefront format.
         /// </returns>
+        [System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
         public static string TranslateTo(float[] vertices
             , int[] triangles
             , bool reverseWrap
@@ -109,6 +115,50 @@ namespace org.critterai.geom
             return sb.ToString();
         }
 
+        public static string TranslateTo(Vector3[] vertices
+            , int[] triangles
+            , bool reverseWrap
+            , bool invertXAxis)
+        {
+            StringBuilder sb = new StringBuilder();
+            float xFactor = (invertXAxis ? -1 : 1);
+            for (int p = 0; p < vertices.Length; p += 1)
+            {
+                sb.Append("v "
+                    + (vertices[p].x * xFactor)
+                        .ToString(CultureInfo.InvariantCulture) + " "
+                    + vertices[p].y
+                        .ToString(CultureInfo.InvariantCulture) + " "
+                    + vertices[p].z
+                        .ToString(CultureInfo.InvariantCulture) + "\n");
+            }
+            for (int p = 0; p < triangles.Length; p += 3)
+            {
+                // The +1 converts to a 1-based index.
+                if (reverseWrap)
+                {
+                    sb.Append("f "
+                        + (triangles[p + 0] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 2] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 1] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + "\n");
+                }
+                else
+                {
+                    sb.Append("f "
+                        + (triangles[p + 0] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 1] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + " "
+                        + (triangles[p + 2] + 1)
+                            .ToString(CultureInfo.InvariantCulture) + "\n");
+                }
+            }
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Translates a string in Wavefront format and loads the results
         /// into vertex and triangle arrays.
@@ -123,6 +173,7 @@ namespace org.critterai.geom
         /// </param>
         /// <param name="triangles">The triangles from the wavefront data.
         /// </param>
+        [System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
         public static void TranslateFrom(string wavefrontText
             , out float[] vertices
             , out int[] triangles)
@@ -150,6 +201,56 @@ namespace org.critterai.geom
                         lverts.Add(
                             float.Parse(token, CultureInfo.InvariantCulture));
                     }
+                }
+                else if (s.StartsWith("f "))
+                {
+                    // This is a face entry.  Expecting one of:
+                    // F  v1/vt1/vn1   v2/vt2/vn2   v3/vt3/vn3
+                    // F  v1 v2 v3
+                    tokens = r.Split(s);
+                    for (int i = 1; i < 4; i++)
+                    {
+                        string token = tokens[i];
+                        string[] subtokens = rs.Split(token);
+                        // Subtraction converts from 1-based index to 
+                        // zero-based index.
+                        lindices.Add(int.Parse(subtokens[0]
+                            , CultureInfo.InvariantCulture) - 1);
+                    }
+                }
+            }
+
+            vertices = lverts.ToArray();
+            triangles = lindices.ToArray();
+
+            return;
+        }
+
+        public static void TranslateFrom(string wavefrontText
+            , out Vector3[] vertices
+            , out int[] triangles)
+        {
+            List<Vector3> lverts = new List<Vector3>();
+            List<int> lindices = new List<int>();
+
+            Regex nl = new Regex(@"\n");
+            Regex r = new Regex(@"\s+");
+            Regex rs = new Regex(@"\/");
+
+            string[] lines = nl.Split(wavefrontText);
+            int lineCount = 0;
+            foreach (string line in lines)
+            {
+                lineCount++;
+                string s = line.Trim();
+                string[] tokens = null;
+                if (s.StartsWith("v "))
+                {
+                    tokens = r.Split(s);
+                    float x = float.Parse(tokens[1], CultureInfo.InvariantCulture);
+                    float y = float.Parse(tokens[2], CultureInfo.InvariantCulture);
+                    float z = float.Parse(tokens[3], CultureInfo.InvariantCulture);
+                    lverts.Add(new Vector3(x, y, z));
                 }
                 else if (s.StartsWith("f "))
                 {

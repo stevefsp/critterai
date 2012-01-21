@@ -33,6 +33,7 @@ namespace org.critterai
     /// <para>The range of values permitted for a slot is 0 through 15.</para>
     /// <para>Static methods are thread safe.</para>
     /// </remarks>
+    [System.Obsolete("Will be removed in v0.5")]
     public static class UIntPack4
     {
         /// <summary>
