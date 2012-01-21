@@ -22,6 +22,11 @@
 using System;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -89,20 +94,14 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <returns>The minimum bounds of the set.
         /// </returns>
-        public float[] GetBoundsMin()
-        {
-            return (float[])root.boundsMin.Clone();
-        }
+        public Vector3 BoundsMin { get { return root.boundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the set in world space. [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the set.
         /// </returns>
-        public float[] GetBoundsMax()
-        {
-            return (float[])root.boundsMax.Clone();
-        }
+        public Vector3 BoundsMax { get { return root.boundsMax; } }
 
         /// <summary>
         /// TRUE if the object has been disposed and should no longer be used.

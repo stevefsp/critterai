@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -27,6 +32,9 @@ namespace org.critterai.nmgen
     /// Represents the mesh data for a <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
+    /// <para>WARNING: The serializable attributewill be removed 
+    /// in v0.5. Use <see cref="PolyMesh.GetSerializedData"/> instead of
+    /// serializing this object.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 
     ///  between three and <see cref="maxVertsPerPoly"/> vertices. The mesh 
     ///  exists within the context of an axis-aligned bounding box (AABB) 
@@ -185,13 +193,13 @@ namespace org.critterai.nmgen
         /// The minimum bounds of the mesh's AABB.
         /// [Form: (x, y, z)]
         /// </summary>
-        public float[] boundsMin = new float[3];
+        public Vector3 boundsMin;
 
         /// <summary>
         /// The maximum bounds of the mesh's AABB.
         /// [Form: (x, y, z)]
         /// </summary>
-        public float[] boundsMax = new float[3];
+        public Vector3 boundsMax;
 
         /// <summary>
         /// The xz-plane cell size. 
@@ -301,8 +309,8 @@ namespace org.critterai.nmgen
             vertCount = 0;
             polyCount = 0;
             maxVertsPerPoly = 0;
-            boundsMin = new float[3];
-            boundsMax = new float[3];
+            boundsMin = Vector3Util.Zero;
+            boundsMax = Vector3Util.Zero;
             xzCellSize = 0;
             yCellSize = 0;
             borderSize = 0;

@@ -109,7 +109,7 @@ namespace org.critterai.nmgen
             mVertCount = 0;
             mRawVertCount = 0;
             mRegion = NMGen.NullRegion;
-            mArea = NMGen.NullArea;
+            mArea = NMGen.UnwalkableArea;
             mVerts = IntPtr.Zero;
             mRawVerts = IntPtr.Zero;
         }

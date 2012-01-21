@@ -22,6 +22,11 @@
 using System;
 using System.Runtime.InteropServices;
 using org.critterai.interop;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -41,11 +46,8 @@ namespace org.critterai.nmgen
 
         // Field layout: rcHeightfieldLayer
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] mBoundsMin = new float[3];
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] mBoundsMax = new float[3];
+        private Vector3 mBoundsMin;
+        private Vector3 mBoundsMax;
 
         private float mXZCellSize;
         private float mYCellSize;
@@ -79,14 +81,14 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <returns>The minimum bounds of the layer.
         /// </returns>
-        public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the layer in world space. [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the layer.
         /// </returns>
-        public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
 
         /// <summary>
         /// The width/depth increment of each cell. (On the xz-plane.)
@@ -145,9 +147,8 @@ namespace org.critterai.nmgen
 
         internal void Reset()
         {
-            Array.Clear(mBoundsMin, 0, 3);
-            Array.Clear(mBoundsMax, 0, 3);
-
+            mBoundsMin = Vector3Util.Zero;
+            mBoundsMax = Vector3Util.Zero;
             mXZCellSize = 0;
             mYCellSize = 0;
             mWidth = 0;
