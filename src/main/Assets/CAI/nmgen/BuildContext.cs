@@ -85,6 +85,15 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="logEnabled">The initial logging state.</param>
+        public BuildContext(bool logEnabled)
+        {
+            root = BuildContextEx.nmbcAllocateContext(logEnabled);
+        }
+
+        /// <summary>
         /// Destructor.
         /// </summary>
         ~BuildContext()
@@ -153,13 +162,21 @@ namespace org.critterai.nmgen
                 , StringSplitOptions.RemoveEmptyEntries);
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="logEnabled">The initial logging state.</param>
-        public BuildContext(bool logEnabled)
+        public void AppendMessages(BuildContext toContext)
         {
-            root = BuildContextEx.nmbcAllocateContext(logEnabled);
+            if (toContext == null
+                || IsDisposed
+                || !toContext.LogEnabled
+                || MessageCount == 0)
+            {
+                return;
+            }
+
+            string[] msgs = GetMessages();
+            foreach (string msg in msgs)
+            {
+                toContext.Log(msg);
+            }
         }
 
         /// <summary>
@@ -173,5 +190,6 @@ namespace org.critterai.nmgen
             if (context != null && !context.IsDisposed)
                 BuildContextEx.nmgTestContext(context.root, Math.Min(100, count));
         }
+
     }
 }

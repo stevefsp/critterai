@@ -22,6 +22,11 @@
 using System;
 using org.critterai.geom;
 using org.critterai.nmgen.rcn;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -35,8 +40,9 @@ namespace org.critterai.nmgen
         /// The default area id used to indicate a walkable polygon.
         /// </summary>
         /// <remarks>
-        /// This is the only recognized non-zero area id recognized by some 
-        /// steps in the mesh build process.
+        /// <para>This is the only recognized non-zero area id recognized by some 
+        /// steps in the mesh build process.</para>
+        /// <para>This is also the maximum value that can be used as an area id.</para>
         /// </remarks>
         public const byte WalkableArea = 63;
 
@@ -65,7 +71,18 @@ namespace org.critterai.nmgen
         /// <para>When a data item is given this value it is considered to 
         /// no longer be assigned to a usable area.</para>
         /// </remarks>
+        [System.Obsolete("Use Unwalkable area instead. Will be removed in v0.5")]
         public const byte NullArea = 0;
+
+        /// <summary>
+        /// Represents a null area.
+        /// </summary>
+        /// <remarks>
+        /// <para>When a data item is given this value it is considered to 
+        /// no longer be assigned to a usable area.</para>
+        /// <para>This is also the minimum value that can be used as an area id.</para>
+        /// </remarks>
+        public const byte UnwalkableArea = 0;
 
         /// <summary>
         /// The minimum allowed value for cells size parameters.
@@ -92,6 +109,42 @@ namespace org.critterai.nmgen
         /// </summary>
         public const float MaxAllowedSlope = 85.0f;
 
+        public static void DeriveSizeOfTileGrid(Vector3 boundsMin
+            , Vector3 boundsMax
+            , float xzCellSize
+            , int tileSize
+            , out int width
+            , out int depth)
+        {
+            if (tileSize < 1)
+            {
+                width = 1;
+                depth = 1;
+                return;
+            }
+
+            int cellGridWidth = 
+                (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
+            int cellGridDepth = 
+                (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
+
+            width = (cellGridWidth + tileSize - 1) / tileSize;
+            depth = (cellGridDepth + tileSize - 1) / tileSize;
+        }
+
+        /// <summary>
+        /// Derive the width/depth values from the bounds and cell size values.
+        /// </summary>
+        public static void DeriveSizeOfCellGrid(Vector3 boundsMin
+            , Vector3 boundsMax
+            , float xzCellSize
+            , out int width
+            , out int depth)
+        {
+            width = (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
+            depth = (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
+        }
+
         /// <summary>
         /// Returns an array with all values set to <see cref="WalkableArea"/>.
         /// </summary>
@@ -100,12 +153,39 @@ namespace org.critterai.nmgen
         /// </returns>
         public static byte[] BuildWalkableAreaBuffer(int size)
         {
+            return BuildWalkableAreaBuffer(size, WalkableArea);
+        }
+
+        public static byte[] BuildWalkableAreaBuffer(int size, byte fillValue)
+        {
             byte[] result = new byte[size];
+            fillValue = Math.Max(WalkableArea, fillValue);
             for (int i = 0; i < size; i++)
             {
-                result[i] = WalkableArea;
+                result[i] = fillValue;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Validates the content of the area buffer.
+        /// </summary>
+        /// <remarks><para>The validation checks for an undersized buffer.
+        /// It doesn't check for an oversized buffer.</para></remarks>
+        /// <param name="areas"></param>
+        /// <param name="areaCount"></param>
+        /// <returns></returns>
+        public static bool ValidateAreaBuffer(byte[] areas, int areaCount)
+        {
+            if (areas.Length < areaCount)
+                return false;
+
+            for (int i = 0; i < areaCount; i++)
+            {
+                if (areas[i] > WalkableArea)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -212,14 +292,24 @@ namespace org.critterai.nmgen
         /// meshes.</returns>
         public static bool BuildPolyMesh(NMGenParams config
             , BuildFlags buildFlags
-            , InputGeometry source
+            , NMGenInputGeom mesh
+            , ProcessorSet processors
             , out PolyMesh polyMesh
             , out PolyMeshDetail detailMesh
             , out string[] messages
             , bool trace)
         {
-            IncrementalBuilder builder = new IncrementalBuilder(trace);
-            builder.Initialize(config, buildFlags, source);
+            IncrementalBuilder builder = IncrementalBuilder.Create(
+                config, buildFlags, mesh, processors, trace);
+
+            if (builder == null)
+            {
+                polyMesh = null;
+                detailMesh = null;
+                messages = new string[1];
+                messages[0] = "Creation of builder failed. Invalid parameter(s).";
+                return false;
+            }
 
             while (!builder.IsFinished)
             {
@@ -256,7 +346,7 @@ namespace org.critterai.nmgen
         /// <returns>TRUE if the operation completed successfully.
         /// </returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
-            , out float[] verts
+            , out Vector3[] verts
             , out int[] tris)
         {
             // TODO: EVAL: Inefficient.
@@ -267,7 +357,7 @@ namespace org.critterai.nmgen
                 return false;
 
             // Assume no duplicate verts.
-            float[] tverts = new float[source.VertCount * 3];
+            Vector3[] tverts = new Vector3[source.VertCount];
             tris = new int[source.TriCount * 3];
             int vertCount = 0;
             int triCount = 0;
@@ -280,8 +370,11 @@ namespace org.critterai.nmgen
                 , ref triCount
                 , source.TriCount))
             {
-                verts = new float[vertCount * 3];
-                Array.Copy(tverts, verts, verts.Length);
+                verts = new Vector3[vertCount];
+                for (int i = 0; i < vertCount; i++)
+                {
+                    verts[i] = tverts[i];
+                }
                 return true;
             }
 

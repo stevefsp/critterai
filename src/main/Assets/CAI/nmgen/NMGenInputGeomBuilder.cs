@@ -21,28 +21,35 @@
  */
 using org.critterai.geom;
 using System.Collections.Generic;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
-	public class InputGeometryBuilder
-	{
-        private readonly List<float> mVerts;
+    public class NMGenInputGeomBuilder
+    {
+        private readonly List<Vector3> mVerts;
         private readonly List<int> mTris;
         private readonly List<byte> mAreas;
-        private readonly List<IAreaMarker> mAreaMarkers;
 
-        public int VertCount { get { return mVerts.Count / 3; } }
+        public int VertCount { get { return mVerts.Count; } }
         public int TriCount { get { return mTris.Count / 3; } }
-        public int AreaMarkerCount { get { return mAreaMarkers.Count; } }
 
-        public InputGeometryBuilder(int initVertCount
-            , int initTriCount
-            , int initAreaMarkerCount)
+        public NMGenInputGeomBuilder(int initVertCount, int initTriCount)
         {
-            mVerts = new List<float>(initVertCount * 3);
+            mVerts = new List<Vector3>(initVertCount);
             mTris = new List<int>(initTriCount * 3);
             mAreas = new List<byte>(initTriCount);
-            mAreaMarkers = new List<IAreaMarker>(initAreaMarkerCount);
+        }
+
+        public NMGenInputGeomBuilder(NMGenInputGeom source)
+        {
+            mVerts = new List<Vector3>(source.UnsafeVerts);
+            mTris = new List<int>(source.UnsafeTris);
+            mAreas = new List<byte>(source.UnsafeAreas);
         }
 
         public bool AddTriangles(TriangleMesh mesh
@@ -59,25 +66,21 @@ namespace org.critterai.nmgen
             if (areas == null)
                 areas = NMGen.BuildWalkableAreaBuffer(mesh.triCount);
 
-            int iVertOffset = mVerts.Count / 3;
+            int iVertOffset = mVerts.Count;
 
-            int length;
-
-            if (mesh.vertCount * 3 == mesh.verts.Length)
+            if (mesh.vertCount == mesh.verts.Length)
                 mVerts.AddRange(mesh.verts);
             else
             {
-                length = mesh.vertCount * 3;
+                mVerts.Capacity += mesh.vertCount;
 
-                mVerts.Capacity += length;
-
-                for (int p = 0; p < length; p++)
+                for (int p = 0; p < mesh.vertCount; p++)
                 {
                     mVerts.Add(mesh.verts[p]);
                 }
             }
 
-            length = mesh.triCount * 3;
+            int length = mesh.triCount * 3;
 
             mTris.Capacity += length;
 
@@ -101,31 +104,29 @@ namespace org.critterai.nmgen
             return true;
         }
 
-        public void AddAreaMarkers(params IAreaMarker[] markers)
+        public NMGenInputGeom GetGeometry()
         {
-            mAreaMarkers.AddRange(markers);
-        }
+            if (mTris.Count == 0)
+                return null;
 
-        public void AddAreaMarker(IAreaMarker marker)
-        {
-            mAreaMarkers.Add(marker);
-        }
-
-        public InputGeometry GetGeometry()
-        {
-            InputGeometry result = new InputGeometry();
-
-            result.mesh = new TriangleMesh(mVerts.ToArray()
-                , mVerts.Count / 3
+            return NMGenInputGeom.Create(mVerts.ToArray(), mVerts.Count
                 , mTris.ToArray()
-                , mTris.Count / 3);
+                , mAreas.ToArray()
+                , mAreas.Count);
+        }
 
-            result.areas = mAreas.ToArray();
-            result.areaMarkers = mAreaMarkers.ToArray();
+        public TriangleMesh GetGeometry(out byte[] areas)
+        {
+            if (mTris.Count == 0)
+            {
+                areas = null;
+                return null;
+            }
 
-            result.DeriveBounds();
+            areas = mAreas.ToArray();
 
-            return result;
+            return new TriangleMesh(mVerts.ToArray(), mVerts.Count
+                , mTris.ToArray(), mTris.Count / 3);
         }
 
         public void Reset()
@@ -133,7 +134,6 @@ namespace org.critterai.nmgen
             mTris.Clear();
             mVerts.Clear();
             mAreas.Clear();
-            mAreaMarkers.Clear();
         }
     }
 }
