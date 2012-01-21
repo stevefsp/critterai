@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -54,6 +59,17 @@ namespace org.critterai.nav
         public uint positionPoly;
 
         /// <summary>
+        /// The reference id of the polygon where the target resides.
+        /// </summary>
+        public uint targetPoly;
+
+        /// <summary>
+        /// The reference id of the polygon where the next corner resides.
+        /// (Or zero if the next corner is the target.
+        /// </summary>
+        public uint nextCornerPoly;
+
+        /// <summary>
         /// The number of neighbors.
         /// </summary>
         public int neighborCount;
@@ -66,31 +82,37 @@ namespace org.critterai.nav
         /// <summary>
         /// The curent position of the agent in the form (x, y, z).
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] position;
+        public Vector3 position;
 
         /// <summary>
         /// disp-value. (Not documented.)
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] disp;
+        private Vector3 disp;
 
         /// <summary>
         /// The desired velocity of the agent in the form (x, y, z)
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] desiredVelocity;
+        public Vector3 desiredVelocity;
 
         /// <summary>
         /// nvel-value. (Not documented.)
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] nvel;
+        private Vector3 nvel;
 
         /// <summary>
         /// The velocity of the agent in the form (x, y, z).
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] velocity;
+        public Vector3 velocity;
+
+        /// <summary>
+        /// The target of the agent in the form (x, y, z).
+        /// </summary>
+        /// <remarks>This is the corridor target.</remarks>
+        public Vector3 target;
+
+        /// <summary>
+        /// The next corner in the path corridor in the form (x, y, z).
+        /// </summary>
+        public Vector3 nextCorner;
     }
 }
