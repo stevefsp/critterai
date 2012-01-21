@@ -21,9 +21,30 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav.rcn
 {
+    //[StructLayout(LayoutKind.Sequential)]
+    //[System.Obsolete]
+    //internal struct NavmeshPoint
+    //{
+    //    public uint polyRef;
+    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    //    public float[] point;
+
+    //    public static NavmeshPoint Build()
+    //    {
+    //        NavmeshPoint result = new NavmeshPoint();
+    //        result.point = new float[3];
+    //        return result;
+    //    }
+    //}
+
     internal static class PathCorridorEx
     {
         /*
@@ -40,12 +61,29 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtpcReset(IntPtr corridor
-            , uint polyRef
-            , [In] float[] position);
+            , NavmeshPoint position);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtpcFindCorners(IntPtr corridor
-            , [In, Out] float[] cornerVerts
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtpcOptimizePathVisibility(IntPtr corridor
+            , [In] ref Vector3 next
+            , float pathOptimizationRange
+            , IntPtr navquery
+            , IntPtr filter);
+
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcOptimizePathVisibilityExt(IntPtr corridor
+            , [In] ref Vector3 next
+            , float pathOptimizationRange
+            , [In, Out] Vector3[] cornerVerts
             , [In, Out] WaypointFlag[] cornerFlags
             , [In, Out] uint[] cornerPolys
             , int maxCorners
@@ -53,59 +91,76 @@ namespace org.critterai.nav.rcn
             , IntPtr filter);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtpcOptimizePathVisibility(IntPtr corridor
-             , [In] float[] next
-             , float pathOptimizationRange
-             , IntPtr navquery
-             , IntPtr filter);
-
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtpcOptimizePathTopology(IntPtr corridor
              , IntPtr navquery
              , IntPtr filter);
-    	
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern bool dtpcMoveOverOffmeshConnection(IntPtr corridor
-             , uint offMeshConRef
-             , [In, Out] uint[] refs // size 2
-             , [In, Out] float[] startPos
-             , [In, Out] float[] endPos
-             , IntPtr navquery);
-    	
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcMovePosition(IntPtr corridor
-            , [In] float[] npos
-            , IntPtr navquery
-            , IntPtr filter
-            , [In, Out] float[] pos);
-
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcMoveTargetPosition(IntPtr corridor
-            , [In] float[] npos
-            , IntPtr navquery
-            , IntPtr filter
-            , [In, Out] float[] pos);
-    	
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtpcSetCorridor(IntPtr corridor
-             , [In] float[] target
-             , [In] uint[] path
-             , int pathCount);
-    	
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcGetPos(IntPtr corridor
-             , [In] float[] position);
-
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcGetTarget(IntPtr corridor
-             , [In] float[] target);
-         	
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcGetFirstPoly(IntPtr corridor);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtpcGetLastPoly(IntPtr corridor);
+        public static extern int dtpcOptimizePathTopologyExt(IntPtr corridor
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool dtpcMoveOverOffmeshConnection(IntPtr corridor
+            , uint offMeshConRef
+            , [In, Out] uint[] refs // size 2
+            , ref Vector3 startPos
+            , ref Vector3 endPos
+            , ref NavmeshPoint resultPos
+            , IntPtr navquery);
     	
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcMovePosition(IntPtr corridor
+            , [In] ref Vector3 npos
+            , ref NavmeshPoint pos
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcMoveTargetPosition(IntPtr corridor
+            , [In] ref Vector3 npos
+            , ref NavmeshPoint pos
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcMove(IntPtr corridor
+            , [In] ref Vector3 npos
+            , [In] ref Vector3 ntarget
+            , ref NavmeshPoint pos
+            , ref NavmeshPoint target
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
+	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern int dtpcSetCorridor(IntPtr corridor
+            , [In] ref Vector3 target
+            , [In] uint[] path
+            , int pathCount
+            , ref NavmeshPoint resultTarget
+            , [In, Out] Vector3[] cornerVerts
+            , [In, Out] WaypointFlag[] cornerFlags
+            , [In, Out] uint[] cornerPolys
+            , int maxCorners
+            , IntPtr navquery
+            , IntPtr filter);
+
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtpcGetPath(IntPtr corridor
              , [In, Out] uint[] path

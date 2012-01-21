@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav.rcn
 {
@@ -58,7 +63,7 @@ namespace org.critterai.nav.rcn
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtcAddAgent(IntPtr crowd
-            , [In] float[] pos
+            , [In] ref Vector3 pos
             , ref CrowdAgentParams agentParams
             , ref IntPtr agent
             , ref CrowdAgentCoreState initialState);
@@ -84,7 +89,7 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtcGetQueryExtents(IntPtr crowd
-            , [In, Out] float[] extents);
+            , ref Vector3 extents);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtcGetVelocitySampleCount(IntPtr crowd);
@@ -103,13 +108,11 @@ namespace org.critterai.nav.rcn
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtcRequestMoveTarget(IntPtr crowd
             , int agentIndex
-            , uint polyRef
-            , [In] float[] position);
+            , NavmeshPoint position);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool dtcAdjustMoveTarget(IntPtr crowd
             , int agentIndex
-            , uint polyRef
-            , [In] float[] position);
+            , NavmeshPoint position);
     }
 }
