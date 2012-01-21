@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav.rcn
 {
@@ -65,7 +70,7 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtnmCalcTileLoc(IntPtr navmesh
-            , [In] float[] position
+            , [In] ref Vector3 position
             , ref int tx
             , ref int tz);
 
@@ -116,9 +121,8 @@ namespace org.critterai.nav.rcn
             IntPtr navmesh
             , uint previousPolyRef
             , uint polyRef
-            , [In, Out] float[] startPosition
-            , [In, Out] float[] endPosition);
-
+            , [In, Out] ref Vector3 startPosition
+            , [In, Out] ref Vector3 endPosition);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern IntPtr dtnmGetOffMeshConnectionByRef(IntPtr navmesh

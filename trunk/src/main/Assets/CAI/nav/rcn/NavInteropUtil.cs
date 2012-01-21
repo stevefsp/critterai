@@ -21,9 +21,14 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 // Note: The file name does not match the element name because Unity
-// doesn't support multiple script files with the same name.  And the
+// doesn't support multiple script files with the same name, and the
 // entity name exists in multiple namespaces.
 
 namespace org.critterai.nav.rcn
@@ -35,5 +40,16 @@ namespace org.critterai.nav.rcn
     #else
         public const string PLATFORM_DLL = "cai-nav-rcn";
     #endif
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtvlVectorTest(
+            [In] ref Vector3 vector3in
+            , ref Vector3 vector3out);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern void dtvlVectorArrayTest(
+            [In] Vector3[] vector3in
+            , int vectorCount
+            , [In, Out] Vector3[] vector3out);
     }
 }

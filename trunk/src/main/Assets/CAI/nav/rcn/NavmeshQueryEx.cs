@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav.rcn
 {
@@ -44,35 +49,34 @@ namespace org.critterai.nav.rcn
         public static extern NavStatus dtqGetPolyWallSegments(IntPtr query
             , uint polyRef
             , IntPtr filter
-            , [In, Out] float[] segmentVerts
+            , [In, Out] Vector3[] segmentVerts
             , [In, Out] uint[] segmentPolyRefs
             , ref int segmentCount
             , int maxSegments);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindNearestPoly(IntPtr query
-            , [In] float[] position
-            , [In] float[] extents
+            , [In] ref Vector3 position
+            , [In] ref Vector3 extents
 		    , IntPtr filter
-		    , ref uint nearestPolyRef
-            , [In, Out] float[] nearestPoint);
+		    , ref NavmeshPoint nearest);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqClosestPointOnPoly(IntPtr query
             , uint polyRef
-            , [In] float[] position
-            , [In, Out] float[] resultPoint);
+            , [In] ref Vector3 position
+            , ref Vector3 resultPoint);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqClosestPointOnPolyBoundary(IntPtr query 
             , uint polyRef
-            , [In] float[] position
-            , [In, Out] float[] resultPoint);
+            , [In] ref Vector3 position
+            , [In] ref Vector3 resultPoint);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqQueryPolygons(IntPtr query
-                , [In] float[] position
-                , [In] float[] extents
+                , [In] ref Vector3 position
+                , [In] ref Vector3 extents
                 , IntPtr filter
                 , [In, Out] uint[] resultPolyRefs
                 , ref int resultCount
@@ -81,7 +85,7 @@ namespace org.critterai.nav.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindPolysAroundCircle(IntPtr query
                 , uint startPolyRef
-                , [In] float[] position
+                , [In] ref Vector3 position
                 , float radius
                 , IntPtr filter
                 , [In, Out] uint[] resultPolyRefs  // Optional
@@ -93,7 +97,7 @@ namespace org.critterai.nav.rcn
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindPolysAroundShape(IntPtr query 
             , uint startPolyRef
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int vertCount
 	        , IntPtr filter
 	        , [In, Out] uint[] resultPolyRefs
@@ -105,7 +109,7 @@ namespace org.critterai.nav.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindLocalNeighbourhood(IntPtr query
             , uint startPolyRef
-            , [In] float[] position
+            , [In] ref Vector3 position
             , float radius
             , IntPtr filter
             , [In, Out] uint[] resultPolyRefs
@@ -115,38 +119,32 @@ namespace org.critterai.nav.rcn
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqGetPolyHeight(IntPtr query
-            , uint polyRef
-            , [In] float[] position
+            , NavmeshPoint position
             , ref float height);
 
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindDistanceToWall(IntPtr query
-            , uint polyRef
-            , [In] float[] position
+            , NavmeshPoint position
             , float searchRadius
 	        , IntPtr filter
 	        , ref float distance
-            , [In, Out] float[] closestPoint
-            , [In, Out] float[] normal);
+            , ref Vector3 closestPoint
+            , ref Vector3 normal);
 
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern NavStatus dtqFindPath(IntPtr query 
-            , uint startPolyRef
-            , uint endPolyRef
-		    , [In] float[] startPosition
-            , [In] float[] endPosition
-		    , IntPtr filter
-		    , [In, Out] uint[] resultPath
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindPath(IntPtr query
+            , NavmeshPoint startPosition
+            , NavmeshPoint endPosition
+            , IntPtr filter
+            , [In, Out] uint[] resultPath
             , ref int pathCount
             , int maxPath);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindPathExt(IntPtr query
-            , ref uint startPolyRef
-            , ref uint endPolyRef
-            , [In, Out] float[] startPosition
-            , [In, Out] float[] endPosition
-            , [In] float[] extents
+            , ref NavmeshPoint startPosition
+            , ref NavmeshPoint endPosition
+            , [In] ref Vector3 extents
             , IntPtr filter
             , [In, Out] uint[] resultPath
             , ref int pathCount
@@ -163,46 +161,42 @@ namespace org.critterai.nav.rcn
 	
 	    [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqRaycast(IntPtr query
-            , uint startPolyRef
-            , [In] float[] startPosition
-            , [In] float[] endPosition
+            , NavmeshPoint startPosition
+            , [In] ref Vector3 endPosition
 	        , IntPtr filter
 	        , ref float hitParameter 
-            , [In, Out] float[] hitNormal
+            , ref Vector3 hitNormal
             , [In, Out] uint[] path
             , ref int pathCount
             , int maxPath);
 
-	    [DllImport(InteropUtil.PLATFORM_DLL)]
+        [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqFindStraightPath(IntPtr query
-            , [In] float[] startPosition
-            , [In] float[] endPosition
-		    , [In] uint[] path
+            , [In] ref Vector3 startPosition
+            , [In] ref Vector3 endPosition
+            , [In] uint[] path
             , int pathStart
             , int pathSize
-	        , [In, Out] float[] straightPathPoints
+            , [In, Out] Vector3[] straightPathPoints
             , [In, Out] WaypointFlag[] straightPathFlags
             , [In, Out] uint[] straightPathRefs
-	        , ref int straightPathCount
+            , ref int straightPathCount
             , int maxStraightPath);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqMoveAlongSurface(IntPtr query
-            , uint startPolyRef
-            , [In] float[] startPosition
-            , [In] float[] endPosition
+            , NavmeshPoint startPosition
+            , [In] ref Vector3 endPosition
             , IntPtr filter
-            , [In, Out] float[] resultPosition
+            , ref Vector3 resultPosition
             , [In, Out] uint[] visitedPolyRefs
             , ref int visitedCount
             , int maxVisited);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqInitSlicedFindPath(IntPtr query
-            , uint startPolyRef
-            , uint endPolyRef
-            , [In] float[] startPosition
-            , [In] float[] endPosition
+            , NavmeshPoint startPosition
+            , NavmeshPoint endPosition
             , IntPtr filter);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]

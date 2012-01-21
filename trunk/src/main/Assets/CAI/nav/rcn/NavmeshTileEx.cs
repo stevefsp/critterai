@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav.rcn
 {
@@ -71,8 +76,8 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtnmGetTileVerts(IntPtr tile
-            , [In, Out] float[] verts
-            , int vertsSize);
+            , [In, Out] Vector3[] verts
+            , int vertsCount);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtnmGetTilePolys(IntPtr tile
@@ -81,8 +86,8 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtnmGetTileDetailVerts(IntPtr tile
-            , [In, Out] float[] verts
-            , int vertsSize);
+            , [In, Out] Vector3[] verts
+            , int vertsCount);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtnmGetTileDetailTris(IntPtr tile
