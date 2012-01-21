@@ -28,6 +28,7 @@ namespace org.critterai.geom
     /// Indicates the wrap direction of a polygon when projected onto a 2D
     /// plane.
     /// </summary>
+    [System.Obsolete("Will be removed in v0.5")]
     public enum WrapDirection
     {
         /// <summary>

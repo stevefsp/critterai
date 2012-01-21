@@ -27,6 +27,7 @@ namespace org.critterai.geom
     /// <summary>
     /// Represents a euclidean axis.
     /// </summary>
+    [System.Obsolete("Will be removed in v0.5")]
     public enum Axis
     {
 
