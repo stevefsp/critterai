@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen.rcn
 {
@@ -46,10 +51,8 @@ namespace org.critterai.nmgen.rcn
         public IntPtr contours = IntPtr.Zero;    // rcContour[contourCount]
         public int contourCount = 0;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMin = new float[3];
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMax = new float[3];
+        public Vector3 boundsMin;
+        public Vector3 boundsMax;
 
         public float xzCellSize = 0;
         public float yCellSize = 0;
@@ -61,8 +64,8 @@ namespace org.critterai.nmgen.rcn
         {
             contourCount = 0;
             contours = IntPtr.Zero;
-            Array.Clear(boundsMin, 0, 3);
-            Array.Clear(boundsMax, 0, 3);
+            boundsMax = Vector3Util.Zero;
+            boundsMin = Vector3Util.Zero;
             xzCellSize = 0;
             yCellSize = 0;
             width = 0;

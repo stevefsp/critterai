@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen.rcn
 {
@@ -29,8 +34,8 @@ namespace org.critterai.nmgen.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern IntPtr nmhfAllocField(int width
             , int depth
-            , [In] float[] boundsMin
-            , [In] float[] boundsMax
+            , [In] ref Vector3 boundsMin
+            , [In] ref Vector3 boundsMax
             , float xzCellSize
             , float yCellSize);
 
@@ -39,14 +44,14 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmhfRasterizeTriangle(IntPtr context
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , byte area
             , IntPtr hf
             , int flagMergeThreshold);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmhfRasterizeTriMesh(IntPtr context
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int vertCount
             , [In] int[] tris
             , [In] byte[] areas
@@ -56,7 +61,7 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmhfRasterizeTriMeshShort(IntPtr context
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , int vertCount
             , [In] ushort[] tris
             , [In] byte[] areas
@@ -66,7 +71,7 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmhfRasterizeTriangles(IntPtr context
-            , [In] float[] verts
+            , [In] Vector3[] verts
             , [In] byte[] areas
             , int triCount
             , IntPtr hf
