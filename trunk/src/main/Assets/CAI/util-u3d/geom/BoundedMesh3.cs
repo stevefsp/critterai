@@ -32,7 +32,7 @@ namespace org.critterai.geom
     /// <remarks>
     /// <p>Static methods are thread safe.</p>
     /// </remarks>
-    [System.Obsolete]
+    [System.Obsolete("Will be removed in v0.5")]
     public class BoundedMesh3
         : Mesh3
     {
