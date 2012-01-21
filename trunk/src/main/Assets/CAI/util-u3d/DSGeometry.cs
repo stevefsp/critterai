@@ -36,15 +36,11 @@ public abstract class DSGeometry
     public abstract bool HasGeometry { get; }
 
     /// <summary>
-    /// Derives and returns the bounds of the geometry. 
-    /// [Form: (minX, minY, minZ, maxX, maxY, maxZ)]
-    /// </summary>
-    /// <returns>The bounds of the geometry.</returns>
-    public abstract float[] GetGeometryBounds();
-
-    /// <summary>
     /// Gets the geometry.
     /// </summary>
     /// <returns>The geometry, or NULL if geometry is not available.</returns>
+    [System.Obsolete("Will be removed in v0.5")]
     public abstract TriangleMesh GetGeometry();
+
+    public abstract TriangleMesh GetGeometry(out byte[] areas);
 }
