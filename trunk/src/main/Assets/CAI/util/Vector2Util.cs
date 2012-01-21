@@ -20,7 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
-using UnityEngine;
+#if NUNITY
+using Vector2 = org.critterai.Vector3;
+#else
+using Vector2 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai
 {
@@ -240,9 +244,14 @@ namespace org.critterai
         public static Vector2 ScaleTo(float x, float y, float length) 
         {
             if (length == 0 || (x == 0 && y == 0))
-                return Vector2.zero;
+                return new Vector2(0, 0);
             float factor = (length / (float)(Math.Sqrt(x * x + y * y)));
             return new Vector2(x * factor, y * factor);
+        }
+
+        public static Vector2 Zero
+        {
+            get { return new Vector2(0, 0); }
         }
 
         /// <summary>

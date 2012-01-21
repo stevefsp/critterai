@@ -20,7 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
-using UnityEngine;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai
 {
@@ -81,6 +85,26 @@ namespace org.critterai
             return (dx * dx + dy * dy + dz * dz);
         }
 
+        public static Vector3 Normalize(Vector3 v)
+        {
+            float m = (float)Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+            if (m < MathUtil.Tolerance)
+                m = 1;
+
+            v.x /= m;
+            v.y /= m;
+            v.z /= m;
+
+            if (Math.Abs(v.x) < MathUtil.Tolerance)
+                v.x = 0;
+            if (Math.Abs(v.y) < MathUtil.Tolerance)
+                v.y = 0;
+            if (Math.Abs(v.z) < MathUtil.Tolerance)
+                v.z = 0;
+
+            return v;
+        }
+
         /// <summary>
         /// Gets the distance between the specified points on the xz-plane. 
         /// (Ignores y-axis.)
@@ -93,7 +117,7 @@ namespace org.critterai
         {
             float dx = v.x - u.x;
             float dz = v.z - u.z;
-            return Mathf.Sqrt(dx * dx + dz * dz);
+            return (float)Math.Sqrt(dx * dx + dz * dz);
         }
 
         /// <summary>
@@ -241,7 +265,7 @@ namespace org.critterai
         {
             Vector3 d = b - a;
             return (d.x * d.x + d.z * d.z) < radius * radius
-                && Mathf.Abs(d.y) < height;
+                && Math.Abs(d.y) < height;
         }
 
         /// <summary>
@@ -313,6 +337,25 @@ namespace org.critterai
             return result;
         }
 
+        public static Vector3[] GetVectors(float[] source
+            , int sourceIndex
+            , Vector3[] target
+            , int targetIndex
+            , int count)
+        {
+            if (target == null)
+                target = new Vector3[count + targetIndex];
+
+            for (int i = 0; i < count; i++)
+            {
+                int p = (sourceIndex + i) * 3;
+                target[targetIndex + i] = 
+                    new Vector3(source[p + 0], source[p + 1], source[p + 2]);
+            }
+
+            return target;
+        }
+
         /// <summary>
         /// Creates a Unity vector from an entry in an array of vectors.
         /// </summary>
@@ -371,28 +414,58 @@ namespace org.critterai
 
             for (int i = 1; i < vectorCount; i++)
             {
-                minBounds.x = Mathf.Min(minBounds.x, vectors[i].x);
-                minBounds.y = Mathf.Min(minBounds.y, vectors[i].y);
-                minBounds.z = Mathf.Min(minBounds.z, vectors[i].z);
-                maxBounds.x = Mathf.Max(maxBounds.x, vectors[i].x);
-                maxBounds.y = Mathf.Max(maxBounds.y, vectors[i].y);
-                maxBounds.z = Mathf.Max(maxBounds.z, vectors[i].z);
+                minBounds.x = Math.Min(minBounds.x, vectors[i].x);
+                minBounds.y = Math.Min(minBounds.y, vectors[i].y);
+                minBounds.z = Math.Min(minBounds.z, vectors[i].z);
+                maxBounds.x = Math.Max(maxBounds.x, vectors[i].x);
+                maxBounds.y = Math.Max(maxBounds.y, vectors[i].y);
+                maxBounds.z = Math.Max(maxBounds.z, vectors[i].z);
             }
         }
 
+        public static void GetBounds(Vector3[] verts
+             , int[] tris
+             , int triCount
+             , out Vector3 minBounds
+             , out Vector3 maxBounds)
+        {
+            // TODO: Add unit test.
+
+            minBounds = verts[tris[0]];
+            maxBounds = verts[tris[0]];
+
+            for (int p = 1; p < triCount; p++)
+            {
+                Vector3 v = verts[tris[p]];
+                minBounds.x = Math.Min(minBounds.x, v.x);
+                minBounds.y = Math.Min(minBounds.y, v.y);
+                minBounds.z = Math.Min(minBounds.z, v.z);
+                maxBounds.x = Math.Max(maxBounds.x, v.x);
+                maxBounds.y = Math.Max(maxBounds.y, v.y);
+                maxBounds.z = Math.Max(maxBounds.z, v.z);
+            }
+        }
+
+        public static bool IsBoundsValid(Vector3 boundsMin, Vector3 boundsMax)
+        {
+            return !(boundsMax.x < boundsMin.x
+                || boundsMax.y < boundsMin.y
+                || boundsMax.z < boundsMin.z);
+        }
+
         /// <summary>
-        /// Gets the minimum and maximum bounds of the AABB which contains the 
-        /// array of vectors.
+        /// Gets the bounds of the AABB that contains the  array of vectors.
         /// </summary>
         /// <param name="flatVectors">An flattened array of vectors in the form
-        /// (x, y, z).</param>
+        /// [(x, y, z) * vectorCount].</param>
+        /// <param name="vectorCount">The number of vectors in the array.</param>
         /// <param name="bounds">An array of length 6 to store the bounds 
-        /// result in. Form: (minX, minY, minZ, maxX, maxY, maxZ).
-        /// Can be null.
+        /// result in. Null is allowed. [(minX, minY, minZ, maxX, maxY, maxZ)] 
+        /// [Out]
         /// </param>
         /// <returns>
-        /// The bounds in the form (minX, minY, minZ, maxX, maxY, maxZ).
-        /// Will be a reference to the bounds argument if one was provided.
+        /// The bounds of the vectors.        
+        /// (Will be a reference to the bounds parameter if one was provided.)
         /// </returns>
         public static float[] GetBounds(float[] flatVectors
             , int vectorCount
@@ -411,15 +484,100 @@ namespace org.critterai
             int length = vectorCount * 3;
             for (int p = 3; p < length; p += 3)
             {
-                bounds[0] = Mathf.Min(bounds[0], flatVectors[p + 0]);
-                bounds[1] = Mathf.Min(bounds[1], flatVectors[p + 1]);
-                bounds[2] = Mathf.Min(bounds[2], flatVectors[p + 2]);
-                bounds[3] = Mathf.Max(bounds[3], flatVectors[p + 0]);
-                bounds[4] = Mathf.Max(bounds[4], flatVectors[p + 1]);
-                bounds[5] = Mathf.Max(bounds[5], flatVectors[p + 2]);
+                bounds[0] = Math.Min(bounds[0], flatVectors[p + 0]);
+                bounds[1] = Math.Min(bounds[1], flatVectors[p + 1]);
+                bounds[2] = Math.Min(bounds[2], flatVectors[p + 2]);
+                bounds[3] = Math.Max(bounds[3], flatVectors[p + 0]);
+                bounds[4] = Math.Max(bounds[4], flatVectors[p + 1]);
+                bounds[5] = Math.Max(bounds[5], flatVectors[p + 2]);
             }
 
             return bounds;
+        }
+
+        public static void GetBounds(float[] verts
+            , int[] tris
+            , int triCount
+            , int axis
+            , out float min
+            , out float max)
+        {
+            // TODO: Add unit test.
+
+            if (axis < 0 || axis > 2)
+            {
+                min = 0;
+                max = 0;
+                return;
+            }
+
+            int pVertVal = tris[0] * 3 + axis ;
+
+            min = verts[pVertVal];
+            max = min;
+
+            int length = triCount * 3;
+            for (int p = 0; p < length; p++)
+            {
+                pVertVal = tris[p] * 3 + axis;
+
+                min = Math.Min(min, verts[pVertVal]);
+                max = Math.Max(max, verts[pVertVal]);
+            }
+        }
+
+        /// <summary>
+        /// Gets the bounds of the AABB that contains the triangles.
+        /// </summary>
+        /// <param name="verts">An array of vertices. [(x, y, z)]</param>
+        /// <param name="tris">An array of triangle indices. 
+        /// [(vertIndexA, vertIndexB, vertIndexC) * triCount]</param>
+        /// <param name="triCount">The number of triangles in the triangle
+        /// array.</param>
+        /// <param name="bounds">An array of length 6 to store the bounds 
+        /// result in. Null is allowed. [(minX, minY, minZ, maxX, maxY, maxZ)]
+        /// [Out]
+        /// </param>
+        /// <returns>
+        /// The bounds of the triangles.
+        /// (Will be a reference to the bounds parameter if one was provided.)
+        /// </returns>
+        public static float[] GetBounds(float[] verts
+            , int[] tris
+            , int triCount
+            , float[] bounds)
+        {
+            // TODO: Add unit test.
+
+            if (bounds == null)
+                bounds = new float[6];
+
+            int pVert = tris[0] * 3;
+            bounds[0] = verts[pVert + 0];
+            bounds[1] = verts[pVert + 1];
+            bounds[2] = verts[pVert + 2];
+            bounds[3] = verts[pVert + 0];
+            bounds[4] = verts[pVert + 1];
+            bounds[5] = verts[pVert + 2];
+
+            int length = triCount * 3;
+            for (int p = 1; p < length; p++)
+            {
+                pVert = tris[p] * 3;
+                bounds[0] = Math.Min(bounds[0], verts[pVert + 0]);
+                bounds[1] = Math.Min(bounds[1], verts[pVert + 1]);
+                bounds[2] = Math.Min(bounds[2], verts[pVert + 2]);
+                bounds[3] = Math.Max(bounds[3], verts[pVert + 0]);
+                bounds[4] = Math.Max(bounds[4], verts[pVert + 1]);
+                bounds[5] = Math.Max(bounds[5], verts[pVert + 2]);
+            }
+
+            return bounds;
+        }
+
+        public static Vector3 Zero
+        {
+            get { return new Vector3(0, 0, 0); }
         }
 
         /// <summary>
@@ -432,6 +590,14 @@ namespace org.critterai
         {
             return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
                 , vector[0], vector[1], vector[2]);
+        }
+
+        public static string ToString(float[] vector, int index)
+        {
+            return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
+                , vector[index * 3 + 0]
+                , vector[index * 3 + 1]
+                , vector[index * 3 + 2]);
         }
 
         /// <summary>

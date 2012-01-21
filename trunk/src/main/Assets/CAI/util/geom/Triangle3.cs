@@ -20,7 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
-using UnityEngine;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.geom
 {
@@ -140,9 +144,8 @@ namespace org.critterai.geom
                      , cx - ax
                      , cy - ay
                      , cz - az);
-             result.Normalize();
-            
-            return result;
+
+            return Vector3Util.Normalize(result);
         }
 
         /// <summary>
