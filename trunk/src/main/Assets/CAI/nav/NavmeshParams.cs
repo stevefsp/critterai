@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,11 @@
  */
 using System;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -30,7 +35,8 @@ namespace org.critterai.nav
     /// <remarks>
     /// <para>Implemented as a class with public fields in order to support Unity
     /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</para></remarks>
+    /// values.</para>
+    /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshParams
@@ -41,11 +47,9 @@ namespace org.critterai.nav
         public const float MinTileSize = 0.1f;
 
         /// <summary>
-        /// The origin of the navigation mesh's tile space in the form
-        /// (x, y, z).
+        /// The world-space origin of the navigation mesh.
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-	    public float[] origin = new float[3];
+        public Vector3 origin;
 
         /// <summary>
         /// The width of each tile. (Along the x-axis.)
@@ -68,15 +72,6 @@ namespace org.critterai.nav
         public int maxPolysPerTile = 0;
 
         /// <summary>
-        /// The world-space origin of the navigation mesh. [Form: (x, y, z)]
-        /// </summary>
-        /// <returns>The world-space origin of the navigation mesh.</returns>
-        public float[] GetOrigin()
-        {
-            return (float[])origin.Clone();
-        }
-
-        /// <summary>
         /// Constructs and initializes the structure.
         /// </summary>
         /// <param name="originX">The x-value of the tile space origin.</param>
@@ -90,13 +85,11 @@ namespace org.critterai.nav
         /// mesh can contain.</param>
         /// <param name="maxPolysPerTile">The maximum number of polygons each 
         /// tile can contain.</param>
-        public NavmeshParams(float originX, float originY, float originZ
+        public NavmeshParams(Vector3 origin
             , float tileWidth, float tileDepth
             , int maxTiles, int maxPolysPerTile)
         {
-            origin[0] = originX;
-            origin[1] = originY;
-            origin[2] = originZ;
+            this.origin = origin;
             this.tileWidth = Math.Max(MinTileSize, tileWidth);
             this.tileDepth = Math.Max(MinTileSize, tileDepth);
             this.maxTiles = Math.Max(1, maxTiles);
@@ -104,5 +97,14 @@ namespace org.critterai.nav
         }
 
         internal NavmeshParams() { }
+
+        public NavmeshParams Clone()
+        {
+            return new NavmeshParams(origin
+                , tileWidth
+                , tileDepth
+                , maxTiles
+                , maxPolysPerTile);
+        }
     }
 }

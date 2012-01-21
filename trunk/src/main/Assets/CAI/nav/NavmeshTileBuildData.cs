@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,11 @@
 using System;
 using org.critterai.interop;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -154,6 +159,8 @@ namespace org.critterai.nav
         private int mTileY = 0;
         private int mTileLayer = 0;
 
+        // Note: Keep bounds storage in the native format.  
+        // Convert to Vector3 as needed.
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         private float[] mBoundsMin = new float[3];
 
@@ -261,16 +268,24 @@ namespace org.critterai.nav
         /// <summary>
         /// The minimum bounds of the tile's AABB. 
         /// </summary>
-        /// <remarks>Form: (x, y, z)</remarks>
-        /// <returns>The mimumum bounds of the tile.</returns>
-        public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+        public Vector3 BoundsMin 
+        { 
+            get 
+            { 
+                return new Vector3(mBoundsMin[0], mBoundsMin[1], mBoundsMin[2]); 
+            } 
+        }
 
         /// <summary>
         /// The maximum bounds of the tile's AABB. 
         /// </summary>
-        /// <remarks>Form: (x, y, z)</remarks>
-        /// <returns>The maximum bounds of the tile.</returns>
-        public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+        public Vector3 BoundsMax
+        {
+            get
+            {
+                return new Vector3(mBoundsMax[0], mBoundsMax[1], mBoundsMax[2]);
+            }
+        }
 
         /// <summary>
         /// The walkable height to use for the tile.
@@ -356,7 +371,7 @@ namespace org.critterai.nav
 
             if (maxConns > 0)
             {
-                size = maxConns * sizeof(float) * 6;
+                size = maxConns * sizeof(float) * 2 * 3;
                 mConnVerts = UtilEx.GetBuffer(size, true);
 
                 size = maxConns * sizeof(float);
@@ -585,8 +600,8 @@ namespace org.critterai.nav
                 Marshal.FreeHGlobal(mConnUserIds);
             }
 
-            Array.Clear(mBoundsMin, 0, 3);
-            Array.Clear(mBoundsMax, 0, 3);
+            mBoundsMin = new float[3] { 0, 0, 0 };
+            mBoundsMax = new float[3] { 0, 0, 0 };
 
             mMaxVertsPerPoly = 0;
 
@@ -654,8 +669,8 @@ namespace org.critterai.nav
             , int tileZ
             , int tileLayer
             , uint tileUserId
-            , float[] boundsMin
-            , float[] boundsMax
+            , Vector3 boundsMin
+            , Vector3 boundsMax
             , float xzCellSize
             , float yCellSize
             , float walkableHeight
@@ -664,8 +679,6 @@ namespace org.critterai.nav
             , bool bvTreeEnabled)
         {
             if (mIsDisposed
-                || boundsMin == null || boundsMin.Length < 3
-                || boundsMax == null || boundsMax.Length < 3
                 || xzCellSize < MinCellSize
                 || yCellSize < MinCellSize
                 || walkableHeight < MinAllowedTraversableHeight
@@ -680,8 +693,9 @@ namespace org.critterai.nav
             mTileLayer = tileLayer;
             mTileUserId = tileUserId;
 
-            Array.Copy(boundsMin, mBoundsMin, 3);
-            Array.Copy(boundsMax, mBoundsMax, 3);
+            Vector3Util.GetVector(boundsMin, mBoundsMin);
+            Vector3Util.GetVector(boundsMax, mBoundsMax);
+
             mXZCellSize = xzCellSize;
             mYCellSize = yCellSize;
 
@@ -755,7 +769,7 @@ namespace org.critterai.nav
         /// <param name="meshes">Detail meshes.</param>
         /// <param name="meshCount">The number of detail meshes.</param>
         /// <returns>TRUE if the load succeeded.</returns>
-        public bool LoadDetail(float[] verts
+        public bool LoadDetail(Vector3[] verts
             , int vertCount
             , byte[] tris
             , int triCount
@@ -767,7 +781,7 @@ namespace org.critterai.nav
                 || vertCount < 3
                 || triCount < 1
                 || verts == null
-                || verts.Length < vertCount * 3
+                || verts.Length < vertCount
                 || vertCount > mMaxDetailVerts
                 || tris == null
                 || tris.Length < triCount * 4
@@ -787,7 +801,9 @@ namespace org.critterai.nav
             if (mPolyCount == 0)
                 mPolyCount = meshCount;
 
-            Marshal.Copy(verts, 0, mDetailVerts, vertCount * 3);
+            float[] fverts = Vector3Util.Flatten(verts);
+
+            Marshal.Copy(fverts, 0, mDetailVerts, vertCount * 3);
             Marshal.Copy(tris, 0, mDetailTris, triCount * 4);
             UtilEx.Copy(meshes, 0, mDetailMeshes, meshCount * 4);
 
@@ -805,7 +821,7 @@ namespace org.critterai.nav
         /// <param name="connUserIds">Connection user ids.</param>
         /// <param name="connCount">The number of connections.</param>
         /// <returns>TRUE if the load succeeded.</returns>
-        public bool LoadConns(float[] connVerts
+        public bool LoadConns(Vector3[] connVerts
             , float[] connRadii
             , byte[] connDirs
             , byte[] connAreas
@@ -826,7 +842,7 @@ namespace org.critterai.nav
                 || connCount < 0
                 || connCount > mMaxConns
                 || connVerts == null
-                || connVerts.Length < connCount * 6
+                || connVerts.Length < connCount * 2
                 || connRadii == null
                 || connRadii.Length < connCount
                 || connDirs == null
@@ -843,15 +859,13 @@ namespace org.critterai.nav
 
             mConnCount = connCount;
 
-            if (connCount > 0)
-            {
-                Marshal.Copy(connVerts, 0, mConnVerts, connCount * 6);
-                Marshal.Copy(connRadii, 0, mConnRadii, connCount);
-                Marshal.Copy(connDirs, 0, mConnDirs, connCount);
-                Marshal.Copy(connAreas, 0, mConnAreas, connCount);
-                UtilEx.Copy(connFlags, 0, mConnFlags, connCount);
-                UtilEx.Copy(connUserIds, 0, mConnUserIds, connCount);
-            }
+            float[] fverts = Vector3Util.Flatten(connVerts);
+            Marshal.Copy(fverts, 0, mConnVerts, connCount * 2 * 3);
+            Marshal.Copy(connRadii, 0, mConnRadii, connCount);
+            Marshal.Copy(connDirs, 0, mConnDirs, connCount);
+            Marshal.Copy(connAreas, 0, mConnAreas, connCount);
+            UtilEx.Copy(connFlags, 0, mConnFlags, connCount);
+            UtilEx.Copy(connUserIds, 0, mConnUserIds, connCount);
 
             return true;
         }
@@ -971,15 +985,17 @@ namespace org.critterai.nav
         /// <param name="buffer">The buffer to load the results into.
         /// [Size: >= <see cref="DetailVertCount"/> * 3]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
-        public int GetDetailVerts(float[] buffer)
+        public int GetDetailVerts(Vector3[] buffer)
         {
             if (mDetailVerts == IntPtr.Zero
                 || buffer == null
-                || buffer.Length < mDetailVertCount * 3)
+                || buffer.Length < mDetailVertCount)
             {
                 return -1;
             }
-            Marshal.Copy(mDetailVerts, buffer, 0, mDetailVertCount * 3);
+            float[] fverts = new float[mDetailVertCount * 3];
+            Marshal.Copy(mDetailVerts, fverts, 0, fverts.Length);
+            Vector3Util.GetVectors(fverts, 0, buffer, 0, mDetailVertCount);
             return mDetailVertCount;
         }
 
@@ -989,15 +1005,17 @@ namespace org.critterai.nav
         /// <param name="buffer">The buffer to load the results into.
         /// [Size: >= <see cref="ConnCount"/> * 6]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
-        public int GetConnVerts(float[] buffer)
+        public int GetConnVerts(Vector3[] buffer)
         {
             if (mConnVerts == IntPtr.Zero
                 || buffer == null
-                || buffer.Length < mConnCount * 3 * 2)
+                || buffer.Length < mConnCount * 2)
             {
                 return -1;
             }
-            Marshal.Copy(mConnVerts, buffer, 0, mConnCount * 3 * 2);
+            float[] fverts = new float[mConnCount * 2 * 3];
+            Marshal.Copy(mConnVerts, fverts, 0, mConnCount * 2 * 3);
+            Vector3Util.GetVectors(fverts, 0, buffer, 0, mConnCount * 2);
             return mConnCount;
         }
 

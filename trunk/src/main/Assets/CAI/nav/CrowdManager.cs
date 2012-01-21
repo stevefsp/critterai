@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,11 @@ using System.Runtime.InteropServices;
 using org.critterai.nav.rcn;
 using org.critterai.interop;
 using System.Collections.Generic;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -300,17 +305,17 @@ namespace org.critterai.nav
         /// <param name="agentParams">The agent configuration.</param>
         /// <returns>A reference to the agent object created by the manager,
         /// or NULL on error.</returns>
-        public CrowdAgent AddAgent(float[] position
+        public CrowdAgent AddAgent(Vector3 position
             , CrowdAgentParams agentParams)
         {
-            if (IsDisposed || position == null || position.Length < 3)
+            if (IsDisposed)
                 return null;
 
             IntPtr ptr = IntPtr.Zero;
             CrowdAgentCoreState initialState = new CrowdAgentCoreState();
 
             int index = CrowdManagerEx.dtcAddAgent(root
-                , position
+                , ref position
                 , ref agentParams
                 , ref ptr
                 , ref initialState);
@@ -371,12 +376,12 @@ namespace org.critterai.nav
         /// <para>The extents remains constant over the life of the object.</para>
         /// </remarks>
         /// <returns>The extents.</returns>
-        public float[] GetQueryExtents()
+        public Vector3 GetQueryExtents()
         {
             if (IsDisposed)
-                return null;
-            float[] result = new float[3];
-            CrowdManagerEx.dtcGetQueryExtents(root, result);
+                return Vector3Util.Zero;
+            Vector3 result = Vector3Util.Zero;
+            CrowdManagerEx.dtcGetQueryExtents(root, ref result);
             return result;
         }
         /// <summary>

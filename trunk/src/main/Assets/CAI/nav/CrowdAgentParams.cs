@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,7 @@ namespace org.critterai.nav
         /// <para>This value is often based on the agent radius. E.g. radius * 30
         /// </para>
         /// </remarks>
-        /// <seealso cref="PathCorridor.OptimizePathVisibility(float[], float)"/>
+        /// <seealso cref="PathCorridor.OptimizePathVisibility(Vector3, float)"/>
         public float pathOptimizationRange;
 
         /// <summary>

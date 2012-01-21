@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -57,16 +62,15 @@ namespace org.critterai.nav
         /// The reference point for which the boundary data was compiled. 
         /// [Form: (x, y, z)]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] center = new float[3];
+        public Vector3 center;
 
         /// <summary>
         /// The solid navigation mesh polygon segments in the
         /// vicinity of <see cref="center"/>.
         /// [Form: (ax, ay, az, bx, by, bz) * <see cref="segmentCount"/>]
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxSegments * 6)]
-        public float[] segments = new float[MaxSegments * 6];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxSegments * 2)]
+        public Vector3[] segments = new Vector3[MaxSegments * 2];
 
         /// <summary>
         /// The number of segments in the <see cref="segments"/> field.

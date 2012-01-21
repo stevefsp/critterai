@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,11 @@ using org.critterai.nav.rcn;
 using org.critterai.interop;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -31,6 +36,8 @@ namespace org.critterai.nav
     /// A navigation mesh based on convex polygons.
     /// </summary>
     /// <remarks>
+    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>This class is usually used in conjunction with the
     /// <see cref="NavmeshQuery"/> class.</para>
     /// <para>Tile and Polygon Reference Ids: Reference ids are essentially 
@@ -80,6 +87,10 @@ namespace org.critterai.nav
         /// <summary>
         /// The maximum supported number of areas.
         /// </summary>
+        /// <remarks>
+        /// <para>Area ids are zero based.  Zero indicates un-walkable.  So
+        /// the usable values are 1 through MaxAreas - 1</para>
+        /// </remarks>
         public const int MaxAreas = 64;
 
         /// <summary>
@@ -167,7 +178,8 @@ namespace org.critterai.nav
         /// </summary>
         /// <param name="tileData">The tile data.</param>
         /// <param name="desiredTileRef">The desired reference for the tile.
-        /// </param>
+        /// (Or <see cref="NullTile"/> if the reference doesn't matter
+        /// or is not known.)</param>
         /// <param name="resultTileRef">The actual reference assigned to the
         /// tile.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the operation.
@@ -203,19 +215,24 @@ namespace org.critterai.nav
             return NavmeshEx.dtnmRemoveTile(root, tileRef);
         }
 
+        public NavStatus RemoveTile(uint tileRef, out byte[] tileData)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Derives the location based on the provided position in world space.
         /// </summary>
         /// <param name="position">Position [Form: (x, y, z)]</param>
         /// <param name="x">The tile's grid x-location.</param>
         /// <param name="z">The tiles's grid z-location.</param>
-        public void DeriveTileLocation(float[] position
+        public void DeriveTileLocation(Vector3 position
             , out int x
             , out int z)
         {
             x = 0;
             z = 0;
-            NavmeshEx.dtnmCalcTileLoc(root, position, ref x, ref z);
+            NavmeshEx.dtnmCalcTileLoc(root, ref position, ref x, ref z);
         }
 
         /// <summary>
@@ -376,14 +393,16 @@ namespace org.critterai.nav
         /// </returns>
         public NavStatus GetConnectionEndpoints(uint startPolyRef
             , uint connectionPolyRef
-            , float[] startPoint
-            , float[] endPoint)
+            , out Vector3 startPoint
+            , out Vector3 endPoint)
         {
+            startPoint = Vector3Util.Zero;
+            endPoint = Vector3Util.Zero;
             return NavmeshEx.dtnmGetConnectionEndPoints(root
                 , startPolyRef
                 , connectionPolyRef
-                , startPoint
-                , endPoint);
+                , ref startPoint
+                , ref endPoint);
         }
 
         /// <summary>

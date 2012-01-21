@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System.Runtime.InteropServices;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -131,14 +136,12 @@ namespace org.critterai.nav
         /// <summary>
         /// The minimum bounds of the tile's AABB.
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMin;
+        public Vector3 boundsMin;
 
         /// <summary>
         /// The maximum bounds of the tile's AABB.
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] boundsMax;
+        public Vector3 boundsMax;
 
         /// <summary>
         /// The bounding volumn quantization factor. (For converting from world

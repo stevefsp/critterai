@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -56,6 +61,20 @@ namespace org.critterai.nav
         public static bool IsInProgress(NavStatus status)
         {
             return (status & NavStatus.InProgress) != 0;
+        }
+
+        public static Vector3 TestVector(Vector3 v)
+        {
+            Vector3 result = new Vector3();
+            rcn.InteropUtil.dtvlVectorTest(ref v, ref result);
+            return result;
+        }
+
+        public static void TestVectorArray(Vector3[] vectors
+            , int vectorCount
+            , Vector3[] result)
+        {
+            rcn.InteropUtil.dtvlVectorArrayTest(vectors, vectorCount, result);
         }
     }
 }

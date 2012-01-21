@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,11 @@
 using System;
 using org.critterai.nav.rcn;
 using org.critterai.interop;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nav
 {
@@ -132,19 +137,17 @@ namespace org.critterai.nav
         /// <param name="resultPoint">The nearest point on the polygon.
         /// [Form: (x, y, z)] (Optional Out)</param>
         /// <returns>The <see cref="NavStatus"/> flags for the query.</returns>
-        public NavStatus GetNearestPoly(float[] searchPoint
-            , float[] extents
+        public NavStatus GetNearestPoly(Vector3 searchPoint
+            , Vector3 extents
             , NavmeshQueryFilter filter
-            , out uint resultPolyRef
-            , float[] resultPoint)
+            , out NavmeshPoint result)
         {
-            resultPolyRef = 0;
+            result = NavmeshPoint.Zero;
             return NavmeshQueryEx.dtqFindNearestPoly(root
-                , searchPoint
-                , extents
+                , ref searchPoint
+                , ref extents
                 , filter.root
-                , ref resultPolyRef
-                , resultPoint);
+                , ref result);
         }
 
         /// <summary>
@@ -169,7 +172,7 @@ namespace org.critterai.nav
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetPolySegments(uint polyRef
             , NavmeshQueryFilter filter
-            , float[] resultSegments
+            , Vector3[] resultSegments
             , out int segmentCount)
         {
             segmentCount = 0;
@@ -210,7 +213,7 @@ namespace org.critterai.nav
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetPolySegments(uint polyRef
             , NavmeshQueryFilter filter
-            , float[] resultSegments
+            , Vector3[] resultSegments
             , uint[] segmentPolyRefs
             , out int segmentCount)
         {
@@ -244,16 +247,16 @@ namespace org.critterai.nav
         /// overlap the query box. [Form: (polyRef) * resultCount] (Out)</param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolys(float[] searchPoint
-            , float[] extents
+        public NavStatus GetPolys(Vector3 searchPoint
+            , Vector3 extents
             , NavmeshQueryFilter filter
             , uint[] resultPolyRefs
             , out int resultCount)
         {
             resultCount = 0;
             return NavmeshQueryEx.dtqQueryPolygons(root
-                , searchPoint
-                , extents
+                , ref searchPoint
+                , ref extents
                 , filter.root
                 , resultPolyRefs
                 , ref resultCount
@@ -304,14 +307,13 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPolys(uint startPolyRef
-                , float[] centerPoint
-                , float radius
-                , NavmeshQueryFilter filter
-                , uint[] resultPolyRefs   // Optional, must have one.
-                , uint[] resultParentRefs // Optional
-                , float[] resultCosts  // Optional
-                , out int resultCount)
+        public NavStatus FindPolys(NavmeshPoint start
+            , float radius
+            , NavmeshQueryFilter filter
+            , uint[] resultPolyRefs
+            , uint[] resultParentRefs
+            , float[] resultCosts
+            , out int resultCount)
         {
             resultCount = 0;
 
@@ -326,8 +328,8 @@ namespace org.critterai.nav
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
             return NavmeshQueryEx.dtqFindPolysAroundCircle(root
-                , startPolyRef
-                , centerPoint
+                , start.polyRef
+                , ref start.point
                 , radius
                 , filter.root
                 , resultPolyRefs
@@ -376,12 +378,12 @@ namespace org.critterai.nav
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus FindPolys(uint startPolyRef
-                , float[] vertices
-                , NavmeshQueryFilter filter
-                , uint[] resultPolyRefs
-                , uint[] resultParentRefs
-                , float[] resultCosts
-                , out int resultCount)
+            , Vector3[] vertices
+            , NavmeshQueryFilter filter
+            , uint[] resultPolyRefs
+            , uint[] resultParentRefs
+            , float[] resultCosts
+            , out int resultCount)
         {
             resultCount = 0;
 
@@ -443,13 +445,12 @@ namespace org.critterai.nav
         /// [Form: (parentRef) * resultCount] (Optional)</param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolysLocal(uint startPolyRef
-                , float[] centerPoint
-                , float radius
-                , NavmeshQueryFilter filter
-                , uint[] resultPolyRefs
-                , uint[] resultParentRefs
-                , out int resultCount)
+        public NavStatus GetPolysLocal(NavmeshPoint start
+            , float radius
+            , NavmeshQueryFilter filter
+            , uint[] resultPolyRefs
+            , uint[] resultParentRefs
+            , out int resultCount)
         {
             resultCount = 0;
 
@@ -462,8 +463,8 @@ namespace org.critterai.nav
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
             return NavmeshQueryEx.dtqFindLocalNeighbourhood(root
-                , startPolyRef
-                , centerPoint
+                , start.polyRef
+                , ref start.point
                 , radius
                 , filter.root
                 , resultPolyRefs
@@ -488,13 +489,14 @@ namespace org.critterai.nav
         /// [Form: (x, y, z)] (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetNearestPoint(uint polyRef
-            , float[] sourcePoint
-            , float[] resultPoint)
+            , Vector3 sourcePoint
+            , out Vector3 resultPoint)
         {
+            resultPoint = Vector3Util.Zero;
             return NavmeshQueryEx.dtqClosestPointOnPoly(root
                 , polyRef
-                , sourcePoint
-                , resultPoint);
+                , ref sourcePoint
+                , ref resultPoint);
         }
 
         /// <summary>
@@ -520,13 +522,14 @@ namespace org.critterai.nav
         /// (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetNearestPointF(uint polyRef
-            , float[] sourcePoint
-            , float[] resultPoint)
+            , Vector3 sourcePoint
+            , out Vector3 resultPoint)
         {
+            resultPoint = Vector3Util.Zero;
             return NavmeshQueryEx.dtqClosestPointOnPolyBoundary(root
                 , polyRef
-                , sourcePoint
-                , resultPoint);
+                , ref sourcePoint
+                , ref resultPoint);
         }
 
         /// <summary>
@@ -542,13 +545,11 @@ namespace org.critterai.nav
         /// <param name="height">The height at the surface of the polygon.
         /// </param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolyHeight(uint polyRef
-            , float[] point
+        public NavStatus GetPolyHeight(NavmeshPoint point
             , out float height)
         {
             height = 0;
             return NavmeshQueryEx.dtqGetPolyHeight(root
-                , polyRef
                 , point
                 , ref height);
         }
@@ -577,23 +578,23 @@ namespace org.critterai.nav
         /// <param name="normal">The normalized ray formed from the wall point
         /// to the source point. [Form: (x, y, z)] (Out)</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindDistanceToWall(uint polyRef
-            , float[] searchPoint
+        public NavStatus FindDistanceToWall(NavmeshPoint searchPoint
             , float searchRadius
             , NavmeshQueryFilter filter
             , out float distance
-            , float[] closestPoint
-            , float[] normal)
+            , out Vector3 closestPoint
+            , out Vector3 normal)
         {
             distance = 0;
+            closestPoint = Vector3Util.Zero;
+            normal = Vector3Util.Zero;
             return NavmeshQueryEx.dtqFindDistanceToWall(root
-                , polyRef
                 , searchPoint
                 , searchRadius
                 , filter.root
                 , ref distance
-                , closestPoint
-                , normal);
+                , ref closestPoint
+                , ref normal);
         }
 
         /// <summary>
@@ -621,20 +622,16 @@ namespace org.critterai.nav
         /// path. (Start to end.) [(polyRef) * pathCount] [Out]</param>
         /// <param name="pathCount">The number of polygons in the path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPath(uint startPolyRef
-            , uint endPolyRef
-            , float[] startPoint
-            , float[] endPoint
+        public NavStatus FindPath(NavmeshPoint start
+            , NavmeshPoint end
             , NavmeshQueryFilter filter
             , uint[] resultPath
             , out int pathCount)
         {
             pathCount = 0;
             return NavmeshQueryEx.dtqFindPath(root
-                , startPolyRef
-                , endPolyRef
-                , startPoint
-                , endPoint
+                , start
+                , end
                 , filter.root
                 , resultPath
                 , ref pathCount
@@ -702,22 +699,18 @@ namespace org.critterai.nav
         /// path. (Start to end.) [(polyRef) * pathCount] [Out]</param>
         /// <param name="pathCount">The number of polygons in the path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPath(ref uint startPolyRef
-            , ref uint endPolyRef
-            , float[] startPoint
-            , float[] endPoint
-            , float[] extents
+        public NavStatus FindPath(ref NavmeshPoint start
+            , ref NavmeshPoint end
+            , Vector3 extents
             , NavmeshQueryFilter filter
             , uint[] resultPath
             , out int pathCount)
         {
             pathCount = 0;
             return NavmeshQueryEx.dtqFindPathExt(root
-                , ref startPolyRef
-                , ref endPolyRef
-                , startPoint
-                , endPoint
-                , extents
+                , ref start
+                , ref end
+                , ref extents
                 , filter.root
                 , resultPath
                 , ref pathCount
@@ -808,27 +801,26 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="pathCount">The number of visited polygons.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus Raycast(uint startPolyRef
-            , float[] startPoint
-            , float[] endPoint
+        public NavStatus Raycast(NavmeshPoint startPoint
+            , Vector3 endPoint
             , NavmeshQueryFilter filter
             , out float hitParameter
-            , float[] hitNormal
+            , out Vector3 hitNormal
             , uint[] path
             , out int pathCount)
         {
             pathCount = 0;
             hitParameter = 0;
+            hitNormal = Vector3Util.Zero;
 
             int maxCount = (path == null ? 0 : path.Length);
 
             return NavmeshQueryEx.dtqRaycast(root
-                , startPolyRef
                 , startPoint
-                , endPoint
+                , ref endPoint
                 , filter.root
                 , ref hitParameter
-                , hitNormal
+                , ref hitNormal
                 , path
                 , ref pathCount
                 , maxCount);
@@ -895,19 +887,19 @@ namespace org.critterai.nav
         /// <param name="straightPathCount">The number of points in the
         /// straight path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetStraightPath(float[] startPoint
-            , float[] endPoint
+        public NavStatus GetStraightPath(Vector3 startPoint
+            , Vector3 endPoint
             , uint[] path
             , int pathStart
             , int pathCount
-            , float[] straightPathPoints
+            , Vector3[] straightPathPoints
             , WaypointFlag[] straightPathFlags
             , uint[] straightPathRefs
             , out int straightPathCount)
         {
             straightPathCount = 0;
 
-            int maxPath = straightPathPoints.Length / 3;
+            int maxPath = straightPathPoints.Length;
             maxPath = (straightPathFlags == null ? maxPath
                 : Math.Min(straightPathFlags.Length, maxPath));
             maxPath = (straightPathRefs == null ? maxPath
@@ -917,8 +909,8 @@ namespace org.critterai.nav
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
             return NavmeshQueryEx.dtqFindStraightPath(root
-                , startPoint
-                , endPoint
+                , ref startPoint
+                , ref endPoint
                 , path
                 , pathStart
                 , pathCount
@@ -964,21 +956,21 @@ namespace org.critterai.nav
         /// <param name="visitedCount">The number of polygons visited during
         /// the move.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus MoveAlongSurface(uint startPolyRef
-            , float[] startPoint
-            , float[] endPoint
+        public NavStatus MoveAlongSurface(NavmeshPoint start
+            , Vector3 endPoint
             , NavmeshQueryFilter filter
-            , float[] resultPoint
+            , out Vector3 resultPoint
             , uint[] visitedPolyRefs
             , out int visitedCount)
         {
             visitedCount = 0;
+            resultPoint = Vector3Util.Zero;
+
             return NavmeshQueryEx.dtqMoveAlongSurface(root
-                , startPolyRef
-                , startPoint
-                , endPoint
+                , start
+                , ref endPoint
                 , filter.root
-                , resultPoint
+                , ref resultPoint
                 , visitedPolyRefs
                 , ref visitedCount
                 , visitedPolyRefs.Length);
@@ -1011,19 +1003,15 @@ namespace org.critterai.nav
         /// [Form: (x, y, x)]</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus InitSlicedFindPath(uint startPolyRef
-            , uint endPolyRef
-            , float[] startPoint
-            , float[] endPoint
+        public NavStatus InitSlicedFindPath(NavmeshPoint start
+            , NavmeshPoint end
             , NavmeshQueryFilter filter)
         {
             if (mIsRestricted)
                 return NavStatus.Failure;
             return NavmeshQueryEx.dtqInitSlicedFindPath(root
-                , startPolyRef
-                , endPolyRef
-                , startPoint
-                , endPoint
+                , start
+                , end
                 , filter.root);
         }
 
