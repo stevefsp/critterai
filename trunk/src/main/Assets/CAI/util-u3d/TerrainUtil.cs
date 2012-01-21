@@ -21,6 +21,11 @@
  */
 using UnityEngine;
 using org.critterai.geom;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai
 {
@@ -66,9 +71,7 @@ namespace org.critterai
                 {
                     Vector3 pos = new Vector3(origin.x + xPos, 0, origin.z + zPos);
                     pos.y = terrain.SampleHeight(pos);
-                    m.verts[m.vertCount * 3 + 0] = pos.x;
-                    m.verts[m.vertCount * 3 + 1] = pos.y;
-                    m.verts[m.vertCount * 3 + 2] = pos.z;
+                    m.verts[m.vertCount] = pos;
                     m.vertCount++;
                 }
             }

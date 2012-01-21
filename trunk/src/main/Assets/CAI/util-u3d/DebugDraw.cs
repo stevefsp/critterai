@@ -298,7 +298,93 @@ namespace org.critterai.u3d
         /// OnRenderObject().</para>
         /// </remarks>
         /// <param name="position">The center of the bounding box.</param>
-        /// <param name="extents">The extents of the bounding box. [(x, y, z)]
+        /// <param name="extents">The extents of the bounding box. 
+        /// (Half-lengths.)
+        /// </param>
+        /// <param name="color">The color of the bounding box. 
+        /// (The alpha is ignored.)</param>
+        public static void Extents(Vector3 position
+            , Vector3 extents
+            , Color color)
+        {
+            GLUtil.SimpleMaterial.SetPass(0);
+
+            Vector3 ua = position + extents;
+            Vector3 ub = new Vector3(
+                  position.x - extents.x
+                , position.y + extents.y
+                , position.z + extents.z);
+            Vector3 uc = new Vector3(
+                  position.x - extents.x
+                , position.y + extents.y
+                , position.z - extents.z);
+            Vector3 ud = new Vector3(
+                  position.x + extents.x
+                , position.y + extents.y
+                , position.z - extents.z);
+
+            Vector3 la = new Vector3(
+                  position.x + extents.x
+                , position.y - extents.y
+                , position.z + extents.z);
+            Vector3 lb = new Vector3(
+                  position.x - extents.x
+                , position.y - extents.y
+                , position.z + extents.z);
+            Vector3 lc =  position - extents;
+            Vector3 ld = new Vector3(
+                  position.x + extents.x
+                , position.y - extents.y
+                , position.z - extents.z);
+
+            GL.Begin(GL.LINES);
+
+            color.a = 0.6f;
+            GL.Color(color);
+
+            // Top
+            GL.Vertex(ua);
+            GL.Vertex(ub);
+            GL.Vertex(ub);
+            GL.Vertex(uc);
+            GL.Vertex(uc);
+            GL.Vertex(ud);
+            GL.Vertex(ud);
+            GL.Vertex(ua);
+
+            // Bottom
+            GL.Vertex(la);
+            GL.Vertex(lb);
+            GL.Vertex(lb);
+            GL.Vertex(lc);
+            GL.Vertex(lc);
+            GL.Vertex(ld);
+            GL.Vertex(ld);
+            GL.Vertex(la);
+
+            // Risers
+            GL.Vertex(ua);
+            GL.Vertex(la);
+            GL.Vertex(ub);
+            GL.Vertex(lb);
+            GL.Vertex(uc);
+            GL.Vertex(lc);
+            GL.Vertex(ud);
+            GL.Vertex(ld);
+
+            GL.End();
+        }
+
+        /// <summary>
+        /// Draws a wireframe bounding box representing an extents.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="position">The center of the bounding box.</param>
+        /// <param name="extents">The extents of the bounding box. 
+        /// (Half-lengths.) [(x, y, z)]
         /// </param>
         /// <param name="color">The color of the bounding box. 
         /// (The alpha is ignored.)</param>
@@ -306,6 +392,10 @@ namespace org.critterai.u3d
             , float[] extents
             , Color color)
         {
+            // TODO: EVAL: Re-evaluate after decision on float[3] to Vector3
+            // refactor. Should it be retired or share code with the
+            // Vector3 overload?
+
             GLUtil.SimpleMaterial.SetPass(0);
 
             Vector3 ua = new Vector3(
@@ -492,44 +582,160 @@ namespace org.critterai.u3d
         /// [(vertAIndex, vertBIndex, vertCIndex) * triangleCount)</param>
         /// <param name="drawColor">The color of the mesh. (Alpha is ignored.)
         /// </param>
-        public static void DrawTriMesh(float[] vertices
-            , int[] triangles
-            , Color drawColor)
+        [System.Obsolete("Use the other overload.")]
+        public static void TriangleMesh(float[] verts
+            , int[] tris
+            , Color color)
+        {
+            TriangleMesh(verts, tris, tris.Length / 3, color);
+        }
+
+        /// <summary>
+        /// Draws the provided triangle mesh in a manner suitable for 
+        /// debug visualizations. 
+        /// (Wiremesh with a partially transparent surface.)
+        /// </summary>
+        /// <remarks>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="vertices">The vertices. 
+        /// [(x, y, z) * vertexCount]</param>
+        /// <param name="triangles">The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * 
+        /// <typeparamref name="triCount"/>)</param>
+        /// <param name="triCount">The number of triangles.</param>
+        /// <param name="drawColor">The color of the mesh. (Alpha is ignored.)
+        /// </param>
+        public static void TriangleMesh(float[] verts
+            , int[] tris
+            , int triCount
+            , Color color)
         {
             GLUtil.SimpleMaterial.SetPass(0);
 
-            drawColor.a = 0.25f;
+            int length = triCount * 3;
+
+            color.a = 0.25f;
 
             GL.Begin(GL.TRIANGLES);
-            GL.Color(drawColor);
-            for (int p = 0; p < triangles.Length; p += 3)
+            GL.Color(color);
+
+            for (int p = 0; p < length; p += 3)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
-                        , vertices[triangles[p + i] * 3 + 1]
-                        , vertices[triangles[p + i] * 3 + 2]);
+                    GL.Vertex3(verts[tris[p + i] * 3 + 0]
+                        , verts[tris[p + i] * 3 + 1]
+                        , verts[tris[p + i] * 3 + 2]);
                 }
             }
             GL.End();
 
-            drawColor.a = 0.4f;
+            color.a = 0.4f;
 
-            for (int p = 0; p < triangles.Length; p += 3)
+            for (int p = 0; p < length; p += 3)
             {
                 GL.Begin(GL.LINES);
-                GL.Color(drawColor);
+                GL.Color(color);
                 for (int i = 0; i < 3; i++)
                 {
-                    GL.Vertex3(vertices[triangles[p + i] * 3 + 0]
-                        , vertices[triangles[p + i] * 3 + 1]
-                        , vertices[triangles[p + i] * 3 + 2]);
+                    GL.Vertex3(verts[tris[p + i] * 3 + 0]
+                        , verts[tris[p + i] * 3 + 1]
+                        , verts[tris[p + i] * 3 + 2]);
                 }
-                GL.Vertex3(vertices[triangles[p] * 3 + 0]
-                    , vertices[triangles[p] * 3 + 1]
-                    , vertices[triangles[p] * 3 + 2]);
+                GL.Vertex3(verts[tris[p] * 3 + 0]
+                    , verts[tris[p] * 3 + 1]
+                    , verts[tris[p] * 3 + 2]);
                 GL.End();
             }
+        }
+
+        public static void Square(Vector3 origin
+            , float width
+            , float depth
+            , Color color
+            , bool fill)
+        {
+            GLUtil.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+            GL.Color(color);
+
+            Vector3 a = origin;
+            Vector3 b = origin;
+            Vector3 c = origin;
+            Vector3 d = origin;
+
+            b.x += width;
+            c.x += width;
+            c.z += depth;
+            d.z += depth;
+
+            GL.Vertex(a);
+            GL.Vertex(b);
+            GL.Vertex(b);
+            GL.Vertex(c);
+            GL.Vertex(c);
+            GL.Vertex(d);
+            GL.Vertex(d);
+            GL.Vertex(a);
+
+            GL.End();
+
+            if (fill)
+            {
+                GL.Begin(GL.TRIANGLES);
+
+                color.a = 0.4f;
+                GL.Color(color);
+
+                GL.Vertex(a);
+                GL.Vertex(b);
+                GL.Vertex(c);
+
+                GL.Vertex(a);
+                GL.Vertex(c);
+                GL.Vertex(d);
+
+                GL.End();
+            }
+        }
+
+        public static void Grid(Vector3 origin
+            , float gridSize
+            , int width
+            , int depth
+            , Color color)
+        {
+            GLUtil.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+            GL.Color(color);
+
+            for (int x = 0; x < width + 1; x++)
+            {
+                Vector3 a = origin;
+
+                a.x += x * gridSize;
+                GL.Vertex(a);
+
+                a.z += depth * gridSize;
+                GL.Vertex(a);
+            }
+
+            for (int z = 0; z < depth + 1; z++)
+            {
+                Vector3 a = origin;
+
+                a.z += z * gridSize;
+                GL.Vertex(a);
+
+                a.x += width * gridSize;
+                GL.Vertex(a);
+            }
+
+            GL.End();
         }
     }
 }
