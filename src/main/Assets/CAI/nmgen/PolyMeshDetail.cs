@@ -33,6 +33,8 @@ namespace org.critterai.nmgen
     /// <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
+    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>The detail mesh is made up of triangle sub-meshes which provide
     /// extra height detail for each polygon in its assoicated polygon
     /// mesh.</para>
@@ -204,7 +206,7 @@ namespace org.critterai.nmgen
                 || data.vertCount < 0 || data.vertCount > mMaxVerts
                 || data.meshes.Length < data.meshCount * 4
                 || data.tris.Length < data.triCount * 4
-                || data.verts.Length < data.vertCount * 3)
+                || data.verts.Length < data.vertCount)
             {
                 return false;
             }
@@ -215,7 +217,8 @@ namespace org.critterai.nmgen
 
             UtilEx.Copy(data.meshes, 0, mMeshes, mMeshCount * 4);
             Marshal.Copy(data.tris, 0, mTris, mTriCount * 4);
-            Marshal.Copy(data.verts, 0, mVerts, mVertCount * 3);
+            float[] fverts = Vector3Util.Flatten(data.verts);
+            Marshal.Copy(fverts, 0, mVerts, mVertCount * 3);
 
             return true;
         }
@@ -276,7 +279,9 @@ namespace org.critterai.nmgen
             buffer.triCount = mTriCount;
             buffer.meshCount = mMeshCount;
 
-            Marshal.Copy(mVerts, buffer.verts, 0, mVertCount * 3);
+            float[] fverts = new float[mVertCount * 3];
+            Marshal.Copy(mVerts, fverts, 0, mVertCount * 3);
+            buffer.verts = Vector3Util.GetVectors(fverts, 0, buffer.verts, 0, mVertCount);
             Marshal.Copy(mTris, buffer.tris, 0, mTriCount * 4);
             UtilEx.Copy(mMeshes, buffer.meshes, mMeshCount * 4);
         }

@@ -24,6 +24,11 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -32,6 +37,8 @@ namespace org.critterai.nmgen
     /// a navigation mesh.
     /// </summary>
     /// <remarks>
+    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 
     ///  between three and <see cref="MaxVertsPerPoly"/> vertices. The mesh 
     ///  exists within the context of an axis-aligned bounding box (AABB) 
@@ -92,20 +99,14 @@ namespace org.critterai.nmgen
         /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the mesh.</returns>
-        public float[] GetBoundsMin() 
-        { 
-            return (float[])root.boundsMin.Clone(); 
-        }
+        public Vector3 BoundsMin { get { return root.boundsMin; } }
 
         /// <summary>
         /// The world space maximum bounds of the mesh's AABB.
         /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the mesh.</returns>
-        public float[] GetBoundsMax() 
-        { 
-            return (float[])root.boundsMax.Clone(); 
-        }
+        public Vector3 BoundsMax { get { return root.boundsMax; } }
 
         /// <summary>
         /// The xz-plane size of the cells that form the mesh field.
@@ -306,8 +307,6 @@ namespace org.critterai.nmgen
                 || data.polys.Length 
                     < (pcount * 2 * root.maxVertsPerPoly)
                 || data.verts.Length < (vcount * 3)
-                || data.boundsMin == null || data.boundsMin.Length < 3
-                || data.boundsMax == null || data.boundsMax.Length < 3
                 || (data.areas != null && data.areas.Length < pcount)
                 || (data.regions != null 
                     && data.regions.Length < pcount)
@@ -325,11 +324,8 @@ namespace org.critterai.nmgen
             mWalkableStep = data.walkableStep;
             root.borderSize = data.borderSize;
 
-            for (int i = 0; i < 3; i++)
-            {
-                root.boundsMin[i] = data.boundsMin[i];
-                root.boundsMax[i] = data.boundsMax[i];
-            }
+            root.boundsMin = data.boundsMin;
+            root.boundsMax = data.boundsMax;
 
             UtilEx.Copy(data.verts, 0, root.verts, root.vertCount * 3);
 
@@ -412,8 +408,8 @@ namespace org.critterai.nmgen
         private void FillData(PolyMeshData buffer)
         {
             buffer.maxVertsPerPoly = root.maxVertsPerPoly;
-            buffer.boundsMax = GetBoundsMax();   // Auto-clone.
-            buffer.boundsMin = GetBoundsMin();   // Auto-clone.
+            buffer.boundsMax = BoundsMax;
+            buffer.boundsMin = BoundsMin;
             buffer.yCellSize = root.yCellSize;
             buffer.xzCellSize = root.xzCellSize;
             buffer.polyCount = root.polyCount;

@@ -23,6 +23,11 @@ using System;
 using System.Runtime.InteropServices;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 // Unity is improperly indicating that mSpan is unused.
 #pragma warning disable 414
@@ -113,11 +118,9 @@ namespace org.critterai.nmgen
 	    private ushort mMaxDistance = 0;
 	    private ushort mMaxRegions = 0;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] mBoundsMin = new float[3];
+        private Vector3 mBoundsMin;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] mBoundsMax = new float[3];
+        private Vector3 mBoundsMax;
 
 	    private float mXZCellSize = 0;
         private float mYCellSize = 0;
@@ -142,14 +145,14 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
-        public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the heightfield in world space. 
         /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
-        public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
 
         /// <summary>
         /// The width/depth size of each cell. (On the xz-plane.)
@@ -246,8 +249,8 @@ namespace org.critterai.nmgen
                 mWidth = 0;
                 mDepth = 0;
                 mBorderSize = 0;
-                Array.Clear(mBoundsMax, 0, 3);
-                Array.Clear(mBoundsMin, 0, 3);
+                mBoundsMin = Vector3Util.Zero;
+                mBoundsMax = Vector3Util.Zero;
                 mMaxDistance = 0;
                 mMaxRegions = 0;
                 mSpanCount = 0;
@@ -409,16 +412,16 @@ namespace org.critterai.nmgen
         /// <param name="area">The area id to apply.</param>
         /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
-            , float[] boundsMin
-            , float[] boundsMax
+            , Vector3 boundsMin
+            , Vector3 boundsMax
             , byte area)
         {
             if (IsDisposed)
                 return false;
 
             return CompactHeightfieldEx.nmcfMarkBoxArea(context.root
-                , boundsMin
-                , boundsMax
+                , ref boundsMin
+                , ref boundsMax
                 , area
                 , this);
         }
@@ -443,7 +446,7 @@ namespace org.critterai.nmgen
         /// <param name="area">The area id to apply.</param>
         /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkConvexPolyArea(BuildContext context
-            , float[] verts
+            , Vector3[] verts
             , float yMin
             , float yMax
             , byte area)
@@ -452,7 +455,7 @@ namespace org.critterai.nmgen
                 return false;
             return CompactHeightfieldEx.nmcfMarkConvexPolyArea(context.root
                 , verts
-                , verts.Length / 3
+                , verts.Length
                 , yMin
                 , yMax
                 , area
@@ -476,7 +479,7 @@ namespace org.critterai.nmgen
         /// <param name="area">The area id to apply.</param>
         /// <returns>TRUE if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
-            , float[] centerBase
+            , Vector3 centerBase
             , float radius
             , float height
             , byte area)
@@ -484,7 +487,7 @@ namespace org.critterai.nmgen
             if (IsDisposed)
                 return false;
             return CompactHeightfieldEx.nmcfMarkCylinderArea(context.root
-                , centerBase
+                , ref centerBase
                 , radius
                 , height
                 , area

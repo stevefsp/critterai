@@ -20,6 +20,11 @@
  * THE SOFTWARE.
  */
 using System;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -27,11 +32,17 @@ namespace org.critterai.nmgen
     /// Represents data for a <see cref="PolyMeshDetail"/> object.
     /// </summary>
     /// <remarks>
+    /// <para>WARNING: The serializable attributewill be removed 
+    /// in v0.5. Use <see cref="PolyMeshDetail.GetSerializedData"/> instead of
+    /// serializing this object.</para>
     /// <para>The detail mesh is made up of triangle sub-meshes which provide
     /// extra height detail for each polygon in its assoicated polygon
     /// mesh.</para>
     /// <para>See the individual field definitions for details related to
     /// the structure of the mesh.</para>
+    /// <para>Implemented as a class with public fields in order to support Unity
+    /// serialization.  Care must be taken not to set the fields to invalid
+    /// values.</para>
     /// </remarks>
     /// <seealso cref="PolyMeshDetail"/>
     [Serializable]
@@ -87,7 +98,7 @@ namespace org.critterai.nmgen
         /// 5 vertices, the sub-mesh will have a minimum of 5 vertices and the 
         /// first 5 vertices will be equivalent to the 5 polygon vertices.</para>
         /// </remarks>
-        public float[] verts;
+        public Vector3[] verts;
 
         /// <summary>
         /// The mesh triangles.
@@ -171,7 +182,7 @@ namespace org.critterai.nmgen
 
             meshes = new uint[maxMeshes * 4];
             tris = new byte[maxTris * 4];
-            verts = new float[maxVerts * 3];
+            verts = new Vector3[maxVerts];
         }
 
         /// <summary>
@@ -192,7 +203,7 @@ namespace org.critterai.nmgen
 
             meshes = new uint[maxMeshes * 4];
             tris = new byte[maxTris * 4];
-            verts = new float[maxVerts * 3];
+            verts = new Vector3[maxVerts];
         }
 
         private void Reset()
@@ -221,7 +232,7 @@ namespace org.critterai.nmgen
             , int triCount
             , int meshCount)
         {
-            if (verts == null || verts.Length < vertCount * 3
+            if (verts == null || verts.Length < vertCount
                 || tris == null || tris.Length < triCount * 4
                 || meshes == null || meshes.Length < meshCount * 4)
             {

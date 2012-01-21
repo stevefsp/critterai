@@ -24,6 +24,11 @@ using System.Runtime.InteropServices;
 using org.critterai.geom;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.nmgen
 {
@@ -59,8 +64,8 @@ namespace org.critterai.nmgen
         private int mWidth = 0;
         private int mDepth = 0;
 
-        private float[] mBoundsMin = new float[3];
-        private float[] mBoundsMax = new float[3];
+        private Vector3 mBoundsMin;
+        private Vector3 mBoundsMax;
 
         private float mXZCellSize = 0;
         private float mYCellSize = 0;
@@ -83,14 +88,14 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
-        public float[] GetBoundsMin() { return (float[])mBoundsMin.Clone(); }
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the heightfield in world space. 
         /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
-        public float[] GetBoundsMax() { return (float[])mBoundsMax.Clone(); }
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
 
         /// <summary>
         /// The width/depth size of each cell. (On the xz-plane.)
@@ -151,15 +156,15 @@ namespace org.critterai.nmgen
         /// </param>
         public Heightfield(int width
             , int depth
-            , float[] boundsMin
-            , float[] boundsMax
+            , Vector3 boundsMin
+            , Vector3 boundsMax
             , float xzCellSize
             , float yCellSize)
         {
             root = HeightfieldEx.nmhfAllocField(width
                 , depth
-                , boundsMin
-                , boundsMax
+                , ref boundsMin
+                , ref boundsMax
                 , xzCellSize
                 , yCellSize);
 
@@ -168,8 +173,8 @@ namespace org.critterai.nmgen
 
             mWidth = width;
             mDepth = depth;
-            mBoundsMin = (float[])boundsMin.Clone();
-            mBoundsMax = (float[])boundsMax.Clone();
+            mBoundsMin = boundsMin;
+            mBoundsMax = boundsMax;
             mYCellSize = yCellSize;
             mXZCellSize = xzCellSize;
         }
@@ -195,8 +200,8 @@ namespace org.critterai.nmgen
                 mDepth = 0;
                 mXZCellSize = 0;
                 mYCellSize = 0;
-                Array.Clear(mBoundsMin, 0, 3);
-                Array.Clear(mBoundsMax, 0, 3);
+                mBoundsMin = Vector3Util.Zero;
+                mBoundsMax = Vector3Util.Zero;
             }
         }
 
@@ -358,7 +363,7 @@ namespace org.critterai.nmgen
         /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangle(BuildContext context
-            , float[] verts
+            , Vector3[] verts
             , byte area
             , int flagMergeThreshold)
         {
@@ -425,7 +430,7 @@ namespace org.critterai.nmgen
         /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
-            , float[] verts
+            , Vector3[] verts
             , ushort[] tris
             , byte[] areas
             , int flagMergeThreshold)
@@ -458,7 +463,7 @@ namespace org.critterai.nmgen
         /// [Normal: 1]</param>
         /// <returns>TRUE if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
-            , float[] verts
+            , Vector3[] verts
             , byte[] areas
             , int triCount
             , int flagMergeThreshold)
