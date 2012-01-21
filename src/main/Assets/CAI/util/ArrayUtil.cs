@@ -54,6 +54,36 @@ namespace org.critterai
             return true;
         }
 
+        public static T[] Compress<T>(T[] items)
+        {
+            if (items == null)
+                return null;
+
+            if (items.Length == 0)
+                return items;
+
+            int count = 0;
+
+            foreach (T item in items)
+            {
+                count += (item == null) ? 0 : 1;
+            }
+
+            if (count == items.Length)
+                return items;
+
+            T[] result = new T[count];
+
+            count = 0;
+            foreach (T item in items)
+            {
+                if (item != null)
+                    result[count++] = item;
+            }
+
+            return result;
+        }
+
         // TODO: REMOVE: If not in use by 2012-06-01
         //public static ushort ToUInt16(byte[] source, int index)
         //{

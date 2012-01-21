@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+#if NUNITY
+using Vector3 = org.critterai.Vector3;
+#else
+using Vector3 = UnityEngine.Vector3;
+#endif
 
 namespace org.critterai.geom
 {
+    // Thread friendly.  Safe to use in multiple threads as long as the
+    // area and triangle arrays are not changed outside this class.
 	public sealed class ChunkyTriMesh
 	{
         private struct BoundsItem
@@ -56,10 +63,10 @@ namespace org.critterai.geom
         public int TriCount { get { return mTriCount; } }
         public int MaxTrisPerChunk { get { return mMaxTrisPerChunk; } }
 
-        public int[] Triangles { get { return mTris; } }
+        public int[] Tris { get { return mTris; } }
         public byte[] Areas { get { return mAreas; } }
 
-        public ChunkyTriMesh(float[] verts
+        public ChunkyTriMesh(Vector3[] verts
             , int[] tris
             , byte[] areas
             , int triCount
@@ -87,15 +94,15 @@ namespace org.critterai.geom
 
                 // Calc triangle XZ bounds.
                 items[i].xmin = 
-                    items[i].xmax = verts[tris[pi] * 3 + 0];
+                    items[i].xmax = verts[tris[pi]].x;
                 items[i].zmin = 
-                    items[i].zmax = verts[tris[pi] * 3 + 2];
+                    items[i].zmax = verts[tris[pi]].z;
 
                 for (int j = 1; j < 3; j++)
                 {
                     // const float* v = &verts[t[j] * 3];
 
-                    float v = verts[tris[pi + j] * 3 + 0];
+                    float v = verts[tris[pi + j]].x;
 
                     if (v < items[i].xmin)
                         items[i].xmin = v;
@@ -103,7 +110,7 @@ namespace org.critterai.geom
                     if (v > items[i].xmax)
                         items[i].xmax = v;
 
-                    v = verts[tris[pi + j] * 3 + 2];
+                    v = verts[tris[pi + j]].z;
 
                     if (v < items[i].zmin)
                         items[i].zmin = v;
@@ -139,7 +146,6 @@ namespace org.critterai.geom
             }
         }
 
-        // float xmin, float zmin, float xmax, float zmax
         public void GetChunks(float xmin, float zmin, float xmax, float zmax
             , List<ChunkyTriMeshNode> resultNodes)
         {
@@ -286,7 +292,7 @@ namespace org.critterai.geom
 	        }
         }
 
-        public bool Overlaps(float xmin, float zmin, float xmax, float zmax
+        public static bool Overlaps(float xmin, float zmin, float xmax, float zmax
 			, ChunkyTriMeshNode node)
         {
 	        bool overlap = true;
