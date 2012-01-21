@@ -19,7 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using UnityEngine;
+#if NUNITY
+using Vector2 = org.critterai.Vector3;
+#else
+using Vector2 = UnityEngine.Vector2;
+#endif
 
 namespace org.critterai.geom
 {
@@ -280,7 +284,7 @@ namespace org.critterai.geom
             // Exit early if the lines do not intersect at a single point.
             if (denominator == 0)
             {
-                outIntersectionPoint = Vector2.zero;
+                outIntersectionPoint = Vector2Util.Zero;
                 if (numerator == 0)
                     return LineRelType.Collinear;
                 return LineRelType.Parallel;
