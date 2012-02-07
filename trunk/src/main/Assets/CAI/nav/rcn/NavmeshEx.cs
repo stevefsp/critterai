@@ -45,6 +45,7 @@ namespace org.critterai.nav.rcn
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtnmBuildDTNavMeshFromRaw([In] byte[] rawMeshData
             , int dataSize
+            , bool safeStorage
             , ref IntPtr resultNavMesh);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
@@ -52,7 +53,7 @@ namespace org.critterai.nav.rcn
             , ref IntPtr navmesh);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtnmFreeNavMesh(ref IntPtr navmesh);
+        public static extern void dtnmFreeNavMesh(ref IntPtr navmesh, bool freeTiles);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtnmGetParams(IntPtr navmesh
@@ -66,7 +67,9 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtnmRemoveTile(IntPtr navmesh
-            , uint tileRef);
+            , uint tileRef
+            , ref IntPtr resultData
+            , ref int resultDataSize);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern void dtnmCalcTileLoc(IntPtr navmesh
@@ -149,11 +152,11 @@ namespace org.critterai.nav.rcn
             , byte area);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtnmGetDTNavMeshRawData(IntPtr navmesh
+        public static extern void dtnmGetNavMeshRawData(IntPtr navmesh
             , ref IntPtr resultData
             , ref int dataSize);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern void dtnmFreeDTNavMeshRawData(ref IntPtr data);
+        public static extern void dtnmFreeBytes(ref IntPtr data);
     }
 }

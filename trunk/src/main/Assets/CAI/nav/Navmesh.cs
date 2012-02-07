@@ -128,7 +128,7 @@ namespace org.critterai.nav
                 return;
             
             byte[] data = (byte[])info.GetValue(DataKey, typeof(byte[]));
-            NavmeshEx.dtnmBuildDTNavMeshFromRaw(data, data.Length, ref root);
+            NavmeshEx.dtnmBuildDTNavMeshFromRaw(data, data.Length, true, ref root);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace org.critterai.nav
         {
             if (root != IntPtr.Zero)
             {
-                NavmeshEx.dtnmFreeNavMesh(ref root);
+                NavmeshEx.dtnmFreeNavMesh(ref root, false);
                 root = IntPtr.Zero;
             }
         }
@@ -212,12 +212,9 @@ namespace org.critterai.nav
         /// </returns>
         public NavStatus RemoveTile(uint tileRef)
         {
-            return NavmeshEx.dtnmRemoveTile(root, tileRef);
-        }
-
-        public NavStatus RemoveTile(uint tileRef, out byte[] tileData)
-        {
-            throw new NotImplementedException();
+            int trash = 0;
+            IntPtr dump = IntPtr.Zero;
+            return NavmeshEx.dtnmRemoveTile(root, tileRef, ref dump, ref trash);
         }
 
         /// <summary>
@@ -488,14 +485,14 @@ namespace org.critterai.nav
             IntPtr data = IntPtr.Zero;
             int dataSize = 0;
 
-            NavmeshEx.dtnmGetDTNavMeshRawData(root, ref data, ref dataSize);
+            NavmeshEx.dtnmGetNavMeshRawData(root, ref data, ref dataSize);
 
             if (dataSize == 0)
                 return null;
 
             byte[] resultData = UtilEx.ExtractArrayByte(data, dataSize);
 
-            NavmeshEx.dtnmFreeDTNavMeshRawData(ref data);
+            NavmeshEx.dtnmFreeBytes(ref data);
 
             return resultData;
         }
@@ -523,9 +520,10 @@ namespace org.critterai.nav
         /// <param name="resultMesh">The result mesh.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the operation.
         /// </returns>
-        public static NavStatus Build(NavmeshTileBuildData buildData
+        public static NavStatus Create(NavmeshTileBuildData buildData
             , out Navmesh resultMesh)
         {
+            // TODO: Refactor method name to "Create". (Along with overloads.)
             IntPtr navMesh = IntPtr.Zero;
 
             NavStatus status = NavmeshEx.dtnmBuildSingleTileMesh(buildData
@@ -547,10 +545,17 @@ namespace org.critterai.nav
         /// <param name="resultMesh">The result mesh.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the operation.
         /// </returns>
-        public static NavStatus Build(byte[] serializedMesh
+        public static NavStatus Create(byte[] serializedMesh
             , out Navmesh resultMesh)
         {
-            if (serializedMesh == null || serializedMesh.Length < 1)
+            return UnsafeCreate(serializedMesh, true, out resultMesh);
+        }
+
+        private static NavStatus UnsafeCreate(byte[] serializedMesh
+            , bool safeStorage
+            , out Navmesh resultMesh)
+        {
+            if (serializedMesh == null || serializedMesh.Length == 0)
             {
                 resultMesh = null;
                 return NavStatus.Failure | NavStatus.InvalidParam;
@@ -560,6 +565,7 @@ namespace org.critterai.nav
 
             NavStatus status = NavmeshEx.dtnmBuildDTNavMeshFromRaw(serializedMesh
                 , serializedMesh.Length
+                , safeStorage
                 , ref root);
 
             if (NavUtil.Succeeded(status))
@@ -580,7 +586,7 @@ namespace org.critterai.nav
         /// <param name="resultMesh">The result mesh.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the operation.
         /// </returns>
-        public static NavStatus Build(NavmeshParams config
+        public static NavStatus Create(NavmeshParams config
             , out Navmesh resultMesh)
         {
             if (config == null || config.maxTiles < 1)
@@ -599,6 +605,98 @@ namespace org.critterai.nav
                 resultMesh = null;
 
             return status;
+        }
+
+        /// <summary>
+        /// Extracts the tile data from a serialized navigation mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>Tile data is normally preserved by serializing
+        /// the the content of the <see cref="NavmeshTileData"/> objects used to
+        /// create a navigation mesh creation.  That is the most efficient method
+        /// and should be used whenever possible.</para>
+        /// <para>This method can be used to extract the tile data when
+        /// the original data is not available.  It should only be used as
+        /// a backup to the normal method since this method is not efficient.</para>
+        /// <para>Always check that the header polygon count
+        /// for an <see cref="NavmeshTileExtract"/> is greater than zero before 
+        /// attempting to use its content since some tiles
+        /// in the navigation mesh may be empty.  The <see cref="NavmeshTileExtract.data"/> 
+        /// field will be null for empty tiles.</para>
+        /// </remarks>
+        /// <param name="serializedMesh">A valid serialized navigation mesh.</param>
+        /// <param name="tileData">The extracted tile data. 
+        /// [Length: <see cref="Navmesh.GetMaxTiles()"/>]</param>
+        /// <param name="config">The navigation mesh's configuration.</param>
+        /// <returns>The <see cref="NavStatus"/> flags for the operation.</returns>
+        public static NavStatus ExtractTileData(byte[] serializedMesh
+            , out NavmeshTileExtract[] tileData
+            , out NavmeshParams config)
+        {
+            /*
+             * Design notes:
+             * 
+             * Normally, the only way to get tile data out of a navigation mesh
+             * is when the tile data is NOT owned by the mesh.  This is not
+             * permitted for normal mesh objects, which is why the RemoveTile() method
+             * never returns the tile data.
+             * 
+             * The most efficient way to extract the data is to get it directly
+             * from the serialized data.  But that would be a code maintenance issue.
+             * (Duplicating the mesh creation process.) So I'm using this rather 
+             * convoluted method instead.
+             * 
+             */
+
+            if (serializedMesh == null)
+            {
+                tileData = null;
+                config = null;
+                return NavStatus.Failure | NavStatus.InvalidParam;
+            }
+
+            Navmesh mesh;
+            NavStatus status = Navmesh.UnsafeCreate(serializedMesh, false, out mesh);
+
+            if ((status & NavStatus.Failure) != 0)
+            {
+                tileData = null;
+                config = null;
+                return status;
+            }
+
+            config = mesh.GetConfig();
+
+            int count = mesh.GetMaxTiles();
+
+            tileData = new NavmeshTileExtract[count];
+
+            if (count == 0)
+                return NavStatus.Sucess;
+
+            for (int i = 0; i < count; i++)
+            {
+                NavmeshTile tile = mesh.GetTile(i);
+
+                tileData[i].header = tile.GetHeader();
+
+                if (tileData[i].header.polyCount == 0)
+                    // Tile not in use.
+                    continue;
+
+                tileData[i].tileRef = tile.GetTileRef();
+
+                IntPtr tdata = new IntPtr();
+                int tsize = 0;
+
+                NavmeshEx.dtnmRemoveTile(mesh.root, tileData[i].tileRef, ref tdata, ref tsize);
+
+                tileData[i].data = UtilEx.ExtractArrayByte(tdata, tsize);
+
+                NavmeshEx.dtnmFreeBytes(ref tdata);
+            }
+
+            return NavStatus.Sucess;
         }
     }
 }

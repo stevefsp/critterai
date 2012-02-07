@@ -62,5 +62,19 @@ namespace org.critterai.nav
         /// </summary>
         public int walkableRadius;
 
+        public int borderSize;
+
+        public NavmeshBuildParams Clone()
+        {
+            NavmeshBuildParams result = new NavmeshBuildParams();
+            result.tileSize = tileSize;
+            result.borderSize = borderSize;
+            result.walkableHeight = walkableHeight;
+            result.walkableRadius = walkableRadius;
+            result.walkableStep = walkableStep;
+            result.xzCellSize = xzCellSize;
+            result.yCellSize = yCellSize;
+            return result;
+        }
 	}
 }
