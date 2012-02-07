@@ -66,11 +66,35 @@ extern "C"
     }
 
     EXPORT_API dtStatus dtnmRemoveTile(dtNavMesh* navMesh
-        , dtTileRef ref)
+        , dtTileRef ref
+		, unsigned char** data
+		, int* dataSize)
     {
-        if (navMesh)
-            return navMesh->removeTile(ref, 0, 0);
-        return DT_FAILURE + DT_INVALID_PARAM;
+		unsigned char* tData = 0;
+		int tDataSize = 0;
+
+		if (!navMesh)
+			return DT_FAILURE + DT_INVALID_PARAM;
+		
+		dtStatus status = navMesh->removeTile(ref, &tData, &tDataSize);
+
+		if (data)
+			*data = tData;
+		if (dataSize)
+			*dataSize = tDataSize;
+
+		if (dtStatusFailed(status))
+			return status;
+
+		if (!data && tData)
+		{
+			// Data was returned, but the caller doesn't want it.
+			// Need to free the memory.
+			dtFree(tData);
+			tData = 0;
+		}
+
+		return status;
     }
 
     EXPORT_API void dtnmCalcTileLoc(const dtNavMesh* navMesh
@@ -271,13 +295,13 @@ extern "C"
 
     EXPORT_API int dtnmGetTileVerts(const dtMeshTile* tile
         , float* verts
-        , const int vertsSize)
+        , const int vertsCount)
     {
         if (!tile
             || !verts
             || !tile->header
             || !tile->dataSize
-            || vertsSize < tile->header->vertCount * 3)
+            || vertsCount < tile->header->vertCount)
         {
             return 0;
         }
@@ -313,13 +337,13 @@ extern "C"
 
     EXPORT_API int dtnmGetTileDetailVerts(const dtMeshTile* tile
         , float* verts
-        , const int vertsSize)
+        , const int vertsCount)
     {
         if (!tile
             || !verts
             || !tile->header
             || !tile->dataSize
-            || vertsSize < tile->header->detailVertCount * 3)
+            || vertsCount < tile->header->detailVertCount)
         {
             return 0;
         }
@@ -329,7 +353,7 @@ extern "C"
         if (count > 0)
             memcpy(verts, tile->detailVerts, sizeof(float) * count * 3);
 
-        return count;
+		return count;
     }
 
     EXPORT_API int dtnmGetTileDetailTris(const dtMeshTile* tile
@@ -440,5 +464,4 @@ extern "C"
 
         return count;
     }
-
 }

@@ -105,7 +105,7 @@ extern "C"
         tileData->dataSize = 0;
     }
 
-    EXPORT_API void dtnmGetDTNavMeshRawData(const dtNavMesh* navMesh
+    EXPORT_API void dtnmGetNavMeshRawData(const dtNavMesh* navMesh
         , unsigned char** resultData
         , int* dataSize)
     {
@@ -173,7 +173,7 @@ extern "C"
         *dataSize = totalDataSize;
     }
 
-    EXPORT_API void dtnmFreeDTNavMeshRawData(unsigned char** data)
+    EXPORT_API void dtnmFreeBytes(unsigned char** data)
     {
         dtFree(*data);
         *data = 0;
@@ -181,6 +181,7 @@ extern "C"
 
     EXPORT_API dtStatus dtnmBuildDTNavMeshFromRaw(const unsigned char* data
         , int dataSize
+		, bool safeStorage
         , dtNavMesh** ppNavMesh)
     {
         if (!data || dataSize < sizeof(rcnNavMeshSetHeader) || !ppNavMesh)
@@ -223,7 +224,7 @@ extern "C"
             pos += size;
 
             size = tileHeader.dataSize;
-		    if (!tileHeader.tileRef || !size)
+			if (!tileHeader.tileRef || !tileHeader.dataSize)
             {
                 success = false;
                 status = DT_FAILURE + DT_INVALID_PARAM;
@@ -243,7 +244,7 @@ extern "C"
 
 		    status = mesh->addTile(tileData
                 , size
-                , DT_TILE_FREE_DATA
+				, (safeStorage ? DT_TILE_FREE_DATA : 0)
                 , tileHeader.tileRef
                 , 0);
 
@@ -323,8 +324,37 @@ extern "C"
 
     }
 
-    EXPORT_API void dtnmFreeNavMesh(dtNavMesh** pNavMesh)
+    EXPORT_API void dtnmFreeNavMesh(dtNavMesh** pNavMesh, bool freeTiles)
     {
-        dtFreeNavMesh(*pNavMesh);
+		if (!pNavMesh && !(*pNavMesh))
+			return;
+
+		dtNavMesh* mesh = *pNavMesh;
+		const dtNavMesh* cmesh = *pNavMesh;  // Cleaner code when calling getTile().
+
+		if (freeTiles)
+		{
+			unsigned char* tData = 0;
+			
+			for (int i = 0; i < mesh->getMaxTiles(); ++i)
+			{
+				const dtMeshTile* tile = cmesh->getTile(i);
+
+				if (!tile || !tile->header || !tile->dataSize) 
+					continue;
+
+				dtTileRef tref = mesh->getTileRef(tile);
+
+				dtStatus status = mesh->removeTile(tref, &tData, 0);
+
+				if (dtStatusSucceed(status) && tData)
+				{
+					dtFree(tData);
+					tData = 0;
+				}
+			}
+		}
+
+        dtFreeNavMesh(mesh);
     }
 }

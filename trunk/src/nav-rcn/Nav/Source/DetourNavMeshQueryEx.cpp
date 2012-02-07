@@ -75,14 +75,13 @@ extern "C"
         , const float* center
         , const float* extents
 		, const dtQueryFilter* filter
-		, dtPolyRef* nearestRef
-        , float* nearestPt)
+		, rcnNavmeshPoint* nearest)
     {
         return query->findNearestPoly(center
             , extents
             , filter
-            , nearestRef
-            , nearestPt);
+            , &nearest->polyRef
+            , &nearest->point[0]);
     }
 
     EXPORT_API dtStatus dtqQueryPolygons(dtNavMeshQuery* query 
@@ -182,24 +181,22 @@ extern "C"
     }
 
     EXPORT_API dtStatus dtqGetPolyHeight(dtNavMeshQuery* query
-        , dtPolyRef ref
-        , const float* pos
+        , rcnNavmeshPoint pos
         , float* height)
     {
-        return query->getPolyHeight(ref, pos, height);
+		return query->getPolyHeight(pos.polyRef, &pos.point[0], height);
     }
 
 	EXPORT_API dtStatus dtqFindDistanceToWall(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* centerPos
+        , rcnNavmeshPoint centerPos
         , const float maxRadius
 	    , const dtQueryFilter* filter
 	    , float* hitDist
         , float* hitPos
         , float* hitNormal)
     {
-        return query->findDistanceToWall(startRef
-            , centerPos
+		return query->findDistanceToWall(centerPos.polyRef
+			, &centerPos.point[0]
             , maxRadius
             , filter
             , hitDist
@@ -208,19 +205,17 @@ extern "C"
     }
 
     EXPORT_API dtStatus dtqFindPath(dtNavMeshQuery* query 
-        , dtPolyRef startRef
-        , dtPolyRef endRef
-		, const float* startPos
-        , const float* endPos
+		, rcnNavmeshPoint startPos
+        , rcnNavmeshPoint endPos
 		, const dtQueryFilter* filter
 		, dtPolyRef* path
         , int* pathCount
         , const int maxPath)
     {
-        return query->findPath(startRef
-            , endRef
-            , startPos
-            , endPos
+		return query->findPath(startPos.polyRef
+			, endPos.polyRef
+			, &startPos.point[0]
+			, &endPos.point[0]
             , filter
             , path
             , pathCount
@@ -228,46 +223,44 @@ extern "C"
     }
 
     EXPORT_API dtStatus dtqFindPathExt(dtNavMeshQuery* query 
-        , dtPolyRef* startRef
-        , dtPolyRef* endRef
-		, float* startPos
-        , float* endPos
+		, rcnNavmeshPoint* startPos
+        , rcnNavmeshPoint* endPos
         , const float* extents
 		, const dtQueryFilter* filter
 		, dtPolyRef* path
         , int* pathCount
         , const int maxPath)
     {
-        if (*startRef == 0)
+		if (startPos->polyRef == 0)
         {
-            dtStatus status = query->findNearestPoly(startPos
+			dtStatus status = query->findNearestPoly(&startPos->point[0]
                 , extents
                 , filter
-                , startRef
-                , startPos);
+				, &startPos->polyRef
+				, &startPos->point[0]);
             if (dtStatusFailed(status))
                 return status;
         }
 
-        if (*endRef == 0)
+		if (endPos->polyRef == 0)
         {
-            dtStatus status = query->findNearestPoly(endPos
+			dtStatus status = query->findNearestPoly(&endPos->point[0]
                 , extents
                 , filter
-                , endRef
-                , endPos);
+				, &endPos->polyRef
+				, &endPos->point[0]);
             if (dtStatusFailed(status))
                 return status;
         }
 
-        if (*startRef == 0 || *endRef == 0)
+		if (startPos->polyRef == 0 || endPos->polyRef == 0)
             // One of the searches failed. 
             return DT_FAILURE | DT_INVALID_PARAM;
 
-        return query->findPath(*startRef
-            , *endRef
-            , (const float*)startPos
-            , (const float*)endPos
+		return query->findPath(startPos->polyRef
+			, endPos->polyRef
+			, &startPos->point[0]
+            , &endPos->point[0]
             , filter
             , path
             , pathCount
@@ -288,8 +281,7 @@ extern "C"
     }
 
 	EXPORT_API dtStatus dtqRaycast(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* startPos
+        , rcnNavmeshPoint startPos
         , const float* endPos
 	    , const dtQueryFilter* filter
 	    , float* t
@@ -298,8 +290,8 @@ extern "C"
         , int* pathCount
         , const int maxPath)
     {
-        return query->raycast(startRef
-            , startPos
+		return query->raycast(startPos.polyRef
+			, &startPos.point[0]
             , endPos
             , filter
             , t
@@ -333,8 +325,7 @@ extern "C"
     }
 
     EXPORT_API dtStatus dtqMoveAlongSurface(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , const float* startPos
+        , rcnNavmeshPoint startPos
         , const float* endPos
 	    , const dtQueryFilter* filter
 	    , float* resultPos
@@ -342,8 +333,8 @@ extern "C"
         , int* visitedCount
         , const int maxVisitedSize)
     {
-        return query->moveAlongSurface(startRef
-            , startPos
+		return query->moveAlongSurface(startPos.polyRef
+			, &startPos.point[0]
             , endPos
             , filter
             , resultPos
@@ -353,16 +344,14 @@ extern "C"
     }
 
 	EXPORT_API dtStatus dtqInitSlicedFindPath(dtNavMeshQuery* query
-        , dtPolyRef startRef
-        , dtPolyRef endRef
-        , const float* startPos
-        , const float* endPos
+        , rcnNavmeshPoint startPos
+        , rcnNavmeshPoint endPos
         , const dtQueryFilter* filter)
     {
-        return query->initSlicedFindPath(startRef
-            , endRef
-            , startPos
-            , endPos
+		return query->initSlicedFindPath(startPos.polyRef
+			, endPos.polyRef
+			, &startPos.point[0]
+			, &endPos.point[0]
             , filter);
     }
 
