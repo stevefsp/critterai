@@ -22,7 +22,6 @@
 #ifndef CAI_DETOURNAVMESHEX_H
 #define CAI_DETOURNAVMESHEX_H
 
-#include "DetourNavMesh.h"
 #include "DetourEx.h"
 
 struct rcnTileData

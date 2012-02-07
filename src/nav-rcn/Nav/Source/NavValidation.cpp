@@ -19,32 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CAI_DETOUREX_H
-#define CAI_DETOUREX_H
+#include <string.h>
+#include "DetourEx.h"
+#include "DetourCommon.h"
 
-#include "DetourNavMesh.h"
-
-#if _MSC_VER    // TRUE for Microsoft compiler.
-#define EXPORT_API __declspec(dllexport) // Required for VC++
-#else
-#define EXPORT_API // Otherwise don't define.
-#endif
-
-static const int MAX_RCN_PATH_CORRIDOR_SIZE = 256;
-
-struct rcnPathCorridorData
+extern "C"
 {
-    float position[3];
-    float target[3];
+	// The purpose of these functions is to allow checking that
+	// the Vector3 structure can be auto-cast by .NET interop to a 
+	// float[3] pointer. The tests are needed to allow validation across 
+	// various OS's and platforms.
 
-    dtPolyRef path[MAX_RCN_PATH_CORRIDOR_SIZE];
-    int pathCount;
-};
+	EXPORT_API void dtvlVectorTest(const float* vector3in, float* vector3out)
+	{
+		dtVcopy(vector3out, vector3in);
+	}
 
-struct rcnNavmeshPoint
-{
-	dtPolyRef polyRef;
-	float point[3];
-};
-
-#endif
+	EXPORT_API void dtvlVectorArrayTest(const float* vector3in
+		, const int vectorCount
+		, float* vector3out)
+	{
+		for (int i = 0; i < vectorCount; i++)
+		{
+			dtVcopy(&vector3out[i * 3], &vector3in[i * 3]);
+		}
+	}
+}

@@ -45,9 +45,10 @@ struct rcnCrowdAgentCoreData
 {
 	unsigned char state;
     dtPolyRef polyRef;
+	dtPolyRef targetRef;
+	dtPolyRef cornerRef;
 
-    // It is important that everything below this point be kepth in synch
-    // with dtCrowdAgent.
+    // Important: Keep this section in sync with the dtCrowdAgent layout.
 
 	int nneis;
 
@@ -58,6 +59,11 @@ struct rcnCrowdAgentCoreData
 	float dvel[3];
 	float nvel[3];
 	float vel[3];
+
+	// End of sync section.
+
+	float target[3];	// Corridor target.
+	float corner[3];	// Next corner.
 };
 
 extern "C"
@@ -120,18 +126,16 @@ extern "C"
 	
 	EXPORT_API bool dtcRequestMoveTarget(dtCrowd* crowd
         , const int idx
-        , dtPolyRef ref
-        , const float* pos)
+		, rcnNavmeshPoint pos)
     {
-        return crowd->requestMoveTarget(idx, ref, pos);
+		return crowd->requestMoveTarget(idx, pos.polyRef, &pos.point[0]);
     }
 
 	EXPORT_API bool dtcAdjustMoveTarget(dtCrowd* crowd
         , const int idx
-        , dtPolyRef ref
-        , const float* pos)
+        , rcnNavmeshPoint pos)
     {
-        return crowd->adjustMoveTarget(idx, ref, pos);
+		return crowd->adjustMoveTarget(idx, pos.polyRef, &pos.point[0]);
     }
 	
 	EXPORT_API const dtQueryFilter* dtcGetFilter(dtCrowd* crowd)
@@ -205,11 +209,17 @@ extern "C"
 
         resultData->state = agent->state;
         resultData->polyRef = agent->corridor.getFirstPoly();
+		resultData->targetRef = agent->corridor.getLastPoly();
+		resultData->cornerRef = agent->cornerPolys[0];
 
         int size = sizeof(rcnCrowdAgentCoreData)
-            - sizeof(unsigned char) - sizeof(dtPolyRef);
+            - sizeof(unsigned char) - 3 * sizeof(dtPolyRef)
+			- sizeof(float) * 6;
 
         memcpy(&resultData->nneis, &agent->nneis, size);
+
+		dtVcopy(&resultData->target[0], agent->corridor.getTarget());
+		dtVcopy(&resultData->corner[0], &agent->cornerVerts[0]);
     }
 
     EXPORT_API int dtcaGetAgentNeighbors(const dtCrowdAgent* agent
