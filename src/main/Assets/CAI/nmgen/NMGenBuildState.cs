@@ -26,29 +26,45 @@ namespace org.critterai.nmgen
     /// Represents the build state for an <see cref="IncrementalBuilder"/>
     /// object.
     /// </summary>
+    /// <remarks>There are three finished states: <see cref="Complete"/>,
+    /// <see cref="NoResult"/>, and <see cref="Aborted"/>.</remarks>
     public enum BuildState
     {
-        Inactive = 0,
-
         /// <summary>
         /// The builder is initialized and ready to start the build.
         /// </summary>
-        Initialized,
+        Initialized = 0,
 
         /// <summary>
-        /// The build was aborted due to an error.
+        /// The build was aborted due to an error. (Finished state.)
         /// </summary>
         Aborted,
 
         /// <summary>
-        /// The build was completed.
+        /// The build was completed, producing a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// It is possible to complete, but have not data.  This occurs when
-        /// the heightfield build results in no spans and means there is 
-        /// no valid triangles in the bounds of the build.
+        /// It is possible to complete, but have no resulting mesh.
+        /// See <see cref="NoResult"/>.
         /// </remarks>
         Complete,
+
+        /// <summary>
+        /// The build completed without producing a result. (Finished state.)
+        /// </summary>
+        /// <remarks>
+        /// <para>This state will result in the following cases:</para>
+        /// <ul>
+        /// <li>There is no source geometry for the build. 
+        /// (E.g None within the build bounds.)</li>
+        /// <li>The are no heightfield spans at the end of the voxeliation stage.</li>
+        /// <li>There are no regions at the end of the region generation stage.</li>
+        /// </ul>
+        /// <para>While having no result is usually considered a failure
+        /// when building a single tile mesh, it is not unexpected for tiled
+        /// meshes. (Some tiles may not contain geometry.)</para>
+        /// </remarks>
+        NoResult,
 
         /// <summary>
         /// At the step to clear unwalkable triangles.

@@ -292,7 +292,7 @@ namespace org.critterai.nmgen
         /// meshes.</returns>
         public static bool BuildPolyMesh(NMGenParams config
             , BuildFlags buildFlags
-            , NMGenInputGeom mesh
+            , InputGeometry mesh
             , ProcessorSet processors
             , out PolyMesh polyMesh
             , out PolyMeshDetail detailMesh

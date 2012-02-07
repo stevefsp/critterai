@@ -159,6 +159,9 @@ namespace org.critterai.nmgen
         /// <param name="serializedMesh">The source data.</param>
         public PolyMeshDetail(byte[] serializedMesh)
         {
+            // TODO: EVAL: Consider moving all creation to a static method.
+            // for error reporting.
+
             mResourceType = AllocType.External;
 
             PolyMeshDetailEx.rcpdBuildFromMeshData(serializedMesh

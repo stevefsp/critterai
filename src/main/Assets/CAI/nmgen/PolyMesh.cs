@@ -237,6 +237,9 @@ namespace org.critterai.nmgen
         public PolyMesh(byte[] serializedMesh)
             : base(AllocType.External)
         {
+            // TODO: EVAL: Consider moving all creation to a static method.
+            // for error reporting.
+
             if (!PolyMeshEx.rcpmBuildSerializedData(serializedMesh
                 , serializedMesh.Length
                 , ref root

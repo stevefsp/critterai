@@ -38,9 +38,6 @@ namespace org.critterai.nmgen
     /// </remarks>
     public sealed class TileSetDefinition
     {
-        public const int MinAllowedTileSize 
-            = IncrementalBuilder.MinAllowedTileSize;
-
         private static int MaxTrianglesPerChunk = 2048;
 
         private readonly ChunkyTriMesh mChunkMesh;
@@ -84,15 +81,17 @@ namespace org.critterai.nmgen
             return mBaseConfig.Clone();
         }
 
-        public bool GetInputGeometry(int tx, int tz
-            , out NMGenTileParams tileConfig
-            , out NMGenInputGeom geom)
+        public void GetTileBounds(int tx, int tz
+            , out Vector3 boundsMin, out Vector3 boundsMax)
         {
+            boundsMin = mBoundsMin;
+            boundsMax = mBoundsMin;
+
             if (tx < 0 || tz < 0 || tx >= mWidth || tz >= mDepth)
             {
-                tileConfig = null;
-                geom = null;
-                return false;
+                boundsMin = Vector3Util.Zero;
+                boundsMax = Vector3Util.Zero;
+                return;
             }
 
             float tcsFactor = mBaseConfig.TileSize * mBaseConfig.XZCellSize;
@@ -101,18 +100,22 @@ namespace org.critterai.nmgen
             // Note: The minimum bounds of the base configuration is
             // considered to be the origin of the mesh set.
 
-            Vector3 bmin = mBoundsMin;
-            Vector3 bmax = mBoundsMin;  // This is not an error.
+            boundsMin = mBoundsMin;
+            boundsMax = mBoundsMin;  // This is not an error.
 
-            bmin.x += tx * tcsFactor - borderOffset;
-            bmin.z += tz * tcsFactor - borderOffset;
+            boundsMin.x += tx * tcsFactor - borderOffset;
+            boundsMin.z += tz * tcsFactor - borderOffset;
 
-            bmax.x += (tx + 1) * tcsFactor + borderOffset;
-            bmax.y = mBoundsMax.y;
-            bmax.z += (tz + 1) * tcsFactor + borderOffset;
+            boundsMax.x += (tx + 1) * tcsFactor + borderOffset;
+            boundsMax.y = mBoundsMax.y;
+            boundsMax.z += (tz + 1) * tcsFactor + borderOffset;
+        }
 
-            tileConfig = new NMGenTileParams(tx, tz, bmin, bmax);
-
+        private void GetInputGeometryPartial(Vector3 bmin
+            , Vector3 bmax
+            , out TriangleMesh mesh
+            , out byte[] areas)
+        {
             List<ChunkyTriMeshNode> nodes = new List<ChunkyTriMeshNode>();
 
             mChunkMesh.GetChunks(bmin.x, bmin.z, bmax.x, bmax.z, nodes);
@@ -126,6 +129,70 @@ namespace org.critterai.nmgen
 
             if (triCount == 0)
             {
+                mesh = new TriangleMesh();
+                areas = new byte[0];
+                return;
+            }
+
+            mesh = new TriangleMesh(mVerts.Length, triCount);
+            mesh.triCount = triCount;
+            mesh.vertCount = mVerts.Length;
+
+            areas = new byte[triCount];
+
+            int[] stris = mChunkMesh.Tris;
+            byte[] sareas = mChunkMesh.Areas;
+
+            int iTri = 0;
+            foreach (ChunkyTriMeshNode node in nodes)
+            {
+                for (int i = 0; i < node.count; i++)
+                {
+                    mesh.tris[(iTri) * 3 + 0] = stris[(node.i + i) * 3 + 0];
+                    mesh.tris[iTri * 3 + 1] = stris[(node.i + i) * 3 + 1];
+                    mesh.tris[iTri * 3 + 2] = stris[(node.i + i) * 3 + 2];
+                    areas[iTri] = sareas[node.i + i];
+                    iTri++;
+                }
+            }
+        }
+
+        public void GetInputGeometry(Vector3 bmin, Vector3 bmax
+            , out TriangleMesh mesh
+            , out byte[] areas)
+        {
+            GetInputGeometryPartial(bmin, bmax, out mesh, out areas);
+            mesh.verts = (Vector3[])mVerts.Clone();
+        }
+
+        public bool GetInputGeometry(int tx, int tz
+            , out NMGenTileParams tileConfig
+            , out InputGeometry geom)
+        {
+            if (tx < 0 || tz < 0 || tx >= mWidth || tz >= mDepth)
+            {
+                tileConfig = null;
+                geom = null;
+                return false;
+            }
+
+            // Note: The minimum bounds of the base configuration is
+            // considered to be the origin of the mesh set.
+
+            Vector3 bmin;
+            Vector3 bmax;
+
+            GetTileBounds(tx, tz, out bmin, out bmax);
+
+            tileConfig = new NMGenTileParams(tx, tz, bmin, bmax);
+
+            TriangleMesh mesh;
+            byte[] areas;
+
+            GetInputGeometryPartial(bmin, bmax, out mesh, out areas);
+
+            if (mesh.triCount == 0)
+            {
                 // There is nothing to build.  This is NOT a failure
                 // since it is expected that not all tiles in a multi-tile mesh
                 // will contain geometry.
@@ -133,26 +200,7 @@ namespace org.critterai.nmgen
                 return true;
             }
 
-            int[] stris = mChunkMesh.Tris;
-            byte[] sareas = mChunkMesh.Areas;
-
-            int[] ltris = new int[triCount * 3];
-            byte[] lareas = new byte[triCount];
-
-            int iTri = 0;
-            foreach (ChunkyTriMeshNode node in nodes)
-            {
-                for (int i = 0; i < node.count; i++)
-                {
-                    ltris[(iTri) * 3 + 0] = stris[(node.i + i) * 3 + 0];
-                    ltris[iTri * 3 + 1] = stris[(node.i + i) * 3 + 1];
-                    ltris[iTri * 3 + 2] = stris[(node.i + i) * 3 + 2];
-                    lareas[iTri] = sareas[node.i + i];
-                    iTri++;
-                }
-            }
-
-            geom = NMGenInputGeom.UnsafeCreate(mVerts, ltris, lareas);
+            geom = InputGeometry.UnsafeCreate(mVerts, mesh.tris, areas);
             return true;
         }
 
@@ -160,12 +208,12 @@ namespace org.critterai.nmgen
             , Vector3 meshBoundsMax
             , NMGenParams config
             , BuildFlags buildFlags
-            , NMGenInputGeom geom)
+            , InputGeometry geom)
         {
             if (config == null || !config.IsValid()
                 || !Vector3Util.IsBoundsValid(meshBoundsMin, meshBoundsMax)
                 || geom == null
-                || config.tileSize < MinAllowedTileSize)
+                || config.tileSize < 0)
             {
                 return null;
             }
@@ -177,6 +225,9 @@ namespace org.critterai.nmgen
                 , config.XZCellSize
                 , config.tileSize
                 , out w, out d);
+
+            if (w < 1 || d < 1)
+                return null;
 
             ChunkyTriMesh cmesh = new ChunkyTriMesh(geom.UnsafeVerts
                 , geom.UnsafeTris

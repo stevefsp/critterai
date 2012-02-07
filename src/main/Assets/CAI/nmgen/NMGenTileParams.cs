@@ -102,20 +102,20 @@ namespace org.critterai.nmgen
             BoundsMax = boundsMax;
         }
 
-        public bool IsValid()
-        {
-            return !(x < 0
-                || z < 0
-                || Vector3Util.IsBoundsValid(boundsMin, boundsMax));
-        }
+        //public bool IsValid()
+        //{
+        //    return !(x < 0
+        //        || z < 0
+        //        || Vector3Util.IsBoundsValid(boundsMin, boundsMax));
+        //}
 
-        /// <summary>
-        /// Forces all field values to within the mandatory limits.
-        /// </summary>
-        public void Clean()
-        {
-            X = x;
-            Z = z;
-        }
+        ///// <summary>
+        ///// Forces all field values to within the mandatory limits.
+        ///// </summary>
+        //public void Clean()
+        //{
+        //    X = x;
+        //    Z = z;
+        //}
     }
 }

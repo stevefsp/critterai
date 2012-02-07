@@ -29,7 +29,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmgen
 {
-    public class NMGenInputGeomBuilder
+    public class InputGeometryBuilder
     {
         private readonly List<Vector3> mVerts;
         private readonly List<int> mTris;
@@ -38,14 +38,14 @@ namespace org.critterai.nmgen
         public int VertCount { get { return mVerts.Count; } }
         public int TriCount { get { return mTris.Count / 3; } }
 
-        public NMGenInputGeomBuilder(int initVertCount, int initTriCount)
+        public InputGeometryBuilder(int initVertCount, int initTriCount)
         {
             mVerts = new List<Vector3>(initVertCount);
             mTris = new List<int>(initTriCount * 3);
             mAreas = new List<byte>(initTriCount);
         }
 
-        public NMGenInputGeomBuilder(NMGenInputGeom source)
+        public InputGeometryBuilder(InputGeometry source)
         {
             mVerts = new List<Vector3>(source.UnsafeVerts);
             mTris = new List<int>(source.UnsafeTris);
@@ -104,12 +104,12 @@ namespace org.critterai.nmgen
             return true;
         }
 
-        public NMGenInputGeom GetGeometry()
+        public InputGeometry GetGeometry()
         {
             if (mTris.Count == 0)
                 return null;
 
-            return NMGenInputGeom.Create(mVerts.ToArray(), mVerts.Count
+            return InputGeometry.Create(mVerts.ToArray(), mVerts.Count
                 , mTris.ToArray()
                 , mAreas.ToArray()
                 , mAreas.Count);

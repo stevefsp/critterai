@@ -443,6 +443,7 @@ namespace org.critterai.nmgen
             result.mergeRegionArea = mergeRegionArea;
             result.minRegionArea = minRegionArea;
             result.tileSize = tileSize;
+            // result.tileBorderSize = tileBorderSize;
 
             return result;
         }
