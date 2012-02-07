@@ -42,7 +42,6 @@ namespace org.critterai.nmgen
     /// </remarks>
     public sealed class IncrementalBuilder
     {
-        public const int MinAllowedTileSize = 12;
         private const string pre = "NMGen Build: ";
         private const string pret = pre + "Trace: ";
 
@@ -53,9 +52,9 @@ namespace org.critterai.nmgen
         private readonly BuildContext context;
 
         private bool mTrace;
-        private bool mNoResult;
+        // private bool mNoResult;
 
-        private NMGenInputGeom mSource;
+        private InputGeometry mSource;
         private ProcessorSet mProcessors;
 
         private Object mPrimary;
@@ -72,7 +71,7 @@ namespace org.critterai.nmgen
         /// method called.
         /// </remarks>
         public BuildState State { get { return mState; } }
-        public bool NoResult { get { return mNoResult; } }
+        // public bool NoResult { get { return mNoResult; } }
 
         /// <summary>
         /// TRUE if the the build has finished.  (Successfully or not.)
@@ -82,7 +81,8 @@ namespace org.critterai.nmgen
             get
             {
                 return (mState == BuildState.Aborted
-                    || mState == BuildState.Complete);
+                    || mState == BuildState.Complete
+                    || mState == BuildState.NoResult);
             }
         }
 
@@ -97,7 +97,7 @@ namespace org.critterai.nmgen
         {
             get
             {
-                if (mState == BuildState.Complete && !NoResult)
+                if (mState == BuildState.Complete)
                     return (PolyMesh)mPrimary;
                 return null;
             }
@@ -111,7 +111,7 @@ namespace org.critterai.nmgen
         {
             get
             {
-                if (mState == BuildState.Complete && !NoResult)
+                if (mState == BuildState.Complete)
                     return (PolyMeshDetail)mSecondary;
                 return null;
             }
@@ -164,7 +164,7 @@ namespace org.critterai.nmgen
         private IncrementalBuilder(NMGenTileParams tileConfig
             , NMGenParams config
             , BuildFlags buildFlags
-            , NMGenInputGeom source
+            , InputGeometry source
             , ProcessorSet processors
             , bool trace)
         {
@@ -188,8 +188,7 @@ namespace org.critterai.nmgen
         {
             context = new BuildContext(true);
             context.Log("Nothing to build. (Usually means no geometry in tile bounds.)");
-            mNoResult = true;
-            mState = BuildState.Complete;
+            mState = BuildState.NoResult;
         }
 
         /// <summary>
@@ -201,10 +200,24 @@ namespace org.critterai.nmgen
         {
             if (mTrace
                 || mState == BuildState.Aborted
+                || mState == BuildState.NoResult
                 || context.MessageCount == 1)   // For initialization failures.
+            {
                 return context.GetMessages();
+            }
             else
                 return new string[0]; 
+        }
+
+        public string GetMessagesFlat()
+        {
+            string[] messages = GetMessages();
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (string msg in messages)
+            {
+                sb.AppendLine(msg);
+            }
+            return sb.ToString().Trim();
         }
 
         /// <summary>
@@ -301,15 +314,15 @@ namespace org.critterai.nmgen
 
             Heightfield hf = new Heightfield(width
                 , depth
-                , mTileConfig.boundsMin
-                , mTileConfig.boundsMax
-                , mConfig.xzCellSize
-                , mConfig.yCellSize);
+                , mTileConfig.BoundsMin
+                , mTileConfig.BoundsMax
+                , mConfig.XZCellSize
+                , mConfig.YCellSize);
 
             hf.AddTriangles(context
                 , (TriangleMesh)mPrimary
                 , (byte[])mSecondary
-                , mConfig.walkableStep);  // Merge for any spans less than step.
+                , mConfig.WalkableStep);  // Merge for any spans less than step.
             
             if (mTrace)
                 context.Log(pret + "Voxelized triangles. Span count: " 
@@ -319,8 +332,7 @@ namespace org.critterai.nmgen
             {
                 context.Log("Complete at heightfield build."
                     + " Heightfield does not have any spans.");
-                mState = BuildState.Complete;
-                mNoResult = true;
+                mState = BuildState.NoResult;
                 return;
             }
 
@@ -343,9 +355,9 @@ namespace org.critterai.nmgen
             Heightfield hf = (Heightfield)mPrimary;
 
             if ((mFlags & BuildFlags.LowObstaclesWalkable) != 0
-                && mConfig.walkableStep > 0)
+                && mConfig.WalkableStep > 0)
             {
-                hf.MarkLowObstaclesWalkable(context, mConfig.walkableStep);
+                hf.MarkLowObstaclesWalkable(context, mConfig.WalkableStep);
                 if (mTrace)
                     context.Log(pret + "Flagged low obstacles as walkable.");
 
@@ -354,8 +366,8 @@ namespace org.critterai.nmgen
             if ((mFlags & BuildFlags.LedgeSpansNotWalkable) != 0)
             {
                 hf.MarkLedgeSpansNotWalkable(context
-                    , mConfig.walkableHeight
-                    , mConfig.walkableStep);
+                    , mConfig.WalkableHeight
+                    , mConfig.WalkableStep);
                 if (mTrace)
                     context.Log(pret + "Flagged ledge spans as not walklable");
             }
@@ -363,7 +375,7 @@ namespace org.critterai.nmgen
             if ((mFlags & BuildFlags.LowHeightSpansNotWalkable) != 0)
             {
                 hf.MarkLowHeightSpansNotWalkable(context
-                    , mConfig.walkableHeight);
+                    , mConfig.WalkableHeight);
                 if (mTrace)
                     context.Log(pret
                         + "Flagged low height spans as not walkable.");
@@ -396,8 +408,8 @@ namespace org.critterai.nmgen
 
             CompactHeightfield chf = CompactHeightfield.Build(context
                 , hf
-                , mConfig.walkableHeight
-                , mConfig.walkableStep);
+                , mConfig.WalkableHeight
+                , mConfig.WalkableStep);
 
             hf.RequestDisposal();
             mPrimary = null;
@@ -415,9 +427,9 @@ namespace org.critterai.nmgen
 
             if (chf.SpanCount < 1)
             {
-                context.Log("Aborted after compact heightfield build."
-                    + " Heightfield does not have any spans.");
-                mState = BuildState.Aborted;
+                context.Log("Complete at compact heightfield build."
+                    + " Compact heightfield does not have any spans.");
+                mState = BuildState.NoResult;
                 return;
             }
 
@@ -425,7 +437,7 @@ namespace org.critterai.nmgen
 
             if (mProcessors != null && mProcessors.CHFCount > 0)
                 mState = BuildState.CompactFieldMidProcess;
-            else if (mConfig.walkableRadius > 0)
+            else if (mConfig.WalkableRadius > 0)
                 mState = BuildState.ErodeWalkableArea;
             else
                 mState = BuildState.DistanceFieldBuild;
@@ -445,7 +457,7 @@ namespace org.critterai.nmgen
 
             mSecondary = chf;
 
-            if (mConfig.walkableRadius > 0)
+            if (mConfig.WalkableRadius > 0)
                 mState = BuildState.ErodeWalkableArea;
             else
                 mState = BuildState.DistanceFieldBuild;
@@ -455,7 +467,7 @@ namespace org.critterai.nmgen
         {
             CompactHeightfield chf = (CompactHeightfield)mSecondary;
 
-            chf.ErodeWalkableArea(context, mConfig.walkableRadius);
+            chf.ErodeWalkableArea(context, mConfig.WalkableRadius);
 
             if (mTrace)
                 context.Log(pret + "Eroded walkable area by radius.");
@@ -482,18 +494,18 @@ namespace org.critterai.nmgen
             if ((mFlags & BuildFlags.UseMonotonePartitioning) != 0)
             {
                 chf.BuildRegionsMonotone(context
-                    , mConfig.borderSize
-                    , mConfig.minRegionArea
-                    , mConfig.mergeRegionArea);
+                    , mConfig.BorderSize
+                    , mConfig.MinRegionArea
+                    , mConfig.MergeRegionArea);
                 if (mTrace)
                     context.Log(pret + "Built monotone regions.");
             }
             else
             {
                 chf.BuildRegions(context
-                    , mConfig.borderSize
-                    , mConfig.minRegionArea
-                    , mConfig.mergeRegionArea);
+                    , mConfig.BorderSize
+                    , mConfig.MinRegionArea
+                    , mConfig.MergeRegionArea);
                 if (mTrace)
                     context.Log(pret + "Built regions. Region Count: "
                         + chf.MaxRegion);
@@ -505,8 +517,7 @@ namespace org.critterai.nmgen
                 // at least 2.
                 context.Log("Completed after region build."
                     + " No useable regions formed.");
-                mState = BuildState.Complete;
-                mNoResult = true;
+                mState = BuildState.NoResult;
                 return;
             }
 
@@ -520,8 +531,8 @@ namespace org.critterai.nmgen
 
             ContourSet cset = ContourSet.Build(context
                 , (CompactHeightfield)mSecondary
-                , mConfig.edgeMaxDeviation
-                , mConfig.maxEdgeLength
+                , mConfig.EdgeMaxDeviation
+                , mConfig.MaxEdgeLength
                 , cflags);
 
             if (cset == null)
@@ -537,9 +548,9 @@ namespace org.critterai.nmgen
 
             if (cset.Count < 1)
             {
-                context.Log("Aborted after contour build."
-                    + " No contours were generated.");
-                mState = BuildState.Aborted;
+                context.Log("Completed after contour build."
+                    + " No useable contours were generated.");
+                mState = BuildState.NoResult;
                 return;
             }
 
@@ -554,10 +565,10 @@ namespace org.critterai.nmgen
 
             PolyMesh polyMesh = PolyMesh.Build(context
                 , cset
-                , mConfig.maxVertsPerPoly
-                , mConfig.walkableHeight
-                , mConfig.walkableRadius
-                , mConfig.walkableStep);
+                , mConfig.MaxVertsPerPoly
+                , mConfig.WalkableHeight
+                , mConfig.WalkableRadius
+                , mConfig.WalkableStep);
 
             cset.RequestDisposal();
 
@@ -679,7 +690,7 @@ namespace org.critterai.nmgen
 
         public static IncrementalBuilder Create(NMGenParams config
             , BuildFlags buildFlags
-            , NMGenInputGeom mesh
+            , InputGeometry mesh
             , ProcessorSet processors
             , bool trace)
         {
@@ -713,7 +724,7 @@ namespace org.critterai.nmgen
                 return null;
 
             NMGenTileParams tileConfig;
-            NMGenInputGeom geom;
+            InputGeometry geom;
 
             if (!tileDef.GetInputGeometry(tx, tz, out tileConfig, out geom))
                 return null;
@@ -777,8 +788,10 @@ namespace org.critterai.nmgen
                     return "Post processing polygon mesh.";
                 case BuildState.RegionBuild:
                     return "Building regions.";
+                case BuildState.NoResult:
+                    return "No result.";
             }
-            return "Error";
+            return "Unhandled state: " + state;
         }
 
         /// <summary>
@@ -789,50 +802,49 @@ namespace org.critterai.nmgen
         /// build progress feedback.
         /// </remarks>
         /// <param name="state">The state.</param>
-        /// <returns>A progress value for teh state.</returns>
+        /// <returns>A progress value for the state.</returns>
         public static float ToProgress(BuildState state)
         {
             switch (state)
             {
-                //case BuildState.Inactive:
-                //    return 0;
                 case BuildState.Initialized:
                     return 0;
                 case BuildState.ClearUnwalkableTris:
-                    return 0.04f;
+                    return 0.07f;
                 case BuildState.HeightfieldBuild:
-                    return 0.08f;
+                    return 0.14f;
                 case BuildState.MarkHeightfieldSpans:
-                    return 0.25f;
+                    return 0.21f;
                 case BuildState.HeightfieldPostProcess:
-                    return 0.30f;
+                    return 0.28f;
                 case BuildState.CompactFieldBuild:
                     return 0.35f;
                 case BuildState.CompactFieldMidProcess:
-                    return 0.45f;
+                    return 0.42f;
                 case BuildState.ErodeWalkableArea:
-                    return 0.40f;
+                    return 0.49f;
                 case BuildState.DistanceFieldBuild:
-                    return 0.55f;
+                    return 0.56f;
                 case BuildState.RegionBuild:
-                    return 0.60f;
+                    return 0.63f;
                 case BuildState.ContourBuild:
                     return 0.70f;
                 case BuildState.PolyMeshBuild:
-                    return 0.75f;
+                    return 0.77f;
                 case BuildState.PolyMeshPostProcess:
-                    return 0.80f;
+                    return 0.84f;
                 case BuildState.DetailMeshBuild:
-                    return 0.85f;
+                    return 0.91f;
                 case BuildState.DetailMeshPostProcess:
-                    return 0.95f;
+                    return 0.98f;
                 case BuildState.Complete:
                     return 1;
                 case BuildState.Aborted:
                     return 1;
+                case BuildState.NoResult:
+                    return 1;
             }
             return 1;
         }
-
     }
 }

@@ -25,53 +25,101 @@ namespace org.critterai.nmgen
 {
     public sealed class ProcessorSet
     {
-        private readonly IHFProcessor[] hfs;
-        private readonly ICHFProcessor[] chfs;
-        private readonly IPMProcessor[] pms;
-        private readonly IDMProcessor[] dms;
+        private readonly IHFProcessor[] mHFS;
+        private readonly ICHFProcessor[] mCHFS;
+        private readonly IPMProcessor[] mPMS;
+        private readonly IDMProcessor[] mDMS;
+        private readonly bool mIsThreadSafe;
 
-        public int HFCount { get { return hfs.Length; } }
-        public int CHFCount { get { return chfs.Length; } }
-        public int PMCount { get { return pms.Length; } }
-        public int DMCount { get { return dms.Length; } }
-
-        public IHFProcessor GetHF(int index)
-        {
-           return hfs[index];
-        }
-
-        public ICHFProcessor GetCHF(int index)
-        {
-            return chfs[index];
-        }
-
-        public IPMProcessor GetPM(int index)
-        {
-            return pms[index];
-        }
-
-        public IDMProcessor GetDM(int index)
-        {
-            return dms[index];
-        }
+        public int HFCount { get { return mHFS.Length; } }
+        public int CHFCount { get { return mCHFS.Length; } }
+        public int PMCount { get { return mPMS.Length; } }
+        public int DMCount { get { return mDMS.Length; } }
+        public bool IsThreadSafe { get { return mIsThreadSafe; } }
 
         private ProcessorSet(IHFProcessor[] hfs
             , ICHFProcessor[] chfs
             , IPMProcessor[] pms
             , IDMProcessor[] dms) 
         {
-            this.hfs = hfs;
-            this.chfs = chfs;
-            this.pms = pms;
-            this.dms = dms;
+            this.mHFS = hfs;
+            this.mCHFS = chfs;
+            this.mPMS = pms;
+            this.mDMS = dms;
+
+            foreach (IHFProcessor p in mHFS)
+            {
+                if (!p.IsThreadSafe)
+                {
+                    mIsThreadSafe = false;
+                    break;
+                }
+            }
+
+            if (!mIsThreadSafe)
+                return;
+
+            foreach (ICHFProcessor p in mCHFS)
+            {
+                if (!p.IsThreadSafe)
+                {
+                    mIsThreadSafe = false;
+                    break;
+                }
+            }
+
+            if (!mIsThreadSafe)
+                return;
+
+            foreach (IPMProcessor p in mPMS)
+            {
+                if (!p.IsThreadSafe)
+                {
+                    mIsThreadSafe = false;
+                    break;
+                }
+            }
+
+            if (!mIsThreadSafe)
+                return;
+
+            foreach (IDMProcessor p in mDMS)
+            {
+                if (!p.IsThreadSafe)
+                {
+                    mIsThreadSafe = false;
+                    break;
+                }
+            }
         }
 
         private ProcessorSet()
         {
-            hfs = new IHFProcessor[0];
-            chfs = new ICHFProcessor[0];
-            pms = new IPMProcessor[0];
-            dms = new IDMProcessor[0];
+            mHFS = new IHFProcessor[0];
+            mCHFS = new ICHFProcessor[0];
+            mPMS = new IPMProcessor[0];
+            mDMS = new IDMProcessor[0];
+            mIsThreadSafe = true;
+        }
+
+        public IHFProcessor GetHF(int index)
+        {
+            return mHFS[index];
+        }
+
+        public ICHFProcessor GetCHF(int index)
+        {
+            return mCHFS[index];
+        }
+
+        public IPMProcessor GetPM(int index)
+        {
+            return mPMS[index];
+        }
+
+        public IDMProcessor GetDM(int index)
+        {
+            return mDMS[index];
         }
 
         public static ProcessorSet CreateEmpty()

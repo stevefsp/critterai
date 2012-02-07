@@ -12,7 +12,7 @@ namespace org.critterai.nmgen
     /// Represents NMGen input geometry that has been validated and
     /// is ready to be used for a build.
     /// </summary>
-	public sealed class NMGenInputGeom
+	public sealed class InputGeometry
 	{
         /*
          * Design note:
@@ -39,27 +39,27 @@ namespace org.critterai.nmgen
         internal int[] UnsafeTris { get { return tris; } }
         internal byte[] UnsafeAreas { get { return areas; } }
 
-        private NMGenInputGeom(Vector3[] verts, int[] tris, byte[] areas) 
+        private InputGeometry(Vector3[] verts, int[] tris, byte[] areas) 
         {
             this.verts = verts;
             this.tris = tris;
             this.areas = areas;
         }
 
-        internal static NMGenInputGeom UnsafeCreate(Vector3[] verts
+        internal static InputGeometry UnsafeCreate(Vector3[] verts
             , int[] tris
             , byte[] areas)
         {
-            return new NMGenInputGeom(verts, tris, areas);
+            return new InputGeometry(verts, tris, areas);
         }
 
-        public static NMGenInputGeom Create(TriangleMesh mesh, byte[] areas)
+        public static InputGeometry Create(TriangleMesh mesh, byte[] areas)
         {
             return Create(mesh.verts, mesh.vertCount
                 , mesh.tris, areas, mesh.triCount);
         }
 
-        public static NMGenInputGeom Create(Vector3[] verts
+        public static InputGeometry Create(Vector3[] verts
             , int vertCount
             , int[] tris
             , byte[] areas
@@ -93,7 +93,7 @@ namespace org.critterai.nmgen
                 Array.Copy(areas, 0, lareas, 0, lareas.Length);
             }
             
-            return new NMGenInputGeom(lverts, ltris, lareas);
+            return new InputGeometry(lverts, ltris, lareas);
         }
 	}
 }
