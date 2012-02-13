@@ -74,6 +74,9 @@ namespace org.critterai
 
             T[] result = new T[count];
 
+            if (count == 0)
+                return result;
+
             count = 0;
             foreach (T item in items)
             {
