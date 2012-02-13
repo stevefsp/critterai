@@ -36,7 +36,7 @@ namespace org.critterai.geom
         /// </summary>
         /// <remarks>
         /// <para>The test is inclusive of the edges of the rectangle. 
-        /// I.e. If the point lies n the edge of the rectangle, then it is 
+        /// I.e. If the point lies on the edge of the rectangle, then it is 
         /// contained by the rectangle.</para>
         /// </remarks>
         /// <param name="minX">The minimum x-axis bounds of the rectangle.

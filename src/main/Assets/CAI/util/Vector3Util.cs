@@ -434,9 +434,9 @@ namespace org.critterai
             minBounds = verts[tris[0]];
             maxBounds = verts[tris[0]];
 
-            for (int p = 1; p < triCount; p++)
+            for (int i = 1; i < triCount * 3; i++)
             {
-                Vector3 v = verts[tris[p]];
+                Vector3 v = verts[tris[i]];
                 minBounds.x = Math.Min(minBounds.x, v.x);
                 minBounds.y = Math.Min(minBounds.y, v.y);
                 minBounds.z = Math.Min(minBounds.z, v.z);
