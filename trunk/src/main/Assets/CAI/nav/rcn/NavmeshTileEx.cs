@@ -50,8 +50,17 @@ namespace org.critterai.nav.rcn
         public static extern void dtnmFreeTileData(NavmeshTileData tileData);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
-        public static extern uint dtnmGetTileRef(IntPtr navmesh, IntPtr tile);
+        public static extern NavStatus dtnmGetTileDataHeader([In] byte[] rawData
+            , int dataSize
+            , ref NavmeshTileHeader resultHeader);
 
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtnmGetTileDataHeaderAlt(IntPtr rawData
+            , int dataSize
+            , ref NavmeshTileHeader resultHeader);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern uint dtnmGetTileRef(IntPtr navmesh, IntPtr tile);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern int dtnmGetTileStateSize(IntPtr navmesh, IntPtr tile);
