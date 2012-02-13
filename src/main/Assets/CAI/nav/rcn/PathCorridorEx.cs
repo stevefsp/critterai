@@ -29,22 +29,6 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nav.rcn
 {
-    //[StructLayout(LayoutKind.Sequential)]
-    //[System.Obsolete]
-    //internal struct NavmeshPoint
-    //{
-    //    public uint polyRef;
-    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-    //    public float[] point;
-
-    //    public static NavmeshPoint Build()
-    //    {
-    //        NavmeshPoint result = new NavmeshPoint();
-    //        result.point = new float[3];
-    //        return result;
-    //    }
-    //}
-
     internal static class PathCorridorEx
     {
         /*

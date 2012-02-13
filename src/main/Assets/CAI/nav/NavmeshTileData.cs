@@ -107,5 +107,27 @@ namespace org.critterai.nav
             Marshal.Copy(mData, result, 0, mDataLength);
             return result;
         }
+
+        public NavmeshTileHeader GetHeader()
+        {
+            NavmeshTileHeader result = new NavmeshTileHeader();
+
+            if (mData == IntPtr.Zero)
+                return new NavmeshTileHeader();
+
+            NavmeshTileEx.dtnmGetTileDataHeaderAlt(mData, mDataLength, ref result);
+
+            return result;
+        }
+
+        public static NavStatus GetHeader(byte[] rawTileData, out NavmeshTileHeader header)
+        {
+            header = new NavmeshTileHeader();
+
+            if (rawTileData == null)
+                return NavStatus.Failure | NavStatus.InvalidParam;
+
+            return NavmeshTileEx.dtnmGetTileDataHeader(rawTileData, rawTileData.Length, ref header);
+        }
     }
 }
