@@ -39,7 +39,7 @@ public abstract class DSGeometry
     /// Gets the geometry.
     /// </summary>
     /// <returns>The geometry, or NULL if geometry is not available.</returns>
-    [System.Obsolete("Will be removed in v0.5")]
+    [System.Obsolete("Not used in new build process. Will be removed in v0.5")]
     public abstract TriangleMesh GetGeometry();
 
     public abstract TriangleMesh GetGeometry(out byte[] areas);
