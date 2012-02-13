@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -214,7 +214,7 @@ namespace org.critterai
         /// Draws the specified line segments.
         /// </summary>
         /// <remarks>
-        /// <para>This method uses GL, sit should usually be called within 
+        /// <para>This method uses GL.  So it should usually be called within 
         /// OnRenderObject().</para>
         /// </remarks>
         /// <param name="segments">The line segments.
@@ -677,7 +677,7 @@ namespace org.critterai
 
             Vector3 az = (end - start).normalized;
             Vector3 ax = Vector3.Cross(Vector3.up, az);
-            Vector3 ay = Vector3.Cross(az, ax).normalized;
+            // Vector3 ay = Vector3.Cross(az, ax).normalized;
 
             GL.Vertex(start);
             GL.Vertex3(
