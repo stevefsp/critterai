@@ -21,7 +21,7 @@
  */
 using UnityEngine;
 
-namespace org.critterai
+namespace org.critterai.u3d
 {
     /// <summary>
     /// Provides various drawing methods suitable for debug views.
@@ -52,6 +52,32 @@ namespace org.critterai
             }
         }
 
+        private static Material mSimpleMaterial = null;
+
+        /// <summary>
+        /// Provides a shared material suitable for simple drawing operations.
+        /// (Such as debug visualizations.)
+        /// </summary>
+        public static Material SimpleMaterial
+        {
+            get
+            {
+                if (!mSimpleMaterial)
+                {
+                    mSimpleMaterial = new Material(
+                        "Shader \"Lines/Colored Blended\" {"
+                        + "SubShader { Pass { "
+                        + "	BindChannels { Bind \"Color\",color } "
+                        + "	Blend SrcAlpha OneMinusSrcAlpha "
+                        + "	ZWrite Off Cull Off Fog { Mode Off } "
+                        + "} } }");
+                    mSimpleMaterial.hideFlags = HideFlags.HideAndDontSave;
+                    mSimpleMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
+                }
+                return mSimpleMaterial;
+            }
+        }
+
         /// <summary>
         /// Draws a partially transparent diamond at the specified position.
         /// </summary>
@@ -69,7 +95,7 @@ namespace org.critterai
             , float scale
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             Vector3 u = position + Vector3.up * scale;
             Vector3 d = position + Vector3.down * scale;
@@ -188,7 +214,7 @@ namespace org.critterai
             , float scale
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
 
@@ -211,39 +237,6 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Draws the specified line segments.
-        /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="segments">The line segments.
-        /// [(ax, ay, ax, bx, by, bz) * <paramref name="segmentCount"/>]</param>
-        /// <param name="segmentCount">The number of segments.</param>
-        /// <param name="color">The color of the segments.</param>
-        public static void Segments(float[] segments
-            , int segmentCount
-            , Color color)
-        {
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            GL.Begin(GL.LINES);
-            GL.Color(color);
-
-            for (int i = 0; i < segmentCount; i++)
-            {
-                GL.Vertex3(segments[i * 6 + 0]
-                    , segments[i * 6 + 1]
-                    , segments[i * 6 + 2]);
-                GL.Vertex3(segments[i * 6 + 3]
-                    , segments[i * 6 + 4]
-                    , segments[i * 6 + 5]);
-            }
-
-            GL.End();
-        }
-
-        /// <summary>
         /// Draws an outlined and filled, partially transparent convex polygon.
         /// </summary>
         /// <remarks>
@@ -259,7 +252,7 @@ namespace org.critterai
             , int vertCount
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.TRIANGLES);
 
@@ -349,9 +342,8 @@ namespace org.critterai
             GL.Vertex(ld);
         }
 
-
         /// <summary>
-        /// Draws a wireframe bounding box representing the extents.
+        /// Draws a wireframe bounding box.
         /// </summary>
         /// <remarks>
         /// <para>This method uses GL.  So it should usually be called within 
@@ -367,7 +359,7 @@ namespace org.critterai
             , Vector3 boundsMax
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
 
@@ -379,25 +371,10 @@ namespace org.critterai
             GL.End();
         }
 
-        /// <summary>
-        /// Draws a wireframe bounding box representing the extents.
-        /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="position">The center of the bounding box.</param>
-        /// <param name="extents">The extents of the bounding box. 
-        /// (Half-lengths.)
-        /// </param>
-        /// <param name="color">The color of the bounding box. 
-        /// (The alpha is ignored.)</param>
-        public static void Extents(Vector3 position
-            , Vector3 extents
-            , Color color)
-        {
-            GLUtil.SimpleMaterial.SetPass(0);
 
+        public static void AppendExtents(Vector3 position
+            , Vector3 extents)
+        {
             Vector3 ua = position + extents;
             Vector3 ub = new Vector3(
                   position.x - extents.x
@@ -420,16 +397,11 @@ namespace org.critterai
                   position.x - extents.x
                 , position.y - extents.y
                 , position.z + extents.z);
-            Vector3 lc =  position - extents;
+            Vector3 lc = position - extents;
             Vector3 ld = new Vector3(
                   position.x + extents.x
                 , position.y - extents.y
                 , position.z - extents.z);
-
-            GL.Begin(GL.LINES);
-
-            color.a = 0.6f;
-            GL.Color(color);
 
             // Top
             GL.Vertex(ua);
@@ -460,12 +432,10 @@ namespace org.critterai
             GL.Vertex(lc);
             GL.Vertex(ud);
             GL.Vertex(ld);
-
-            GL.End();
         }
 
         /// <summary>
-        /// Draws a wireframe bounding box representing an extents.
+        /// Draws a wireframe bounding box representing the extents.
         /// </summary>
         /// <remarks>
         /// <para>This method uses GL.  So it should usually be called within 
@@ -473,105 +443,28 @@ namespace org.critterai
         /// </remarks>
         /// <param name="position">The center of the bounding box.</param>
         /// <param name="extents">The extents of the bounding box. 
-        /// (Half-lengths.) [(x, y, z)]
+        /// (Half-lengths.)
         /// </param>
-        /// <param name="color">The color of the bounding box. 
-        /// (The alpha is ignored.)</param>
-        [System.Obsolete("Use Vector3 version. Will be removed in v0.5")]
+        /// <param name="color">The color of the bounding box. </param>
         public static void Extents(Vector3 position
-            , float[] extents
+            , Vector3 extents
             , Color color)
         {
-            // TODO: EVAL: Re-evaluate after decision on float[3] to Vector3
-            // refactor. Should it be retired or share code with the
-            // Vector3 overload?
-
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            Vector3 ua = new Vector3(
-                  position.x + extents[0]
-                , position.y + extents[1]
-                , position.z + extents[2]);
-            Vector3 ub = new Vector3(
-                  position.x - extents[0]
-                , position.y + extents[1]
-                , position.z + extents[2]);
-            Vector3 uc = new Vector3(
-                  position.x - extents[0]
-                , position.y + extents[1]
-                , position.z - extents[2]);
-            Vector3 ud = new Vector3(
-                  position.x + extents[0]
-                , position.y + extents[1]
-                , position.z - extents[2]);
-
-            Vector3 la = new Vector3(
-                  position.x + extents[0]
-                , position.y - extents[1]
-                , position.z + extents[2]);
-            Vector3 lb = new Vector3(
-                  position.x - extents[0]
-                , position.y - extents[1]
-                , position.z + extents[2]);
-            Vector3 lc = new Vector3(
-                  position.x - extents[0]
-                , position.y - extents[1]
-                , position.z - extents[2]);
-            Vector3 ld = new Vector3(
-                  position.x + extents[0]
-                , position.y - extents[1]
-                , position.z - extents[2]);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
-
-            color.a = 0.6f;
             GL.Color(color);
 
-            // Top
-            GL.Vertex(ua);
-            GL.Vertex(ub);
-            GL.Vertex(ub);
-            GL.Vertex(uc);
-            GL.Vertex(uc);
-            GL.Vertex(ud);
-            GL.Vertex(ud);
-            GL.Vertex(ua);
-
-            // Bottom
-            GL.Vertex(la);
-            GL.Vertex(lb);
-            GL.Vertex(lb);
-            GL.Vertex(lc);
-            GL.Vertex(lc);
-            GL.Vertex(ld);
-            GL.Vertex(ld);
-            GL.Vertex(la);
-
-            // Risers
-            GL.Vertex(ua);
-            GL.Vertex(la);
-            GL.Vertex(ub);
-            GL.Vertex(lb);
-            GL.Vertex(uc);
-            GL.Vertex(lc);
-            GL.Vertex(ud);
-            GL.Vertex(ld);
+            AppendExtents(position, extents);
 
             GL.End();
         }
 
-        public static void Cylinder(Vector3 position
+        public static void AppendCylinder(Vector3 position
             , float radius
             , float height
-            , bool includeHalf
-            , Color color)
+            , bool includeHalf)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            GL.Begin(GL.LINES);
-
-            GL.Color(color);
-
             AppendCircle(position, radius);
             AppendCircle(position + Vector3.up * height, radius);
 
@@ -587,6 +480,21 @@ namespace org.critterai
                 GL.Vertex3(x, position.y, z);
                 GL.Vertex3(x, position.y + height, z);
             }
+        }
+
+        public static void Cylinder(Vector3 position
+            , float radius
+            , float height
+            , bool includeHalf
+            , Color color)
+        {
+            DebugDraw.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+
+            GL.Color(color);
+
+            AppendCylinder(position, radius, height, includeHalf);
 
             GL.End();
         }
@@ -603,7 +511,7 @@ namespace org.critterai
         /// <param name="color">The colore of the circle's boundary.</param>
         public static void Circle(Vector3 position, float radius, Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
 
@@ -651,12 +559,39 @@ namespace org.critterai
             , float headScaleB
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
 
             GL.Color(color);
 
+            AppendArrow(pointA, pointB, headScaleA, headScaleB);
+
+            GL.End();
+        }
+
+
+        /// <summary>
+        /// Draws an arrow.
+        /// </summary>
+        /// <remarks>
+        /// <para>The arrow head can be attached to end A and/or end B of the
+        /// specified line segment.</para>
+        /// <para>This method uses GL.  So it should usually be called within 
+        /// OnRenderObject().</para>
+        /// </remarks>
+        /// <param name="pointA">The A end of the arrow.</param>
+        /// <param name="pointB">The B end of the arrow.</param>
+        /// <param name="headScaleA">The scale of the A end arrow head.
+        /// (Or zero for no head.)</param>
+        /// <param name="headScaleB">The scale of the B end arrow head.
+        /// (Or zero for no head.)</param>
+        /// <param name="color">The color of the arrow.</param>
+        public static void AppendArrow(Vector3 pointA
+            , Vector3 pointB
+            , float headScaleA
+            , float headScaleB)
+        {
             GL.Vertex(pointA);
             GL.Vertex(pointB);
 
@@ -664,8 +599,6 @@ namespace org.critterai
                 AppendArrowHead(pointA, pointB, headScaleA);
             if (headScaleB > Epsilon)
                 AppendArrowHead(pointB, pointA, headScaleB);
-
-            GL.End();
         }
 
         private static void AppendArrowHead(Vector3 start
@@ -676,95 +609,41 @@ namespace org.critterai
                 return;
 
             Vector3 az = (end - start).normalized;
-            Vector3 ax = Vector3.Cross(Vector3.up, az);
-            // Vector3 ay = Vector3.Cross(az, ax).normalized;
+            //Vector3 ax = Vector3.Cross(Vector3.up, az);
+            //// Vector3 ay = Vector3.Cross(az, ax).normalized;
+
+            Vector3 vbase = start + az * headScale;
+            Vector3 offset = Vector3.Cross(Vector3.up, az) * headScale * 0.333f;
 
             GL.Vertex(start);
-            GL.Vertex3(
-                  start.x + az.x * headScale + ax.x * headScale / 3
-                , start.y + az.y * headScale + ax.y * headScale / 3
-                , start.z + az.z * headScale + ax.z * headScale / 3);
+            GL.Vertex(vbase + offset);
 
             GL.Vertex(start);
-            GL.Vertex3(
-                  start.x + az.x * headScale - ax.x * headScale / 3
-                , start.y + az.y * headScale - ax.y * headScale / 3
-                , start.z + az.z * headScale - ax.z * headScale / 3);
+            GL.Vertex(vbase - offset);
+
+            //GL.Vertex(start);
+            //GL.Vertex3(
+            //      start.x + az.x * headScale + ax.x * headScaleAlt
+            //    , start.y + az.y * headScale + ax.y * headScaleAlt
+            //    , start.z + az.z * headScale + ax.z * headScaleAlt);
+
+            //GL.Vertex(start);
+            //GL.Vertex3(
+            //      start.x + az.x * headScale - ax.x * headScaleAlt
+            //    , start.y + az.y * headScale - ax.y * headScaleAlt
+            //    , start.z + az.z * headScale - ax.z * headScaleAlt);
         	 
         }
-
-        ///// <summary>
-        ///// Draws the provided triangle mesh in a manner suitable for 
-        ///// debug visualizations. 
-        ///// (Wiremesh with a partially transparent surface.)
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>This method uses GL.  So it should usually be called within 
-        ///// OnRenderObject().</para>
-        ///// </remarks>
-        ///// <param name="vertices">The vertices. 
-        ///// [(x, y, z) * vertexCount]</param>
-        ///// <param name="triangles">The triangle indices. 
-        ///// [(vertAIndex, vertBIndex, vertCIndex) * 
-        ///// <typeparamref name="triCount"/>)</param>
-        ///// <param name="triCount">The number of triangles.</param>
-        ///// <param name="drawColor">The color of the mesh. (Alpha is ignored.)
-        ///// </param>
-        //[System.Obsolete("Use the Vector3 overloads. Will be removed in v0.5")]
-        //public static void TriangleMesh(float[] verts
-        //    , int[] tris
-        //    , int triCount
-        //    , Color color)
-        //{
-        //    GLUtil.SimpleMaterial.SetPass(0);
-
-        //    int length = triCount * 3;
-
-        //    color.a = 0.25f;
-
-        //    GL.Begin(GL.TRIANGLES);
-        //    GL.Color(color);
-
-        //    for (int p = 0; p < length; p += 3)
-        //    {
-        //        for (int i = 0; i < 3; i++)
-        //        {
-        //            GL.Vertex3(verts[tris[p + i] * 3 + 0]
-        //                , verts[tris[p + i] * 3 + 1]
-        //                , verts[tris[p + i] * 3 + 2]);
-        //        }
-        //    }
-        //    GL.End();
-
-        //    color.a = 0.4f;
-
-        //    for (int p = 0; p < length; p += 3)
-        //    {
-        //        GL.Begin(GL.LINES);
-        //        GL.Color(color);
-        //        for (int i = 0; i < 3; i++)
-        //        {
-        //            GL.Vertex3(verts[tris[p + i] * 3 + 0]
-        //                , verts[tris[p + i] * 3 + 1]
-        //                , verts[tris[p + i] * 3 + 2]);
-        //        }
-        //        GL.Vertex3(verts[tris[p] * 3 + 0]
-        //            , verts[tris[p] * 3 + 1]
-        //            , verts[tris[p] * 3 + 2]);
-        //        GL.End();
-        //    }
-        //}
 
         public static void TriangleMesh(Vector3[] verts
             , int[] tris
             , int triCount
+            , bool includeEdges
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             int length = triCount * 3;
-
-            color.a = 0.25f;
 
             GL.Begin(GL.TRIANGLES);
             GL.Color(color);
@@ -778,50 +657,62 @@ namespace org.critterai
             }
             GL.End();
 
-            color.a = 0.4f;
+            if (!includeEdges)
+                return;
+
+            color.a *= 2;
+
+            GL.Begin(GL.LINES);
+            GL.Color(color);
 
             for (int p = 0; p < length; p += 3)
             {
-                GL.Begin(GL.LINES);
-                GL.Color(color);
                 for (int i = 0; i < 3; i++)
                 {
                     GL.Vertex(verts[tris[p + i]]);
                 }
                 GL.Vertex(verts[tris[p]]);
-                GL.End();
             }
+
+            GL.End();
         }
 
         public static void TriangleMesh(Vector3[] verts
             , int[] tris
             , byte[] areas            
-            , int triCount)
+            , int triCount
+            , bool includeEdges
+            , float surfaceAlpha)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
             GL.Begin(GL.TRIANGLES);
 
             for (int i = 0; i < triCount; i++)
             {
-                GL.Color(ColorUtil.IntToColor(areas[i], 0.25f));
+                GL.Color(ColorUtil.IntToColor(areas[i], surfaceAlpha));
                 for (int j = 0; j < 3; j++)
                 {
                     GL.Vertex(verts[tris[i * 3 + j]]);
                 }
             }
+
             GL.End();
+            GL.Begin(GL.LINES);
 
             for (int i = 0; i < triCount; i++)
             {
-                GL.Begin(GL.LINES);
-                GL.Color(ColorUtil.IntToColor(areas[i], 0.4f));
+
+                GL.Color(ColorUtil.IntToColor(areas[i], surfaceAlpha * 2)); 
+
                 for (int j = 0; j < 3; j++)
                 {
                     GL.Vertex(verts[tris[i * 3 + j]]);
                 }
+
                 GL.Vertex(verts[tris[i * 3]]);
-                GL.End();
             }
+
+            GL.End();
         }
 
         public static void Square(Vector3 origin
@@ -830,7 +721,7 @@ namespace org.critterai
             , Color color
             , bool fill)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
             GL.Color(color);
@@ -889,7 +780,7 @@ namespace org.critterai
             , float endHeadScale
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
             GL.Color(color);
@@ -947,7 +838,7 @@ namespace org.critterai
             , int depth
             , Color color)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
             GL.Color(color);
