@@ -105,6 +105,35 @@ extern "C"
         tileData->dataSize = 0;
     }
 
+    EXPORT_API dtStatus dtnmGetTileDataHeader(const unsigned char* data
+		, const int dataSize
+		, dtMeshHeader* resultHeader)
+    {
+		if (!data || !dataSize || !resultHeader)
+			return DT_FAILURE | DT_INVALID_PARAM;
+
+		dtMeshHeader* header = (dtMeshHeader*)data;
+
+		if (header->magic != DT_NAVMESH_MAGIC)
+			return DT_FAILURE | DT_WRONG_MAGIC;
+		if (header->version != DT_NAVMESH_VERSION)
+			return DT_FAILURE | DT_WRONG_VERSION;
+
+		memcpy(resultHeader, header, sizeof(dtMeshHeader));
+
+		return DT_SUCCESS;
+    }
+
+
+    EXPORT_API dtStatus dtnmGetTileDataHeaderAlt(const unsigned char* data
+		, const int dataSize
+		, dtMeshHeader* resultHeader)
+    {
+		// The reason for this alternate method is Unity iOS capatibility.
+		// One signature supports an IntPtr, the other a byte[] array.
+		return dtnmGetTileDataHeader(data, dataSize, resultHeader);
+    }
+
     EXPORT_API void dtnmGetNavMeshRawData(const dtNavMesh* navMesh
         , unsigned char** resultData
         , int* dataSize)
