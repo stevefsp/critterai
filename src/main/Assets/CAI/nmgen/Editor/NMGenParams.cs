@@ -110,7 +110,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Minimum region area.
         /// </summary>
-        public int minRegionArea = 25;
+        public int minRegionArea = 400;
 
         /// <summary>
         /// Merge region area.
@@ -131,6 +131,23 @@ namespace org.critterai.nmgen
         /// Detail maximum deviation.
         /// </summary>
         public float detailMaxDeviation = 1;
+
+        public ContourBuildFlags contourFlags = 
+            ContourBuildFlags.TessellateAreaEdges | ContourBuildFlags.TessellateWallEdges;
+
+        public bool useMonotone = false;
+
+        public bool UseMonotone
+        {
+            get { return useMonotone; }
+            set { useMonotone = value; }
+        }
+
+        public ContourBuildFlags ContourFlags
+        {
+            get { return contourFlags; }
+            set { contourFlags = value; }
+        }
 
         /// <summary>
         /// The width/depth size of the tile on the xz-plane.
@@ -400,6 +417,11 @@ namespace org.critterai.nmgen
             MinRegionArea = (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
         }
 
+        public float TileWorldSize
+        {
+            get { return tileSize * xzCellSize; }
+        }
+
         public bool IsValid()
         {
             return !(tileSize < 0
@@ -443,7 +465,7 @@ namespace org.critterai.nmgen
             result.mergeRegionArea = mergeRegionArea;
             result.minRegionArea = minRegionArea;
             result.tileSize = tileSize;
-            // result.tileBorderSize = tileBorderSize;
+            result.contourFlags = contourFlags;
 
             return result;
         }

@@ -220,7 +220,7 @@ namespace org.critterai.nmgen
 
             UtilEx.Copy(data.meshes, 0, mMeshes, mMeshCount * 4);
             Marshal.Copy(data.tris, 0, mTris, mTriCount * 4);
-            float[] fverts = Vector3Util.Flatten(data.verts);
+            float[] fverts = Vector3Util.Flatten(data.verts, mVertCount);
             Marshal.Copy(fverts, 0, mVerts, mVertCount * 3);
 
             return true;

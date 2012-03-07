@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.nmgen
 {
@@ -27,17 +26,17 @@ namespace org.critterai.nmgen
     /// Flags used to control the contour build process.
     /// </summary>
     /// <seealso cref="ContourSet.Build"/>
-    [Flags]
+    [System.Flags]
     public enum ContourBuildFlags
     {
         /// <summary>
         /// Tessellate the wall (unconnected border) edges.
         /// </summary>
-        TessellateWallEdges = 1,
+        TessellateWallEdges = 0x01,
 
         /// <summary>
         /// Tessellate the edges between areas.
         /// </summary>
-        TessellateAreaEdges = 2
+        TessellateAreaEdges = 0x02
     }
 }

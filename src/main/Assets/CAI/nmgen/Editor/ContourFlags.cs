@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.nmgen
 {
@@ -31,7 +30,7 @@ namespace org.critterai.nmgen
     /// <para>Contour vertices take the form (x, y, z, r).  The r-value can contain
     /// these flags.</para>
     /// </remarks>
-    [Flags]
+    [System.Flags]
     public enum ContourFlags
     {
         /// <summary>
