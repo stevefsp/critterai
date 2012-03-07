@@ -21,7 +21,7 @@
  */
 using UnityEngine;
 
-namespace org.critterai
+namespace org.critterai.u3d
 {
     /// <summary>
     /// Provides various utility methods related to Unity Color structures.
