@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,80 +31,46 @@ namespace org.critterai.nmgen
     /// </summary>
     /// <remarks>
     /// <para>The message buffer can hold a maximum of 1000 messages
-    /// comprised of 12,000 characters.  Any messages added after the
+    /// comprised of 64K characters.  Any messages added after the
     /// buffer limit is reached will be ignored.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
     /// </remarks>
-    public sealed class BuildContext
-        : IManagedObject
+    public class BuildContext
     {
-        // TODO: EVAL: Allow a 'null' version that that has no buffers
-        // allocated and will ever log anything.
+        /*
+         * Design notes:
+         * 
+         * File name mismatch is needed for Unity support.
+         *
+         */
+
+        public const string InfoLabel = "INFO";
+        public const string ErrorLabel = "ERROR";
+        public const string WarningLabel = "WARNING";
+
+        private const int MessagePoolSize = 65536;
 
         internal IntPtr root = IntPtr.Zero;
-
-        /// <summary>
-        /// The type of unmanaged resources within the object.
-        /// </summary>
-        public AllocType ResourceType { get { return AllocType.External; } }
-
-        /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
-        /// </summary>
-        public bool IsDisposed { get { return (root == IntPtr.Zero); } }
-
-        /// <summary>
-        /// Enableds/Disables logging functionality.
-        /// </summary>
-        public bool LogEnabled
-        {
-            get 
-            {
-                if (IsDisposed)
-                    return false;
-                return BuildContextEx.nmbcGetLogEnabled(root); 
-            }
-            set 
-            {
-                if (!IsDisposed)
-                    BuildContextEx.nmbcEnableLog(root, value); 
-            }
-        }
 
         /// <summary>
         /// The number of messages in the buffer.
         /// </summary>
         public int MessageCount
         {
-            get 
-            {
-                if (IsDisposed)
-                    return 0;
-                return BuildContextEx.nmbcGetMessageCount(root); 
-            }
+            get { return BuildContextEx.nmbcGetMessageCount(root); }
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="logEnabled">The initial logging state.</param>
-        public BuildContext(bool logEnabled)
+        public BuildContext()
         {
-            root = BuildContextEx.nmbcAllocateContext(logEnabled);
+            root = BuildContextEx.nmbcAllocateContext(true);
         }
 
         /// <summary>
         /// Destructor.
         /// </summary>
         ~BuildContext()
-        {
-            RequestDisposal();
-        }
-
-        /// <summary>
-        /// Frees all resources and marks the object as disposed.
-        /// </summary>
-        public void RequestDisposal()
         {
             if (root != IntPtr.Zero)
             {
@@ -118,18 +84,46 @@ namespace org.critterai.nmgen
         /// </summary>
         public void ResetLog()
         {
-            if (!IsDisposed)
-                BuildContextEx.nmbcResetLog(root);
+            BuildContextEx.nmbcResetLog(root);
         }
 
         /// <summary>
         /// Posts a message to the message buffer.
         /// </summary>
         /// <param name="message">The message to post.</param>
-        public void Log(string message)
+        public void Log(string message, Object context)
         {
-            if (!IsDisposed && message != null && message.Length > 0)
-                BuildContextEx.nmbcLog(root, message);
+            Log(InfoLabel, message, context);
+        }
+
+        public void Log(string[] messages)
+        {
+            if (messages == null || messages.Length == 0)
+                return;
+
+            foreach (string msg in messages)
+            {
+                Log(msg, null);
+            }
+        }
+
+        public void Log(string category, string message, Object context)
+        {
+            if (message != null && message.Length > 0)
+            {
+                BuildContextEx.nmbcLog(root, string.Format("{0}: {1}{2}"
+                    , category, message, ContextPart(context)));
+            }
+        }
+
+        public void LogWarning(string message, Object context)
+        {
+            Log(WarningLabel, message, context);
+        }
+
+        public void LogError(string message, Object context)
+        {
+            Log(ErrorLabel, message, context);
         }
 
         /// <summary>
@@ -143,10 +137,7 @@ namespace org.critterai.nmgen
         /// array if there are no messages.</returns>
         public string[] GetMessages()
         {
-            if (IsDisposed)
-                return null;
-
-            byte[] buffer = new byte[12000];
+            byte[] buffer = new byte[MessagePoolSize];
 
             int messageCount = BuildContextEx.nmbcGetMessagePool(root
                 , buffer
@@ -162,21 +153,38 @@ namespace org.critterai.nmgen
                 , StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public void AppendMessages(BuildContext toContext)
+        public string GetMessagesFlat()
         {
-            if (toContext == null
-                || IsDisposed
-                || !toContext.LogEnabled
-                || MessageCount == 0)
-            {
-                return;
-            }
-
             string[] msgs = GetMessages();
+
+            if (msgs.Length == 0)
+                return "";
+
+            StringBuilder sb = new StringBuilder();
+
             foreach (string msg in msgs)
             {
-                toContext.Log(msg);
+                sb.AppendLine(msg);
             }
+
+            return sb.ToString();
+        }
+
+        public void AppendMessages(BuildContext fromContext)
+        {
+            if (fromContext == null || fromContext.MessageCount == 0)
+                return;
+
+            string[] msgs = fromContext.GetMessages();
+            foreach (string msg in msgs)
+            {
+                BuildContextEx.nmbcLog(root, msg);
+            }
+        }
+
+        private static string ContextPart(Object context)
+        {
+            return (context == null ? "" : " (" + context.GetType().Name + ")");
         }
 
         /// <summary>
@@ -187,7 +195,7 @@ namespace org.critterai.nmgen
         /// (Limit &lt;100)</param>
         public static void LoadTestMessages(BuildContext context, int count)
         {
-            if (context != null && !context.IsDisposed)
+            if (context != null)
                 BuildContextEx.nmgTestContext(context.root, Math.Min(100, count));
         }
 
