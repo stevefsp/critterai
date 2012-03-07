@@ -708,8 +708,6 @@ namespace org.critterai.nav
         /// use by mulitple clients.</para>
         /// </remarks>
         /// <param name="corridor">The corridor to update.</param>
-        /// <param name="releasePointBuffers">True if the position
-        /// and target buffers should be relased.</param>
         public static void ReleaseLocals(PathCorridor corridor)
         {
             corridor.mQuery = null;

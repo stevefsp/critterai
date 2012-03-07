@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+using Math = System.Math;
 #if NUNITY
 using Vector3 = org.critterai.Vector3;
 #else
@@ -61,6 +62,27 @@ namespace org.critterai.nav
         public static bool IsInProgress(NavStatus status)
         {
             return (status & NavStatus.InProgress) != 0;
+        }
+
+        public static byte ClampArea(byte value)
+        {
+            return Math.Min(Navmesh.WalkableArea, value);
+        }
+
+        public static byte ClampArea(int value)
+        {
+            return (byte)Math.Min(Navmesh.WalkableArea, Math.Max(0, value));
+        }
+
+        public static NavmeshParams GetConfig(NavmeshTileData tile)
+        {
+            NavmeshTileHeader header = tile.GetHeader();
+
+            return new NavmeshParams(header.boundsMin
+                    , header.boundsMax.x - header.boundsMin.x
+                    , header.boundsMax.z - header.boundsMin.z
+                    , 1  // Max tiles.
+                    , header.polyCount);
         }
 
         public static Vector3 TestVector(Vector3 v)

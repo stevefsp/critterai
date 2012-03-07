@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.nav
 {
@@ -27,34 +26,34 @@ namespace org.critterai.nav
     /// <summary>
     /// <see cref="CrowdAgent"/> configurtation flags.
     /// </summary>
-    [Flags]
+    [System.Flags]
     public enum CrowdUpdateFlags : byte
     {
         /// <summary>
         /// Undocumented
         /// </summary>
-        AnticipateTurns = 1,
+        AnticipateTurns = 0x01,
 
         /// <summary>
         /// Undocumented.
         /// </summary>
-        ObstacleAvoidance = 2,
+        ObstacleAvoidance = 0x02,
 
         /// <summary>
         /// Undocumented.
         /// </summary>
-        CrowdSeparation = 4,
+        CrowdSeparation = 0x04,
 
         /// <summary>
         /// Optimize visibility using 
         /// <see cref="PathCorridor.OptimizePathVisibility(Vector3, float)"/> .
         /// </summary>
-        OptimizeVis = 8,
+        OptimizeVis = 0x08,
 
         /// <summary>
         /// Optimize topology using 
         /// <see cref="PathCorridor.OptimizePathTopology()"/>.
         /// </summary>
-        OptimizeTopo = 16
+        OptimizeTopo = 0x10
     }
 }
