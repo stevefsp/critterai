@@ -94,6 +94,24 @@ namespace org.critterai.nav
         public const int MaxAreas = 64;
 
         /// <summary>
+        /// The standard area id used to indicate a walkable polygon.
+        /// </summary>
+        /// <remarks>
+        /// <para>This is also the maximum value that can be used as an area id.</para>
+        /// </remarks>
+        public const byte WalkableArea = 63;
+
+        /// <summary>
+        /// Represents an unwalkable area.
+        /// </summary>
+        /// <remarks>
+        /// <para>When a data item is given this value it is considered to 
+        /// no longer be assigned to a usable area.</para>
+        /// <para>This is also the minimum value that can be used as an area id.</para>
+        /// </remarks>
+        public const byte UnwalkableArea = 0;
+
+        /// <summary>
         /// The reference id for a null polygon. (Does not exist.)
         /// </summary>
         public const uint NullPoly = 0;
@@ -235,9 +253,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets the tile at the specified grid location.
         /// </summary>
-        /// <param name="x">The tile's grid x-location.</param>
-        /// <param name="z">The tiles's grid z-location.</param>
-        /// <param name="layer">The tiles layer.</param>
+        /// <param name="x">The tile grid x-location.</param>
+        /// <param name="z">The tiles grid z-location.</param>
+        /// <param name="layer">The tile layer.</param>
         /// <returns>The tile at the specified grid location.</returns>
         public NavmeshTile GetTile(int x, int z, int layer)
         {
