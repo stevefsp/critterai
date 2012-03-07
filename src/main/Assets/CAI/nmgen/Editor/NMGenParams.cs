@@ -466,6 +466,7 @@ namespace org.critterai.nmgen
             result.minRegionArea = minRegionArea;
             result.tileSize = tileSize;
             result.contourFlags = contourFlags;
+            result.useMonotone = useMonotone;
 
             return result;
         }
