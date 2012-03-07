@@ -55,9 +55,7 @@ namespace org.critterai.geom
         /// <param name="vertCount">The number of vertices in the polygon.
         /// </param>
         /// <returns>TRUE if the polygon is convex.</returns>
-        public static bool IsConvex(float[] vertices
-            , int startVertIndex
-            , int vertCount)
+        public static bool IsConvex(Vector3[] vertices, int startVert, int vertCount)
         {  
             if (vertCount < 3)
                 return false;
@@ -82,68 +80,67 @@ namespace org.critterai.geom
              *  This is detected during the first test.
              */
 
-            int offset = 2;  // Start by projecting to the (x, z) plane.
-            
-            int pStartVert = startVertIndex*3;
+            bool offset = true;  // Start by projecting to the (x, z) plane.
             
             float initDirection = Triangle2.GetSignedAreaX2(
-                vertices[pStartVert]
-                , vertices[pStartVert+2]
-                , vertices[pStartVert+3]
-                , vertices[pStartVert+5]
-                , vertices[pStartVert+6]
-                , vertices[pStartVert+8]);
+                vertices[startVert + 0].x
+                , vertices[startVert + 0].z
+                , vertices[startVert + 1].x
+                , vertices[startVert + 1].z
+                , vertices[startVert + 2].x
+                , vertices[startVert + 2].z);
             
             if (initDirection > -2 * MathUtil.Epsilon 
                     && initDirection < 2 * MathUtil.Epsilon)
             {
                 // The polygon is on or very close to the vertical plane.  
                 // Switch to projecting on the (x, y) plane.
-                offset = 1;
+                offset = false;
+
                 initDirection = Triangle2.GetSignedAreaX2(
-                    vertices[pStartVert]
-                    , vertices[pStartVert+1]
-                    , vertices[pStartVert+3]
-                    , vertices[pStartVert+4]
-                    , vertices[pStartVert+6]
-                    , vertices[pStartVert+7]);
+                    vertices[startVert + 0].x
+                    , vertices[startVert + 0].y
+                    , vertices[startVert + 1].x
+                    , vertices[startVert + 1].y
+                    , vertices[startVert + 2].x
+                    , vertices[startVert + 2].y);
+
                 // Design note: This is meant to be a strict zero test.
                 if (initDirection == 0)
                     // Some sort of problem.  Should very rarely ever get here.
                     return false;  
             }
             
-            int vertLength = (startVertIndex+vertCount)*3;
-            for (int vertAPointer = pStartVert+3
-                ; vertAPointer < vertLength
-                ; vertAPointer += 3)
+            int length = (startVert + vertCount);
+            for (int iVertA = startVert + 1; iVertA < length; iVertA++)
             {
-                int vertBPointer = vertAPointer+3;
-                if (vertBPointer >= vertLength) 
+                int iVertB = iVertA + 1;
+
+                if (iVertB >= length) 
                     // Wrap it back to the start.
-                    vertBPointer = pStartVert;  
-                int vertCPointer = vertBPointer+3;
-                if (vertCPointer >= vertLength)
+                    iVertB = startVert;  
+
+                int iVertC = iVertB + 1;
+
+                if (iVertC >= length)
                     // Wrap it back to the start.
-                    vertCPointer = pStartVert;
+                    iVertC = startVert;
+
                 float direction = Triangle2.GetSignedAreaX2(
-                          vertices[vertAPointer]
-                        , vertices[vertAPointer+offset]
-                        , vertices[vertBPointer]
-                        , vertices[vertBPointer+offset]
-                        , vertices[vertCPointer]
-                        , vertices[vertCPointer+offset]);
-                if (!(initDirection < 0 
-                    && direction < 0) 
-                    && !(initDirection > 0 
-                    && direction > 0))
-                    // The sign of the current direction is not the same as 
-                    // the sign of the initial direction.  Can't be convex.
+                        vertices[iVertA].x
+                        , offset ? vertices[iVertA].z : vertices[iVertA].y
+                        , vertices[iVertB].x
+                        , offset ? vertices[iVertB].z : vertices[iVertB].y
+                        , vertices[iVertC].x
+                        , offset ? vertices[iVertC].z : vertices[iVertC].y);
+
+                if (!(initDirection < 0 && direction < 0) && !(initDirection > 0  && direction > 0))
+                    // The sign of the current direction is not the same as the sign of the 
+                    // initial direction.  Can't be convex.
                     return false;
             }
             
             return true;
-            
         }
         
         /// <summary>
@@ -167,33 +164,28 @@ namespace org.critterai.geom
         /// </param>
         /// <param name="result">The array to store the result in.</param>
         /// <param name="resultVectorIndex">The vector index in the out array
-        /// to store the result in.  (The stride is expected to be three.  
-        /// So the insertion point will be outVectorIndex * 3.)</param>
+        /// to store the result in. </param>
         /// <returns>A reference to the result argument.</returns>
-        public static float[] GetCentroid(float[] vertices
-                , int startVertIndex
+        public static Vector3[] GetCentroid(Vector3[] vertices
+                , int startVert
                 , int vertCount
-                , float[] result
-                , int resultVectorIndex)
+                , Vector3[] result
+                , int resultVert)
         {
             // Reference: 
             // http://en.wikipedia.org/wiki/Centroid#Of_a_finite_set_of_points
             
-            int vertLength = (startVertIndex+vertCount)*3;
-            int pOut = resultVectorIndex*3;
-            result[pOut] = 0;
-            result[pOut+1] = 0;
-            result[pOut+2] = 0;
-            for (int pVert = startVertIndex*3; pVert < vertLength; pVert += 3)
+            result[resultVert] = new Vector3(0, 0, 0);
+            int length = (startVert+vertCount);
+
+            for (int i = startVert; i < length; i++)
             {
-                result[pOut] += vertices[pVert];
-                result[pOut+1] += vertices[pVert+1];
-                result[pOut+2] += vertices[pVert+2];
+                result[resultVert] += vertices[i];
             }
 
-            result[pOut] /= vertCount;
-            result[pOut+1] /= vertCount;
-            result[pOut+2] /= vertCount;
+            result[resultVert].x /= vertCount;
+            result[resultVert].y /= vertCount;
+            result[resultVert].z /= vertCount;
             
             return result;
         }
@@ -213,20 +205,18 @@ namespace org.critterai.geom
         /// <param name="vertCount">The number of vertices in the polygon.
         /// </param>
         /// <returns>The centroid of a polygon.</returns>
-        public static Vector3 GetCentroid(float[] vertices
-                , int startVertIndex
-                , int vertCount)
+        public static Vector3 GetCentroid(Vector3[] vertices, int startVert, int vertCount)
         {
             // Reference:
             // http://en.wikipedia.org/wiki/Centroid#Of_a_finite_set_of_points
             
+
             Vector3 result = new Vector3();
-            int vertLength = (startVertIndex+vertCount)*3;
-            for (int pVert = startVertIndex*3; pVert < vertLength; pVert += 3)
+            int vertLength = (startVert + vertCount);
+
+            for (int i = startVert; i < vertLength; i++)
             {
-                result.x += vertices[pVert];
-                result.y += vertices[pVert+1];
-                result.z += vertices[pVert+2];
+                result += vertices[i];
             }
 
             result.x /= vertCount;
@@ -245,7 +235,7 @@ namespace org.critterai.geom
         /// polygon with an  arbitrary number of sides.
         /// [Form:(x, y, z) * vertexCount]</param>
         /// <returns>The centroid of a convex polygon.</returns>
-        public static Vector3 GetCentroid(params float[] vertices)
+        public static Vector3 GetCentroid(params Vector3[] vertices)
         {
             // Reference: 
             // http://en.wikipedia.org/wiki/Centroid#Of_a_finite_set_of_points
@@ -253,11 +243,9 @@ namespace org.critterai.geom
             Vector3 result = new Vector3();
             
             int vertCount = 0;
-            for (int pVert = 0; pVert < vertices.Length; pVert += 3)
+            for (int i = 0; i < vertices.Length; i++)
             {
-                result.x += vertices[pVert];
-                result.y += vertices[pVert+1];
-                result.z += vertices[pVert+2];
+                result += vertices[i];
                 vertCount++;
             }
 

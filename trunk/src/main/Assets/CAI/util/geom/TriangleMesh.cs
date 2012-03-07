@@ -106,33 +106,29 @@ namespace org.critterai.geom
                 || triCount * 3 > tris.Length
                 || vertCount > verts.Length
                 || triCount < 0
-                || vertCount < 0
-                || tris.Length % 3 != 0)
+                || vertCount < 0)
             {
                 return false;
             }
 
-            if (!includeContent)
-                return true;
-
-            int length = triCount * 3;
-            for (int p = 0; p < length; p += 3)
+            if (includeContent)
             {
-                int a = tris[p + 0];
-                int b = tris[p + 1];
-                int c = tris[p + 2];
+                int length = triCount * 3;
 
-                if (a < 0 || a >= vertCount)
-                    return false;
+                for (int p = 0; p < length; p += 3)
+                {
+                    int a = tris[p + 0];
+                    int b = tris[p + 1];
+                    int c = tris[p + 2];
 
-                if (b < 0 || b >= vertCount)
-                    return false;
-
-                if (c < 0 || c >= vertCount)
-                    return false;
-
-                if (a == b || b == c || c == a)
-                    return false;
+                    if (a < 0 || a >= vertCount
+                        || b < 0 || b >= vertCount
+                        || c < 0 || c >= vertCount
+                        || a == b || b == c || c == a)
+                    {
+                        return false;
+                    }
+                }
             }
 
             return true;

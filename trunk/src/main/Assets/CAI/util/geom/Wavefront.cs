@@ -58,62 +58,62 @@ namespace org.critterai.geom
     /// </remarks>
     public static class Wavefront
     {
-        /// <summary>
-        /// Creates a Wavefront format string from a set of vertices and 
-        /// triangle indices.
-        /// </summary>
-        /// <param name="vertices">The vertices in the form (x, y, z)</param>
-        /// <param name="triangles">The triangles in the form
-        /// (vertAIndex, vertBIndex, vertCIndex).</param>
-        /// <param name="reverseWrap">Revers the wrap direction of the
-        /// triangles.</param>
-        /// <param name="invertXAxis">Invert the x-axis values.</param>
-        /// <returns>A string representing the mesh in Wavefront format.
-        /// </returns>
-        [System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
-        public static string TranslateTo(float[] vertices
-            , int[] triangles
-            , bool reverseWrap
-            , bool invertXAxis)
-        {
-            StringBuilder sb = new StringBuilder();
-            float xFactor = (invertXAxis ? -1 : 1);
-            for (int p = 0; p < vertices.Length; p += 3)
-            {
-                sb.Append("v " 
-                    + (vertices[p + 0] * xFactor)
-                        .ToString(CultureInfo.InvariantCulture) + " "
-                    + vertices[p + 1]
-                        .ToString(CultureInfo.InvariantCulture) + " "
-                    + vertices[p + 2]
-                        .ToString(CultureInfo.InvariantCulture) + "\n");
-            }
-            for (int p = 0; p < triangles.Length; p += 3)
-            {
-                // The +1 converts to a 1-based index.
-                if (reverseWrap)
-                {
-                    sb.Append("f "
-                        + (triangles[p + 0] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 2] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 1] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + "\n");
-                }
-                else
-                {
-                    sb.Append("f "
-                        + (triangles[p + 0] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 1] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 2] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + "\n");
-                }
-            }
-            return sb.ToString();
-        }
+        ///// <summary>
+        ///// Creates a Wavefront format string from a set of vertices and 
+        ///// triangle indices.
+        ///// </summary>
+        ///// <param name="vertices">The vertices in the form (x, y, z)</param>
+        ///// <param name="triangles">The triangles in the form
+        ///// (vertAIndex, vertBIndex, vertCIndex).</param>
+        ///// <param name="reverseWrap">Revers the wrap direction of the
+        ///// triangles.</param>
+        ///// <param name="invertXAxis">Invert the x-axis values.</param>
+        ///// <returns>A string representing the mesh in Wavefront format.
+        ///// </returns>
+        //[System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
+        //public static string TranslateTo(float[] vertices
+        //    , int[] triangles
+        //    , bool reverseWrap
+        //    , bool invertXAxis)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    float xFactor = (invertXAxis ? -1 : 1);
+        //    for (int p = 0; p < vertices.Length; p += 3)
+        //    {
+        //        sb.Append("v " 
+        //            + (vertices[p + 0] * xFactor)
+        //                .ToString(CultureInfo.InvariantCulture) + " "
+        //            + vertices[p + 1]
+        //                .ToString(CultureInfo.InvariantCulture) + " "
+        //            + vertices[p + 2]
+        //                .ToString(CultureInfo.InvariantCulture) + "\n");
+        //    }
+        //    for (int p = 0; p < triangles.Length; p += 3)
+        //    {
+        //        // The +1 converts to a 1-based index.
+        //        if (reverseWrap)
+        //        {
+        //            sb.Append("f "
+        //                + (triangles[p + 0] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + " "
+        //                + (triangles[p + 2] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + " "
+        //                + (triangles[p + 1] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + "\n");
+        //        }
+        //        else
+        //        {
+        //            sb.Append("f "
+        //                + (triangles[p + 0] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + " "
+        //                + (triangles[p + 1] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + " "
+        //                + (triangles[p + 2] + 1)
+        //                    .ToString(CultureInfo.InvariantCulture) + "\n");
+        //        }
+        //    }
+        //    return sb.ToString();
+        //}
 
         public static string TranslateTo(Vector3[] vertices
             , int[] triangles
@@ -159,72 +159,72 @@ namespace org.critterai.geom
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Translates a string in Wavefront format and loads the results
-        /// into vertex and triangle arrays.
-        /// </summary>
-        /// <param name="wavefrontText">The wavefront format text defining
-        /// the vertices and indices.</param>
-        /// <param name="outBounds">An array of size 6 which will be loaed with 
-        /// the AABB bounds of the resulting mesh in the form 
-        /// (minX, minY, minZ, maxX, maxY, maxZ).  If null, the bounds will
-        /// not be calculated.</param>
-        /// <param name="vertices">The vertices from the wavefront data.
-        /// </param>
-        /// <param name="triangles">The triangles from the wavefront data.
-        /// </param>
-        [System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
-        public static void TranslateFrom(string wavefrontText
-            , out float[] vertices
-            , out int[] triangles)
-        {
-            List<float> lverts = new List<float>();
-            List<int> lindices = new List<int>();
+        ///// <summary>
+        ///// Translates a string in Wavefront format and loads the results
+        ///// into vertex and triangle arrays.
+        ///// </summary>
+        ///// <param name="wavefrontText">The wavefront format text defining
+        ///// the vertices and indices.</param>
+        ///// <param name="outBounds">An array of size 6 which will be loaed with 
+        ///// the AABB bounds of the resulting mesh in the form 
+        ///// (minX, minY, minZ, maxX, maxY, maxZ).  If null, the bounds will
+        ///// not be calculated.</param>
+        ///// <param name="vertices">The vertices from the wavefront data.
+        ///// </param>
+        ///// <param name="triangles">The triangles from the wavefront data.
+        ///// </param>
+        //[System.Obsolete("Switch to using the Vector3[] overload. Will be removed in v0.5")]
+        //public static void TranslateFrom(string wavefrontText
+        //    , out float[] vertices
+        //    , out int[] triangles)
+        //{
+        //    List<float> lverts = new List<float>();
+        //    List<int> lindices = new List<int>();
 
-            Regex nl = new Regex(@"\n");
-            Regex r = new Regex(@"\s+");
-            Regex rs = new Regex(@"\/");
+        //    Regex nl = new Regex(@"\n");
+        //    Regex r = new Regex(@"\s+");
+        //    Regex rs = new Regex(@"\/");
 
-            string[] lines = nl.Split(wavefrontText);
-            int lineCount = 0;
-            foreach (string line in lines)
-            {
-                lineCount++;
-                string s = line.Trim();
-                string[] tokens = null;
-                if (s.StartsWith("v "))
-                {
-                    tokens = r.Split(s);
-                    for (int i = 1; i < 4; i++)
-                    {
-                        string token = tokens[i];
-                        lverts.Add(
-                            float.Parse(token, CultureInfo.InvariantCulture));
-                    }
-                }
-                else if (s.StartsWith("f "))
-                {
-                    // This is a face entry.  Expecting one of:
-                    // F  v1/vt1/vn1   v2/vt2/vn2   v3/vt3/vn3
-                    // F  v1 v2 v3
-                    tokens = r.Split(s);
-                    for (int i = 1; i < 4; i++)
-                    {
-                        string token = tokens[i];
-                        string[] subtokens = rs.Split(token);
-                        // Subtraction converts from 1-based index to 
-                        // zero-based index.
-                        lindices.Add(int.Parse(subtokens[0]
-                            , CultureInfo.InvariantCulture) - 1);
-                    }
-                }
-            }
+        //    string[] lines = nl.Split(wavefrontText);
+        //    int lineCount = 0;
+        //    foreach (string line in lines)
+        //    {
+        //        lineCount++;
+        //        string s = line.Trim();
+        //        string[] tokens = null;
+        //        if (s.StartsWith("v "))
+        //        {
+        //            tokens = r.Split(s);
+        //            for (int i = 1; i < 4; i++)
+        //            {
+        //                string token = tokens[i];
+        //                lverts.Add(
+        //                    float.Parse(token, CultureInfo.InvariantCulture));
+        //            }
+        //        }
+        //        else if (s.StartsWith("f "))
+        //        {
+        //            // This is a face entry.  Expecting one of:
+        //            // F  v1/vt1/vn1   v2/vt2/vn2   v3/vt3/vn3
+        //            // F  v1 v2 v3
+        //            tokens = r.Split(s);
+        //            for (int i = 1; i < 4; i++)
+        //            {
+        //                string token = tokens[i];
+        //                string[] subtokens = rs.Split(token);
+        //                // Subtraction converts from 1-based index to 
+        //                // zero-based index.
+        //                lindices.Add(int.Parse(subtokens[0]
+        //                    , CultureInfo.InvariantCulture) - 1);
+        //            }
+        //        }
+        //    }
 
-            vertices = lverts.ToArray();
-            triangles = lindices.ToArray();
+        //    vertices = lverts.ToArray();
+        //    triangles = lindices.ToArray();
 
-            return;
-        }
+        //    return;
+        //}
 
         public static void TranslateFrom(string wavefrontText
             , out Vector3[] vertices
