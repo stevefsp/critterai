@@ -60,6 +60,16 @@ namespace org.critterai.nmgen.rcn
             , int flagMergeThreshold);
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern bool nmhfRasterizeNodes(IntPtr context
+            , IntPtr verts
+            , IntPtr tris
+            , IntPtr areas
+            , [In] ChunkyTriMeshNode[] nodes
+            , int nodeCount
+            , IntPtr hf
+            , int flagMergeThreshold);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmhfRasterizeTriMeshShort(IntPtr context
             , [In] Vector3[] verts
             , int vertCount

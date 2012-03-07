@@ -21,6 +21,7 @@
  */
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using org.critterai.geom;
 using org.critterai.interop;
 using org.critterai.nmgen.rcn;
@@ -404,6 +405,32 @@ namespace org.critterai.nmgen
                 , mesh.tris
                 , areas
                 , mesh.triCount
+                , root
+                , flagMergeThreshold);
+        }
+
+        public bool AddTriangles(BuildContext context
+            , ChunkyTriMesh mesh
+            , Vector3 bmin
+            , Vector3 bmax
+            , int flagMergeThreshold)
+        {
+            if (IsDisposed || mesh == null || mesh.IsDisposed)
+                return false;
+
+            List<ChunkyTriMeshNode> nodeList = new List<ChunkyTriMeshNode>();
+            
+            int triCount =  mesh.GetChunks(bmin.x, bmin.z, bmax.x, bmax.z, nodeList);
+
+            if (triCount == 0)
+                return true;
+
+            return HeightfieldEx.nmhfRasterizeNodes(context.root
+                , mesh.verts
+                , mesh.tris
+                , mesh.areas
+                , nodeList.ToArray()
+                , nodeList.Count
                 , root
                 , flagMergeThreshold);
         }

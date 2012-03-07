@@ -40,8 +40,6 @@ namespace org.critterai.nmgen
         /// The default area id used to indicate a walkable polygon.
         /// </summary>
         /// <remarks>
-        /// <para>This is the only recognized non-zero area id recognized by some 
-        /// steps in the mesh build process.</para>
         /// <para>This is also the maximum value that can be used as an area id.</para>
         /// </remarks>
         public const byte WalkableArea = 63;
@@ -75,7 +73,7 @@ namespace org.critterai.nmgen
         public const byte NullArea = 0;
 
         /// <summary>
-        /// Represents a null area.
+        /// Represents an unwalkable area.
         /// </summary>
         /// <remarks>
         /// <para>When a data item is given this value it is considered to 
@@ -159,7 +157,7 @@ namespace org.critterai.nmgen
         public static byte[] CreateAreaBuffer(int size, byte fillValue)
         {
             byte[] result = new byte[size];
-            fillValue = Math.Max(WalkableArea, fillValue);
+            fillValue = Math.Min(WalkableArea, fillValue);
             for (int i = 0; i < size; i++)
             {
                 result[i] = fillValue;
@@ -258,6 +256,36 @@ namespace org.critterai.nmgen
             return true;
         }
 
+        //public static bool ClearUnwalkableTriangles(BuildContext context
+        //    , ChunkyTriMesh mesh
+        //    , Vector3 bmin
+        //    , Vector3 bmax
+        //    , out byte[] areas)
+        //{
+        //    if (mesh == null || mesh.IsDisposed)
+        //    {
+        //        areas = null;
+        //        return false;
+        //    }
+
+        //    List<ChunkyTriMeshNode> nodeList = new List<ChunkyTriMeshNode>();
+        //    int triCount;
+
+        //    mesh.GetChunks(bmin.x, bmin.z, bmax.x, bmax.z, nodeList, out triCount);
+
+        //    areas = new byte[triCount];
+
+        //    if (triCount == 0)
+        //        return true;
+
+        //    NMGenEx.nmgClearUnwalkableTrianglesAlt(context.root
+        //        , mesh.root
+        //        , nodeList.ToArray()
+        //        , nodeList.Count
+        //        , walkableSlope
+        //        , areas);
+        //}
+
         /// <summary>
         /// Builds an aggregate triangle mesh from a detail mesh.
         /// </summary>
@@ -309,17 +337,7 @@ namespace org.critterai.nmgen
             return false;
         }
 
-        public static byte ClampPriority(byte value)
-        {
-            return Math.Max((byte)(byte.MinValue + 1)
-                , Math.Min((byte)(byte.MaxValue - 1), value));
-        }
 
-        public static byte ClampPriority(int value)
-        {
-            return (byte)Math.Max((byte.MinValue + 1)
-                , Math.Min((byte.MaxValue - 1), value));
-        }
 
         public static byte ClampArea(byte value)
         {
@@ -328,7 +346,7 @@ namespace org.critterai.nmgen
 
         public static byte ClampArea(int value)
         {
-            return Math.Min(WalkableArea, Math.Max((byte)0, (byte)value));
+            return (byte)Math.Min(NMGen.WalkableArea, Math.Max(0, value));
         }
     }
 }
