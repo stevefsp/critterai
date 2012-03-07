@@ -48,8 +48,8 @@ class nmgBuildContext
     : public rcContext
 {
 public:
-    static const int MAX_MESSAGES = 1000;
-    static const int MESSAGE_POOL_SIZE = 12000;
+    static const int MAX_MESSAGES = 1024;
+    static const int MESSAGE_POOL_SIZE = 65536;
 
     nmgBuildContext();
     virtual ~nmgBuildContext();

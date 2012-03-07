@@ -30,6 +30,16 @@ struct nmgSpan
     unsigned int area : 6;
 };
 
+struct nmgChunkyNode
+{
+    float xmin;
+    float zmin;
+    float xmax;
+    float zmax;
+    int i;
+    int count;
+};
+
 extern "C"
 {
     EXPORT_API rcHeightfield* nmhfAllocField(const int width
@@ -84,6 +94,65 @@ extern "C"
 
         return true;
     }
+
+	EXPORT_API bool nmhfRasterizeNodes(nmgBuildContext* ctx
+		, const float* verts
+		, const int* tris
+		, const unsigned char* areas
+		, const nmgChunkyNode* nodes
+		, const int nc
+		, rcHeightfield* hf
+        , const int flagMergeThr)
+	{
+        if (!ctx || !verts || !tris || !areas || !nodes || !hf)
+            return false;
+
+		// Find the maximum number of triangles in a node.
+		int maxTris = 0;
+		for (int iNode = 0; iNode < nc; ++iNode)
+		{
+			maxTris = rcMax(nodes[iNode].count, maxTris);
+		}
+
+		int* ltris = (int*)rcAlloc(sizeof(int) * maxTris * 3, RC_ALLOC_TEMP);
+
+		unsigned char* lareas = 
+			(unsigned char*)rcAlloc(sizeof(unsigned char) * maxTris, RC_ALLOC_TEMP);
+
+		if (!ltris || !lareas)
+			return false;
+
+		// Rasterize each node separately.
+		for (int iNode = 0; iNode < nc; ++iNode)
+		{
+			// Load node triangles into the working arrays.
+			for (int iTri = 0; iTri < nodes[iNode].count; ++iTri)
+			{
+				const int* tbase = &tris[(nodes[iNode].i + iTri) * 3];
+
+				ltris[iTri * 3 + 0] = tbase[0];
+				ltris[iTri * 3 + 1] = tbase[1];
+				ltris[iTri * 3 + 2] = tbase[2];
+
+				lareas[iTri] = areas[nodes[iNode].i + iTri];
+			}
+
+			// Rasterize the node.
+			rcRasterizeTriangles(ctx
+				, verts
+				, 0		// Not actually used.
+				, ltris
+				, lareas
+				, nodes[iNode].count
+				, *hf
+				, flagMergeThr);
+		}
+
+		rcFree(ltris);
+		rcFree(lareas);
+
+		return true;
+	}
 
     EXPORT_API bool nmhfRasterizeTriMesh(nmgBuildContext* ctx
         , const float* verts
