@@ -55,13 +55,9 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
         /// <param name="cz">The z-value for vertex C in triangle ABC</param>
         /// <returns>The area of the triangle ABC.</returns>
-        public static float GetArea(
-                  float ax, float ay, float az
-                , float bx, float by, float bz
-                , float cx, float cy, float cz)
+        public static float GetArea(Vector3 a, Vector3 b, Vector3 c)
         {
-            return (float)(Math.Sqrt(
-                GetAreaComp(ax, ay, az, bx, by, bz, cx, cy, cz)) / 2);
+            return (float)(Math.Sqrt(GetAreaComp(a, b, c)) / 2);
         }
         
         /// <summary>
@@ -84,30 +80,22 @@ namespace org.critterai.geom
         /// <param name="cz">The z-value for vertex C in triangle ABC</param>
         /// <returns>A value suitable for comparing the relative size of two 
         /// triangles.</returns>
-        public static float GetAreaComp(
-                  float ax, float ay, float az
-                , float bx, float by, float bz
-                , float cx, float cy, float cz)
+        public static float GetAreaComp(Vector3 a, Vector3 b, Vector3 c)
         {
             // References:
             // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm#Modern%20Triangles
             
             // Get directional vectors.
-            // A -> B
-            float ux = bx - ax;
-            float uy = by - ay;
-            float uz = bz - az;
-            // A -> C
-            float vx = cx - ax;
-            float vy = cy - ay;
-            float vz = cz - az;
+            
+            Vector3 u = b - a;  // A -> B
+            Vector3 v = c - a;  // A -> C
 
             // Cross product.
-            float nx = uy * vz - uz * vy;
-            float ny = -ux * vz + uz * vx;
-            float nz = ux * vy - uy * vx;
+            Vector3 n = new Vector3(u.y * v.z - u.z * v.y
+                , -u.x * v.z + u.z * v.x
+                , u.x * v.y - u.y * v.x);
             
-            return Vector3Util.GetLengthSq(nx, ny, nz);
+            return Vector3Util.GetLengthSq(n);
         }
         
         /// <summary>
@@ -130,22 +118,13 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
         /// <param name="cz">The z-value for vertex C in triangle ABC</param>
         /// <returns>The normal for the  triangle.</returns>
-        public static Vector3 GetNormal(float ax, float ay, float az
-                , float bx, float by, float bz
-                , float cx, float cy, float cz)
+        public static Vector3 GetNormal(Vector3 a, Vector3 b, Vector3 c)
         {
             // Reference: 
             // http://en.wikipedia.org/wiki/Surface_normal#Calculating_a_surface_normal
             // N = (B - A) x (C - A) with the final result normalized.
              
-             Vector3 result = Vector3Util.Cross(bx - ax
-                     , by - ay
-                     , bz - az
-                     , cx - ax
-                     , cy - ay
-                     , cz - az);
-
-            return Vector3Util.Normalize(result);
+            return Vector3Util.Normalize(Vector3Util.Cross(b - a, c - a));
         }
 
         /// <summary>
@@ -165,19 +144,9 @@ namespace org.critterai.geom
         /// <param name="startVertIndex">The index of the first vertex 
         /// in the triangle.</param>
         /// <returns>The normal for the  triangle.</returns>
-        public static Vector3 GetNormal(float[] vertices, int startVertIndex)
+        public static Vector3 GetNormal(Vector3[] vertices, int triangle)
         {
-            int pStartVert = startVertIndex*3;
-            return GetNormal(
-                vertices[pStartVert]
-                , vertices[pStartVert+1]
-                , vertices[pStartVert+2]
-                , vertices[pStartVert+3]
-                , vertices[pStartVert+4]
-                , vertices[pStartVert+5]
-                , vertices[pStartVert+6]
-                , vertices[pStartVert+7]
-                , vertices[pStartVert+8]);
+            return GetNormal(vertices[triangle], vertices[triangle + 1], vertices[triangle + 2]);
         }
     }
 }

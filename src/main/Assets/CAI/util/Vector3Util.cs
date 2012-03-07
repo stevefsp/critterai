@@ -37,31 +37,31 @@ namespace org.critterai
     /// </remarks>
     public static class Vector3Util
     {
-        /// <summary>
-        /// Performs a vector "right-handed"
-        /// <a href="http://en.wikipedia.org/wiki/Cross_product" 
-        /// target="_blank">cross product</a>. (u x v)
-        /// </summary>
-        /// <remarks>
-        /// <para>The resulting vector will be perpendicular to the plane 
-        /// containing the two provided vectors.</para>
-        /// <para>Special Case: The result will be zero if the two vectors are 
-        /// parallel.</para>
-        /// </remarks>
-        /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
-        /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
-        /// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
-        /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
-        /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
-        /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <returns>The cross product of the two vectors.</returns>
-        public static Vector3 Cross(
-                  float ux, float uy, float uz
-                , float vx, float vy, float vz)
+        ///// <summary>
+        ///// Performs a vector "right-handed"
+        ///// <a href="http://en.wikipedia.org/wiki/Cross_product" 
+        ///// target="_blank">cross product</a>. (u x v)
+        ///// </summary>
+        ///// <remarks>
+        ///// <para>The resulting vector will be perpendicular to the plane 
+        ///// containing the two provided vectors.</para>
+        ///// <para>Special Case: The result will be zero if the two vectors are 
+        ///// parallel.</para>
+        ///// </remarks>
+        ///// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
+        ///// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
+        ///// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
+        ///// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
+        ///// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
+        ///// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
+        ///// <returns>The cross product of the two vectors.</returns>
+
+
+        public static Vector3 Cross(Vector3 u, Vector3 v)
         {
-            return new Vector3(uy * vz - uz * vy
-                , -ux * vz + uz * vx
-                , ux * vy - uy * vx);
+            return new Vector3(u.y * v.z - u.z * v.y
+                , -u.x * v.z + u.z * v.x
+                , u.x * v.y - u.y * v.x);
         }
 
         /// <summary>
@@ -76,13 +76,10 @@ namespace org.critterai
         /// <param name="bz">The z-value of the point (bx, by, bz).</param>
         /// <returns> The square of the distance between the two provided 
         /// points.</returns>
-        public static float GetDistanceSq(float ax, float ay, float az
-                , float bx, float by, float bz)
+        public static float GetDistanceSq(Vector3 a, Vector3 b)
         {
-            float dx = ax - bx;
-            float dy = ay - by;
-            float dz = az - bz;
-            return (dx * dx + dy * dy + dz * dz);
+            Vector3 d = a - b;
+            return (d.x * d.x + d.y * d.y + d.z * d.z);
         }
 
         public static Vector3 Normalize(Vector3 v)
@@ -120,16 +117,17 @@ namespace org.critterai
             return (float)Math.Sqrt(dx * dx + dz * dz);
         }
 
-        /// <summary>
-        /// Returns the square of the length of the vector.
-        /// </summary>
-        /// <param name="x">The x-value of the vector (x, y, z).</param>
-        /// <param name="y">The y-value of the vector (x, y, z).</param>
-        /// <param name="z">The z-value of the vector (x, y, z).</param>
-        /// <returns>The square of the length of the vector.</returns>
-        public static float GetLengthSq(float x, float y, float z)
+        ///// <summary>
+        ///// Returns the square of the length of the vector.
+        ///// </summary>
+        ///// <param name="x">The x-value of the vector (x, y, z).</param>
+        ///// <param name="y">The y-value of the vector (x, y, z).</param>
+        ///// <param name="z">The z-value of the vector (x, y, z).</param>
+        ///// <returns>The square of the length of the vector.</returns>
+
+        public static float GetLengthSq(Vector3 v)
         {
-            return (x * x + y * y + z * z);
+            return (v.x * v.x + v.y * v.y + v.z * v.z);
         }
 
         /// <summary>
@@ -144,10 +142,9 @@ namespace org.critterai
         /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
         /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
         /// <returns>The dot product of the provided vectors.</returns>
-        public static float Dot(float ux, float uy, float uz
-                , float vx, float vy, float vz)
+        public static float Dot(Vector3 u, Vector3 v)
         {
-            return (ux * vx) + (uy * vy) + (uz * vz);
+            return (u.x * v.x) + (u.y * v.y) + (u.z * v.z);
         }
 
         /// <summary>
@@ -173,77 +170,11 @@ namespace org.critterai
         /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(float ux, float uy, float uz
-                , float vx, float vy, float vz
-                , float tolerance)
+        public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
         {
             // Duplicating code for performance reasons.
-            float dx = ux - vx;
-            float dy = uy - vy;
-            float dz = uz - vz;
-            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
-        }
-
-        /// <summary>
-        /// Determines whether or not the provided vectors are equal within
-        /// the specified tolerance.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Change in beahvior:  Prior to version 0.4, the area of equality 
-        /// for this method was an axis-aligned bounding box at the tip of
-        /// the vector. As of version 0.4 the area of equality is a sphere.
-        /// This change was made to improve performance.
-        /// </para>
-        /// </remarks>
-        /// <param name="u">Vector U.</param>
-        /// <param name="v">Vector V.</param>
-        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
-        /// </param>
-        /// <returns>True if the provided vectors are similar enough to be
-        /// considered equal.
-        /// </returns>
-        public static bool SloppyEquals(Vector3 u
-                , Vector3 v
-                , float tolerance)
-        {
-            // Duplicating code for performance reasons.
-            float dx = u.x - v.x;
-            float dy = u.y - v.y;
-            float dz = u.z - v.z;
-            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
-        }
-
-        /// <summary>
-        /// Determines whether or not the provided vectors are equal within
-        /// the specified tolerance.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Change in beahvior:  Prior to version 0.4, the area of equality 
-        /// for this method was an axis-aligned bounding box at the tip of
-        /// the vector. As of version 0.4 the area of equality is a sphere.
-        /// This change was made to improve performance.
-        /// </para>
-        /// </remarks>
-        /// <param name="u">Vector U.</param>
-        /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
-        /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
-        /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
-        /// </param>
-        /// <returns>True if the provided vectors are similar enough to be
-        /// considered equal.
-        /// </returns>
-        public static bool SloppyEquals(Vector3 u
-                , float vx, float vy, float vz
-                , float tolerance)
-        {
-            // Duplicating code for performance reasons.
-            float dx = u.x - vx;
-            float dy = u.y - vy;
-            float dz = u.z - vz;
-            return (dx * dx + dy * dy + dz * dz) <= tolerance * tolerance;
+            Vector3 d = u - v;
+            return (d.x * d.x + d.y * d.y + d.z * d.z) <= tolerance * tolerance;
         }
 
         /// <summary>
@@ -289,13 +220,11 @@ namespace org.critterai
         /// point is translated from A toward B.</param>
         /// <returns>The point translated toward point B from point A.
         /// </returns>
-        public static Vector3 TranslateToward(float ax, float ay, float az
-                , float bx, float by, float bz
-                , float factor)
+        public static Vector3 TranslateToward(Vector3 a, Vector3 b, float factor)
         {
-            return new Vector3(ax + (bx - ax) * factor
-                , ay + (by - ay) * factor
-                , az + (bz - az) * factor);
+            return new Vector3(a.x + (b.x - a.x) * factor
+                , a.y + (b.y - a.y) * factor
+                , a.z + (b.z - a.z) * factor);
         }
 
         /// <summary>
@@ -304,10 +233,10 @@ namespace org.critterai
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
         /// <returns>An array of flattened vectors.</returns>
-        public static float[] Flatten(Vector3[] vectors)
+        public static float[] Flatten(Vector3[] vectors, int vertCount)
         {
-            float[] result = new float[vectors.Length * 3];
-            for (int i = 0; i < vectors.Length; i++)
+            float[] result = new float[vertCount * 3];
+            for (int i = 0; i < vertCount; i++)
             {
                 result[i * 3] = vectors[i].x;
                 result[i * 3 + 1] = vectors[i].y;
@@ -357,47 +286,6 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Creates a Unity vector from an entry in an array of vectors.
-        /// </summary>
-        /// <param name="vectors">An array of vectors.
-        /// [(x, y, z) * vertorCount]</param>
-        /// <param name="index">The index of the vector in the array.
-        /// </param>
-        /// <returns>The Unity vector for the specified array vector.</returns>
-        public static Vector3 GetVector(float[] vectors, int index)
-        {
-            return new Vector3(vectors[index * 3 + 0]
-                , vectors[index * 3 + 1]
-                , vectors[index * 3 + 2]);
-        }
-
-        /// <summary>
-        /// Fills an array vector based on the provided Unity vector.
-        /// </summary>
-        /// <param name="vector">The source vector.</param>
-        /// <param name="buffer">The buffer to copy the source
-        /// vector into. [Length: >= 3] (Out)
-        /// </param>
-        /// <returns>A reference to the buffer.</returns>
-        public static float[] GetVector(Vector3 vector, float[] buffer)
-        {
-            buffer[0] = vector.x;
-            buffer[1] = vector.y;
-            buffer[2] = vector.z;
-            return buffer;
-        }
-
-        /// <summary>
-        /// Returns a Unity vector created from an array vector.
-        /// </summary>
-        /// <param name="vector">The array vector.  [(x, y, z)] </param>
-        /// <returns>A Unity vector created from the array vector.</returns>
-        public static Vector3 GetVector(float[] vector)
-        {
-            return new Vector3(vector[0], vector[1], vector[2]);
-        }
-
-        /// <summary>
         /// Gets the minimum and maximum bounds of the AABB which contains the 
         /// array of vectors.
         /// </summary>
@@ -406,173 +294,53 @@ namespace org.critterai
         /// <param name="maxBounds">The maximum bounds of the AABB.</param>
         public static void GetBounds(Vector3[] vectors
             , int vectorCount
-            , out Vector3 minBounds
-            , out Vector3 maxBounds)
+            , out Vector3 boundsMin
+            , out Vector3 boundsMax)
         {
-            minBounds = vectors[0];
-            maxBounds = vectors[0];
+            boundsMin = vectors[0];
+            boundsMax = vectors[0];
 
             for (int i = 1; i < vectorCount; i++)
             {
-                minBounds.x = Math.Min(minBounds.x, vectors[i].x);
-                minBounds.y = Math.Min(minBounds.y, vectors[i].y);
-                minBounds.z = Math.Min(minBounds.z, vectors[i].z);
-                maxBounds.x = Math.Max(maxBounds.x, vectors[i].x);
-                maxBounds.y = Math.Max(maxBounds.y, vectors[i].y);
-                maxBounds.z = Math.Max(maxBounds.z, vectors[i].z);
+                boundsMin.x = Math.Min(boundsMin.x, vectors[i].x);
+                boundsMin.y = Math.Min(boundsMin.y, vectors[i].y);
+                boundsMin.z = Math.Min(boundsMin.z, vectors[i].z);
+                boundsMax.x = Math.Max(boundsMax.x, vectors[i].x);
+                boundsMax.y = Math.Max(boundsMax.y, vectors[i].y);
+                boundsMax.z = Math.Max(boundsMax.z, vectors[i].z);
             }
         }
 
+        // TODO: Move to triangle mesh.  Vector3Util does not know about triangles.
         public static void GetBounds(Vector3[] verts
              , int[] tris
              , int triCount
-             , out Vector3 minBounds
-             , out Vector3 maxBounds)
+             , out Vector3 boundsMin
+             , out Vector3 boundsMax)
         {
             // TODO: Add unit test.
 
-            minBounds = verts[tris[0]];
-            maxBounds = verts[tris[0]];
+            boundsMin = verts[tris[0]];
+            boundsMax = verts[tris[0]];
 
             for (int i = 1; i < triCount * 3; i++)
             {
                 Vector3 v = verts[tris[i]];
-                minBounds.x = Math.Min(minBounds.x, v.x);
-                minBounds.y = Math.Min(minBounds.y, v.y);
-                minBounds.z = Math.Min(minBounds.z, v.z);
-                maxBounds.x = Math.Max(maxBounds.x, v.x);
-                maxBounds.y = Math.Max(maxBounds.y, v.y);
-                maxBounds.z = Math.Max(maxBounds.z, v.z);
+                boundsMin.x = Math.Min(boundsMin.x, v.x);
+                boundsMin.y = Math.Min(boundsMin.y, v.y);
+                boundsMin.z = Math.Min(boundsMin.z, v.z);
+                boundsMax.x = Math.Max(boundsMax.x, v.x);
+                boundsMax.y = Math.Max(boundsMax.y, v.y);
+                boundsMax.z = Math.Max(boundsMax.z, v.z);
             }
         }
 
+        // TODO: Should this be here?
         public static bool IsBoundsValid(Vector3 boundsMin, Vector3 boundsMax)
         {
             return !(boundsMax.x < boundsMin.x
                 || boundsMax.y < boundsMin.y
                 || boundsMax.z < boundsMin.z);
-        }
-
-        /// <summary>
-        /// Gets the bounds of the AABB that contains the  array of vectors.
-        /// </summary>
-        /// <param name="flatVectors">An flattened array of vectors in the form
-        /// [(x, y, z) * vectorCount].</param>
-        /// <param name="vectorCount">The number of vectors in the array.</param>
-        /// <param name="bounds">An array of length 6 to store the bounds 
-        /// result in. Null is allowed. [(minX, minY, minZ, maxX, maxY, maxZ)] 
-        /// [Out]
-        /// </param>
-        /// <returns>
-        /// The bounds of the vectors.        
-        /// (Will be a reference to the bounds parameter if one was provided.)
-        /// </returns>
-        public static float[] GetBounds(float[] flatVectors
-            , int vectorCount
-            , float[] bounds)
-        {
-            if (bounds == null)
-                bounds = new float[6];
-
-            bounds[0] = flatVectors[0];
-            bounds[1] = flatVectors[1];
-            bounds[2] = flatVectors[2];
-            bounds[3] = flatVectors[0];
-            bounds[4] = flatVectors[1];
-            bounds[5] = flatVectors[2];
-
-            int length = vectorCount * 3;
-            for (int p = 3; p < length; p += 3)
-            {
-                bounds[0] = Math.Min(bounds[0], flatVectors[p + 0]);
-                bounds[1] = Math.Min(bounds[1], flatVectors[p + 1]);
-                bounds[2] = Math.Min(bounds[2], flatVectors[p + 2]);
-                bounds[3] = Math.Max(bounds[3], flatVectors[p + 0]);
-                bounds[4] = Math.Max(bounds[4], flatVectors[p + 1]);
-                bounds[5] = Math.Max(bounds[5], flatVectors[p + 2]);
-            }
-
-            return bounds;
-        }
-
-        public static void GetBounds(float[] verts
-            , int[] tris
-            , int triCount
-            , int axis
-            , out float min
-            , out float max)
-        {
-            // TODO: Add unit test.
-
-            if (axis < 0 || axis > 2)
-            {
-                min = 0;
-                max = 0;
-                return;
-            }
-
-            int pVertVal = tris[0] * 3 + axis ;
-
-            min = verts[pVertVal];
-            max = min;
-
-            int length = triCount * 3;
-            for (int p = 0; p < length; p++)
-            {
-                pVertVal = tris[p] * 3 + axis;
-
-                min = Math.Min(min, verts[pVertVal]);
-                max = Math.Max(max, verts[pVertVal]);
-            }
-        }
-
-        /// <summary>
-        /// Gets the bounds of the AABB that contains the triangles.
-        /// </summary>
-        /// <param name="verts">An array of vertices. [(x, y, z)]</param>
-        /// <param name="tris">An array of triangle indices. 
-        /// [(vertIndexA, vertIndexB, vertIndexC) * triCount]</param>
-        /// <param name="triCount">The number of triangles in the triangle
-        /// array.</param>
-        /// <param name="bounds">An array of length 6 to store the bounds 
-        /// result in. Null is allowed. [(minX, minY, minZ, maxX, maxY, maxZ)]
-        /// [Out]
-        /// </param>
-        /// <returns>
-        /// The bounds of the triangles.
-        /// (Will be a reference to the bounds parameter if one was provided.)
-        /// </returns>
-        public static float[] GetBounds(float[] verts
-            , int[] tris
-            , int triCount
-            , float[] bounds)
-        {
-            // TODO: Add unit test.
-
-            if (bounds == null)
-                bounds = new float[6];
-
-            int pVert = tris[0] * 3;
-            bounds[0] = verts[pVert + 0];
-            bounds[1] = verts[pVert + 1];
-            bounds[2] = verts[pVert + 2];
-            bounds[3] = verts[pVert + 0];
-            bounds[4] = verts[pVert + 1];
-            bounds[5] = verts[pVert + 2];
-
-            int length = triCount * 3;
-            for (int p = 1; p < length; p++)
-            {
-                pVert = tris[p] * 3;
-                bounds[0] = Math.Min(bounds[0], verts[pVert + 0]);
-                bounds[1] = Math.Min(bounds[1], verts[pVert + 1]);
-                bounds[2] = Math.Min(bounds[2], verts[pVert + 2]);
-                bounds[3] = Math.Max(bounds[3], verts[pVert + 0]);
-                bounds[4] = Math.Max(bounds[4], verts[pVert + 1]);
-                bounds[5] = Math.Max(bounds[5], verts[pVert + 2]);
-            }
-
-            return bounds;
         }
 
         public static Vector3 Zero
@@ -581,28 +349,7 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Returns the standard string representation of the provided array
-        /// vector.
-        /// </summary>
-        /// <param name="vector">An array vector. [(x, y, z)]</param>
-        /// <returns>A string representing the vector.</returns>
-        public static string ToString(float[] vector)
-        {
-            return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
-                , vector[0], vector[1], vector[2]);
-        }
-
-        public static string ToString(float[] vector, int index)
-        {
-            return string.Format("[{0:F3}, {1:F3}, {2:F3}]"
-                , vector[index * 3 + 0]
-                , vector[index * 3 + 1]
-                , vector[index * 3 + 2]);
-        }
-
-        /// <summary>
-        /// Returns a standard string representation of the provided Unity
-        /// vector.
+        /// Returns a standard string representation of the provided vector.
         /// </summary>
         /// <param name="vector">A vector.</param>
         /// <returns>A string representing the vector.</returns>

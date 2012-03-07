@@ -68,8 +68,7 @@ namespace org.critterai
         /// </param>
         /// <returns>The normalized direction vector for the vector pointing 
         /// from point A to B.</returns>
-        public static Vector2 GetDirectionAB(float ax, float ay
-                , float bx, float by)
+        public static Vector2 GetDirectionAB(float ax, float ay , float bx, float by)
         {
             // Subtract.
             Vector2 result = new Vector2(bx - ax, by - ay);
@@ -112,9 +111,7 @@ namespace org.critterai
         /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(float ux, float uy
-                , float vx, float vy
-                , float tolerance)
+        public static bool SloppyEquals(float ux, float uy , float vx, float vy , float tolerance)
         {
             // Duplicating code for performance reasons.
             float dx = ux - vx;
@@ -171,9 +168,7 @@ namespace org.critterai
         /// <returns>True if the provided vectors are similar enough to be
         /// considered equal.
         /// </returns>
-        public static bool SloppyEquals(Vector2 u
-                , float vx, float vy
-                , float tolerance)
+        public static bool SloppyEquals(Vector2 u , float vx, float vy , float tolerance)
         {
             // Duplicating code for performance reasons.
             float dx = u.x - vx;
@@ -201,8 +196,7 @@ namespace org.critterai
         /// <param name="by">The y-value of the point (bx, by).</param>
         /// <returns>The square of the distance between the two provided 
         /// points.</returns>
-        public static float GetDistanceSq(float ax, float ay
-            , float bx, float by)
+        public static float GetDistanceSq(float ax, float ay, float bx, float by)
         {
             float dx = ax - bx;
             float dy = ay - by;
