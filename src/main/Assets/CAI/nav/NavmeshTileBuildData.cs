@@ -693,8 +693,8 @@ namespace org.critterai.nav
             mTileLayer = tileLayer;
             mTileUserId = tileUserId;
 
-            Vector3Util.GetVector(boundsMin, mBoundsMin);
-            Vector3Util.GetVector(boundsMax, mBoundsMax);
+            GetVector(boundsMin, mBoundsMin);
+            GetVector(boundsMax, mBoundsMax);
 
             mXZCellSize = xzCellSize;
             mYCellSize = yCellSize;
@@ -801,7 +801,7 @@ namespace org.critterai.nav
             if (mPolyCount == 0)
                 mPolyCount = meshCount;
 
-            float[] fverts = Vector3Util.Flatten(verts);
+            float[] fverts = Vector3Util.Flatten(verts, vertCount);
 
             Marshal.Copy(fverts, 0, mDetailVerts, vertCount * 3);
             Marshal.Copy(tris, 0, mDetailTris, triCount * 4);
@@ -859,7 +859,7 @@ namespace org.critterai.nav
 
             mConnCount = connCount;
 
-            float[] fverts = Vector3Util.Flatten(connVerts);
+            float[] fverts = Vector3Util.Flatten(connVerts, connCount * 2);
             Marshal.Copy(fverts, 0, mConnVerts, connCount * 2 * 3);
             Marshal.Copy(connRadii, 0, mConnRadii, connCount);
             Marshal.Copy(connDirs, 0, mConnDirs, connCount);
@@ -1135,6 +1135,14 @@ namespace org.critterai.nav
             }
 
             return true;
+        }
+
+        private static float[] GetVector(Vector3 vector, float[] buffer)
+        {
+            buffer[0] = vector.x;
+            buffer[1] = vector.y;
+            buffer[2] = vector.z;
+            return buffer;
         }
     }
 }

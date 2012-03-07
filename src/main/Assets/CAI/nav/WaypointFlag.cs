@@ -19,31 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.nav
 {
     /// <summary>
     /// Flags for path related waypoints.
     /// </summary>
-    [Flags]
+    [System.Flags]
     public enum WaypointFlag : byte
     {
         /// <summary>
         /// The point is the start point in the path.
         /// </summary>
-        Start = 1,
+        Start = 0x01,
 
         /// <summary>
         /// The point is the end point in the path.
         /// </summary>
-        End = 2,
+        End = 0x02,
 
         /// <summary>
         /// The point is the start of an off-mesh connection.
         /// </summary>
         /// <remarks>This flag is useful in detecting when special
         /// locomotion handling needs to occur.</remarks>
-        OffMesh = 4
+        OffMesh = 0x04
     }
 }

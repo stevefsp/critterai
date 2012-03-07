@@ -19,14 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
 
 namespace org.critterai.nav
 {
     /// <summary>
     /// Navigation status flags.
     /// </summary>
-    [Flags]
+    [System.Flags]
     public enum NavStatus : uint
     {
         /// <summary>

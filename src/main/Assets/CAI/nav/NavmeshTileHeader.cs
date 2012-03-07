@@ -148,5 +148,38 @@ namespace org.critterai.nav
         /// to bounding volumn coordinates.)
         /// </summary>
         public float bvQuantFactor;
+
+        /// <summary>
+        /// Privides human readable text for the header. (Multi-line.)
+        /// </summary>
+        /// <returns>Text describing the header.</returns>
+        public override string ToString()
+        {
+            return string.Format("Tile: X: {2}, Z: {3}, Layer: {4}\n"
+                + "Version: {1}, UserId: {5}\n"
+                + "Polys: {6}, Verts: {7}\n"
+                + "Detail: Meshes: {9}, Tris: {11}, Verts: {10}\n"
+                + "Conns: {13}, ConnBase: {14}\n"
+                + "Walkable: Height: {15}, Radius: {16}, Step: {17}\n"
+                + "Bounds: Min: {18}, Max: {19}\n"
+                + "MaxLinks: {8}, BVQuantFactor: {20}, BVNodes: {12}\n"
+                + "Magic: {0}\n"
+                , magic, version
+                , x, z, layer
+                , userId
+                , polyCount, vertCount
+                , maxLinkCount
+                , detailMeshCount
+                , detailVertCount
+                , detailTriCount
+                , bvNodeCount
+                , connCount, connBase
+                , walkableHeight
+                , walkableRadius
+                , walkableStep
+                , Vector3Util.ToString(boundsMin)
+                , Vector3Util.ToString(boundsMax)
+                , bvQuantFactor);
+        }
     }
 }
