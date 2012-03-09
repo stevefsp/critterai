@@ -23,32 +23,29 @@
 namespace org.critterai.interop
 {
     /// <summary>
-    /// Indicates how an object's unmanaged resources have been allocated and
-    /// are managed.
+    /// Indicates how an object's unmanaged resources have been allocated and are managed.
     /// </summary>
     public enum AllocType : byte
     {
         /// <summary>
-        /// Unmanaged resources were allocated locally and must
-        /// be freed locally.
+        /// Unmanaged resources were allocated locally and must be freed locally.
         /// </summary>
         Local = 0,
 
         /// <summary>
-        /// Unmanaged resources were allocated by an external library
-        /// and a call must be made to the library to free them.
+        /// Unmanaged resources were allocated by an external library and a call must be made 
+        /// to the library to free them.
         /// </summary>
         External = 1,
 
         /// <summary>
-        /// Unmanaged resources were allocated and are managed by an
-        /// external library.  There is no local responsiblity to
-        /// directly free the resources.
+        /// Unmanaged resources were allocated and are managed by an external library.  There is 
+        /// no local responsiblity to directly free the resources.
         /// </summary>
         /// <remarks>
-        /// Objects of this type are usually allocated and owned by another
-        /// unmanaged object.  So its resources are freed by its owner
-        /// when its owner is freed.
+        /// <para>
+        /// Objects of this type are usually allocated and owned by another unmanaged object.  So 
+        /// its resources are freed by its owner when its owner is freed.</para>
         /// </remarks>
         ExternallyManaged = 2
     }

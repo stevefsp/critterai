@@ -80,7 +80,7 @@ namespace org.critterai.geom
                         .ToString(CultureInfo.InvariantCulture) + "\n");
             }
 
-            for (int p = 0; p < mesh.triCount; p += 3)
+            for (int p = 0; p < mesh.triCount * 3; p += 3)
             {
                 // The +1 converts to a 1-based index.
                 if (reverseWrap)
