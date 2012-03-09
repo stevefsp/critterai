@@ -115,44 +115,43 @@ namespace org.critterai.geom
         //    return sb.ToString();
         //}
 
-        public static string TranslateTo(Vector3[] vertices
-            , int[] triangles
+        public static string TranslateTo(TriangleMesh mesh
             , bool reverseWrap
             , bool invertXAxis)
         {
             StringBuilder sb = new StringBuilder();
             float xFactor = (invertXAxis ? -1 : 1);
-            for (int p = 0; p < vertices.Length; p += 1)
+            for (int i = 0; i < mesh.vertCount; i += 1)
             {
                 sb.Append("v "
-                    + (vertices[p].x * xFactor)
+                    + (mesh.verts[i].x * xFactor)
                         .ToString(CultureInfo.InvariantCulture) + " "
-                    + vertices[p].y
+                    + mesh.verts[i].y
                         .ToString(CultureInfo.InvariantCulture) + " "
-                    + vertices[p].z
+                    + mesh.verts[i].z
                         .ToString(CultureInfo.InvariantCulture) + "\n");
             }
-            for (int p = 0; p < triangles.Length; p += 3)
+            for (int p = 0; p < mesh.triCount; p += 3)
             {
                 // The +1 converts to a 1-based index.
                 if (reverseWrap)
                 {
                     sb.Append("f "
-                        + (triangles[p + 0] + 1)
+                        + (mesh.tris[p + 0] + 1)
                             .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 2] + 1)
+                        + (mesh.tris[p + 2] + 1)
                             .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 1] + 1)
+                        + (mesh.tris[p + 1] + 1)
                             .ToString(CultureInfo.InvariantCulture) + "\n");
                 }
                 else
                 {
                     sb.Append("f "
-                        + (triangles[p + 0] + 1)
+                        + (mesh.tris[p + 0] + 1)
                             .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 1] + 1)
+                        + (mesh.tris[p + 1] + 1)
                             .ToString(CultureInfo.InvariantCulture) + " "
-                        + (triangles[p + 2] + 1)
+                        + (mesh.tris[p + 2] + 1)
                             .ToString(CultureInfo.InvariantCulture) + "\n");
                 }
             }
@@ -226,9 +225,7 @@ namespace org.critterai.geom
         //    return;
         //}
 
-        public static void TranslateFrom(string wavefrontText
-            , out Vector3[] vertices
-            , out int[] triangles)
+        public static TriangleMesh TranslateFrom(string wavefrontText)
         {
             List<Vector3> lverts = new List<Vector3>();
             List<int> lindices = new List<int>();
@@ -270,10 +267,8 @@ namespace org.critterai.geom
                 }
             }
 
-            vertices = lverts.ToArray();
-            triangles = lindices.ToArray();
-
-            return;
+            return new TriangleMesh(lverts.ToArray(), lverts.Count
+                , lindices.ToArray(), lindices.Count / 3);
         }
     }
 }
