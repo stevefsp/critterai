@@ -48,10 +48,8 @@ namespace org.critterai.geom
         /// <param name="dy">The y-value for point D on line CD.</param>
         /// <returns>True if the two lines are either collinear or intersect 
         /// at one point.</returns>
-        public static bool LinesIntersect(int ax, int ay
-                , int bx, int by
-                , int cx, int cy
-                , int dx, int dy)
+        public static bool LinesIntersect(int ax, int ay, int bx, int by
+                , int cx, int cy, int dx, int dy)
         {
             int numerator = 
                 ((ay - cy) * (dx - cx)) - ((ax - cx) * (dy - cy));

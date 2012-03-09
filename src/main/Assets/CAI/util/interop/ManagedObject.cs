@@ -28,13 +28,10 @@ namespace org.critterai.interop
     public abstract class ManagedObject
         : IManagedObject
     {
-        /// <summary>
-        /// The type of unmanaged resource used by the object.
-        /// </summary>
         private readonly AllocType mResourceType;
 
         /// <summary>
-        /// The type of unmanaged resources within the object.
+        /// The type of unmanaged resources held by the object.
         /// </summary>
         public AllocType ResourceType { get { return mResourceType; } }
 
@@ -48,18 +45,18 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Request all unmanaged resources controlled by the object be 
-        /// immediately freed and the object marked as disposed.
+        /// Request all unmanaged resources controlled by the object be immediately freed and 
+        /// the object marked as disposed.
         /// </summary>
         /// <remarks>
-        /// Whether or not unmanaged resources are actually freed depends 
-        /// on whether the resources are owned by the object.  In some cases
-        /// the only action is to mark the object as disposed.
+        /// <para> Whether or not unmanaged resources are actually freed depends on whether the 
+        /// resources are owned by the object.  In some cases the only action is to mark the 
+        /// object as disposed.</para>
         /// </remarks>
         public abstract void RequestDisposal();
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public abstract bool IsDisposed { get; }
     }

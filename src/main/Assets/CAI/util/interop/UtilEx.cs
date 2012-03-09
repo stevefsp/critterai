@@ -30,17 +30,15 @@ namespace org.critterai.interop
     public static class UtilEx
     {
         /// <summary>
-        /// Copies the data from an unmanaged memory pointer to a ushort array.
+        /// Copies data from an unmanaged memory pointer to a ushort array.
         /// </summary>
         /// <remarks>
-        /// This method behaves the same as the Marshal.Copy methods.
+        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
         /// </remarks>
         /// <param name="source">A memory pointer to copy from.</param>
         /// <param name="destination">The array to copy to.</param>
         /// <param name="length">The length of the copy.</param>
-        public static void Copy(IntPtr source
-            , ushort[] destination
-            , int length)
+        public static void Copy(IntPtr source, ushort[] destination, int length)
         {
             int byteLength = sizeof(ushort) * length;
             byte[] tmp = new byte[byteLength];
@@ -49,17 +47,15 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Copies the data from an unmanaged memory pointer to a uint array.
+        /// Copies data from an unmanaged memory pointer to a uint array.
         /// </summary>
         /// <remarks>
-        /// This method behaves the same as the Marshal.Copy methods.
+        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
         /// </remarks>
         /// <param name="source">A memory pointer to copy from.</param>
         /// <param name="destination">The array to copy to.</param>
         /// <param name="length">The length of the copy.</param>
-        public static void Copy(IntPtr source
-            , uint[] destination
-            , int length)
+        public static void Copy(IntPtr source, uint[] destination, int length)
         {
             int byteLength = sizeof(uint) * length;
             byte[] tmp = new byte[byteLength];
@@ -68,21 +64,16 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Copies the content of a one-dimentional ushort array to an
-        /// unmanaged memory pointer.
+        /// Copies the content of a one-dimentional array to an unmanaged memory pointer.
         /// </summary>
         /// <remarks>
-        /// This method behaves the same as the Marshal.Copy methods.
+        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
         /// </remarks>
         /// <param name="source">An array to copy from.</param>
-        /// <param name="startIndex">The index where the copy should start.
-        /// </param>
+        /// <param name="startIndex">The index where the copy should start.</param>
         /// <param name="destination">The memory pointer to copy to.</param>
         /// <param name="length">The length of the copy.</param>
-        public static void Copy(ushort[] source
-            , int startIndex
-            , IntPtr destination
-            , int length)
+        public static void Copy(ushort[] source, int startIndex, IntPtr destination, int length)
         {
             int size = sizeof(ushort);
             int byteLength = size * length;
@@ -93,21 +84,16 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Copies the content of a one-dimentional uint array to an
-        /// unmanaged memory pointer.
+        /// Copies the content of a one-dimentional array to an unmanaged memory pointer.
         /// </summary>
         /// <remarks>
-        /// This method behaves the same as the Marshal.Copy methods.
+        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
         /// </remarks>
         /// <param name="source">An array to copy from.</param>
-        /// <param name="startIndex">The index where the copy should start.
-        /// </param>
+        /// <param name="startIndex">The index where the copy should start.</param>
         /// <param name="destination">The memory pointer to copy to.</param>
         /// <param name="length">The length of the copy.</param>
-        public static void Copy(uint[] source
-            , int startIndex
-            , IntPtr destination
-            , int length)
+        public static void Copy(uint[] source, int startIndex, IntPtr destination, int length)
         {
             int size = sizeof(uint);
             int byteLength = size * length;
@@ -121,9 +107,8 @@ namespace org.critterai.interop
         /// Gets a pointer to an allocated umanaged memory buffer.
         /// </summary>
         /// <param name="size">The size, in bytes, of the buffer.</param>
-        /// <param name="zeroMemory">Zeros the content of the buffer.</param>
-        /// <returns>A pointer to an allocated unmanaged memory butter.
-        /// </returns>
+        /// <param name="zeroMemory">If true the the content of the buffer will be zeroed.</param>
+        /// <returns>A pointer to an allocated unmanaged memory butter.</returns>
         public static IntPtr GetBuffer(int size, bool zeroMemory)
         {
             IntPtr result = Marshal.AllocHGlobal(size);
@@ -133,14 +118,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Gets a pointer to an unmanaged memory buffer filled from a
-        /// ushort array.
+        /// Gets a pointer to an unmanaged memory buffer filled from an array.
         /// </summary>
         /// <param name="source">The array used to build the buffer.</param>
-        /// <param name="length">The number of elements to copy from the source.
-        /// </param>
-        /// <returns>A pointer to an unmanaged memory buffer filled from
-        /// the source array.</returns>
+        /// <param name="length">The number of elements to copy from the source.</param>
+        /// <returns>A pointer to an unmanaged memory buffer filled from the source array.</returns>
         public static IntPtr GetFilledBuffer(ushort[] source, int length)
         {
             int size = sizeof(ushort) * length;
@@ -150,14 +132,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Gets a pointer to an unmanaged memory buffer filled from a
-        /// uint array.
+        /// Gets a pointer to an unmanaged memory buffer filled from an array.
         /// </summary>
         /// <param name="source">The array used to build the buffer.</param>
-        /// <param name="length">The number of elements to copy from the source.
-        /// </param>
-        /// <returns>A pointer to an unmanaged memory buffer filled from
-        /// the source array.</returns>
+        /// <param name="length">The number of elements to copy from the source.</param>
+        /// <returns>A pointer to an unmanaged memory buffer filled from the source array.</returns>
         public static IntPtr GetFilledBuffer(uint[] source, int length)
         {
             int size = sizeof(uint) * length;
@@ -166,14 +145,11 @@ namespace org.critterai.interop
             return result;
         }
         /// <summary>
-        /// Gets a pointer to an unmanaged memory buffer filled from a
-        /// float array.
+        /// Gets a pointer to an unmanaged memory buffer filled from an array.
         /// </summary>
         /// <param name="source">The array used to build the buffer.</param>
-        /// <param name="length">The number of elements to copy from the source.
-        /// </param>
-        /// <returns>A pointer to an unmanaged memory buffer filled from
-        /// the source array.</returns>
+        /// <param name="length">The number of elements to copy from the source.</param>
+        /// <returns>A pointer to an unmanaged memory buffer filled from the source array.</returns>
         public static IntPtr GetFilledBuffer(float[] source, int length)
         {
             int size = sizeof(float) * length;
@@ -183,14 +159,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Gets a pointer to an unmanaged memory buffer filled from an
-        /// int array.
+        /// Gets a pointer to an unmanaged memory buffer filled from an array.
         /// </summary>
         /// <param name="source">The array used to build the buffer.</param>
-        /// <param name="length">The number of elements to copy from the source.
-        /// </param>
-        /// <returns>A pointer to an unmanaged memory buffer filled from
-        /// the source array.</returns>
+        /// <param name="length">The number of elements to copy from the source.</param>
+        /// <returns>A pointer to an unmanaged memory buffer filled from the source array.</returns>
         public static IntPtr GetFilledBuffer(int[] source, int length)
         {
             int size = sizeof(int) * length;
@@ -200,14 +173,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Gets a pointer to an unmanaged memory buffer filled from a
-        /// byte array.
+        /// Gets a pointer to an unmanaged memory buffer filled from an array.
         /// </summary>
         /// <param name="source">The array used to build the buffer.</param>
-        /// <param name="length">The number of elements to copy from the source.
-        /// </param>
-        /// <returns>A pointer to an unmanaged memory buffer filled from
-        /// the source array.</returns>
+        /// <param name="length">The number of elements to copy from the source.</param>
+        /// <returns>A pointer to an unmanaged memory buffer filled from the source array.</returns>
         public static IntPtr GetFilledBuffer(byte[] source, int length)
         {
             IntPtr result = Marshal.AllocHGlobal(length);
@@ -216,14 +186,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Returns a ushort array filled from an unmanaged memory buffer.
+        /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
-        /// <param name="source">The pointer to an allocated unmanaged
-        /// memory buffer.</param>
-        /// <param name="length">The number of elements to copy into
-        /// the return array.</param>
-        /// <returns>A ushort array filled from the unmanaged memory buffer.
-        /// </returns>
+        /// <param name="source">The pointer to an allocated unmanaged memory buffer.</param>
+        /// <param name="length">The number of elements to copy into the return array.</param>
+        /// <returns>A ushort array filled from the unmanaged memory buffer.</returns>
         public static ushort[] ExtractArrayUShort(IntPtr source, int length)
         {
             ushort[] result = new ushort[length];
@@ -232,14 +199,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Returns a uint array filled from an unmanaged memory buffer.
+        /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
-        /// <param name="source">The pointer to an allocated unmanaged
-        /// memory buffer.</param>
-        /// <param name="length">The number of elements to copy into
-        /// the return array.</param>
-        /// <returns>A uint array filled from the unmanaged memory buffer.
-        /// </returns>
+        /// <param name="source">The pointer to an allocated unmanagedmemory buffer.</param>
+        /// <param name="length">The number of elements to copy into the return array.</param>
+        /// <returns>A uint array filled from the unmanaged memory buffer.</returns>
         public static uint[] ExtractArrayUInt(IntPtr source, int length)
         {
             uint[] result = new uint[length];
@@ -248,14 +212,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Returns an in array filled from an unmanaged memory buffer.
+        /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
-        /// <param name="source">The pointer to an allocated unmanaged
-        /// memory buffer.</param>
-        /// <param name="length">The number of elements to copy into
-        /// the return array.</param>
-        /// <returns>An int array filled from the unmanaged memory buffer.
-        /// </returns>
+        /// <param name="source">The pointer to an allocated unmanagedmemory buffer.</param>
+        /// <param name="length">The number of elements to copy into the return array.</param>
+        /// <returns>An int array filled from the unmanaged memory buffer.</returns>
         public static int[] ExtractArrayInt(IntPtr source, int length)
         {
             int[] result = new int[length];
@@ -264,14 +225,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Returns a byte array filled from an unmanaged memory buffer.
+        /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
-        /// <param name="source">The pointer to an allocated unmanaged
-        /// memory buffer.</param>
-        /// <param name="length">The number of elements to copy into
-        /// the return array.</param>
-        /// <returns>A byte array filled from the unmanaged memory buffer.
-        /// </returns>
+        /// <param name="source">The pointer to an allocated unmanaged memory buffer.</param>
+        /// <param name="length">The number of elements to copy intothe return array.</param>
+        /// <returns>A byte array filled from the unmanaged memory buffer.</returns>
         public static byte[] ExtractArrayByte(IntPtr source, int length)
         {
             byte[] result = new byte[length];
@@ -280,14 +238,11 @@ namespace org.critterai.interop
         }
 
         /// <summary>
-        /// Returns a float array filled from an unmanaged memory buffer.
+        /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
-        /// <param name="source">The pointer to an allocated unmanaged
-        /// memory buffer.</param>
-        /// <param name="length">The number of elements to copy into
-        /// the return array.</param>
-        /// <returns>A float array filled from the unmanaged memory buffer.
-        /// </returns>
+        /// <param name="source">The pointer to an allocated unmanaged memory buffer.</param>
+        /// <param name="length">The number of elements to copy into the return array.</param>
+        /// <returns>A float array filled from the unmanaged memory buffer.</returns>
         public static float[] ExtractArrayFloat(IntPtr source, int length)
         {
             float[] result = new float[length];
@@ -298,8 +253,7 @@ namespace org.critterai.interop
         /// <summary>
         /// Zeros the memory of an allocated unmanaged memory buffer.
         /// </summary>
-        /// <param name="target">A pointer to an allocated unmanaged
-        /// memory buffer.</param>
+        /// <param name="target">A pointer to an allocated unmanaged memory buffer.</param>
         /// <param name="size">The number of bytes to zero.</param>
         public static void ZeroMemory(IntPtr target, int size)
         {
