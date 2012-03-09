@@ -19,6 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#if NUNITY
+using Vector2 = org.critterai.Vector2;
+#else
+using Vector2 = UnityEngine.Vector2;
+#endif
 
 namespace org.critterai.geom
 {
@@ -31,23 +36,17 @@ namespace org.critterai.geom
     public static class Triangle2
     {
         /// <summary>
-        /// Returns TRUE if the point (px, py) is contained by the triangle.
-        /// (Inclusive)
+        /// Returns true if the point is contained by the triangle.
         /// </summary>
         /// <remarks>
-        /// <para>The test is inclusive.  So points on the vertices or edges
-        /// of the triangle are considered to be contained by the triangle.</para>
+        /// <para>The test is inclusive.  So points on the vertices or edges of the triangle 
+        /// are considered to be contained by the triangle.</para>
         /// </remarks>
-        /// <param name="px">The x-value for the point to test. (px, py)</param>
-        /// <param name="py">The y-value for the poitn to test. (px, py)</param>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <returns>TRUE if the point (x, y) is contained by the triangle ABC.
-        /// </returns>
+        /// <param name="p">The point to test.</param>
+        /// <param name="a">Vertex A of triangle ABC.</param>
+        /// <param name="b">Vertex B of triangle ABC</param>
+        /// <param name="c">Vertex C of triangle ABC</param>
+        /// <returns>True if the point is contained by the triangle ABC.</returns>
         public static bool Contains(Vector2 p, Vector2 a, Vector2 b, Vector2 c)
         {
             Vector2 dirAB = b - a;
@@ -70,34 +69,28 @@ namespace org.critterai.geom
         }
 
         /// <summary>
-        /// The absolute value of the returned value is two times the area of 
-        /// the triangle ABC.
+        /// The absolute value of the returned value is two times the area of the triangle ABC.
         /// </summary>
         /// <remarks>
         /// <para>A positive return value indicates:</para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
         /// </ul>
         /// <para>A negative value indicates:</para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or 
-        /// represent the same point.</para>
+        /// <para>A value of zero indicates that all points are collinear or represent the 
+        /// same point.</para>
         /// <para>This is a low cost method.</para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <returns>The absolute value of the returned value is two times the 
-        /// area of the triangle ABC.</returns>
+        /// <param name="a">Vertex A of triangle ABC.</param>
+        /// <param name="b">Vertex B of triangle ABC</param>
+        /// <param name="c">Vertex C of triangle ABC</param>
+        /// <returns>The absolute value of the returned value is two times the area of the 
+        /// triangle ABC.</returns>
         public static float GetSignedAreaX2(Vector2 a, Vector2 b, Vector2 c)
         {
             // References:
@@ -108,69 +101,64 @@ namespace org.critterai.geom
         }
 
         /// <summary>
-        /// The absolute value of the returned value is two times the area of 
-        /// the triangle ABC.
+        /// The absolute value of the returned value is two times the area of the triangle ABC.
         /// </summary>
         /// <remarks>
         /// <para>A positive return value indicates:</para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
         /// </ul>
         /// <para>A negative value indicates:</para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or 
-        /// represent the same point.</para>
+        /// <para>A value of zero indicates that all points are collinear or represent the 
+        /// same point.</para>
         /// <para>This is a low cost method.</para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
+        /// <param name="ax">The x-value for vertex A of triangle ABC</param>
+        /// <param name="ay">The y-value for vertex A of triangle ABC</param>
+        /// <param name="bx">The x-value for vertex B of triangle ABC</param>
+        /// <param name="by">The y-value for vertex B of triangle ABC</param>
+        /// <param name="cx">The x-value for vertex C of triangle ABC</param>
+        /// <param name="cy">The y-value for vertex C of triangle ABC</param>
         /// <returns>The absolute value of the returned value is two times the
         /// area of the triangle ABC.</returns>
         public static float GetSignedAreaX2(float ax, float ay
             , float bx, float by
             , float cx, float cy)
         {
-            // Keep this around for use by Vector3.
+            // Note: Keep this around for use by Vector3.
             return (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
         }
 
         /// <summary>
-        /// The absolute value of the returned value is two times the area of 
-        /// the triangle ABC.
+        /// The absolute value of the returned value is two times the area of the triangle ABC.
+        /// (Integer version.)
         /// </summary>
         /// <remarks>
         /// <para>A positive return value indicates:</para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
         /// </ul>
         /// <para>A negative value indicates:</para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
-        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
-        /// </li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or 
-        /// represent the same point.</para>
+        /// <para>A value of zero indicates that all points are collinear orrepresent the 
+        /// same point.</para>
         /// <para>This is a low cost method.</para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
+        /// <param name="ax">The x-value for vertex A of triangle ABC</param>
+        /// <param name="ay">The y-value for vertex A of triangle ABC</param>
+        /// <param name="bx">The x-value for vertex B of triangle ABC</param>
+        /// <param name="by">The y-value for vertex B of triangle ABC</param>
+        /// <param name="cx">The x-value for vertex C of triangle ABC</param>
+        /// <param name="cy">The y-value for vertex C of triangle ABC</param>
         /// <returns>The absolute value of the returned value is two times the
         /// area of the triangle ABC.</returns>
         public static int GetSignedAreaX2(int ax, int ay

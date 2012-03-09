@@ -26,7 +26,6 @@ namespace org.critterai.geom
     /// Specifies the position relationship between a point and a line.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para></remarks>
     public enum PointLineRelType : byte
     {
         /// <summary>
@@ -36,13 +35,13 @@ namespace org.critterai.geom
 
         /// <summary>
         /// The reference  point is to the left when looking from point 
-        /// A toward B on the line.
+        /// A toward point B along the line.
         /// </summary>
         LeftSide,
 
         /// <summary>
         /// The reference point is to the right when looking from point 
-        /// A toward B on the line.
+        /// A toward point B along the line.
         /// </summary>
         RightSide
     }

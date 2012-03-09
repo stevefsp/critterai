@@ -19,11 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#if NUNITY
+using Vector2 = org.critterai.Vector2;
+#else
+using Vector2 = UnityEngine.Vector2;
+#endif
 
 namespace org.critterai.geom
 {
     /// <summary>
-    /// Provides circle utility methods.
+    /// Provides circle related utility methods.
     /// </summary>
     /// <remarks>
     /// <para>Static methods are thread safe.</para>
@@ -38,26 +43,11 @@ namespace org.critterai.geom
         /// <para>Containment of one circle by another is considered intersection.
         /// </para>
         /// </remarks>
-        /// <param name="ax">
-        /// The x-value of circle A's center point. (ax, ay)
-        /// </param>
-        /// <param name="ay">
-        /// The y-value of circle A's center point. (ax, ay)
-        /// </param>
-        /// <param name="ar">
-        /// The radius of circle A.
-        /// </param>
-        /// <param name="bx">
-        /// The x-value of circle B's center point. (bx, by)
-        /// </param>
-        /// <param name="by">
-        /// The y-value of circle B's center point. (bx, by)
-        /// </param>
-        /// <param name="br">
-        /// The radius of Circle B.
-        /// </param>
-        /// <returns>TRUE if the circles intersect.
-        /// </returns>
+        /// <param name="a">The center point of circle A.</param>
+        /// <param name="ar">The radius of circle A.</param>
+        /// <param name="b">The center point of circle B.</param>
+        /// <param name="br">The radius of Circle B.</param>
+        /// <returns>True if the circles intersect.</returns>
         public static bool Intersects(Vector2 a, float aradius, Vector2 b, float bradius)
         {
             float dx = a.x - b.x;
@@ -69,16 +59,12 @@ namespace org.critterai.geom
         /// Determines whether or not a point is contained within a circle.
         /// </summary>
         /// <remarks>
-        /// <para>The test is inclusive of the circle boundary</para></remarks>
-        /// <param name="px">The x-value of point (px, py).</param>
-        /// <param name="py">The y-value of point (px, py).</param>
-        /// <param name="cx">The x-value of the circle's center point (cx, cy).
-        /// </param>
-        /// <param name="cy">The y-value of the circle's center point (cx, cy).
-        /// </param>
-        /// <param name="cr">The radius of the circle.</param>
-        /// <returns>TRUE if the point is contained within the circle.
-        /// </returns>
+        /// <para>The test is inclusive of the circle boundary</para><
+        /// /remarks>
+        /// <param name="p">The point to test.</param>
+        /// <param name="circle">The center point of the circle.</param>
+        /// <param name="radius">The radius of the circle.</param>
+        /// <returns>True if the point is contained within the circle.</returns>
         public static bool Contains(Vector2 point, Vector2 circle, float radius)
         {
             float dx = point.x - circle.x;

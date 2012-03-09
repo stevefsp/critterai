@@ -53,7 +53,7 @@ namespace org.critterai.geom
         BLineCrossesASeg,
 
         /// <summary>
-        /// Lines are parallel and do NOT overlap each other.  (Share no points.)
+        /// Lines are parallel and do not overlap each other.  (Share no points.)
         /// </summary>
         Parallel,
 
