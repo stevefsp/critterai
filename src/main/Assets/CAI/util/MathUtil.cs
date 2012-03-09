@@ -24,14 +24,13 @@ using System;
 namespace org.critterai
 {
     /// <summary>
-    /// Provides various math related utility methods.
+    /// Provides various math related constants and utility methods.
     /// </summary>
     /// <remarks>
     /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class MathUtil 
     {
-
         /// <summary>
         /// A standard epsilon value.  (Minimum positive value.)
         /// </summary>
@@ -44,7 +43,7 @@ namespace org.critterai
         
         /// <summary>
         /// Determines whether the values are within the specified tolerance
-        /// of each other. 
+        /// of each other.
         /// </summary>
         /// <param name="a">The a-value to compare the b-value against.
         /// </param>
@@ -77,7 +76,7 @@ namespace org.critterai
         /// <param name="value">The value to clamp.</param>
         /// <param name="minimum">The minimum allowed value.</param>
         /// <param name="maximum">The maximum allowed value.</param>
-        /// <returns>A value clamped to the specified range.</returns>
+        /// <returns>The value clamped to the specified range.</returns>
         public static int Clamp(int value, int minimum, int maximum)
         {
             return (value < minimum ? minimum : 

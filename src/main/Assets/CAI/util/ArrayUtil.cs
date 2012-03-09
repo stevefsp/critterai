@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,41 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace org.critterai
 {
     /// <summary>
-    /// Provides various array related utility methods.
+    /// Provides array related utility methods.
     /// </summary>
+    /// <remarks>
+    /// <para>Static methods are thread safe.</para>
+    /// </remarks>
     public static class ArrayUtil
     {
         /// <summary>
-        /// Determines whether or not the elements of the provided vectors 
-        /// are equal within the specified tolerance of each other.
+        /// Compresses an array by removing all null values.
         /// </summary>
-        /// <remarks>The arrays must be of the same length.</remarks>
-        /// <param name="a">An array.</param>
-        /// <param name="b">An array.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>TRUE if the associated elements are within the 
-        /// specified tolerance of each other</returns>
-        public static bool SloppyEquals(float[] a, float[] b, float tolerance)
-        {
-            tolerance = Math.Max(0, tolerance);
-            if (a.Length != b.Length)
-                return false;
-
-            for (int i = 0; i < a.Length; i++)
-            {
-                if (a[i] < b[i] - tolerance || a[i] > b[i] + tolerance)
-                    return false;
-            }
-            return true;
-        }
-
+        /// <remarks>
+        /// <para>Only valid for use with arrays of reference types.</para>
+        /// <para>No guarentees are made concerning the order of the items in the returned array.
+        /// </para>
+        /// </remarks>
+        /// <typeparam name="T">The type of the array.</typeparam>
+        /// <param name="items">The array.</param>
+        /// <returns>A reference to original array if it contained no nulls, or a
+        /// new array with all nulls removed.</returns>
         public static T[] Compress<T>(T[] items)
         {
             if (items == null)

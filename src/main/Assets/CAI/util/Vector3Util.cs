@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010-2011 Stephen A. Pratt
+ * Copyright (c) 2010-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,34 +29,34 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai
 {
     /// <summary>
-    /// Provides various 3D vector utility methods which are not provided
-    /// by the Unity3D vector class.
+    /// Provides various 3D vector utility methods.
     /// </summary>
     /// <remarks>
     /// <para>Static methods are thread safe.</para>
     /// </remarks>
     public static class Vector3Util
     {
-        ///// <summary>
-        ///// Performs a vector "right-handed"
-        ///// <a href="http://en.wikipedia.org/wiki/Cross_product" 
-        ///// target="_blank">cross product</a>. (u x v)
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>The resulting vector will be perpendicular to the plane 
-        ///// containing the two provided vectors.</para>
-        ///// <para>Special Case: The result will be zero if the two vectors are 
-        ///// parallel.</para>
-        ///// </remarks>
-        ///// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
-        ///// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
-        ///// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
-        ///// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
-        ///// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
-        ///// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        ///// <returns>The cross product of the two vectors.</returns>
+        /// <summary>
+        /// The zero vector. (0, 0, 0)
+        /// </summary>
+        public static Vector3 Zero
+        {
+            get { return new Vector3(0, 0, 0); }
+        }
 
-
+        /// <summary>
+        /// Performs a "right-handed" vector 
+        /// <a href="http://en.wikipedia.org/wiki/Cross_product" target="_blank">cross product</a>. 
+        /// (u x v)
+        /// </summary>
+        /// <remarks>
+        /// <para>The resulting vector will be perpendicular to the plane containing the two 
+        /// vectors.</para>
+        /// <para>Special Case: The result will be zero if the two vectors are  parallel.</para>
+        /// </remarks>
+        /// <param name="u">Vector u.</param>
+        /// <param name="v">Vector v.</param>
+        /// <returns>The cross product of the vectors.</returns>
         public static Vector3 Cross(Vector3 u, Vector3 v)
         {
             return new Vector3(u.y * v.z - u.z * v.y
@@ -65,23 +65,22 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Returns the square of the distance between the two provided 
-        /// points.
+        /// Returns the square of the distance between two points.
         /// </summary>
-        /// <param name="ax">The x-value of the point (ax, ay, az).</param>
-        /// <param name="ay">The y-value of the point (ax, ay, az).</param>
-        /// <param name="az">The z-value of the point (ax, ay, az). </param>
-        /// <param name="bx">The x-value of the point (bx, by, bz).</param>
-        /// <param name="by">The y-value of the point (bx, by, bz).</param>
-        /// <param name="bz">The z-value of the point (bx, by, bz).</param>
-        /// <returns> The square of the distance between the two provided 
-        /// points.</returns>
+        /// <param name="a">Point A.</param>
+        /// <param name="bx">Point B.</param>
+        /// <returns> The square of the distance between the points.</returns>
         public static float GetDistanceSq(Vector3 a, Vector3 b)
         {
             Vector3 d = a - b;
             return (d.x * d.x + d.y * d.y + d.z * d.z);
         }
 
+        /// <summary>
+        /// Normalizes the specified vector such that its length is equal to one. (Costly method!)
+        /// </summary>
+        /// <param name="v">The vector.</param>
+        /// <returns>A normalized vector.</returns>
         public static Vector3 Normalize(Vector3 v)
         {
             float m = (float)Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
@@ -103,13 +102,11 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Gets the distance between the specified points on the xz-plane. 
-        /// (Ignores y-axis.)
+        /// Gets the distance between the specified points on the xz-plane. (Ignores y-axis.)
         /// </summary>
         /// <param name="u">Vector u.</param>
         /// <param name="v">Vector v.</param>
-        /// <returns>The distance between the specified points on the 
-        /// xz-plane.</returns>
+        /// <returns>The distance between the specified points on the xz-plane.</returns>
         public static float GetDistance2D(Vector3 u, Vector3 v)
         {
             float dx = v.x - u.x;
@@ -117,82 +114,66 @@ namespace org.critterai
             return (float)Math.Sqrt(dx * dx + dz * dz);
         }
 
-        ///// <summary>
-        ///// Returns the square of the length of the vector.
-        ///// </summary>
-        ///// <param name="x">The x-value of the vector (x, y, z).</param>
-        ///// <param name="y">The y-value of the vector (x, y, z).</param>
-        ///// <param name="z">The z-value of the vector (x, y, z).</param>
-        ///// <returns>The square of the length of the vector.</returns>
-
+        /// <summary>
+        /// Returns the square of the length of the vector.
+        /// </summary>
+        /// <param name="v">The vector.</param>
+        /// <returns>The square of the length of the vector.</returns>
         public static float GetLengthSq(Vector3 v)
         {
             return (v.x * v.x + v.y * v.y + v.z * v.z);
         }
 
         /// <summary>
-        /// Returns the
-        /// <a href="http://en.wikipedia.org/wiki/Dot_product" target="_blank">
-        /// dot product</a> of the provided vectors.
+        /// Returns the vector
+        /// <a href="http://en.wikipedia.org/wiki/Dot_product" target="_blank"> dot product</a> 
+        /// of the specified vectors. (u . v)
         /// </summary>
-        /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
-        /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
-        /// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
-        /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
-        /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
-        /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <returns>The dot product of the provided vectors.</returns>
+        /// <param name="u">Vector u.</param>
+        /// <param name="v">Vector v.</param>
+        /// <returns>The dot product of the vectors.</returns>
         public static float Dot(Vector3 u, Vector3 v)
         {
             return (u.x * v.x) + (u.y * v.y) + (u.z * v.z);
         }
 
         /// <summary>
-        /// Determines whether or not the provided vectors are equal within
-        /// the specified tolerance.
+        /// Determines whether or not the specified vectors are equal within the specified 
+        /// tolerance.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Change in beahvior:  Prior to version 0.4, the area of equality 
-        /// for this method was an axis-aligned bounding box at the tip of
-        /// the vector. As of version 0.4 the area of equality is a sphere.
-        /// This change was made to improve performance.
+        /// Change in beahvior:  Prior to version 0.4, the area of equality for this method was 
+        /// an axis-aligned bounding box at the tip of the vector. As of version 0.4 the area of 
+        /// equality is a sphere. This change improves performance.
         /// </para>
         /// </remarks>
-        /// <param name="ux">The x-value of the vector (ux, uy, uz).</param>
-        /// <param name="uy">The y-value of the vector (ux, uy, uz).</param>
-        /// <param name="uz">The z-value of the vector (ux, uy, uz).</param>
-        /// <param name="vx">The x-value of the vector (vx, vy, vz).</param>
-        /// <param name="vy">The y-value of the vector (vx, vy, vz).</param>
-        /// <param name="vz">The z-value of the vector (vx, vy, vz).</param>
-        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
-        /// </param>
-        /// <returns>True if the provided vectors are similar enough to be
-        /// considered equal.
+        /// <param name="u">Vector u.</param>
+        /// <param name="v">Vector v.</param>
+        /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]</param>
+        /// <returns>True if the specified vectors are close enough to be considered equal.
         /// </returns>
         public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
         {
-            // Duplicating code for performance reasons.
             Vector3 d = u - v;
             return (d.x * d.x + d.y * d.y + d.z * d.z) <= tolerance * tolerance;
         }
 
         /// <summary>
-        /// Determines whether or not the two points are within range
-        /// of each other based on a xz-plane radius and a y-axis height.
+        /// Determines whether or not the two points are within range of each other based on a 
+        /// xz-plane radius and a y-axis height.
         /// </summary>
         /// <remarks>
-        /// <para>Essentially, one point defines the centroid of the cylinder 
-        /// and the other in tested for inclusion.</para>
+        /// <para>Essentially, one point defines the centroid of the cylinder and the other is 
+        /// tested for inclusion.</para>
         /// </remarks>
-        /// <param name="a">A position.</param>
-        /// <param name="b">A position.</param>
+        /// <param name="a">Point A.</param>
+        /// <param name="b">Point B.<param>
         /// <param name="radius">The allowed radius on the xz-plane.</param>
         /// <param name="height">The allowed y-axis delta.</param>
-        /// <returns>TRUE if the two vectors are within the xz-radius and 
-        /// y-height of each other.</returns>
-        public static bool IsInRange(Vector3 a, Vector3 b
-            , float radius, float height)
+        /// <returns>True if the two vectors are within the xz-radius and y-height of each other.
+        /// </returns>
+        public static bool IsInRange(Vector3 a, Vector3 b, float radius, float height)
         {
             Vector3 d = b - a;
             return (d.x * d.x + d.z * d.z) < radius * radius
@@ -200,26 +181,19 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Traslates point A toward point B by the specified factor of the 
-        /// distance between them.
+        /// Translates point A toward point B by the specified factor of the distance between them.
         /// </summary>
         /// <remarks>
         /// <para>Examples:</para>
         /// <para>If the factor is 0.0, then the result will equal A.<br/>
-        /// If the factor is 0.5, then the result will be the midpoint 
-        /// between A and B.<br/>
+        /// If the factor is 0.5, then the result will be the midpoint between A and B.<br/>
         /// If the factor is 1.0, then the result will equal B.<br/></para>
         /// </remarks>
-        /// <param name="ax">The x-value of the point (ax, ay, az).</param>
-        /// <param name="ay">The y-value of the point (ax, ay, az).</param>
-        /// <param name="az">The z-value of the point (ax, ay, az). </param>
-        /// <param name="bx">The x-value of the point (bx, by, bz).</param>
-        /// <param name="by">The y-value of the point (bx, by, bz).</param>
-        /// <param name="bz">The z-value of the point (bx, by, bz).</param>
-        /// <param name="factor">The factor which governs the distance the 
-        /// point is translated from A toward B.</param>
-        /// <returns>The point translated toward point B from point A.
-        /// </returns>
+        /// <param name="a">Point A.</param>
+        /// <param name="b">Point B.</param>
+        /// <param name="factor">The factor which governs the distance the point is translated 
+        /// from A toward B.</param>
+        /// <returns>The point translated toward point B from point A.</returns>
         public static Vector3 TranslateToward(Vector3 a, Vector3 b, float factor)
         {
             return new Vector3(a.x + (b.x - a.x) * factor
@@ -228,8 +202,7 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Flattens the vector array into a float array in the form 
-        /// (x, y, z).
+        /// Flattens the vector array into a float array in the form (x, y, z) * vertCount.
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
         /// <returns>An array of flattened vectors.</returns>
@@ -246,11 +219,11 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Creates an array of vectors from a flattend array of vectors
-        /// in the form (x, y, z).
+        /// Creates an array of vectors from a flattend array of vectors in the 
+        /// form (x, y, z) * vertCount.
         /// </summary>
-        /// <param name="flatVectors">An array of vectors in the form
-        /// (x, y, z).</param>
+        /// <param name="flatVectors">An array of vectors in the form (x, y, z) * vertCount.
+        /// </param>
         /// <returns>An array of vectors.</returns>
         public static Vector3[] GetVectors(float[] flatVectors)
         {
@@ -266,6 +239,22 @@ namespace org.critterai
             return result;
         }
 
+        /// <summary>
+        /// Copies a range of vectors from a flattend array to a vector array.
+        /// </summary>
+        /// <remarks>
+        /// <para>If a target buffer is provided is must be large enough to contain the results.
+        /// </para>
+        /// <para>If the target buffer is null a new array will be created with a length of
+        /// <paramref name="count"/> + <paramref name="targetIndex"/></para>
+        /// </remarks>
+        /// <param name="source">An array of vectors in the form (x, y, z) * vertCount.</param>
+        /// <param name="sourceIndex">The index of the start vector in the source array.</param>
+        /// <param name="target">The target vector buffer. (Or null.)</param>
+        /// <param name="targetIndex">The index within the target buffer to start the copy.</param>
+        /// <param name="count">The number of vectors to copy.</param>
+        /// <returns>The reference to the <paramref name="target"/> buffer, or a new array
+        /// if no buffer was provided.</returns>
         public static Vector3[] GetVectors(float[] source
             , int sourceIndex
             , Vector3[] target
@@ -278,16 +267,14 @@ namespace org.critterai
             for (int i = 0; i < count; i++)
             {
                 int p = (sourceIndex + i) * 3;
-                target[targetIndex + i] = 
-                    new Vector3(source[p + 0], source[p + 1], source[p + 2]);
+                target[targetIndex + i] = new Vector3(source[p + 0], source[p + 1], source[p + 2]);
             }
 
             return target;
         }
 
         /// <summary>
-        /// Gets the minimum and maximum bounds of the AABB which contains the 
-        /// array of vectors.
+        /// Gets the minimum and maximum bounds of the AABB which contains the array of vectors.
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
         /// <param name="minBounds">The mimimum bounds of the AABB.</param>
@@ -311,45 +298,8 @@ namespace org.critterai
             }
         }
 
-        // TODO: Move to triangle mesh.  Vector3Util does not know about triangles.
-        public static void GetBounds(Vector3[] verts
-             , int[] tris
-             , int triCount
-             , out Vector3 boundsMin
-             , out Vector3 boundsMax)
-        {
-            // TODO: Add unit test.
-
-            boundsMin = verts[tris[0]];
-            boundsMax = verts[tris[0]];
-
-            for (int i = 1; i < triCount * 3; i++)
-            {
-                Vector3 v = verts[tris[i]];
-                boundsMin.x = Math.Min(boundsMin.x, v.x);
-                boundsMin.y = Math.Min(boundsMin.y, v.y);
-                boundsMin.z = Math.Min(boundsMin.z, v.z);
-                boundsMax.x = Math.Max(boundsMax.x, v.x);
-                boundsMax.y = Math.Max(boundsMax.y, v.y);
-                boundsMax.z = Math.Max(boundsMax.z, v.z);
-            }
-        }
-
-        // TODO: Should this be here?
-        public static bool IsBoundsValid(Vector3 boundsMin, Vector3 boundsMax)
-        {
-            return !(boundsMax.x < boundsMin.x
-                || boundsMax.y < boundsMin.y
-                || boundsMax.z < boundsMin.z);
-        }
-
-        public static Vector3 Zero
-        {
-            get { return new Vector3(0, 0, 0); }
-        }
-
         /// <summary>
-        /// Returns a standard string representation of the provided vector.
+        /// Returns a standard string representation of the specified vector.
         /// </summary>
         /// <param name="vector">A vector.</param>
         /// <returns>A string representing the vector.</returns>
