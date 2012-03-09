@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 #if NUNITY
-using Vector2 = org.critterai.Vector3;
+using Vector2 = org.critterai.Vector2;
 #else
 using Vector2 = UnityEngine.Vector2;
 #endif
@@ -35,9 +35,8 @@ namespace org.critterai.geom
     /// </remarks>
     public static class Line2
     {
-        
         /// <summary>
-        /// Indicates whether or not line AB intersects line BC.
+        /// Indicates whether or not line AB intersects line BC. (Integer version.)
         /// </summary>
         /// <param name="ax">The x-value for point A on line AB.</param>
         /// <param name="ay">The y-value for point A on line AB.</param>
@@ -47,7 +46,7 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for point C on line CD.</param>
         /// <param name="dx">The x-value for point D on line CD.</param>
         /// <param name="dy">The y-value for point D on line CD.</param>
-        /// <returns>TRUE if the two lines are either collinear or intersect 
+        /// <returns>True if the two lines are either collinear or intersect 
         /// at one point.</returns>
         public static bool LinesIntersect(int ax, int ay
                 , int bx, int by
@@ -68,14 +67,10 @@ namespace org.critterai.geom
         /// <summary>
         /// Indicates whether or not line AB intersects line BC.
         /// </summary>
-        /// <param name="ax">The x-value for point A on line AB.</param>
-        /// <param name="ay">The y-value for point A on line AB.</param>
-        /// <param name="bx">The x-value for point B on line AB.</param>
-        /// <param name="by">The y-value for point B on line AB.</param>
-        /// <param name="cx">The x-value for point C on line CD.</param>
-        /// <param name="cy">The y-value for point C on line CD.</param>
-        /// <param name="dx">The x-value for point D on line CD.</param>
-        /// <param name="dy">The y-value for point D on line CD.</param>
+        /// <param name="a">Point A on line AB.</param>
+        /// <param name="b">Point B on ling AB.</param>
+        /// <param name="c">Point C on line CD.</param>
+        /// <param name="d">Point D on line CD.</param>
         /// <returns>TRUE if the two lines are either collinear or intersect 
         /// at one point.</returns>
         public static bool LinesIntersect(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
@@ -92,19 +87,15 @@ namespace org.critterai.geom
         }
         
         /// <summary>
-        /// Returns the distance squared from point P to line segment AB.
+        /// Returns the distance squared from point P to the nearest point on line segment AB.
         /// </summary>
-        /// <param name="px">The x-value of point P.</param>
-        /// <param name="py">The y-value of point P.</param>
-        /// <param name="ax">The x-value of point A of line segment AB.</param>
-        /// <param name="ay">The y-value of point A of line segment AB.</param>
-        /// <param name="bx">The x-value of point B of line segment AB.</param>
-        /// <param name="by">The y-value of point B of line segment AB.</param>
-        /// <returns>The distance squared from point B to line segment AB.
+        /// <param name="p">The point.</param>
+        /// <param name="a">Endpoint A of line segment AB.</param>
+        /// <param name="b">Endpoing B of line segment AB.</param>
+        /// <returns>The distance squared from the point to line segment AB.
         /// </returns>
         public static float GetPointSegmentDistanceSq(Vector2 p, Vector2 a, Vector2 b)
         {
-            
             /*
              * Reference: 
              * http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
@@ -147,15 +138,12 @@ namespace org.critterai.geom
         }
         
         /// <summary>
-        /// Returns the distance squared from point P to line AB.
+        /// Returns the distance squared from point P to the nearest point on line AB.
         /// </summary>
-        /// <param name="px">The x-value of point P.</param>
-        /// <param name="py">The y-value of point P.</param>
-        /// <param name="ax">The x-value of point A of line AB.</param>
-        /// <param name="ay">The y-value of point A of line AB.</param>
-        /// <param name="bx">The x-value of point B of line AB.</param>
-        /// <param name="by">The y-value of point B of line AB.</param>
-        /// <returns>The distance squared from point B to line AB.</returns>
+        /// <param name="p">The point.</param>
+        /// <param name="a">Point A on line AB.</param>
+        /// <param name="b">Point B on line AB.</param>
+        /// <returns>The distance squared from the point to line AB.</returns>
         public static float GetPointLineDistanceSq(Vector2 p, Vector2 a, Vector2 b)
         {
             /*
@@ -188,8 +176,7 @@ namespace org.critterai.geom
         }
         
         /// <summary>
-        /// Returns the normalized vector that is perpendicular to line AB.
-        /// WARNING: This is an expensive method.
+        /// Returns the normalized vector that is perpendicular to line AB. (Costly method!)
         /// </summary>
         /// <remarks>
         /// <para>The direction of the vector will be to the right when viewed 
@@ -197,10 +184,8 @@ namespace org.critterai.geom
         /// <para>Special Case: A zero length vector will be returned if points 
         /// A and B do not form a line.</para>
         /// </remarks>
-        /// <param name="ax">The x-value of point A on line AB.</param>
-        /// <param name="ay">The y-value of point A on line AB.</param>
-        /// <param name="bx">The x-value of point B on line AB.</param>
-        /// <param name="by">The y-value of point B on line AB.</param>
+        /// <param name="a">Point A on line AB.</param>
+        /// <param name="b">Point B on line AB.</param>
         /// <returns>The normalized vector that is perpendicular to line AB, 
         /// or a zero length vector if points A and B do not form a line.
         /// </returns>
@@ -223,31 +208,20 @@ namespace org.critterai.geom
         /// Determines the relationship between lines AB and CD.
         /// </summary>
         /// <remarks>
-        /// While this check is technically inclusive of the segment end 
-        /// points, floating point errors can result in end point intersection 
-        /// being missed.  If this matters,  a 
-        /// <see 
-        /// cref="Vector2Util.SloppyEquals(float, float, float, float, float)">
-        /// SloppyEquals</see> or similar test of  the intersection point can 
-        /// be performed to check for this issue.
+        /// While this check is technically inclusive of segment end points, floating point errors
+        /// can result in end point intersection being missed.  If this matters, a 
+        /// <see  cref="Vector2Util.SloppyEquals(float, float, float, float, float)">
+        /// SloppyEquals</see> or similar test of the intersection point can be performed.
         /// </remarks>
-        /// <param name="ax">The x-value for point A on line AB.</param>
-        /// <param name="ay">The y-value for point A on line AB.</param>
-        /// <param name="bx">The x-value for point B on line AB.</param>
-        /// <param name="by">The y-value for point B on line AB.</param>
-        /// <param name="cx">The x-value for point C on line CD.</param>
-        /// <param name="cy">The y-value for point C on line CD.</param>
-        /// <param name="dx">The x-value for point D on line CD.</param>
-        /// <param name="dy">The y-value for point D on line CD.</param>
-        /// <param name="outIntersectionPoint">If the lines intersect at
-        /// a single point, the vector will represent the point of 
-        /// intersection.</param>
+        /// <param name="a">Point A on line AB.</param>
+        /// <param name="b">Point B on ling AB.</param>
+        /// <param name="c">Point C on line CD.</param>
+        /// <param name="d">Point D on line CD.</param>
+        /// <param name="intersectPoint">The point of intersection, if applicable.</param>
         /// <returns>The relationship between lines AB and CD.</returns>
-        public static LineRelType GetRelationship(Vector2 a, Vector2 b
-            , Vector2 c, Vector2 d
+        public static LineRelType GetRelationship(Vector2 a, Vector2 b, Vector2 c, Vector2 d
             , out Vector2 intersectPoint)
         {
-
             Vector2 deltaAB = b - a;
             Vector2 deltaCD = d - c;
             Vector2 deltaCA = a - c; 

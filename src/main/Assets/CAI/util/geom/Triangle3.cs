@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2010-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,23 +37,16 @@ namespace org.critterai.geom
     public static class Triangle3 
     {
         /// <summary>
-        /// Returns the area of the triangle ABC.
-        /// WARNING: This is an costly method.
+        /// Returns the area of the triangle ABC. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>If the value is only needed for comparison with other triangles, 
-        /// then use  <see cref="GetAreaComp">GetAreaComp</see> instead. 
+        /// <para>Use <see cref="GetAreaComp">GetAreaComp</see> if the value is only needed 
+        /// for comparison with other triangles.
         /// </para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="az">The z-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="bz">The z-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <param name="cz">The z-value for vertex C in triangle ABC</param>
+        /// <param name="a">Vertex A of triangle ABC.</param>
+        /// <param name="b">Vertex B of triangle ABC.</param>
+        /// <param name="c">Vertex C of triangle ABC.</param>
         /// <returns>The area of the triangle ABC.</returns>
         public static float GetArea(Vector3 a, Vector3 b, Vector3 c)
         {
@@ -61,25 +54,18 @@ namespace org.critterai.geom
         }
         
         /// <summary>
-        /// Returns a value suitable for comparing the relative size of two 
-        /// triangles. (E.g. Is triangleA larger than triangleB.  )
+        /// Returns a value suitable for comparing the relative area of two triangles. (E.g. 
+        /// Is triangleA larger than triangleB.)
         /// </summary>
         /// <remarks>
-        /// <para>The value returned by this method can be converted to area as 
-        /// follows: Area = Math.sqrt(value)/2</para>
-        /// <para>Useful for quickly comparing the size of triangles.</para>
+        /// <para>The value returned by this method can be converted to an area as 
+        /// follows: Area = Math.sqrt(value) / 2</para>
+        /// <para>Useful for cheaply comparing the size of triangles.</para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="az">The z-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="bz">The z-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <param name="cz">The z-value for vertex C in triangle ABC</param>
-        /// <returns>A value suitable for comparing the relative size of two 
-        /// triangles.</returns>
+        /// <param name="a">Vertex A of triangle ABC.</param>
+        /// <param name="b">Vertex B of triangle ABC.</param>
+        /// <param name="c">Vertex C of triangle ABC.</param>
+        /// <returns>A value suitable for comparing the relative area of two triangles.</returns>
         public static float GetAreaComp(Vector3 a, Vector3 b, Vector3 c)
         {
             // References:
@@ -99,25 +85,18 @@ namespace org.critterai.geom
         }
         
         /// <summary>
-        /// Returns the normal for the  triangle.
-        /// WARNING: This is a costly method.
+        /// Returns the normal for the  triangle. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>The normal of a triangle is the vector perpendicular 
-        /// to the triangle's plane with the direction determined by the 
-        /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
-        /// target="_blank">right-handed rule</a>.</para>
+        /// <para>The normal of a triangle is the vector perpendicular to the triangle's plane 
+        /// with the direction determined by the  
+        /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule" target="_blank">
+        /// right-handed rule</a>.</para>
         /// </remarks>
-        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
-        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
-        /// <param name="az">The z-value for vertex A in triangle ABC</param>
-        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
-        /// <param name="by">The y-value for vertex B in triangle ABC</param>
-        /// <param name="bz">The z-value for vertex B in triangle ABC</param>
-        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
-        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
-        /// <param name="cz">The z-value for vertex C in triangle ABC</param>
-        /// <returns>The normal for the  triangle.</returns>
+        /// <param name="a">Vertex A of triangle ABC.</param>
+        /// <param name="b">Vertex B of triangle ABC.</param>
+        /// <param name="c">Vertex C of triangle ABC.</param>
+        /// <returns>The normal of the  triangle.</returns>
         public static Vector3 GetNormal(Vector3 a, Vector3 b, Vector3 c)
         {
             // Reference: 
@@ -128,22 +107,17 @@ namespace org.critterai.geom
         }
 
         /// <summary>
-        /// Returns the normal for the  triangle.
-        /// WARNING: This is a costly method.
+        /// Returns the normal for the  triangle. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>The normal of a triangle is the vector perpendicular 
-        /// to the triangle's plane with the direction determined by the 
-        /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
+        /// <para>The normal of a triangle is the vector perpendicular to the triangle's plane with
+        /// the direction determined by the  <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
         /// target="_blank">right-handed rule</a>.</para>
         /// </remarks>
-        /// <param name="vertices">An array of vertices which contains a 
-        /// representation of triangles in the form 
-        /// The wrap direction is  expected to be clockwise.
-        /// [Form:(x, y, z) * 3]</param>
-        /// <param name="startVertIndex">The index of the first vertex 
-        /// in the triangle.</param>
-        /// <returns>The normal for the  triangle.</returns>
+        /// <param name="vertices">An array of vertices which contains a representation of 
+        /// triangles. The wrap direction is  expected to be clockwise.</param>
+        /// <param name="startVertIndex">The index of the first vertex in the triangle.</param>
+        /// <returns>The normal of the triangle.</returns>
         public static Vector3 GetNormal(Vector3[] vertices, int triangle)
         {
             return GetNormal(vertices[triangle], vertices[triangle + 1], vertices[triangle + 2]);

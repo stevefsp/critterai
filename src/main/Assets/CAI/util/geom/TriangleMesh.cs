@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,13 @@ namespace org.critterai.geom
     public class TriangleMesh
     {
         /// <summary>
-        /// Vertices [Form: (x, y, z) * vertCount]
+        /// Vertices [Length: >= <see cref="vertCount"/>]
         /// </summary>
         public Vector3[] verts;
 
         /// <summary>
-        /// Triangles [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// Triangles [(vertAIndex, vertBIndex, vertCIndex) * <see cref="triCount"/>]
+        /// [Length: >= <see cref="triCount"/>
         /// </summary>
         public int[] tris;
 
@@ -57,18 +58,18 @@ namespace org.critterai.geom
         public int triCount;
 
         /// <summary>
-        /// Constuctor.
+        /// Default constuctor. (Un-initialized, not content.)
         /// </summary>
         public TriangleMesh() { }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="maxVerts">The maximum number of vertices the 
-        /// <see cref="verts"/> buffer needs to hold. [Limit: >= 3]
+        /// <param name="maxVerts">The maximum number of vertices the <see cref="verts"/> buffer 
+        /// needs to hold. [Limit: >= 3]
         /// </param>
-        /// <param name="maxTris">The maximum number of triangles the
-        /// <see cref="tris"/> buffer needs to hold. [Limit: >= 1]</param>
+        /// <param name="maxTris">The maximum number of triangles the <see cref="tris"/> buffer 
+        /// needs to hold. [Limit: >= 1]</param>
         public TriangleMesh(int maxVerts, int maxTris)
         {
             this.verts = new Vector3[Math.Max(3, maxVerts)];
@@ -78,18 +79,17 @@ namespace org.critterai.geom
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <remarks>This constructor assigns the provided references
-        /// to the object.  (No copying.)</remarks>
-        /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]
+        /// <remarks>
+        /// <para>This constructor assigns the provided references to the object.  (No copying.)
+        /// </para>
+        /// </remarks>
+        /// <param name="verts">The vertices. [Length: >= <typeparamref name="vertCount"/>]
         /// </param>
         /// <param name="vertCount">The number of vertices.</param>
-        /// <param name="tris">The triangles. 
-        /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
+        /// <param name="tris">The triangles. [(vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// [Length: >= <typeparamref name="triCount"/>.</param>
         /// <param name="triCount">The number of triangles.</param>
-        public TriangleMesh(Vector3[] verts
-            , int vertCount
-            , int[] tris
-            , int triCount)
+        public TriangleMesh(Vector3[] verts, int vertCount, int[] tris, int triCount)
         {
             this.verts = verts;
             this.vertCount = vertCount;
@@ -97,40 +97,67 @@ namespace org.critterai.geom
             this.triCount = triCount;
         }
 
-        public void GetBounds(out Vector3 boundsMin, out Vector3 boundsMax)
+        /// <summary>
+        /// Gets the AABB bounds of the mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>Do not call this method on an uninitialized mesh.</para>
+        /// </remarks>
+        /// <param name="boundsMin">The minimum bounds of the mesh.</param>
+        /// <param name="boundsMax">The maximum bounds of the mesh.</param>
+        public void GetBounds(out Vector3 bmin, out Vector3 bmax)
         {
-            // TODO: Add unit test.
-
-            boundsMin = verts[tris[0]];
-            boundsMax = verts[tris[0]];
+            bmin = verts[tris[0]];
+            bmax = verts[tris[0]];
 
             for (int i = 1; i < triCount * 3; i++)
             {
                 Vector3 v = verts[tris[i]];
-                boundsMin.x = Math.Min(boundsMin.x, v.x);
-                boundsMin.y = Math.Min(boundsMin.y, v.y);
-                boundsMin.z = Math.Min(boundsMin.z, v.z);
-                boundsMax.x = Math.Max(boundsMax.x, v.x);
-                boundsMax.y = Math.Max(boundsMax.y, v.y);
-                boundsMax.z = Math.Max(boundsMax.z, v.z);
+                bmin.x = Math.Min(bmin.x, v.x);
+                bmin.y = Math.Min(bmin.y, v.y);
+                bmin.z = Math.Min(bmin.z, v.z);
+                bmax.x = Math.Max(bmax.x, v.x);
+                bmax.y = Math.Max(bmax.y, v.y);
+                bmax.z = Math.Max(bmax.z, v.z);
             }
         }
 
+        /// <summary>
+        /// True if the minimum bounds is less than the maximum bounds on all axes.
+        /// </summary>
+        /// <param name="bmin">The minimum AABB bounds.</param>
+        /// <param name="bmax">The maximum AABB bounds.</param>
+        /// <returns>True if the minimum bounds is less than the maximum bounds on all axes.
+        /// </returns>
         public static bool IsBoundsValid(Vector3 bmin, Vector3 bmax)
         {
             return !(bmax.x < bmin.x || bmax.y < bmin.y || bmax.z < bmin.z);
         }
 
+        /// <summary>
+        /// Validates the structure and, optionally, the content of the mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>The basic structural validation includes null checks, array size checks, etc.
+        /// </para>
+        /// <para>The optional content validation checks that the indices refer to valid vertices 
+        /// and that triangles do not contain duplicate vertices.</para>
+        /// </remarks>
+        /// <param name="verts">The mesh vertices.</param>
+        /// <param name="vertCount">The vertex count.</param>
+        /// <param name="tris">The triangle indices.</param>
+        /// <param name="triCount">The triangle count.</param>
+        /// <param name="includeContent">If true, the content will be checked.  Otherwise only
+        /// the structure will be checked.</param>
+        /// <returns>True if the validation tests pass.</returns>
         public static bool Validate(Vector3[] verts, int vertCount
             , int[] tris, int triCount
             , bool includeContent)
         {
-            if (tris == null
-                || verts == null
+            if (tris == null || verts == null
                 || triCount * 3 > tris.Length
                 || vertCount > verts.Length
-                || triCount < 0
-                || vertCount < 0)
+                || triCount < 0 || vertCount < 0)
             {
                 return false;
             }
@@ -158,6 +185,19 @@ namespace org.critterai.geom
             return true;
         }
 
+        /// <summary>
+        /// Validates the structure and, optionally, the content of the mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>The basic structural validation includes null checks, array size checks, etc.
+        /// </para>
+        /// <para>The optional content validation checks that the indices refer to valid vertices
+        /// and that triangles do not contain duplicate vertices.</para>
+        /// </remarks>
+        /// <param name="mesh">The mesh to check.</param>
+        /// <param name="includeContent">If true, the content will be checked.  Otherwise only
+        /// the structure will be checked.</param>
+        /// <returns>True if the validation tests pass.</returns>
         public static bool Validate(TriangleMesh mesh, bool includeContent)
         {
             if (mesh == null)
