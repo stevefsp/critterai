@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2010-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,11 +58,11 @@ namespace org.critterai.geom
         /// </param>
         /// <returns>TRUE if the circles intersect.
         /// </returns>
-        public static bool Intersects(float ax, float ay, float ar
-            , float bx, float by, float br)
+        public static bool Intersects(Vector2 a, float aradius, Vector2 b, float bradius)
         {
-            return (Vector2Util.GetDistanceSq(ax, ay, bx, by) 
-                <= (ar + br) * (ar + br));
+            float dx = a.x - b.x;
+            float dy = a.y - b.y;
+            return (dx * dx + dy * dy) <= (aradius + bradius) * (aradius + bradius);
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace org.critterai.geom
         /// <param name="cr">The radius of the circle.</param>
         /// <returns>TRUE if the point is contained within the circle.
         /// </returns>
-        public static bool Contains(float px, float py
-            , float cx, float cy
-            , float cr)
+        public static bool Contains(Vector2 point, Vector2 circle, float radius)
         {
-            return (Vector2Util.GetDistanceSq(px, py, cx, cy) <= cr * cr);
+            float dx = point.x - circle.x;
+            float dy = point.y - circle.y;
+            return (dx * dx + dy * dy) <= radius * radius;
         }
     }
 }

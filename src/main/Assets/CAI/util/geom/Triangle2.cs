@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2010-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,23 +48,17 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
         /// <returns>TRUE if the point (x, y) is contained by the triangle ABC.
         /// </returns>
-        public static bool Contains(float px, float py
-                , float ax, float ay
-                , float bx, float by
-                , float cx, float cy)
+        public static bool Contains(Vector2 p, Vector2 a, Vector2 b, Vector2 c)
         {
-            float dirABx = bx - ax;
-            float dirABy = by - ay;
-            float dirACx = cx - ax;
-            float dirACy = cy - ay;
-            float dirAPx = px - ax;
-            float dirAPy = py - ay;
+            Vector2 dirAB = b - a;
+            Vector2 dirAC = c - a;
+            Vector2 dirAP = p - a;
 
-            float dotABAB = Vector2Util.Dot(dirABx, dirABy, dirABx, dirABy);
-            float dotACAB = Vector2Util.Dot(dirACx, dirACy, dirABx, dirABy);
-            float dotACAC = Vector2Util.Dot(dirACx, dirACy, dirACx, dirACy);
-            float dotACAP = Vector2Util.Dot(dirACx, dirACy, dirAPx, dirAPy);
-            float dotABAP = Vector2Util.Dot(dirABx, dirABy, dirAPx, dirAPy);
+            float dotABAB = Vector2Util.Dot(dirAB, dirAB);
+            float dotACAB = Vector2Util.Dot(dirAC, dirAB);
+            float dotACAC = Vector2Util.Dot(dirAC, dirAC);
+            float dotACAP = Vector2Util.Dot(dirAC, dirAP);
+            float dotABAP = Vector2Util.Dot(dirAB, dirAP);
 
             float invDenom = 1 / (dotACAC * dotABAB - dotACAB * dotACAB);
             float u = (dotABAB * dotACAP - dotACAB * dotABAP) * invDenom;
@@ -104,14 +98,49 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for vertex C in triangle ABC</param>
         /// <returns>The absolute value of the returned value is two times the 
         /// area of the triangle ABC.</returns>
-        public static float GetSignedAreaX2(float ax, float ay
-            , float bx, float by
-            , float cx, float cy)
+        public static float GetSignedAreaX2(Vector2 a, Vector2 b, Vector2 c)
         {
             // References:
             // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm#Modern%20Triangles
             // http://mathworld.wolfram.com/TriangleArea.html 
             // (Search for "signed".)
+            return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y);
+        }
+
+        /// <summary>
+        /// The absolute value of the returned value is two times the area of 
+        /// the triangle ABC.
+        /// </summary>
+        /// <remarks>
+        /// <para>A positive return value indicates:</para>
+        /// <ul>
+        /// <li>Counterclockwise wrapping of the vertices.</li>
+        /// <li>Vertex B lies to the right of line AC, looking from A toward C.
+        /// </li>
+        /// </ul>
+        /// <para>A negative value indicates:</para>
+        /// <ul>
+        /// <li>Clockwise wrapping of the vertices.</li>
+        /// <li>Vertex B lies to the left of line AC, looking from A toward C.
+        /// </li>
+        /// </ul>
+        /// <para>A value of zero indicates that all points are collinear or 
+        /// represent the same point.</para>
+        /// <para>This is a low cost method.</para>
+        /// </remarks>
+        /// <param name="ax">The x-value for vertex A in triangle ABC</param>
+        /// <param name="ay">The y-value for vertex A in triangle ABC</param>
+        /// <param name="bx">The x-value for vertex B in triangle ABC</param>
+        /// <param name="by">The y-value for vertex B in triangle ABC</param>
+        /// <param name="cx">The x-value for vertex C in triangle ABC</param>
+        /// <param name="cy">The y-value for vertex C in triangle ABC</param>
+        /// <returns>The absolute value of the returned value is two times the
+        /// area of the triangle ABC.</returns>
+        public static float GetSignedAreaX2(float ax, float ay
+            , float bx, float by
+            , float cx, float cy)
+        {
+            // Keep this around for use by Vector3.
             return (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
         }
 
@@ -148,10 +177,6 @@ namespace org.critterai.geom
             , int bx, int by
             , int cx, int cy)
         {
-            // References:
-            // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm#Modern%20Triangles
-            // http://mathworld.wolfram.com/TriangleArea.html 
-            // (Search for "signed".)
             return (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
         }
     }

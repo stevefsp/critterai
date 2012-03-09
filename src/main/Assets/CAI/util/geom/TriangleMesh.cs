@@ -97,6 +97,30 @@ namespace org.critterai.geom
             this.triCount = triCount;
         }
 
+        public void GetBounds(out Vector3 boundsMin, out Vector3 boundsMax)
+        {
+            // TODO: Add unit test.
+
+            boundsMin = verts[tris[0]];
+            boundsMax = verts[tris[0]];
+
+            for (int i = 1; i < triCount * 3; i++)
+            {
+                Vector3 v = verts[tris[i]];
+                boundsMin.x = Math.Min(boundsMin.x, v.x);
+                boundsMin.y = Math.Min(boundsMin.y, v.y);
+                boundsMin.z = Math.Min(boundsMin.z, v.z);
+                boundsMax.x = Math.Max(boundsMax.x, v.x);
+                boundsMax.y = Math.Max(boundsMax.y, v.y);
+                boundsMax.z = Math.Max(boundsMax.z, v.z);
+            }
+        }
+
+        public static bool IsBoundsValid(Vector3 bmin, Vector3 bmax)
+        {
+            return !(bmax.x < bmin.x || bmax.y < bmin.y || bmax.z < bmin.z);
+        }
+
         public static bool Validate(Vector3[] verts, int vertCount
             , int[] tris, int triCount
             , bool includeContent)

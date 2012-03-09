@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2010 Stephen A. Pratt
+ * Copyright (c) 2010-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,18 +78,15 @@ namespace org.critterai.geom
         /// <param name="dy">The y-value for point D on line CD.</param>
         /// <returns>TRUE if the two lines are either collinear or intersect 
         /// at one point.</returns>
-        public static bool LinesIntersect(float ax, float ay
-                , float bx, float by
-                , float cx, float cy
-                , float dx, float dy)
+        public static bool LinesIntersect(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
         {
-            float numerator = 
-                ((ay - cy) * (dx - cx)) - ((ax - cx) * (dy - cy));
-            float denominator = 
-                ((bx - ax) * (dy - cy)) - ((by - ay) * (dx - cx));
+            float numerator = ((a.y - c.y) * (d.x - c.x)) - ((a.x - c.x) * (d.y - c.y));
+            float denominator = ((b.x - a.x) * (d.y - c.y)) - ((b.y - a.y) * (d.x - c.x));
+
             if (denominator == 0 && numerator != 0)
                 // Lines are parallel.
-                return false; 
+                return false;
+
             // Lines are collinear or intersect at a single point.
             return true;  
         }
@@ -105,9 +102,7 @@ namespace org.critterai.geom
         /// <param name="by">The y-value of point B of line segment AB.</param>
         /// <returns>The distance squared from point B to line segment AB.
         /// </returns>
-        public static float GetPointSegmentDistanceSq(float px, float py
-                , float ax, float ay
-                , float bx, float by)
+        public static float GetPointSegmentDistanceSq(Vector2 p, Vector2 a, Vector2 b)
         {
             
             /*
@@ -118,42 +113,37 @@ namespace org.critterai.geom
              * is closest to P and then calculate the distance between P and 
              * that point.
              */
+
+            Vector2 deltaAB = b - a;
+            Vector2 deltaAP = p - a;    
             
-            float deltaABx = bx - ax;
-            float deltaABy = by - ay;
-            float deltaAPx = px - ax;
-            float deltaAPy = py - ay;        
-            
-            float segmentABLengthSq = 
-                deltaABx * deltaABx + deltaABy * deltaABy;
+            float segmentABLengthSq = deltaAB.x * deltaAB.x + deltaAB.y * deltaAB.y;
             
             if (segmentABLengthSq < MathUtil.Epsilon)
                 // AB is not a line segment.  So just return
                 // distanceSq from P to A
-                return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
+                return deltaAP.x * deltaAP.x + deltaAP.y * deltaAP.y;
                 
-            float u = 
-                (deltaAPx * deltaABx + deltaAPy * deltaABy) 
-                    / segmentABLengthSq;
+            float u = (deltaAP.x * deltaAB.x + deltaAP.y * deltaAB.y) / segmentABLengthSq;
             
             if (u < 0)
-                // Closest point on line AB is outside outside segment AB and 
+                // Closest point on line AB is outside segment AB and 
                 // closer to A. So return distanceSq from P to A.
-                return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
+                return deltaAP.x * deltaAP.x + deltaAP.y * deltaAP.y;
             else if (u > 1)
                 // Closest point on line AB is outside segment AB and closer 
                 // to B. So return distanceSq from P to B.
-                return (px - bx)*(px - bx) + (py - by)*(py - by);
+                return (p.x - b.x) * (p.x - b.x) + (p.y - b.y) * (p.y - b.y);
             
             // Closest point on lineAB is inside segment AB.  So find the exact
             // point on AB and calculate the distanceSq from it to P.
             
             // The calculation in parenthesis is the location of the point on 
             // the line segment.
-            float deltaX = (ax + u * deltaABx) - px;
-            float deltaY = (ay + u * deltaABy) - py;
+            float deltaX = (a.x + u * deltaAB.x) - p.x;
+            float deltaY = (a.y + u * deltaAB.y) - p.y;
         
-            return deltaX*deltaX + deltaY*deltaY;
+            return deltaX * deltaX + deltaY * deltaY;
         }
         
         /// <summary>
@@ -166,11 +156,8 @@ namespace org.critterai.geom
         /// <param name="bx">The x-value of point B of line AB.</param>
         /// <param name="by">The y-value of point B of line AB.</param>
         /// <returns>The distance squared from point B to line AB.</returns>
-        public static float GetPointLineDistanceSq(float px, float py
-            , float ax, float ay
-            , float bx, float by)
+        public static float GetPointLineDistanceSq(Vector2 p, Vector2 a, Vector2 b)
         {
-            
             /*
              * Reference: 
              * http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
@@ -179,30 +166,25 @@ namespace org.critterai.geom
              * closest to P and then calculate the distance between P and that 
              * point.
              */
+
+            Vector2 deltaAB = b - a;
+            Vector2 deltaAP = p - a;         
             
-            float deltaABx = bx - ax;
-            float deltaABy = by - ay;
-            float deltaAPx = px - ax;
-            float deltaAPy = py - ay;        
-            
-            float segmentABLengthSq = 
-                deltaABx * deltaABx + deltaABy * deltaABy;
+            float segmentABLengthSq =  deltaAB.x * deltaAB.x + deltaAB.y * deltaAB.y;
             
             if (segmentABLengthSq < MathUtil.Epsilon)
                 // AB is not a line segment.  So just return
                 // distanceSq from P to A
-                return deltaAPx * deltaAPx + deltaAPy * deltaAPy;
+                return deltaAP.x * deltaAP.x + deltaAP.y * deltaAP.y;
                 
-            float u = 
-                (deltaAPx * deltaABx + deltaAPy * deltaABy) 
-                    / segmentABLengthSq;
+            float u = (deltaAP.x * deltaAB.x + deltaAP.y * deltaAB.y) / segmentABLengthSq;
             
             // The calculation in parenthesis is the location of the point on 
             // the line segment.
-            float deltaX = (ax + u * deltaABx) - px;
-            float deltaY = (ay + u * deltaABy) - py;
+            float deltaX = (a.x + u * deltaAB.x) - p.x;
+            float deltaY = (a.y + u * deltaAB.y) - p.y;
         
-            return deltaX*deltaX + deltaY*deltaY;
+            return deltaX * deltaX + deltaY * deltaY;
         }
         
         /// <summary>
@@ -222,17 +204,18 @@ namespace org.critterai.geom
         /// <returns>The normalized vector that is perpendicular to line AB, 
         /// or a zero length vector if points A and B do not form a line.
         /// </returns>
-        public static Vector2 GetNormalAB(float ax, float ay
-                , float bx, float by)
+        public static Vector2 GetNormalAB(Vector2 a, Vector2 b)
         {
-            if (Vector2Util.SloppyEquals(
-                    ax, ay, bx, by, MathUtil.Tolerance))
+            if (Vector2Util.SloppyEquals(a, b, MathUtil.Tolerance))
                 // Points do not form a line.
                 return new Vector2();
-            Vector2 result = Vector2Util.GetDirectionAB(ax, ay, bx, by);
+
+            Vector2 result = Vector2Util.GetDirectionAB(a, b);
+
             float origX = result.x;
             result.x = result.y;
             result.y = -origX;
+
             return result;
         }
         
@@ -260,31 +243,22 @@ namespace org.critterai.geom
         /// a single point, the vector will represent the point of 
         /// intersection.</param>
         /// <returns>The relationship between lines AB and CD.</returns>
-        public static LineRelType GetRelationship(float ax, float ay
-                , float bx, float by
-                , float cx, float cy
-                , float dx, float dy
-                , out Vector2 outIntersectionPoint)
+        public static LineRelType GetRelationship(Vector2 a, Vector2 b
+            , Vector2 c, Vector2 d
+            , out Vector2 intersectPoint)
         {
+
+            Vector2 deltaAB = b - a;
+            Vector2 deltaCD = d - c;
+            Vector2 deltaCA = a - c; 
             
-            float deltaAxBx = bx - ax;    
-            float deltaAyBy = by - ay;
-            
-            float deltaCxDx = dx - cx;
-            float deltaCyDy = dy - cy;
-            
-            float deltaCyAy = ay - cy;
-            float deltaCxAx = ax - cx;    
-            
-            float numerator = 
-                (deltaCyAy * deltaCxDx) - (deltaCxAx * deltaCyDy);
-            float denominator = 
-                (deltaAxBx * deltaCyDy) - (deltaAyBy * deltaCxDx);
+            float numerator =  (deltaCA.y * deltaCD.x) - (deltaCA.x * deltaCD.y);
+            float denominator = (deltaAB.x * deltaCD.y) - (deltaAB.y * deltaCD.x);
 
             // Exit early if the lines do not intersect at a single point.
             if (denominator == 0)
             {
-                outIntersectionPoint = Vector2Util.Zero;
+                intersectPoint = Vector2Util.Zero;
                 if (numerator == 0)
                     return LineRelType.Collinear;
                 return LineRelType.Parallel;
@@ -293,12 +267,10 @@ namespace org.critterai.geom
             // Lines definitely intersect at a single point.
             
             float factorAB = numerator / denominator;
-            float factorCD = 
-                ((deltaCyAy * deltaAxBx) - (deltaCxAx * deltaAyBy))
-                    / denominator;
+            float factorCD = ((deltaCA.y * deltaAB.x) - (deltaCA.x * deltaAB.y)) / denominator;
 
-            outIntersectionPoint = new Vector2(ax + (factorAB * deltaAxBx)
-                        , ay + (factorAB * deltaAyBy));            
+            intersectPoint = 
+                new Vector2(a.x + (factorAB * deltaAB.x), a.y + (factorAB * deltaAB.y));            
 
             // Determine the type of intersection
             if ((factorAB >= 0.0f) 
@@ -318,7 +290,6 @@ namespace org.critterai.geom
             }
 
             return LineRelType.LinesIntersect;
-            
         }
     }
 }
