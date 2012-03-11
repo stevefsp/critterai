@@ -33,7 +33,7 @@ namespace org.critterai.nmgen
     /// <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// <para>Warning: The serializable attribute and interface will be removed 
     /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>The detail mesh is made up of triangle sub-meshes which provide
     /// extra height detail for each polygon in its assoicated polygon
@@ -47,7 +47,7 @@ namespace org.critterai.nmgen
     /// <para>This class is not compatible with Unity serialization.
     /// The <see cref="GetSerializedData"/> method can be used for
     /// manual serialization within Unity.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

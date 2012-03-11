@@ -45,8 +45,8 @@ namespace org.critterai.nmgen
         public const byte WalkableArea = 63;
 
         /// <summary>
-        /// The default flag applied to polygons during the build process
-        /// if the <see cref="BuildFlags.ApplyPolyFlags"/> is set.
+        /// The default flag applied to polygons during the build process if the 
+        /// <see cref="BuildFlags.ApplyPolyFlags"/> is set.
         /// </summary>
         public const ushort DefaultFlag = 0x01;
 
@@ -54,11 +54,10 @@ namespace org.critterai.nmgen
         /// Represents the null region.
         /// </summary>
         /// <remarks>
-        /// <para>When a data item is given this region it is considered
-        /// to have been removed from the the data set.</para>
-        /// <para>Examples: When applied to a poygon, it indicates the polygon 
-        /// should be culled from the final mesh. When applied to an edge,
-        /// it means the edge is a solid wall.</para>
+        /// <para>When a data element is given this value it is considered to have been removed 
+        /// from the the data set.</para>
+        /// <para>Examples: When applied to a poygon, it indicates the polygon should be culled 
+        /// from the final mesh. When applied to an edge, it means the edge is a solid wall.</para>
         /// </remarks>
         public const byte NullRegion = 0;
 
@@ -66,8 +65,8 @@ namespace org.critterai.nmgen
         /// Represents a null area.
         /// </summary>
         /// <remarks>
-        /// <para>When a data item is given this value it is considered to 
-        /// no longer be assigned to a usable area.</para>
+        /// <para>When a data item is given this value it is considered to no longer be assigned 
+        /// to a usable area.</para>
         /// </remarks>
         [System.Obsolete("Use Unwalkable area. Will be removed in v0.5")]
         public const byte NullArea = 0;
@@ -76,8 +75,8 @@ namespace org.critterai.nmgen
         /// Represents an unwalkable area.
         /// </summary>
         /// <remarks>
-        /// <para>When a data item is given this value it is considered to 
-        /// no longer be assigned to a usable area.</para>
+        /// <para>When a data element is given this value it is considered to  no longer be 
+        /// assigned to a usable area.</para>
         /// <para>This is also the minimum value that can be used as an area id.</para>
         /// </remarks>
         public const byte UnwalkableArea = 0;
@@ -88,8 +87,7 @@ namespace org.critterai.nmgen
         public const float MinCellSize = 0.01f;
 
         /// <summary>
-        /// The maximum allowed value for parameters that define maximum 
-        /// vertices per polygon.
+        /// The maximum allowed value for parameters that define maximum  vertices per polygon.
         /// </summary>
         public const int MaxAllowedVertsPerPoly = 6;
 
@@ -97,8 +95,7 @@ namespace org.critterai.nmgen
         /// The minimum value for parameters that define walkable height.
         /// </summary>
         /// <remarks>
-        /// Dependencies between parameters may limit the minimum value 
-        /// to a higher value.
+        /// Dependencies between parameters may limit the minimum value to a higher value.
         /// </remarks>
         public const int MinWalkableHeight = 3;
 
@@ -107,12 +104,22 @@ namespace org.critterai.nmgen
         /// </summary>
         public const float MaxAllowedSlope = 85.0f;
 
-        public static void DeriveSizeOfTileGrid(Vector3 boundsMin
-            , Vector3 boundsMax
-            , float xzCellSize
-            , int tileSize
-            , out int width
-            , out int depth)
+        /// <summary>
+        /// Derives the width and depth of a tile grid based on the provided parameters.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method does not validate the parameters.</para>
+        /// </remarks>
+        /// <param name="boundsMin">The minimum bounds.</param>
+        /// <param name="boundsMax">The maximum bounds.</param>
+        /// <param name="xzCellSize">The cell size on the xz-plane. 
+        /// (<see cref="NMGenParams.XZCellSize"/>)</param>
+        /// <param name="tileSize">The tile size. (<see cref="NNGenParams.TileSize"/>)</param>
+        /// <param name="width">The number of tiles along the x-axis.</param>
+        /// <param name="depth">The number of tiles along the z-axis.</param>
+        public static void DeriveSizeOfTileGrid(Vector3 boundsMin, Vector3 boundsMax
+            , float xzCellSize, int tileSize
+            , out int width, out int depth)
         {
             if (tileSize < 1)
             {
@@ -121,59 +128,74 @@ namespace org.critterai.nmgen
                 return;
             }
 
-            int cellGridWidth = 
-                (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
-            int cellGridDepth = 
-                (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
+            int cellGridWidth = (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
+            int cellGridDepth = (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
 
             width = (cellGridWidth + tileSize - 1) / tileSize;
             depth = (cellGridDepth + tileSize - 1) / tileSize;
         }
 
+
         /// <summary>
-        /// Derive the width/depth values from the bounds and cell size values.
+        /// Derive the width and depth of a cell grid based on the provided parameters.
         /// </summary>
-        public static void DeriveSizeOfCellGrid(Vector3 boundsMin
-            , Vector3 boundsMax
+        /// <remarks>
+        /// <para>This method does not validate the parameters.</para>
+        /// </remarks>
+        /// <param name="boundsMin">The minimum bounds.</param>
+        /// <param name="boundsMax">The maximum bounds.</param>
+        /// <param name="xzCellSize">The cell size on the xz-plane. 
+        /// (<see cref="NMGenParams.XZCellSize"/>)</param>
+        /// <param name="width">The number of cells along the x-axis.</param>
+        /// <param name="depth">The number of cells along the z-axis.</param>
+        public static void DeriveSizeOfCellGrid(Vector3 boundsMin, Vector3 boundsMax
             , float xzCellSize
-            , out int width
-            , out int depth)
+            , out int width, out int depth)
         {
             width = (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
             depth = (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
         }
 
         /// <summary>
-        /// Returns an array with all values set to <see cref="WalkableArea"/>.
+        /// Creates an area buffer with all values set to <see cref="WalkableArea"/>.
         /// </summary>
-        /// <param name="size">The length of the returned array.</param>
-        /// <returns>An array with all values set to <see cref="WalkableArea"/>.
-        /// </returns>
+        /// <param name="size">The length of the buffer.</param>
+        /// <returns>An buffer with all values set to <see cref="WalkableArea"/>.</returns>
         public static byte[] CreateWalkableAreaBuffer(int size)
         {
             return CreateAreaBuffer(size, WalkableArea);
         }
 
-        public static byte[] CreateAreaBuffer(int size, byte fillValue)
+        /// <summary>
+        /// Creates an area buffer with all values set to the the specified area.
+        /// </summary>
+        /// <param name="size">The length of the buffer.</param>
+        /// <param name="area">The area to assign to the buffer. (Will be auto-clamped.)</param>
+        /// <returns>A buffer with all values set to the specified area.</returns>
+        public static byte[] CreateAreaBuffer(int size, byte area)
         {
             byte[] result = new byte[size];
-            fillValue = Math.Min(WalkableArea, fillValue);
+            area = ClampArea(area);
+
             for (int i = 0; i < size; i++)
             {
-                result[i] = fillValue;
+                result[i] = area;
             }
+
             return result;
         }
 
         /// <summary>
-        /// Validates the content of the area buffer.
+        /// Validates the content of an area buffer.
         /// </summary>
-        /// <remarks><para>The validation checks for an undersized buffer.
-        /// It doesn't check for an oversized buffer.</para></remarks>
+        /// <remarks>
+        /// <para>The validation checks for an undersized buffer. It doesn't care about an
+        /// oversized buffer.</para>
+        /// </remarks>
         /// <param name="areas"></param>
         /// <param name="areaCount"></param>
         /// <returns></returns>
-        public static bool ValidateAreaBuffer(byte[] areas, int areaCount)
+        public static bool IsValidAreaBuffer(byte[] areas, int areaCount)
         {
             if (areas.Length < areaCount)
                 return false;
@@ -187,17 +209,15 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Set the area id of all triangles with a slope below the specified
-        /// value to <see cref="WalkableArea"/>.
+        /// Set the area id of all triangles with a slope below the specified value to 
+        /// <see cref="WalkableArea"/>.
         /// </summary>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <param name="mesh">The source mesh.</param>
-        /// <param name="walkableSlope">The maximum walkable slope.
-        /// </param>
-        /// <param name="areas">The area ids associated with each triangle.
-        /// [Size: >= mesh.triCount].</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <param name="walkableSlope">The maximum walkable slope.</param>
+        /// <param name="areas">The area ids associated with each triangle. 
+        /// [Length: >= mesh.triCount].</param>
+        /// <returns>True if the operation was successful.</returns>
         public static bool MarkWalkableTriangles(BuildContext context
             , TriangleMesh mesh
             , float walkableSlope
@@ -222,17 +242,16 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Set the area id of all triangles with a slope above the specified
-        /// value to <see cref="NullArea"/>.
+        /// Set the area id of all triangles with a slope above the specifiedvalue to 
+        /// <see cref="UnwalkableArea"/>.
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="mesh">The source mesh.</param>
-        /// <param name="walkableSlope">The maximum walkable slope.
-        /// </param>
+        /// <param name="walkableSlope">The maximum walkable slope.</param>
         /// <param name="areas">The area ids associated with each triangle.
-        /// [Size: >= mesh.triCount].</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// [Length: >= mesh.triCount].</param>
+        /// <returns>True if the operation was successful.</returns>
         public static bool ClearUnwalkableTriangles(BuildContext context
             , TriangleMesh mesh
             , float walkableSlope
@@ -256,50 +275,17 @@ namespace org.critterai.nmgen
             return true;
         }
 
-        //public static bool ClearUnwalkableTriangles(BuildContext context
-        //    , ChunkyTriMesh mesh
-        //    , Vector3 bmin
-        //    , Vector3 bmax
-        //    , out byte[] areas)
-        //{
-        //    if (mesh == null || mesh.IsDisposed)
-        //    {
-        //        areas = null;
-        //        return false;
-        //    }
-
-        //    List<ChunkyTriMeshNode> nodeList = new List<ChunkyTriMeshNode>();
-        //    int triCount;
-
-        //    mesh.GetChunks(bmin.x, bmin.z, bmax.x, bmax.z, nodeList, out triCount);
-
-        //    areas = new byte[triCount];
-
-        //    if (triCount == 0)
-        //        return true;
-
-        //    NMGenEx.nmgClearUnwalkableTrianglesAlt(context.root
-        //        , mesh.root
-        //        , nodeList.ToArray()
-        //        , nodeList.Count
-        //        , walkableSlope
-        //        , areas);
-        //}
-
         /// <summary>
         /// Builds an aggregate triangle mesh from a detail mesh.
         /// </summary>
         /// <remarks>
         /// <para>All duplicate vertices are merged.</para>
         /// </remarks>
-        /// <param name="source">The detail mesh to extract the triangle mesh
-        /// from.</param>
-        /// <param name="verts">The result vertices. [Form: (x, y, z) * vertCount]
-        /// </param>
-        /// <param name="tris">The result triangles.
+        /// <param name="source">The detail mesh to extract the triangle mesh from.</param>
+        /// <param name="verts">The result vertices.</param>
+        /// <param name="tris">The result triangles. 
         /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
-        /// <returns>TRUE if the operation completed successfully.
-        /// </returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
             , out Vector3[] verts
             , out int[] tris)
@@ -337,13 +323,23 @@ namespace org.critterai.nmgen
             return false;
         }
 
-
-
+        /// <summary>
+        /// Clamps the value to the valid area range. 
+        /// (0 &lt;= value &lt;= <see cref="WalkableArea"/>)
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>A valid area id.</returns>
         public static byte ClampArea(byte value)
         {
             return Math.Min(WalkableArea, value);
         }
 
+        /// <summary>
+        /// Clamps the value to the valid area range. 
+        /// (0 &lt;= value &lt;= <see cref="WalkableArea"/>)
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>A valid area id.</returns>
         public static byte ClampArea(int value)
         {
             return (byte)Math.Min(NMGen.WalkableArea, Math.Max(0, value));

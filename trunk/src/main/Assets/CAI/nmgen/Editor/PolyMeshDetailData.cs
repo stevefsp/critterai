@@ -32,7 +32,7 @@ namespace org.critterai.nmgen
     /// Represents data for a <see cref="PolyMeshDetail"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>WARNING: The serializable attributewill be removed 
+    /// <para>Warning: The serializable attributewill be removed 
     /// in v0.5. Use <see cref="PolyMeshDetail.GetSerializedData"/> instead of
     /// serializing this object.</para>
     /// <para>The detail mesh is made up of triangle sub-meshes which provide

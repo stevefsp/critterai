@@ -32,7 +32,7 @@ namespace org.critterai.nmgen
     /// Represents the mesh data for a <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>WARNING: The serializable attributewill be removed 
+    /// <para>Warning: The serializable attributewill be removed 
     /// in v0.5. Use <see cref="PolyMesh.GetSerializedData"/> instead of
     /// serializing this object.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 

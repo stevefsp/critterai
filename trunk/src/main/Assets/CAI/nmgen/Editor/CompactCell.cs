@@ -24,11 +24,11 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Provides information on the content of a cell column in a 
-    /// <see cref="CompactHeightfield"/> object.
+    /// Provides information on the content of a cell column in a <see cref="CompactHeightfield"/> 
+    /// object.
     /// </summary>
     /// <remarks>
-    /// <para>Useful instances of this type can only by obtained from a
+    /// <para>Useful instances of this type can only by obtained from a 
     /// <see cref="CompactHeightfield"/> object.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
@@ -37,26 +37,13 @@ namespace org.critterai.nmgen
         private uint mPacked;
 
         /// <summary>
-        /// The index of the first (lowest) <see cref="CompactSpan"/>
-        /// in the cell column.
+        /// The index of the first (lowest) <see cref="CompactSpan"/> in the cell column.
         /// </summary>
-        public uint Index
-        {
-            get
-            {
-                return (mPacked & 0xffffff);
-            }
-        }
+        public uint Index { get { return (mPacked & 0xffffff); } }
 
         /// <summary>
         /// The number of spans in the cell column.
         /// </summary>
-        public uint Count
-        {
-            get
-            {
-                return (mPacked >> 24);
-            }
-        }
+        public uint Count { get { return (mPacked >> 24); } }
     }
 }

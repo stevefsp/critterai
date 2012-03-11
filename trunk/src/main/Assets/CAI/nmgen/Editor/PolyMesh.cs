@@ -33,11 +33,10 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Represents a polygon mesh suitable for use in building a 
-    /// a navigation mesh.
+    /// Represents a polygon mesh suitable for use in building a  a navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// <para>Warning: The serializable attribute and interface will be removed 
     /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 
     ///  between three and <see cref="MaxVertsPerPoly"/> vertices. The mesh 
@@ -53,7 +52,7 @@ namespace org.critterai.nmgen
     /// <para>This class is not compatible with Unity serialization.
     /// The <see cref="GetSerializedData"/> method can be used for
     /// manual serialization within Unity.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     /// <seealso cref="PolyMeshData"/>
     [Serializable]
