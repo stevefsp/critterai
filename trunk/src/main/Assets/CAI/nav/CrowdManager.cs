@@ -69,13 +69,13 @@ namespace org.critterai.nav
     /// of 256 polygons in the path corridor. So it is not meant to provide 
     /// automatic pathfinding services over long distances.</li>
     /// </ul>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class CrowdManager
         : ManagedObject
     {
         /*
-         * WARNING:  The current design is based on not allowing
+         * Warning:  The current design is based on not allowing
          * re-initialization of the native class after it is constructed.  
          * Re-evaluate this class if re-initailization is added.
          */

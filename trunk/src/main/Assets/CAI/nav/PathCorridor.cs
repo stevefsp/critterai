@@ -700,7 +700,7 @@ namespace org.critterai.nav
         /// Released the references to the query, filter.
         /// </summary>
         /// <remarks>
-        /// <para>WARNING: The corridor will not be in a useable state
+        /// <para>Warning: The corridor will not be in a useable state
         /// after this operation.  Using the corridor without successfully
         /// calling <see cref="LoadLocals"/> will result in undefined
         /// behavior.</para>

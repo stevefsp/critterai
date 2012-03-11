@@ -36,7 +36,7 @@ namespace org.critterai.nav
     /// <remarks>
     /// <para>Objects of this type can only be obtained from a 
     /// <see cref="CrowdManager"/> object.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     /// <seealso cref="CrowdManager"/>
     public sealed class CrowdAgent
@@ -256,7 +256,7 @@ namespace org.critterai.nav
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
-        /// <para>WARNING: The buffer object must be sized to
+        /// <para>Warning: The buffer object must be sized to
         /// a maximum path size equal to 
         /// <see cref="PathCorridorData.MarshalBufferSize"/>!</para>
         /// </remarks>
@@ -341,7 +341,7 @@ namespace org.critterai.nav
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
-        /// <para>WARNING: The buffer object must be sized to
+        /// <para>Warning: The buffer object must be sized to
         /// <see cref="CornerData.MarshalBufferSize"/>!</para>
         /// <para>
         /// </para>

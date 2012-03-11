@@ -156,7 +156,7 @@ namespace org.critterai.nav
         /// sized for marshalling.</param>
         /// <returns>True if the structure of the corner buffers is valid.
         /// </returns>
-        public static bool Validate(CornerData buffer, bool forMarshalling)
+        public static bool IsValid(CornerData buffer, bool forMarshalling)
         {
             if (buffer.flags == null
                 || buffer.polyRefs == null

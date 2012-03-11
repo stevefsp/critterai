@@ -36,7 +36,7 @@ namespace org.critterai.nav
     /// A navigation mesh based on convex polygons.
     /// </summary>
     /// <remarks>
-    /// <para>WARNING: The serializable attribute and interface will be removed 
+    /// <para>Warning: The serializable attribute and interface will be removed 
     /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>This class is usually used in conjunction with the
     /// <see cref="NavmeshQuery"/> class.</para>
@@ -57,7 +57,7 @@ namespace org.critterai.nav
     /// <para>This class is not compatible with Unity serialization. Manual
     /// serialization can be implemented using the 
     /// <see cref="GetSerializedMesh"/> mesh method.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [Serializable]
     public sealed class Navmesh
