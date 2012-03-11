@@ -51,7 +51,7 @@ namespace org.critterai.nav
 	///		}
 	///	}
     /// </code></para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class CrowdProximityGrid
     {

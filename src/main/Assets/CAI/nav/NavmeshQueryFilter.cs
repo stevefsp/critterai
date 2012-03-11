@@ -35,13 +35,13 @@ namespace org.critterai.nav
     /// excluded.</para>
     /// <para>The array form is used to access area cost. 
     /// E.g. <c>myFilter[5] = 2.5f</c></para>
-    /// <para>WARNING: Behavior is undefined if an area
+    /// <para>Warning: Behavior is undefined if an area
     /// index is out of range.  The error may result in a runtime error, or
     /// it may operate as if there is no problem whatsoever.  E.g. Setting
     /// and getting <c>myFilter[myFilter.AreaCount]</c> may get and set the 
     /// value normally.  Do not write code that depends on this behavior since 
     /// it may change in future releases.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class NavmeshQueryFilter
         : ManagedObject

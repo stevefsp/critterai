@@ -69,7 +69,12 @@ namespace org.critterai.nav
 
         public override int GetHashCode()
         {
-            return point.GetHashCode() ^ polyRef.GetHashCode() ;
+            int result = 17;
+            result = 31 * result + point.x.GetHashCode();
+            result = 31 * result + point.y.GetHashCode();
+            result = 31 * result + point.z.GetHashCode();
+            result = 31 * result + polyRef.GetHashCode();
+            return result;
         }
 
         public override bool Equals(object obj)

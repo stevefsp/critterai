@@ -40,7 +40,7 @@ namespace org.critterai.nav
     /// <para>For methods that support undersized buffers, if the buffer is too
     /// small to hold the entire result set the return status of the method will 
     /// include the <see cref="NavStatus.BufferTooSmall"/> flag.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class NavmeshQuery
         : ManagedObject
@@ -981,7 +981,7 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>This method will fail if <see cref="IsRestricted"/> is TRUE.</para>
-        /// <para>WARNING: Calling any other query methods besides the other
+        /// <para>Warning: Calling any other query methods besides the other
         /// sliced path methods before finalizing this query may result
         /// in corrupted data.</para>
         /// <para>The filter is stored and used for the duration of the query.</para>

@@ -51,7 +51,7 @@ namespace org.critterai.nav
     /// use the load methods to reload the data as needed.  The only restriction
     /// is that all polygon data must be have the same maximum vertices
     /// per polygon.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTileBuildData
