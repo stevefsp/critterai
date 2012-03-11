@@ -41,8 +41,7 @@ namespace org.critterai.nmgen
     /// refers to an area <see cref="XZCellSize"/> in width, 
     /// <see cref="XZCellSize"/> in depth, and <see cref="YCellSize"/>
     /// in height.</para>
-    /// <para>TODO: Link to detailed discussion of heightfields.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Heightfield
@@ -488,7 +487,7 @@ namespace org.critterai.nmgen
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , Vector3[] verts
             , byte[] areas

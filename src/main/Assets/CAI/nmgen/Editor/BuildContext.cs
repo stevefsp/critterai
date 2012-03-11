@@ -21,7 +21,6 @@
  */
 using System;
 using System.Text;
-using org.critterai.interop;
 using org.critterai.nmgen.rcn;
 
 namespace org.critterai.nmgen
@@ -30,21 +29,27 @@ namespace org.critterai.nmgen
     /// Provides logging functionality.
     /// </summary>
     /// <remarks>
+    /// <para>This class can be used as a base for a more complete build
+    /// context.</para>
     /// <para>The message buffer can hold a maximum of 1000 messages
     /// comprised of 64K characters.  Any messages added after the
     /// buffer limit is reached will be ignored.</para>
     /// </remarks>
     public class BuildContext
     {
-        /*
-         * Design notes:
-         * 
-         * File name mismatch is needed for Unity support.
-         *
-         */
-
+        /// <summary>
+        /// The message prefix used for informational messages.
+        /// </summary>
         public const string InfoLabel = "INFO";
+
+        /// <summary>
+        /// The message prefix used for error messages.
+        /// </summary>
         public const string ErrorLabel = "ERROR";
+
+        /// <summary>
+        /// The message prefix used for warning messages.
+        /// </summary>
         public const string WarningLabel = "WARNING";
 
         private const int MessagePoolSize = 65536;
@@ -88,14 +93,19 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Posts a message to the message buffer.
+        /// Posts an informational message to the message buffer.
         /// </summary>
         /// <param name="message">The message to post.</param>
+        /// <param name="context">The context of the message. (Null allowed.)</param>
         public void Log(string message, Object context)
         {
             Log(InfoLabel, message, context);
         }
 
+        /// <summary>
+        /// Appends log messages to the current context.
+        /// </summary>
+        /// <param name="messages">The messages to append.</param>
         public void Log(string[] messages)
         {
             if (messages == null || messages.Length == 0)
@@ -103,10 +113,16 @@ namespace org.critterai.nmgen
 
             foreach (string msg in messages)
             {
-                Log(msg, null);
+                BuildContextEx.nmbcLog(root, msg);
             }
         }
 
+        /// <summary>
+        /// Posts a message to the message buffer with a custom category.
+        /// </summary>
+        /// <param name="category">The message category.</param>
+        /// <param name="message">The message to post.</param>
+        /// <param name="context">The context of the message. (Null allowed.)</param>
         public void Log(string category, string message, Object context)
         {
             if (message != null && message.Length > 0)
@@ -116,11 +132,21 @@ namespace org.critterai.nmgen
             }
         }
 
+        /// <summary>
+        /// Posts a warning message to the message buffer.
+        /// </summary>
+        /// <param name="message">The message to post.</param>
+        /// <param name="context">The context of the message. (Null allowed.)</param>
         public void LogWarning(string message, Object context)
         {
             Log(WarningLabel, message, context);
         }
 
+        /// <summary>
+        /// Posts an error message to the message buffer.
+        /// </summary>
+        /// <param name="message">The message to post.</param>
+        /// <param name="context">The context of the message. (Null allowed.)</param>
         public void LogError(string message, Object context)
         {
             Log(ErrorLabel, message, context);
@@ -130,11 +156,10 @@ namespace org.critterai.nmgen
         /// Gets all messages in the message buffer.
         /// </summary>
         /// <remarks>
-        /// The length of the result will always equal 
-        /// <see cref="MessageCount"/>.
+        /// The length of the result will always equal <see cref="MessageCount"/>.
         /// </remarks>
-        /// <returns>All messages in the message buffer, or a zero length
-        /// array if there are no messages.</returns>
+        /// <returns>All messages in the message buffer, or a zero length array if there 
+        /// are no messages.</returns>
         public string[] GetMessages()
         {
             byte[] buffer = new byte[MessagePoolSize];
@@ -153,6 +178,10 @@ namespace org.critterai.nmgen
                 , StringSplitOptions.RemoveEmptyEntries);
         }
 
+        /// <summary>
+        /// Gets all messages in the message buffer as a single, new line delimited string.
+        /// </summary>
+        /// <returns>The messages in the message buffer.</returns>
         public string GetMessagesFlat()
         {
             string[] msgs = GetMessages();
@@ -170,6 +199,10 @@ namespace org.critterai.nmgen
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Appends messages from the specified context to the current context.
+        /// </summary>
+        /// <param name="fromContext">The context to append the messages from.</param>
         public void AppendMessages(BuildContext fromContext)
         {
             if (fromContext == null || fromContext.MessageCount == 0)
@@ -188,8 +221,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Tests the operation of the context by adding test messages
+        /// Tests the operation of the context by adding up to 100 test messages.
         /// </summary>
+        /// <remarks>
+        /// <para>The only purpose of this method is to permit testing.</para></remarks>
         /// <param name="context">The context to test.</param>
         /// <param name="count">The number of messages to add. 
         /// (Limit &lt;100)</param>

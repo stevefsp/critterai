@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using org.critterai.interop;
-using org.critterai.nmgen.rcn;
+using org.critterai.geom;
 #if NUNITY
 using Vector3 = org.critterai.Vector3;
 #else
@@ -32,8 +32,42 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// Represents a triangle mesh with area data, spatially divided into nodes for 
+    /// more efficient querying.
+    /// </summary>
+    /// <remarks>
+    /// <para>Objects of this type are created using the <see cref="ChunkyTriMeshBuilder"/> class.
+    /// </para>
+    /// <para>Storage is optimized for use by the build process across muliple threads. It is not
+    /// efficient for other uses.
+    /// </para>
+    /// <para>The content of a node can be inspected as follows:</para>
+    /// <para><code>
+    /// // Where lmesh is a <see cref="TriangleMesh"/> object and lareas is a byte array obtained
+    /// // from <see cref="ChunkyTriMesh.ExtractMesh"/>.
+    /// for (int j = 0; j &lt; node.count; j++, i++)
+    /// {
+    ///     int pTri = (node.i + j) * 3;
+    ///     
+    ///     int iVertA = lmesh.tris[pTri + 0];
+    ///     int iVertB = lmesh.tris[pTri + 1];
+    ///     int iVertC = lmesh.tris[pTri + 2];
+    ///     
+    ///     byte triArea = lareas[node.i + j];
+    ///     
+    ///     Vector3 vertA = new Vector3(lmesh.verts[iVertA]
+    ///         , lmesh.verts[iVertA]
+    ///         , lmesh.verts[iVertA]);
+    ///         
+    ///     // Repeat for vertB and vertC...
+    ///     
+    ///     // Use the vertices...
+    /// }
+    /// </code></para>
+    /// <para>Behavior is undefined if used after disposal.</para>
+    /// </remarks>
 	public sealed class ChunkyTriMesh
-        : IManagedObject
 	{
         internal IntPtr verts;
         internal IntPtr tris;
@@ -44,7 +78,17 @@ namespace org.critterai.nmgen
         private readonly int mTriCount;
         private readonly int mVertCount;
 
+        /// <summary>
+        /// The number of spacial nodes in the mesh.
+        /// </summary>
         public int NodeCount { get { return mNodeCount; } }
+
+        /// <summary>
+        /// The number of triangles in the mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will always be > 0.  Empty meshes cannot be created.</para>
+        /// </remarks>
         public int TriCount { get { return mTriCount; } }
 
         internal ChunkyTriMesh(Vector3[] verts
@@ -69,18 +113,30 @@ namespace org.critterai.nmgen
             Marshal.Copy(areas, 0, this.areas, areas.Length);
 
             mTriCount = triCount;
-            mVertCount = verts.Length;
+            mVertCount = vertCount;
             mNodes = nodes;
             mNodeCount = nodeCount;
         }
 
+        ~ChunkyTriMesh()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Gets all nodes overlapped by the specified bounds.
+        /// </summary>
+        /// <param name="xmin">The minimum x-bounds.</param>
+        /// <param name="zmin">The minimum z-bounds.</param>
+        /// <param name="xmax">The maximum x-bounds.</param>
+        /// <param name="zmax">The maximum z-bounds.</param>
+        /// <param name="resultNodes">The list to append the result to.</param>
+        /// <returns>The number of result nodes appended to the result list.</returns>
         public int GetChunks(float xmin, float zmin, float xmax, float zmax
             , List<ChunkyTriMeshNode> resultNodes)
         {
             if (tris == IntPtr.Zero || resultNodes == null)
                 return 0;
-
-            resultNodes.Clear();
 
             int result = 0;
             int i = 0;
@@ -110,33 +166,45 @@ namespace org.critterai.nmgen
             return result;
         }
 
-        public int ExtractMesh(out Vector3[] verts, out int[] tris, out byte[] areas)
+        /// <summary>
+        /// Extracts all triangles from the mesh. (Not efficient.)
+        /// </summary>
+        /// <param name="areas">The areas for each triangle.</param>
+        /// <returns>The triangle mesh data.</returns>
+        public TriangleMesh ExtractMesh(out byte[] areas)
         {
             if (this.tris == IntPtr.Zero)
             {
-                verts = null;
-                tris = null;
                 areas = null;
-                return 0;
+                return null;
             }
+
+            TriangleMesh result = new TriangleMesh();
+            result.triCount = mTriCount;
+            result.vertCount = mVertCount;
 
             float[] lverts = new float[mVertCount * 3];
             Marshal.Copy(this.verts, lverts, 0, mVertCount * 3);
-            verts = Vector3Util.GetVectors(lverts);
+            result.verts = Vector3Util.GetVectors(lverts);
 
-            tris = new int[mTriCount * 3];
-            Marshal.Copy(this.tris, tris, 0, mTriCount * 3);
+            result.tris = new int[mTriCount * 3];
+            Marshal.Copy(this.tris, result.tris, 0, mTriCount * 3);
 
             areas = new byte[mTriCount];
             Marshal.Copy(this.areas, areas, 0, mTriCount);
 
-            return mTriCount;
+            return result;
         }
 
-        public AllocType ResourceType { get { return AllocType.Local; } }
+        /// <summary>
+        /// True if the object has been disposed and should no longer be used.
+        /// </summary>
         public bool IsDisposed { get { return (tris == IntPtr.Zero); } }
 
-        public void RequestDisposal()
+        /// <summary>
+        /// Frees all resources and marks object as disposed.
+        /// </summary>
+        public void Dispose()
         {
             if (tris != IntPtr.Zero)
             {

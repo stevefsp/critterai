@@ -23,17 +23,47 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// A node in a <see cref="ChunkyTriMesh"/> object.
+    /// </summary>
+    /// <remarks>
+    /// <para>The bounds of the node represents the AABB of the triangles
+    /// contained by the node.</para>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct ChunkyTriMeshNode
     {
+        /// <summary>
+        /// The minimum x-bounds.
+        /// </summary>
         public float xmin;
+
+        /// <summary>
+        /// The minimum z-bounds.
+        /// </summary>
         public float zmin;
+
+        /// <summary>
+        /// The maximum x-bounds.
+        /// </summary>
         public float xmax;
+
+        /// <summary>
+        /// The maximum z-bounds.
+        /// </summary>
         public float zmax;
+
+        /// <summary>
+        /// The start index of the triangles in the node.
+        /// </summary>
         public int i;
+
+        /// <summary>
+        /// The number of triangles in the node.
+        /// </summary>
         public int count;
 
-        public bool Overlaps(float xmin, float zmin, float xmax, float zmax)
+        internal bool Overlaps(float xmin, float zmin, float xmax, float zmax)
         {
             bool result = true;
             result = (xmin > this.xmax || xmax < this.xmin) ? false : result;

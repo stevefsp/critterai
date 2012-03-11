@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,18 +30,27 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// 
+    /// Represents common per tile configuration parameters.
     /// </summary>
     /// <remarks>
+    /// <para>These values are derived during the build process.</para>
     /// <para>Implemented as a class with public fields in order to support Unity
     /// serialization.  Care must be taken not to set the fields to invalid
     /// values.</para>
     /// </remarks>
+    /// <seealso cref="NMGenParams"/>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NMGenTileParams
     {
-        public int x;
-        public int z;
+        /// <summary>
+        /// The X position of the tile.
+        /// </summary>
+        public int tileX;
+
+        /// <summary>
+        /// The Z position of the tile.
+        /// </summary>
+        public int tileZ;
 
         /// <summary>
         /// Minimum bounds.
@@ -53,25 +62,35 @@ namespace org.critterai.nmgen
         /// </summary>
         public Vector3 boundsMax;
 
-        public int Z
+        /// <summary>
+        /// The Z position of the tile. [Limit: >= 0]
+        /// </summary>
+        /// <remarks>
+        /// <para>This value is a zero based tile index representing the position of the
+        /// tile along the depth of the tile grid..</para>
+        /// </remarks>
+        public int TileZ
         {
-            get { return z; }
-            set { z = Math.Max(0, value); }
-        }
-
-        public int X
-        {
-            get { return x; }
-            set { x = Math.Max(0, value); }
+            get { return tileZ; }
+            set { tileZ = Math.Max(0, value); }
         }
 
         /// <summary>
-        /// Gets a copy of the minimum bounds of the grid's AABB.
-        /// [Form: (x, y, z)] [Units: World]
+        /// The X position of the tile. [Limit: >= 0]
         /// </summary>
-        /// <remarks><para>This value is usually derived during the build process.
-        ///  See <see cref="DeriveBounds"/>.</para></remarks>
-        /// <returns>The maximum bounds of the grid.</returns>
+        /// <remarks>
+        /// <para>This value is a zero based tile index representing the position of the
+        /// tile along the width of the tile grid..</para>
+        /// </remarks>
+        public int TileX
+        {
+            get { return tileX; }
+            set { tileX = Math.Max(0, value); }
+        }
+
+        /// <summary>
+        /// The minimum bounds of the tile's AABB.[Units: World]
+        /// </summary>
         public Vector3 BoundsMin 
         { 
             get { return boundsMin; }
@@ -79,43 +98,27 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Gets a copy of the maximum bounds of the grid's AABB.
-        /// [Form: (x, y, z)] [Units: World]
+        /// The maximum bounds of the tile's AABB.[Units: World]
         /// </summary>
-        /// <remarks><para>This value is usually derived during the build 
-        /// process. See <see cref="DeriveBounds"/>.
-        /// </para></remarks>
-        /// <returns>The maximum bounds of the grid.</returns>
         public Vector3 BoundsMax
         {
             get { return boundsMax; }
             set { boundsMax = value; }
         }
+
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="tx">The x index of the tile within the tile grid.</param>
+        /// <param name="tz">The z index of the tile within the tile grid.</param>
+        /// <param name="boundsMin">The minimum bounds of the tile.</param>
+        /// <param name="boundsMax">The maximum bounds of the tile.</param>
         public NMGenTileParams(int tx, int tz, Vector3 boundsMin, Vector3 boundsMax) 
         {
-            X = tx;
-            Z = tz;
+            TileX = tx;
+            TileZ = tz;
             BoundsMin = boundsMin;
             BoundsMax = boundsMax;
         }
-
-        //public bool IsValid()
-        //{
-        //    return !(x < 0
-        //        || z < 0
-        //        || Vector3Util.IsBoundsValid(boundsMin, boundsMax));
-        //}
-
-        ///// <summary>
-        ///// Forces all field values to within the mandatory limits.
-        ///// </summary>
-        //public void Clean()
-        //{
-        //    X = x;
-        //    Z = z;
-        //}
     }
 }

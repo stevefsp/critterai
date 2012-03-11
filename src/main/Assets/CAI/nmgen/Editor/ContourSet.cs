@@ -37,7 +37,7 @@ namespace org.critterai.nmgen
     /// <para>A contour set is usually generated from a single
     /// <see cref="CompactHeightfield"/>.  All contours share the minimum
     /// bounds and cell sizes of the set.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class ContourSet
         : IManagedObject

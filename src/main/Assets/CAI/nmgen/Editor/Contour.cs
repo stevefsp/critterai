@@ -40,7 +40,7 @@ namespace org.critterai.nmgen
     /// </code>
     /// <para>A contour only exists within the context of a 
     /// <see cref="ContourSet"/>.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Contour

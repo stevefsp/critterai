@@ -37,7 +37,7 @@ namespace org.critterai.nmgen
     /// <para>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</para>
     /// <para>Instances of this class can only be obtained from a
     /// <see cref="HeightfieldLayerSet"/>.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class HeightfieldLayer

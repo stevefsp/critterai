@@ -30,6 +30,20 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmgen
 {
+    /// <summary>
+    /// A builder for the <see cref="ChunkyTriMesh"/> class.
+    /// </summary>
+    /// <remarks>
+    /// <para>The standard use case is as follows:</para>
+    /// <ol>
+    /// <li>Create the builder using <see cref="Build"/></li>
+    /// <li>Call <see cref="Build"/> until it returns true.</li>
+    /// <li>Get the result from <see cref="Result"/>.</li>
+    /// </ol>
+    /// <para>A builder object cannot be re-used.</para>
+    /// <para>The build is safe to run on a separate thread as long as the
+    /// objects used to create the builder are not changed while the build is in-progress.</para>
+    /// </remarks>
     public sealed class ChunkyTriMeshBuilder
     {
         private enum BuildState
@@ -251,24 +265,39 @@ namespace org.critterai.nmgen
             }
         }
 
+        /// <summary>
+        /// The minimum allowed triangles per chunk.
+        /// </summary>
         public const int MinAllowedTrisPerChunk = 64;
 
         private static readonly BoundsItemCompareX mCompareX = new BoundsItemCompareX();
         private static readonly BoundsItemCompareZ mCompareZ = new BoundsItemCompareZ();
 
-        private static int mTriangleInterations = 100000;
+        private static int mTriangleIterations = 100000;
         private static int mNodeIterations = 100;
 
+        /// <summary>
+        /// The number of nodes the build will process in a single build step. [>= 1]
+        /// </summary>
+        /// <remarks>
+        /// <para>Used for tuning responsiveness.</para>
+        /// </remarks>
         public static int ChunkTuneValue
         {
             get { return mNodeIterations; }
             set { mNodeIterations = Math.Max(1, value); }
         }
 
+        /// <summary>
+        /// The number of triangles the build will process in a single build step. [>= 1]
+        /// </summary>
+        /// <remarks>
+        /// <para>Used for tuning responsiveness.</para>
+        /// </remarks>
         public static int PreprocessTuneValue
         {
-            get { return mTriangleInterations; }
-            set { mTriangleInterations = Math.Max(1, value); }
+            get { return mTriangleIterations; }
+            set { mTriangleIterations = Math.Max(1, value); }
         }
 
         private readonly int mTriCount;
@@ -282,7 +311,14 @@ namespace org.critterai.nmgen
         private readonly BuildContext buildData = new BuildContext();
         private readonly Stack<Subdivide> mStack = new Stack<Subdivide>();
         
-        public ChunkyTriMesh Mesh { get { return mMesh; } }
+        /// <summary>
+        /// The mesh created by the build. (Only available on successful completion.)
+        /// </summary>
+        public ChunkyTriMesh Result { get { return mMesh; } }
+
+        /// <summary>
+        /// True if the build is finished.
+        /// </summary>
         public bool IsFinished { get { return (mMesh != null); } }
 
         private ChunkyTriMeshBuilder(Vector3[] verts
@@ -309,6 +345,14 @@ namespace org.critterai.nmgen
             mTriCount = triCount;
         }
 
+        /// <summary>
+        /// Performs a single build step.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method must be called repeatedly until it resturns false in order
+        /// to complete the build. (Useful in GUI environments.)</para></remarks>
+        /// <returns>True if the build is still underway and another call is required. False
+        /// if the build is finished.</returns>
         public bool Build()
         {
             switch (mState)
@@ -321,13 +365,15 @@ namespace org.critterai.nmgen
                 case BuildState.Running:
 
                     UpdateSubdivide();
-                    // mState = BuildState.Complete;
                     return true;
             }
 
             return false;
         }
 
+        /// <summary>
+        /// Performs the build in a single step.
+        /// </summary>
         public void BuildAll()
         {
             while (Build()) { }
@@ -371,7 +417,7 @@ namespace org.critterai.nmgen
             BoundsItem[] items = buildData.items;
             int[] tris = buildData.inTris;
 
-            int target = Math.Min(mTriCount, mIter + mTriangleInterations);
+            int target = Math.Min(mTriCount, mIter + mTriangleIterations);
 
             for (; mIter < target; mIter++)
             {
@@ -444,14 +490,29 @@ namespace org.critterai.nmgen
             }
         }
 
-        // Not threadsafe.
         // If any chance of malformed data, highly recommend doing a full validation first.
+
+        /// <summary>
+        /// Creates a single use builder.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return null on parameter errors, a mesh with no triangles,
+        /// and structural issues in the mesh object or area array.  Does not perform a validation 
+        /// of the mesh or area content.  (E.g. Does not check for invalid mesh indices.)</para>
+        /// </remarks>
+        /// <param name="mesh">The triangle mesh to chunk.</param>
+        /// <param name="areas">The areas for each triangle in the mesh. (Null not allowed.)</param>
+        /// <param name="trisPerChunk">The maximum number of triangles per chunk.
+        /// [>= <see cref="MinAllowedTrisPerChunk"/></param>
+        /// <returns>A builder, or null on error.</returns>
         public static ChunkyTriMeshBuilder Create(TriangleMesh mesh
             , byte[] areas
             , int trisPerChunk)
         {
             if (mesh == null 
-                || !TriangleMesh.Validate(mesh, false)
+                || areas == null
+                || mesh.triCount == 0
+                || !TriangleMesh.IsValid(mesh, false)
                 || areas.Length < mesh.triCount)
             {
                 return null;

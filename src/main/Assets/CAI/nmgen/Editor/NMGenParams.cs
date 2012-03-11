@@ -28,31 +28,20 @@ namespace org.critterai.nmgen
     /// Specifies a configuration to use when building navigation mesh data.
     /// </summary>
     /// <remarks>
-    /// <para>The is a convenience class that represents an aggregation of 
-    /// settings used at different stages in the build process.  In some cases 
-    /// the values are expected to be derived by the build process. In some
-    /// cases settings are irrelavent.  It all depends on the particular
+    /// <para>This class represents an aggregation of settings used at different stages in the 
+    /// build process.  In some cases settings are irrelavent.  It all depends on the particular
     /// build process being used/implemented.</para>
-    /// <para>There is no such thing as a 'zero' configuration.  So the
-    /// default constructor initializes all values to basic valid values.</para>
-    /// <para>WARNING: Don't forget to set the easily overlooked tile size
-    /// and bounds properties before using the configutration!  These
-    /// properties don't have any valid default values and using the 
-    /// configuration without setting them will result in empty meshes.
-    /// </para>
-    /// <para>All fields are public in order to support Unity serialization.  
-    /// But it is best to set the fields using the properties since
-    /// they will enforce valid min/max limits.</para>
-    /// <para>All properties and methods will auto-limit fields
-    /// to valid values. For example, if the <see cref="TileSize"/> property
-    /// is set to -1, the field will be limited to the minimum allowed 
-    /// value of 0.</para>
-    /// <para>Field members are minimally documented.  See the 
-    /// property member documentation for details.</para>
-    /// <para>Implemented as a class with public fields in order to support Unity
-    /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</para>
+    /// <para>There is no such thing as a 'zero' configuration.  So the default constructor 
+    /// initializes all values to basic valid values.</para>
+    /// <para>All properties and methods will auto-limit fields to valid values. For example, 
+    /// if the <see cref="TileSize"/> property is set to -1, the field will be limited to the 
+    /// minimum allowed value of 0.</para>
+    /// <para>Field members are minimally documented.  See the  property member documentation 
+    /// for details.</para>
+    /// <para>Implemented as a class with public fields in order to support Unity serialization.  
+    /// Care must be taken not to set the fields to invalid values.</para>
     /// </remarks>
+    /// <seealso cref="NMGenTileParams"/>
     [StructLayout(LayoutKind.Sequential)]
     [Serializable]
     public sealed class NMGenParams
@@ -132,31 +121,47 @@ namespace org.critterai.nmgen
         /// </summary>
         public float detailMaxDeviation = 1;
 
-        public ContourBuildFlags contourFlags = 
+        /// <summary>
+        /// Options to use when building the contour set.
+        /// </summary>
+        /// <seealso cref="ContourSet"/>
+        public ContourBuildFlags contourOptions = 
             ContourBuildFlags.TessellateAreaEdges | ContourBuildFlags.TessellateWallEdges;
 
+        /// <summary>
+        /// If true, use monotone region generation.
+        /// </summary>
         public bool useMonotone = false;
 
+        /// <summary>
+        /// If true, use monotone region generation.
+        /// </summary>
+        /// <seealso cref="CompactHeightfield.BuildRegionsMonotone"/>
         public bool UseMonotone
         {
             get { return useMonotone; }
             set { useMonotone = value; }
         }
 
-        public ContourBuildFlags ContourFlags
+        /// <summary>
+        /// Options to use when building the contour set.
+        /// </summary>
+        /// <seealso cref="ContourSet"/>
+        public ContourBuildFlags ContourOptions
         {
-            get { return contourFlags; }
-            set { contourFlags = value; }
+            get { return contourOptions; }
+            set { contourOptions = value; }
         }
 
         /// <summary>
-        /// The width/depth size of the tile on the xz-plane.
-        /// [Limit: >=0] [Units: CellSize]
+        /// The width/depth size of the tile on the xz-plane. 
+        /// [Limit: >=0] 
+        /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>A value of zero indicates no-tiles.  Small values are not of 
-        /// much use.  In general, non-zero values should be 
-        /// between 100 and 1000.</para></remarks>
+        /// <para>A value of zero indicates no-tiles.  Small values are not of much use.  
+        /// In general, non-zero values should be between 100 and 1000.</para>
+        /// </remarks>
         public int TileSize
         {
             get { return tileSize; }
@@ -169,7 +174,7 @@ namespace org.critterai.nmgen
         /// [Units: World]
         /// </summary>
         /// <remarks>
-        /// <para>Also the 'grid size' or 'voxel size'.</para>
+        /// <para>Also known as the 'grid size' and 'voxel size'.</para>
         /// </remarks>
         public float XZCellSize
         {
@@ -182,7 +187,7 @@ namespace org.critterai.nmgen
         /// [Limit >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
-        /// <para>Also the 'voxel size' for the y-axis.</para>
+        /// <para>Also known at the the 'voxel size' for the y-axis.</para>
         /// </remarks>
         public float YCellSize
         {
@@ -191,14 +196,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Minimum floor to 'ceiling' height that will still allow the
-        /// floor area to be considered walkable. 
+        /// Minimum floor to 'ceiling' height that will still allow the  floor area to be 
+        /// considered walkable. 
         /// [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
         /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Permits detection of overhangs in the source geometry that make 
-        /// the geometry below un-walkable.</para>
+        /// <para>Permits detection of overhangs in the source geometry that make the geometry 
+        /// below un-walkable.</para>
         /// <para>Usually the maximum client height.</para></remarks>
         public int WalkableHeight
         {
@@ -208,11 +213,12 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Maximum ledge height that is considered to still be traversable.
-        /// [Limit: >=0] [Units: YCellSize]
+        /// [Limit: >=0] 
+        /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Allows the mesh to flow over low lying obstructions such as
-        /// curbs and up/down stairways.</para>
+        /// <para>Allows the mesh to flow over low lying obstructions such as curbs and up/down 
+        /// stairways.</para>
         /// <para>Usually set to how far up/down an agent can step.</para>
         /// </remarks>
         public int WalkableStep
@@ -237,9 +243,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Represents the closest any part of a mesh should get to an
-        /// obstruction in the source geometry.
-        /// [Limit: >=0] [Units: XZCellSize]
+        /// Represents the closest any part of a mesh should get to an obstruction in the source 
+        /// geometry.
+        /// [Limit: >=0] 
+        /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
         ///  Usually the client radius.
@@ -251,9 +258,9 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The closest the mesh should come to the xz-plane AABB of the
-        /// source geometry.
-        /// [Limit: >=0] [Units: XZCellSize]
+        /// The closest the mesh should come to the xz-plane AABB of the source geometry.
+        /// [Limit: >=0] 
+        /// [Units: XZCellSize]
         /// </summary>
         public int BorderSize
         {
@@ -262,8 +269,9 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum allowed length for edges on the border of the
-        /// mesh. [Limit: >=0] [Units: XZCellSize]
+        /// The maximum allowed length for edges on the border of the mesh. 
+        /// [Limit: >=0] 
+        /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
         /// <para>Extra vertices will be inserted if needed.</para>
@@ -276,8 +284,9 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum distance the edges of the mesh should deviate from
-        /// the source geometry. [Limit: >=0] [Units: World]
+        /// The maximum distance the edges of the mesh should deviate from the source geometry. 
+        /// [Limit: >=0] 
+        /// [Units: World]
         /// </summary>
         /// <remarks>
         /// <para>Applies only to the xz-plane.</para>
@@ -289,9 +298,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Sets the sampling distance to use when matching the
-        /// mesh surface to the source geometry. (For height detail only.)
-        /// [Limits: 0 or >= 0.9] [Units: World]
+        /// Sets the sampling distance to use when matching the mesh surface to the source 
+        /// geometry. (For height detail only.)
+        /// [Limits: 0 or >= 0.9] 
+        /// [Units: World]
         /// </summary>
         public float DetailSampleDistance
         {
@@ -300,9 +310,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum distance the mesh surface should deviate from the
-        /// surface of the source geometry. (For height detail only.)
-        /// [Limit: >=0] [Units: World]
+        /// The maximum distance the mesh surface should deviate from the surface of the source 
+        /// geometry. (For height detail only.)
+        /// [Limit: >=0] 
+        /// [Units: World]
         /// </summary>
         public float DetailMaxDeviation
         {
@@ -312,11 +323,11 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum number of cells allowed to form isolated island meshes.
-        /// [Limit: >=0] [Units: XZCellSize]
+        /// [Limit: >=0]
+        /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Prevents the formation of meshes that are too small to be
-        /// of use.</para>
+        /// <para>Prevents the formation of meshes that are too small to be of use.</para>
         /// </remarks>
         public int MinRegionArea
         {
@@ -325,9 +336,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Any regions with an cell count smaller than this value will, 
-        /// if possible, be merged with larger regions.
-        /// [Limit: >=0] [Units: XZCellSize]
+        /// Any regions with an cell count smaller than this value will, if possible, be merged 
+        /// with larger regions.
+        /// [Limit: >=0] 
+        /// [Units: XZCellSize]
         /// </summary>
         public int MergeRegionArea
         {
@@ -336,20 +348,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum number of vertices allowed for polygons
-        /// generated during the contour to polygon conversion process.
-        /// [Limits: 3 &lt;= value &lt; 
-        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
+        /// The maximum number of vertices allowed for polygons generated during the contour 
+        /// to polygon conversion process.
+        /// [Limits: 3 &lt;= value &lt; <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
         /// </summary>
         public int MaxVertsPerPoly
         {
             get { return maxVertsPerPoly; }
-            set
-            {
-                // Must be between 3 and max allowed.
-                maxVertsPerPoly = Math.Max(3
-                    , Math.Min(NMGen.MaxAllowedVertsPerPoly, value));
-            }
+            set { maxVertsPerPoly = Math.Max(3, Math.Min(NMGen.MaxAllowedVertsPerPoly, value)); }
         }
 
         /// <summary>
@@ -357,71 +363,138 @@ namespace org.critterai.nmgen
         /// </summary>
         public NMGenParams() { }
 
+        /// <summary>
+        /// The walkable height in world units.
+        /// </summary>
         public float WorldWalkableHeight
         {
             get { return walkableHeight * yCellSize; }
         }
 
+        /// <summary>
+        /// The maximum edge length in world units.
+        /// </summary>
         public float WorldMaxEdgeLength
         {
             get { return maxEdgeLength * xzCellSize; }
         }
 
+        /// <summary>
+        /// The merge region area in world units.
+        /// </summary>
         public float WorldMergeRegionArea
         {
             get { return mergeRegionArea * xzCellSize * xzCellSize; }
         }
 
+        /// <summary>
+        /// The minimum region area in world units.
+        /// </summary>
         public float WorldMinRegionArea
         {
             get { return minRegionArea * xzCellSize * xzCellSize; }
         }
 
+        /// <summary>
+        /// Derives <see cref="WalkableHeight"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="YCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldHeight">The walkable height in world units.</param>
         public void SetWalkableHeight(float worldHeight)
         {
             WalkableHeight = (int)Math.Ceiling(worldHeight / yCellSize);
         }
 
+        /// <summary>
+        /// The walkable radius in world units.
+        /// </summary>
         public float WorldWalkableRadius
         {
             get { return walkableRadius * xzCellSize; }
         }
 
+        /// <summary>
+        /// Derives the <see cref="WalkableRadius"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldRadius">The walkable radius in world units.</param>
         public void SetWalkableRadius(float worldRadius)
         {
             WalkableRadius = (int)Math.Ceiling(worldRadius / xzCellSize);
         }
 
+        /// <summary>
+        /// The walkable set in world units.
+        /// </summary>
         public float WorldWalkableStep
         {
             get { return walkableStep * yCellSize; }
         }
 
+        /// <summary>
+        /// Derives the <see cref="WalkableStep"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="YCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldStep">The walkable radius in world units.</param>
         public void SetWalkableStep(float worldStep)
         {
             WalkableStep = (int)Math.Floor(worldStep / yCellSize);
         }
 
+        /// <summary>
+        /// Derives the <see cref="WalkableStep"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="YCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldStep">The walkable radius in world units.</param>
         public void SetMaxEdgeLength(float worldLength)
         {
             MaxEdgeLength = (int)Math.Ceiling(worldLength / xzCellSize);
         }
 
+        /// <summary>
+        /// Derives the <see cref="MergRegionArea"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldArea">The merge region area in world units.</param>
         public void SetMergeRegionArea(float worldArea)
         {
             MergeRegionArea = (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
         }
 
+        /// <summary>
+        /// Derives the <see cref="MinRegionArea"/> from a world units value.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
+        /// </remarks>
+        /// <param name="worldArea">The minimum region area in world units.</param>
         public void SetMinRegionArea(float worldArea)
         {
             MinRegionArea = (int)Math.Ceiling(worldArea / (xzCellSize * xzCellSize));
         }
 
+        /// <summary>
+        /// The tile size in world units.
+        /// </summary>
         public float TileWorldSize
         {
             get { return tileSize * xzCellSize; }
         }
 
+        /// <summary>
+        /// Validates the parameter values.
+        /// </summary>
+        /// <returns>True if the parameter values meet the manditory limits.</returns>
         public bool IsValid()
         {
             return !(tileSize < 0
@@ -465,7 +538,7 @@ namespace org.critterai.nmgen
             result.mergeRegionArea = mergeRegionArea;
             result.minRegionArea = minRegionArea;
             result.tileSize = tileSize;
-            result.contourFlags = contourFlags;
+            result.contourOptions = contourOptions;
             result.useMonotone = useMonotone;
 
             return result;

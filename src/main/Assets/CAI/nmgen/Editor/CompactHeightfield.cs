@@ -35,16 +35,15 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Provides a representation of the open (unobstructed) space above
-    /// the solid surfaces of a voxel field.
+    /// Provides a representation of the open (unobstructed) space above the solid surfaces of 
+    /// a voxel field.
     /// </summary>
     /// <remarks>
-    /// <para>For this tpe of heightfield, the spans represent the floor
-    /// and ceiling of the open spaces.</para>
+    /// <para>For this type of heightfield, the spans represent the floor and ceiling of the 
+    /// open spaces.</para>
     /// <para>Data is stored in a compact, efficient manner.</para>
     /// <para>The following process can be used to iterate spans:</para>
-    /// <code>
-    /// 
+    /// <para><code>
     /// int w = chf.Width;
     /// int d = chf.Depth;
     /// 
@@ -90,20 +89,19 @@ namespace org.critterai.nmgen
     ///         }
     ///     }
     /// }
-    /// </code>
-    /// <para>Spans contain neighbor connection data that can be used to
-    /// locate axis-neighbors.  Axis neighbors are spans that are offset
-    /// offset from the current cell column as follows:</para>
+    /// </code></para>
+    /// <para>Spans contain neighbor connection data that can be used to locate axis-neighbors.  
+    /// Axis neighbors are spans that are offset offset from the current cell column as follows:
+    /// </para>
     /// <para>Direction 0 = (-1, 0)<br/>
     /// Direction 1 = (0, 1)<br/>
     /// Direction 2 = (1, 0)<br/>
     /// Direction 3 = (0, -1)</para>
-    /// <para>These standard offset can be obtained from the 
-    /// <see cref="CompactSpan.GetDirOffsetX"/> and 
-    /// <see cref="CompactSpan.GetDirOffsetZ"/> methods.</para>
-    /// <para>See the previous example code for information on how to use
-    /// connection information.</para>
-    /// <para>Behavior is undefined if an object is used after disposal.</para>
+    /// <para>These standard offset can be obtained from the <see cref="CompactSpan.GetDirOffsetX"/>
+    /// and  <see cref="CompactSpan.GetDirOffsetZ"/> methods.</para>
+    /// <para>See the earlier example code for information on how to use connection information.
+    /// </para>
+    /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class CompactHeightfield
