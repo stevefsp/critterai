@@ -30,6 +30,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Builds an <see cref="InputGeometry"/> object.
+    /// </summary>
     public class InputGeometryBuilder
     {
         private ChunkyTriMeshBuilder mBuilder;
@@ -37,10 +40,6 @@ namespace org.critterai.nmbuild
         private readonly Vector3 mBoundsMax;
         private readonly bool mIsThreadSafe;
         private InputGeometry mGeom;
-
-        public bool IsThreadSafe { get { return mIsThreadSafe; } } 
-        public InputGeometry Geometry { get { return mGeom; } }
-        public bool IsFinished { get { return mGeom != null; } }
 
         private InputGeometryBuilder(ChunkyTriMeshBuilder builder
             , Vector3 bmin
@@ -53,6 +52,30 @@ namespace org.critterai.nmbuild
             mIsThreadSafe = isThreadSafe;
         }
 
+        /// <summary>
+        /// True if the builder is safe to run on its own thread.
+        /// </summary>
+        public bool IsThreadSafe { get { return mIsThreadSafe; } }
+
+        /// <summary>
+        /// The input geometry created by the builder. (Null until finished.)
+        /// </summary>
+        public InputGeometry Geometry { get { return mGeom; } }
+
+        /// <summary>
+        /// True if the builder is finished and the input geometry is avaiable.
+        /// </summary>
+        public bool IsFinished { get { return mGeom != null; } }
+
+        /// <summary>
+        /// Performs a single build step.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method must be called repeatedly until it resturns false in order
+        /// to complete the build. (Useful in GUI environments.)</para>
+        /// </remarks>
+        /// <returns>True if the build is still underway and another call is required. False
+        /// if the build is finished.</returns>
         public bool Build()
         {
             if (mBuilder == null)
@@ -61,12 +84,15 @@ namespace org.critterai.nmbuild
             if (mBuilder.Build())
                 return true;
 
-            mGeom = new InputGeometry(mBuilder.Mesh, mBoundsMin, mBoundsMax);
+            mGeom = new InputGeometry(mBuilder.Result, mBoundsMin, mBoundsMax);
             mBuilder = null;
 
             return false;
         }
 
+        /// <summary>
+        /// Performs the build in a single step.
+        /// </summary>
         public void BuildAll()
         {
             if (mBuilder == null)
@@ -74,10 +100,26 @@ namespace org.critterai.nmbuild
 
             mBuilder.BuildAll();
 
-            mGeom = new InputGeometry(mBuilder.Mesh, mBoundsMin, mBoundsMax);
+            mGeom = new InputGeometry(mBuilder.Result, mBoundsMin, mBoundsMax);
             mBuilder = null;
         }
 
+        /// <summary>
+        /// Creates a thread-safe, fully validated builder.
+        /// </summary>
+        /// <remarks>
+        /// <para>The input mesh and area parameters are fully validated.</para>
+        /// <para>Will return null if there are zero triangles.</para>
+        /// <para>If the <paramref name="areas"/> parameter is null, all triangles
+        /// will default to the <see cref="NMGen.WalkableArea"/>.</para>
+        /// <para>If walkable slope if greather than zero then the builder will
+        /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> to the areas.</para>
+        /// </remarks>
+        /// <param name="mesh">The triangle mesh to use for the build.</param>
+        /// <param name="areas">The triangle areas. (Null permitted.)</param>
+        /// <param name="walkableSlope">The walkable slope. 
+        /// (See <see cref="NMGenParams.WalkableSlope"/>)</param>
+        /// <returns>A thread-safe, fully validated builder. Or null on error.</returns>
         public static InputGeometryBuilder Create(TriangleMesh mesh
             , byte[] areas
             , float walkableSlope)
@@ -99,15 +141,36 @@ namespace org.critterai.nmbuild
                 System.Array.Copy(areas, 0, lareas, 0, lareas.Length);
             }
 
-            return CreateUnsafe(lmesh, lareas, walkableSlope, true);
+            return UnsafeCreate(lmesh, lareas, walkableSlope, true);
         }
 
-        // May modify the contents of the area's array.
-        public static InputGeometryBuilder CreateUnsafe(TriangleMesh mesh
+        /// <summary>
+        /// Creates a builder.
+        /// </summary>
+        /// <remarks>
+        /// <para>No validation is performed and the builder will use the parameters directly
+        /// during the build.</para>
+        /// <para>Builders created using this method are not guarenteed to produce a usable
+        /// result.</para>
+        /// <para>It is the responsibility of the caller to ensure thread safely if 
+        /// <see cref="isThreadSafe"/> is set to true.</para>
+        /// <para>Warning: If walkable slope if greather than zero then the builder will
+        /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> directly to the areas parameter.
+        /// </para>
+        /// </remarks>
+        /// <param name="mesh">The triangle mesh to use for the build.</param>
+        /// <param name="areas">The triangle areas. (Null not permitted.)</param>
+        /// <param name="walkableSlope">The walkable slope. 
+        /// (See <see cref="NMGenParams.WalkableSlope"/>)</param>
+        /// <param name="isThreadSafe">True if the builder can run safely on its own thread.</param>
+        /// <returns>A builder, or null on error.</returns>
+        public static InputGeometryBuilder UnsafeCreate(TriangleMesh mesh
             , byte[] areas
             , float walkableSlope
             , bool isThreadSafe)
         {
+            if (mesh == null || areas == null || mesh.triCount < 0)
+                return null;
 
             walkableSlope = System.Math.Min(NMGen.MaxAllowedSlope, walkableSlope);
 
@@ -125,20 +188,29 @@ namespace org.critterai.nmbuild
 
             Vector3 bmin;
             Vector3 bmax;
-            Vector3Util.GetBounds(mesh.verts, mesh.tris, mesh.triCount, out bmin, out bmax);
+            mesh.GetBounds(out bmin, out bmax);
 
             return new InputGeometryBuilder(builder, bmin, bmax, isThreadSafe);
         }
 
+        /// <summary>
+        /// Validates the mesh and areas.
+        /// </summary>
+        /// <remarks>The <paramref name="areas"/> parameter is validated only if it is non-null.
+        /// </remarks>
+        /// <param name="mesh">The mesh to validate.</param>
+        /// <param name="areas">The area to validate. (If non-null.)</param>
+        /// <returns>True if the structure and content of the parameters are considered valid.
+        /// </returns>
         public static bool IsValid(TriangleMesh mesh, byte[] areas)
         {
-            if (mesh == null || mesh.triCount == 0 || !TriangleMesh.Validate(mesh, true))
+            if (mesh == null || mesh.triCount == 0 || !TriangleMesh.IsValid(mesh, true))
             {
                 return false;
             }
 
             if (areas != null && (areas.Length != mesh.triCount
-                    || !NMGen.ValidateAreaBuffer(areas, mesh.triCount)))
+                    || !NMGen.IsValidAreaBuffer(areas, mesh.triCount)))
             {
                 return false;
             }

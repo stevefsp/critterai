@@ -30,6 +30,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Represents a set of off-mesh connections used during construction of a navigation mesh.
+    /// </summary>
     public sealed class ConnectionSet
     {
         private readonly Vector3[] verts;
@@ -38,8 +41,6 @@ namespace org.critterai.nmbuild
         private readonly byte[] areas;
         private readonly ushort[] flags;
         private readonly uint[] userIds;
-
-        public int Count { get { return radii.Length; } }
 
         private ConnectionSet(Vector3[] verts
             , float[] radii
@@ -66,7 +67,29 @@ namespace org.critterai.nmbuild
             userIds = new uint[0];
         }
 
-        public int GetConnections(Vector3 bmin, Vector3 bmax
+        /// <summary>
+        /// The number of connections in the set. [Limit: >= 0]
+        /// </summary>
+        public int Count { get { return radii.Length; } }
+
+        /// <summary>
+        /// Gets the connections whose start vertex is within the specified bounds.
+        /// </summary>
+        /// <remarks>
+        /// <para>The out parameters will be null if the return result is zero.</para>
+        /// </remarks>
+        /// <param name="xmin">The minimum x-axis bounds.</param>
+        /// <param name="zmin">The minimum z-axis bounds.</param>
+        /// <param name="xmax">The maximum x-axis bounds.</param>
+        /// <param name="zmax">The maximum z-axis bounds.</param>
+        /// <param name="rverts">The connection vertices. [(start, end) * connCount]</param>
+        /// <param name="rradii">The connection radii. [Length: connCount]</param>
+        /// <param name="rdirs">The connection direction flags. [Length: connCount]</param>
+        /// <param name="rareas">The connection areas. [Length: connCount]</param>
+        /// <param name="rflags">The connection flags. [Length: connCount]</param>
+        /// <param name="ruserIds">The connection user ids. [Length: connCount]</param>
+        /// <returns>The number of connection returned.</returns>
+        public int GetConnections(float xmin, float zmin, float xmax, float zmax
             , out Vector3[] rverts
             , out float[] rradii
             , out byte[] rdirs
@@ -94,7 +117,7 @@ namespace org.critterai.nmbuild
             for (int i = 0; i < radii.Length; i++)
             {
                 Vector3 v = verts[i * 2 + 0];
-                if (Rectangle2.Contains(bmin.x, bmin.z, bmax.x, bmax.z, v.x, v.z))
+                if (Rectangle2.Contains(xmin, zmin, xmax, zmax, v.x, v.z))
                 {
                     rlverts.Add(v);
                     rlverts.Add(verts[i * 2 + 1]);
@@ -120,22 +143,33 @@ namespace org.critterai.nmbuild
             return rradii.Length;
         }
 
+        /// <summary>
+        /// Creates an empty connection set. (<see cref="Count"/> == 0)
+        /// </summary>
+        /// <returns>An empty connection set.</returns>
         public static ConnectionSet CreateEmpty()
         {
             return new ConnectionSet();
         }
 
         /// <summary>
-        /// 
+        /// Creates a connection set guarenteed to be thread-safe, immutable, and content valid.
         /// </summary>
         /// <remarks>
-        /// <para>This method performs a full validation of the structure
-        /// and content of the connection data.</para>
-        /// <para>This method cannot be used to create an empty set.  Attempting
-        /// to do so will return null. Use <see cref="CreateEmtpy"/> instead.
+        /// <para>This method performs a full validation of the structure and content of the 
+        /// connection data.</para>
+        /// <para>This method cannot be used to create an empty set.  Attempting to do so will 
+        /// return null. Use <see cref="CreateEmtpy"/> instead.
         /// </para>
         /// </remarks>
-        /// <returns>A fully validated connection set, or null on failure.</returns>
+        /// <returns>A connection set, or null on failure.</returns>
+        /// <param name="verts">The connection vertices. [(start, end) * connCount]</param>
+        /// <param name="radii">The connection radii. [Length: connCount]</param>
+        /// <param name="dirs">The connection direction flags. [Length: connCount]</param>
+        /// <param name="areas">The connection areas. [Length: connCount]</param>
+        /// <param name="flags">The connection flags. [Length: connCount]</param>
+        /// <param name="userIds">The connection user ids. [Length: connCount]</param>
+        /// <returns>The connection set.</returns>
         public static ConnectionSet Create(Vector3[] verts
             , float[] radii
             , byte[] dirs
@@ -155,6 +189,22 @@ namespace org.critterai.nmbuild
             return null;
         }
 
+        /// <summary>
+        /// Creates a connection set.
+        /// </summary>
+        /// <remarks>
+        /// <para>Connection sets created using this method are not guarenteed to be valid or
+        /// safe for threaded builds.</para>
+        /// <para>The generated connection set will directly reference the construction
+        /// parameters.</para>
+        /// </remarks>
+        /// <param name="verts">The connection vertices. [(start, end) * connCount]</param>
+        /// <param name="radii">The connection radii. [Length: connCount]</param>
+        /// <param name="dirs">The connection direction flags. [Length: connCount]</param>
+        /// <param name="areas">The connection areas. [Length: connCount]</param>
+        /// <param name="flags">The connection flags. [Length: connCount]</param>
+        /// <param name="userIds">The connection user ids. [Length: connCount]</param>
+        /// <returns>An unsafe connection set.</returns>
         public static ConnectionSet UnsafeCreate(Vector3[] verts
             , float[] radii
             , byte[] dirs
@@ -170,6 +220,20 @@ namespace org.critterai.nmbuild
                 , userIds);
         }
 
+        /// <summary>
+        /// Validates the structure and content of the connection data.
+        /// </summary>
+        /// <remarks>
+        /// <para>This is the same validation performed by the safe creation method.</para>
+        /// <para>Structural checks include null array and length checks.</para>
+        /// </remarks>
+        /// <param name="verts">The connection vertices. [(start, end) * connCount]</param>
+        /// <param name="radii">The connection radii. [Length: connCount]</param>
+        /// <param name="dirs">The connection direction flags. [Length: connCount]</param>
+        /// <param name="areas">The connection areas. [Length: connCount]</param>
+        /// <param name="flags">The connection flags. [Length: connCount]</param>
+        /// <param name="userIds">The connection user ids. [Length: connCount]</param>
+        /// <returns></returns>
         public static bool IsValid(Vector3[] verts
             , float[] radii
             , byte[] dirs

@@ -32,43 +32,23 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents NMGen input geometry that has been validated and
-    /// is ready to be used for a build.
+    /// Represents triangle mesh and area data used as input to the NMGen build process.
     /// </summary>
+    /// <remarks>
+    /// <para>Objects of this type are created using the <see cref="InputGeometryBuilder"/>.</para>
+    /// <para>Objects of this type arguarenteed to be thread-safe, immutable, and contain at least 
+    /// one triangle. There is no empty state.</para>
+    /// <para>The data storage is optimized for the NMGen build process. So this is not a general 
+    /// use class.</para>
+    /// </remarks>
+    /// <seealso cref="InputGeometryCompiler"/>
+    /// <seealso cref="InputGeometryBuilder"/>
 	public sealed class InputGeometry
 	{
-        /*
-         * Design notes:
-         * 
-         * This class has three main purposes:
-         * 
-         * It provides a single point for validation of the input geometry.  
-         * It will only construct if there is input geometry and it is well formed.
-         * 
-         * It provides a thread friendly package.
-         * 
-         * It's internal structure can be optimized with minimal or no impact on
-         * the public interface.  (It is likely I'll want to move the data
-         * into unmanageed memory at some point.)
-         * 
-         * Due to peformance/memory concerns the internal data is protected by scoping 
-         * access as internal. The issue with this design is the internal 
-         * scope is ineffective for source distributions, such as in Unity. 
-         * That is the reason  for the naming conventions.  They provide a 
-         * warning to users.
-         * 
-         */
-
         private readonly Vector3 mBoundsMin;
         private readonly Vector3 mBoundsMax;
 
         private readonly ChunkyTriMesh mMesh;
-
-        public Vector3 BoundsMin { get { return mBoundsMin; } }
-        public Vector3 BoundsMax { get { return mBoundsMax; } }
-        public int TriCount { get { return mMesh.TriCount; } }
-
-        internal ChunkyTriMesh Mesh { get { return mMesh; } }
 
         internal InputGeometry(ChunkyTriMesh mesh, Vector3 bmin, Vector3 bmax)
         {
@@ -77,18 +57,56 @@ namespace org.critterai.nmbuild
             mMesh = mesh;
         }
 
-        public int ExtractMesh(out Vector3[] verts, out int[] tris, out byte[] areas)
+        /// <summary>
+        /// The minimum bounds of the AABB.
+        /// </summary>
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
+
+        /// <summary>
+        /// The maximum bounds of the AABB.
+        /// </summary>
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
+
+        /// <summary>
+        /// The number of triangles. [Limit: > 0]
+        /// </summary>
+        public int TriCount { get { return mMesh.TriCount; } }
+
+        internal ChunkyTriMesh Mesh { get { return mMesh; } }
+
+        /// <summary>
+        /// Extracts all input geometry for inspection.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method exists to permit debugging.</para>
+        /// </remarks>
+        /// <param name="areas">The triangle areas.</param>
+        /// <returns>The triangle mesh.</returns>
+        public TriangleMesh ExtractMesh(out byte[] areas)
         {
-            return mMesh.ExtractMesh(out verts, out tris, out areas);
+            return mMesh.ExtractMesh(out areas);
         }
 
-        public int ExtractMesh(float xmin, float zmin, float xmax, float zmax
-            , out Vector3[] verts, out int[] tris, out byte[] areas)
+        /// <summary>
+        /// Extracts all input geometry for a particular bounds.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method exists to permit debugging.</para>
+        /// <para>The returned result is only guarenteed to be the result 'seen' by the NMGen build
+        /// process.</para>
+        /// </remarks>
+        /// <param name="xmin">The minimum x-axis bounds.</param>
+        /// <param name="zmin">The minimum z-axis bounds.</param>
+        /// <param name="xmax">The maximum x-axis bounds.</param>
+        /// <param name="zmax">The maximum z-axis bounds.</param>
+        /// <param name="areas">The triangle areas.</param>
+        /// <returns>The triangle mesh.</returns>
+        public TriangleMesh ExtractMesh(float xmin, float zmin, float xmax, float zmax
+            , out byte[] areas)
         {
-            int[] ltris;
             byte[] lareas;
 
-            mMesh.ExtractMesh(out verts, out ltris, out lareas);
+            TriangleMesh lmesh = mMesh.ExtractMesh(out lareas);
 
             List<ChunkyTriMeshNode> nodes = new List<ChunkyTriMeshNode>();
 
@@ -96,13 +114,16 @@ namespace org.critterai.nmbuild
 
             if (triCount == 0)
             {
-                verts = null;
-                tris = null;
-                areas = null;
-                return 0;
+                areas = new byte[0];
+                return new TriangleMesh();
             }
 
-            tris = new int[triCount * 3];
+            TriangleMesh result = new TriangleMesh();
+            result.verts = lmesh.verts;
+            result.vertCount = lmesh.vertCount;
+
+            result.tris = new int[triCount * 3];
+            result.triCount = triCount;
             areas = new byte[triCount];
 
             int i = 0;
@@ -110,14 +131,14 @@ namespace org.critterai.nmbuild
             {
                 for (int j = 0; j < node.count; j++, i++)
                 {
-                    tris[i * 3 + 0] = ltris[(node.i + j) * 3 + 0];
-                    tris[i * 3 + 1] = ltris[(node.i + j) * 3 + 1];
-                    tris[i * 3 + 2] = ltris[(node.i + j) * 3 + 2];
+                    result.tris[i * 3 + 0] = lmesh.tris[(node.i + j) * 3 + 0];
+                    result.tris[i * 3 + 1] = lmesh.tris[(node.i + j) * 3 + 1];
+                    result.tris[i * 3 + 2] = lmesh.tris[(node.i + j) * 3 + 2];
                     areas[i] = lareas[node.i + j];
                 }
             }
 
-            return triCount;
+            return result;
         }
     }
 }

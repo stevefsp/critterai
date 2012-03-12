@@ -107,7 +107,7 @@ namespace org.critterai.nmbuild
             , InputGeometry geom)
         {
             if (config == null || !config.IsValid()
-                || !Vector3Util.IsBoundsValid(boundsMin, boundsMax)
+                || !TriangleMesh.IsBoundsValid(boundsMin, boundsMax)
                 || geom == null
                 || config.tileSize <= 0)
             {

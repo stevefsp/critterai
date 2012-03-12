@@ -30,22 +30,54 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Used to compile input geometry in a dynamic fashion.
+    /// </summary>
+    /// <remarks>
+    /// <para>The standard use case is to use this class to compile input
+    /// geometry from various sources, then use <see cref="InputGeometryBuilder"/> to create
+    /// the finalized input geometry for the build.</para>
+    /// </remarks>
+    /// <seealso cref="InputGeometry"/>
+    /// <seealso cref="InputGeometryBuilder"/>
     public class InputGeometryCompiler
     {
         private readonly List<Vector3> mVerts;
         private readonly List<int> mTris;
         private readonly List<byte> mAreas;
 
+        /// <summary>
+        /// The number of loaded vertices.
+        /// </summary>
         public int VertCount { get { return mVerts.Count; } }
+
+        /// <summary>
+        /// The number of loaded triangles.
+        /// </summary>
         public int TriCount { get { return mTris.Count / 3; } }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="initVertCount">The initial vertex buffer size.</param>
+        /// <param name="initTriCount">The initial triangle buffer size.</param>
         public InputGeometryCompiler(int initVertCount, int initTriCount)
         {
+            initVertCount = System.Math.Max(9, initVertCount);
+            initTriCount = System.Math.Max(1, initTriCount);
+
             mVerts = new List<Vector3>(initVertCount);
             mTris = new List<int>(initTriCount * 3);
             mAreas = new List<byte>(initTriCount);
         }
 
+        /// <summary>
+        /// Adds a single triangle.
+        /// </summary>
+        /// <param name="vertA">Vertex A of triangle ABC.</param>
+        /// <param name="vertB">Vertex B of triangle ABC.</param>
+        /// <param name="vertC">Vertex C of triangle ABC.</param>
+        /// <param name="area">The triangle area.</param>
         public void AddTriangle(Vector3 vertA, Vector3 vertB, Vector3 vertC, byte area)
         {
             mTris.Add(mVerts.Count);
@@ -60,20 +92,26 @@ namespace org.critterai.nmbuild
             mAreas.Add(area);
         }
 
-        //public bool AddTriangles(List<Vector3> verts
-        //    , int vertCount
-        //    , List<int> tris
-        //    , List<byte> areas
-        //    , int triCount)
-        //{
-        //    if (verts == null || tris == null)
-        //        return false;
-
-        //    return AddTriangles(verts.ToArray(), vertCount
-        //        , tris.ToArray(), (areas == null ? null : areas.ToArray()), triCount);
-        //}
-
-        public bool AddTriangles(Vector3[] verts, int vertCount, int[] tris, byte[] areas, int triCount)
+        /// <summary>
+        /// Adds an arbitrary group of triangles.  
+        /// </summary>
+        /// <remarks>
+        /// <para>All triangles will default to <see cref="NMGen.WalkableArea"/> if the 
+        /// <paramref name="areas"/> parameter is null.</para>
+        /// </remarks>
+        /// <param name="verts">The triangle vertices. 
+        /// [Length: >= <paramref name="vertCount"/>]</param>
+        /// <param name="vertCount">The number of vertices. [Length: >= 3]</param>
+        /// <param name="tris">The triangles. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// [Length: >= 3 * <paramref name="triCount"/>]
+        /// </param>
+        /// <param name="areas">The triangle areas. (Null allowed.)
+        /// [Length: >= <paramref name="triCount"/>]</param>
+        /// <param name="triCount">The number of triangles. [Limit: > 0]</param>
+        /// <returns>True if the triangles were successfully added.</returns>
+        public bool AddTriangles(Vector3[] verts, int vertCount
+            , int[] tris, byte[] areas, int triCount)
         {
             if (triCount < 1 || vertCount < 3
                 || verts == null || verts.Length < vertCount
@@ -124,18 +162,32 @@ namespace org.critterai.nmbuild
             return true;
         }
 
-
-        /// <param name="areas">If null, the area will default to walkable for all triangles.</param>
-        public bool AddTriangles(TriangleMesh mesh
-            , byte[] areas)
+        /// <summary>
+        /// Adds an triangle mesh.  
+        /// </summary>
+        /// <remarks>
+        /// <para>All triangles will default to <see cref="NMGen.WalkableArea"/> if the 
+        /// <paramref name="areas"/> parameter is null.</para>
+        /// <para>Will return false if the mesh triangle count is zero.</para>
+        /// </remarks>
+        /// <param name="mesh">The triangle mesh.</param>
+        /// <param name="areas">The triangle areas. (Null allowed.)
+        /// [Length: >= mesh.triCount]</param>
+        /// <returns>True if the triangles were successfully added.</returns>
+        public bool AddTriangles(TriangleMesh mesh, byte[] areas)
         {
-            if (mesh == null)
+            if (mesh == null || mesh.triCount == 0)
                 return false;
 
             return AddTriangles(mesh.verts, mesh.vertCount, mesh.tris, areas, mesh.triCount);
         }
 
-        public TriangleMesh GetGeometry(out byte[] areas)
+        /// <summary>
+        /// Creates geometry from the compiled data.
+        /// </summary>
+        /// <param name="areas">The triangle areas.</param>
+        /// <returns>The triangle mesh, or null if the compiler is empty.</returns>
+        public TriangleMesh CreateGeometry(out byte[] areas)
         {
             if (mTris.Count == 0)
             {
@@ -149,6 +201,9 @@ namespace org.critterai.nmbuild
                 , mTris.ToArray(), mTris.Count / 3);
         }
 
+        /// <summary>
+        /// Resets the compiler to an empty state.
+        /// </summary>
         public void Reset()
         {
             mTris.Clear();

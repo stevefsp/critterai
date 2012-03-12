@@ -22,12 +22,34 @@
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// The state of a build state.
+    /// </summary>
     public enum BuildTaskState : byte
     {
+        /// <summary>
+        /// The task has been created but not run.
+        /// </summary>
         Inactive = 0,
+
+        /// <summary>
+        /// The task is running.
+        /// </summary>
         InProgress,
+
+        /// <summary>
+        /// The task is in the process or aborting.
+        /// </summary>
         Aborting,
+
+        /// <summary>
+        /// The task completed successfully.  (A finished state.)
+        /// </summary>
         Complete,
+
+        /// <summary>
+        /// The task was aborted due to an abort request or error. (A finished state.)
+        /// </summary>
         Aborted,
     }
 }

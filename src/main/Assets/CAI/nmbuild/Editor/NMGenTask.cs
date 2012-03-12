@@ -24,15 +24,13 @@ using org.critterai.nav;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A task used manage the build of an <see cref="IncrementalBuilder"/> object.
+    /// </summary>
     public sealed class NMGenTask
         : BuildTask<NMGenAssets>
     {
         private readonly IncrementalBuilder mBuilder;
-
-        public override bool IsThreadSafe { get { return mBuilder.IsThreadSafe; }}
-
-        public int TileX { get { return mBuilder.TileX; } }
-        public int TileZ { get { return mBuilder.TileZ; } }
 
         private NMGenTask(IncrementalBuilder builder, int priority)
             : base(priority)
@@ -40,6 +38,27 @@ namespace org.critterai.nmbuild
             mBuilder = builder;
         }
 
+        /// <summary>
+        /// If true, the task is safe to run on its own thread.
+        /// </summary>
+        public override bool IsThreadSafe { get { return mBuilder.IsThreadSafe; } }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileX { get { return mBuilder.TileX; } }
+
+        /// <summary>
+        /// The z-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileZ { get { return mBuilder.TileZ; } }
+
+        /// <summary>
+        /// Creates a new NMGen task.
+        /// </summary>
+        /// <param name="builder">The builder to manage.</param>
+        /// <param name="priority">The task priority.</param>
+        /// <returns>A task, or null on error.</returns>
         public static NMGenTask Create(IncrementalBuilder builder, int priority)
         {
             if (builder == null || builder.IsFinished)
@@ -48,7 +67,7 @@ namespace org.critterai.nmbuild
             return new NMGenTask(builder, priority);
         }
 
-        protected override bool LocalRun()
+        protected override bool LocalUpdate()
         {
             mBuilder.Build();
             return !mBuilder.IsFinished;  // Go to false when IsFinished.

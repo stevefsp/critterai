@@ -25,6 +25,14 @@ using System.Collections.Generic;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A standard build task that provides data upon completion.
+    /// </summary>
+    /// <remarks>
+    /// <para>The task is always single use.  The task is constructed, run, then its
+    /// data and messages retrieved.</para>
+    /// </remarks>
+    /// <typeparam name="T">The type of data provided upon completion.</typeparam>
     public abstract class BuildTask<T>
         : IBuildTask
     {
@@ -38,36 +46,119 @@ namespace org.critterai.nmbuild
 
         private readonly List<string> mMessages = new List<string>();
 
-        public int Priority { get { return mPriority; } }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="priority">The priority of the task.</param>
         public BuildTask(int priority)
         {
             mPriority = priority;
         }
 
+        /// <summary>
+        /// The priority of the item.
+        /// </summary>
+        /// <remarks>
+        /// <para>This value is immutable.</para>
+        /// </remarks>
+        public int Priority { get { return mPriority; } }
+
+        /// <summary>
+        /// If true, the task can be safely run on a separate thread from the object(s) monitoring
+        /// its state.
+        /// </summary>
+        /// <remarks>
+        /// <para>This value of immutable.</para>
+        /// </remarks>
         public abstract bool IsThreadSafe { get; }
 
-        protected abstract bool LocalRun();
+        /// <summary>
+        /// Performs a work increment.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method will be 'reasonably' responsive.  It should block its thread
+        /// for the minimum possible amount of time.</para>
+        /// <para>Called in a loop by the <see cref="Run"/> method until the task is finished.
+        /// </para>
+        /// <para>Not guarenteed to be called.  (I.e. Will not be called if the task is aborted
+        /// before the task is run.)</para>
+        /// </remarks>
+        /// <returns>True if the task is not yet finished.  Otherwise false.</returns>
+        protected abstract bool LocalUpdate();
 
+        /// <summary>
+        /// Gets the result of the completed task.
+        /// </summary>
+        /// <remarks>Called by <see cref="Run"/> after the task completes and before 
+        /// <see cref="FinaliTask"/> is run.  Will not be called on tasks in the aborted state.
+        /// </remarks>
+        /// <param name="result">The result of the completed task.</param>
+        /// <returns>True if the result is available, false if the task should abort with no
+        /// result. (I.e. An internal abort.)</returns>
         protected abstract bool GetResult(out T result);
+
+        /// <summary>
+        /// Finalize the task.
+        /// </summary>
+        /// <remarks>
+        /// <para>Used for task cleanup.  Will be called before the <see cref="Run"/> method exits,
+        /// even on an exception.  Must never throw an exception.</para>
+        /// </remarks>
         protected virtual void FinalizeTask() { }
 
+        /// <summary>
+        /// Adds a message to the message queue.
+        /// </summary>
+        /// <param name="messsage">The message to add.</param>
         protected void AddMessage(string messsage)
         {
             lock (mMessages)
                 mMessages.Add(messsage);
         }
+        /// <summary>
+        /// Appends an array of messages to the message queue.
+        /// </summary>
+        /// <param name="messages">The messages to append.</param>
         protected void AddMessages(string[] messages)
         {
             lock (mMessages)
                 mMessages.AddRange(messages);
         }
 
+        /// <summary>
+        /// The current state of the task.
+        /// </summary>
         public BuildTaskState TaskState {  get {  lock (mMessages) return mState; } }
+
+        /// <summary>
+        /// The task is in a finished state.
+        /// </summary>
         public bool IsFinished { get { return mIsFinished; } }
+
+        /// <summary>
+        /// Messages available after the task is finished.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return a zero length array if the task is not finished or there are
+        /// no messages.  Will always provide a message if on abort.</para>
+        /// </remarks>
         public string[] Messages { get {  lock (mMessages) return mMessages.ToArray(); } }
+
+        /// <summary>
+        /// The data produced by the task.
+        /// </summary>
+        /// <remarks>Will only contain useable data when the task is finished with a state of
+        /// <see cref="BuildTaskState.Complete"/>.</remarks>
         public T Data { get { return mData; } }
 
+        /// <summary>
+        /// Runs the task through to a finished state.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method may only be called once.</para>
+        /// <para>If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
+        /// thread form the object(s) that are monitoring the task state.</para>
+        /// </remarks>
         public void Run()
         {
             lock (mMessages)
@@ -80,7 +171,7 @@ namespace org.critterai.nmbuild
 
             try
             {
-                while (LocalRun())
+                while (LocalUpdate())
                 {
                     lock (mMessages)
                     {
@@ -100,6 +191,14 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// Requests an abort of the request.
+        /// </summary>
+        /// <remarks>
+        /// <para>There may be a delay in the actual abort for tasks running on a separate thread.
+        /// </para>
+        /// </remarks>
+        /// <param name="reason">The reason for the abort.</param>
         public void Abort(string reason)
         {
             lock (mMessages)

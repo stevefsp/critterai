@@ -24,27 +24,37 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Represents a group of releated tile build assets.
+    /// </summary>
+    /// <remarks>
+    /// <para>This object holds the result of a tile build.</para>
+    /// </remarks>
     public struct TileBuildAssets
     {
         private readonly int mTileX;
         private readonly int mTileZ;
 
-        private NavmeshTileData mTile;
-        private int mPolyCount;
+        private readonly NavmeshTileData mTile;
+        private readonly int mPolyCount;
 
-        public int TileX { get { return mTileX; } }
-        public int TileZ { get { return mTileZ; } } 
-        public NavmeshTileData Tile { get { return mTile; } }
-        public int PolyCount { get { return mPolyCount; } }
-
-        public bool NoResult { get { return (mTile == null); } }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>A 'no result' object will be created if the <paramref name="tile"/> parameter 
+        /// is null or polygon count is less than one.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="tile">The tile data.</param>
+        /// <param name="polyCount">The polygons in the tile.</param>
         public TileBuildAssets(int tx, int tz, NavmeshTileData tile, int polyCount)
         {
             mTileX = tx;
             mTileZ = tz;
 
-            if (tile == null || polyCount == 0)
+            if (tile == null || polyCount < 1)
             {
                 mTile = null;
                 mPolyCount = 0;
@@ -55,5 +65,30 @@ namespace org.critterai.nmbuild
                 mPolyCount = polyCount;
             }
         }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileX { get { return mTileX; } }
+
+        /// <summary>
+        /// The z-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileZ { get { return mTileZ; } }
+
+        /// <summary>
+        /// The tile data.
+        /// </summary>
+        public NavmeshTileData Tile { get { return mTile; } }
+
+        /// <summary>
+        /// The number of polygons in the tile.
+        /// </summary>
+        public int PolyCount { get { return mPolyCount; } }
+
+        /// <summary>
+        /// There are no results for the tile.  (Polygon count is zero.)
+        /// </summary>
+        public bool NoResult { get { return (mTile == null); } }
     }
 }

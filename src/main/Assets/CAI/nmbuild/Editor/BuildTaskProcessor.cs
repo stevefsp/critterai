@@ -27,7 +27,21 @@ using org.critterai.nav;
 
 namespace org.critterai.nmbuild
 {
-    // The thread startup is delayed until the first request.
+    /// <summary>
+    /// Provides a simple multi-threaded processsor for <see cref="IBuildTask"/> objects.
+    /// </summary>
+    /// <remarks>
+    /// <para>The expected use case is that the processor is run on a separate thread.  Clients
+    /// then create and pass it tasks to be run.  The processor will run tasks concurrently up
+    /// to its maximum allowed, then queue remaining tasks for later.</para>
+    /// <para>Individual tasks are aborted via the <see cref="IBuildTask.Abort"/> method.  The 
+    /// processor will clear the task from its queue when encounters the task for processing.  
+    /// So the task count will not decreate immediately.</para>
+    /// <para>Warning: A zombie worker thread will result if a task does not meet its 
+    /// <see cref="IBuildTask"/> obligation, and throws an exception in its 
+    /// <see cref="IBuildTask.Run"/> method.  The worker thread will become un-usable for
+    /// new tasks.</para>
+    /// </remarks>
     public sealed class BuildTaskProcessor
     {
         /*
@@ -38,27 +52,23 @@ namespace org.critterai.nmbuild
          * The processors are not created or their threads started until the first task is queued.
          * So the processor array will contain nulls until then.
          * This is important to the design in Unity.  Want to keep the threads in
-         * the editor to a minimum until they are needed.
+         * the editor to a minimum until they are actually needed.
          */
 
+        /// <summary>
+        /// A standard value for high priority tasks.
+        /// </summary>
         public const int HighPriority = 3000;
+
+        /// <summary>
+        /// A standard value for medium priority tasks.
+        /// </summary>
         public const int MediumPriority = 2000;
+
+        /// <summary>
+        /// A standard value for low priority tasks.
+        /// </summary>
         public const int LowPriority = 1000;
-
-        private static int mStandardSleep = 10;
-        private static int mIdleSleep = 100;
-
-        public static int IdleSleep
-        {
-            get { return mIdleSleep; }
-            set { mIdleSleep = Math.Max(1, value); }
-        }
-
-        public static int StandardSleep
-        {
-            get { return mStandardSleep; }
-            set { mStandardSleep = Math.Max(1, value);}
-        }
 
         private class Processor
         {
@@ -111,10 +121,10 @@ namespace org.critterai.nmbuild
                              * abort doesn't work, or throws another exception, then the processor 
                              * will become a zombie, unresponsive to new requests from the manager.
                              */
-                            try 
-                            { 
-                                task.Run(); 
-                            } 
+                            try
+                            {
+                                task.Run();
+                            }
                             catch (Exception ex)
                             {
                                 task.Abort("Exception detected by processor: " + ex.Message);
@@ -126,6 +136,31 @@ namespace org.critterai.nmbuild
         }
 
         private const string AbortMessage = "Task processor shutdown.";
+
+        private static int mStandardSleep = 10;
+        private static int mIdleSleep = 100;
+
+        /// <summary>
+        /// The length of time processors will idle when there are no tasks to process.
+        /// [Units: Milliseconds]
+        /// [Limit: >= 1]
+        /// </summary>
+        public static int IdleSleep
+        {
+            get { return mIdleSleep; }
+            set { mIdleSleep = Math.Max(1, value); }
+        }
+
+        /// <summary>
+        /// The length of time processors will idle when there are tasks being processed.
+        /// [Units: Milliseconds]
+        /// [Limit: >= 1]
+        /// </summary>
+        public static int StandardSleep
+        {
+            get { return mStandardSleep; }
+            set { mStandardSleep = Math.Max(1, value);}
+        }
 
         private readonly List<IBuildTask> mTaskQueue = new List<IBuildTask>();
 
@@ -139,10 +174,11 @@ namespace org.critterai.nmbuild
         private bool mIsRunning;
         private bool mAbort;
 
-        public int TaskCount { get { return mTaskCount; } }
-        public bool IsRunning { get { return mIsRunning; } }
-        public int MaxConcurrent { get { return mProcessors.Length; } }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="maxConcurrent">The maximum permitted active tasks before new tasks are 
+        /// queued.</param>
         public BuildTaskProcessor(int maxConcurrent)
         {
             maxConcurrent = Math.Max(1, maxConcurrent);
@@ -150,6 +186,30 @@ namespace org.critterai.nmbuild
             mActiveTasks = new IBuildTask[maxConcurrent];
         }
 
+        /// <summary>
+        /// The number of active and queued tasks.
+        /// </summary>
+        public int TaskCount { get { return mTaskCount; } }
+
+        /// <summary>
+        /// The processor is running.
+        /// </summary>
+        public bool IsRunning { get { return mIsRunning; } }
+
+        /// <summary>
+        /// The maximum permitted active tasks before new tasks are queued.
+        /// </summary>
+        /// <remarks>This also represents the number of background worker threads the
+        /// processor creates.</remarks>
+        public int MaxConcurrent { get { return mProcessors.Length; } }
+
+        /// <summary>
+        /// Aborts the processor.
+        /// </summary>
+        /// <remarks>
+        /// <para>The processor will call abort only on active tasks.  Queued tasks will simply be 
+        /// abandoned.</para>
+        /// </remarks>
         public void Abort()
         {
             lock (mTaskQueue)
@@ -166,6 +226,14 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// Queues a task to be run.
+        /// </summary>
+        /// <remarks>
+        /// <para>The processor will only queue inactive tasks that are threadsafe.</para>
+        /// </remarks>
+        /// <param name="task">The task to queue.</param>
+        /// <returns>True if the task was accepted.</returns>
         public bool QueueTask(IBuildTask task)
         {
             if (task == null || task.TaskState != BuildTaskState.Inactive || !task.IsThreadSafe)
@@ -199,6 +267,15 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// Runs the processor.
+        /// </summary>
+        /// <remarks>
+        /// <para>This method will block until the processor is aborted.  So the expected use
+        /// case is that this method will be run on its own thread.</para>
+        /// <para>Processors are single use.  They cannot be run again after they are aborted.
+        /// </para>
+        /// </remarks>
         public void Run()
         {
             lock (mTaskQueue)

@@ -22,6 +22,7 @@
 
 namespace org.critterai.nmbuild
 {
+    // TODO: Move this to the u3d library.
     public enum TileBuildState
     {
         /// <summary>

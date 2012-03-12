@@ -37,26 +37,22 @@ namespace org.critterai.nmbuild
          */
 
         /// <summary>
-        /// Include <see cref="Heightfield.MarkLedgeSpansNotWalkable"/>
-        /// in the build.
+        /// Include <see cref="Heightfield.MarkLedgeSpansNotWalkable"/> in the build.
         /// </summary>
         LedgeSpansNotWalkable = 0x010,
 
         /// <summary>
-        /// Include <see cref="Heightfield.MarkLowHeightSpansNotWalkable"/>
-        /// in the build.
+        /// Include <see cref="Heightfield.MarkLowHeightSpansNotWalkable"/> in the build.
         /// </summary>
         LowHeightSpansNotWalkable = 0x020,
 
         /// <summary>
-        /// Include <see cref="Heightfield.MarkLowObstaclesWalkable"/>
-        /// in the build.
+        /// Include <see cref="Heightfield.MarkLowObstaclesWalkable"/> in the build.
         /// </summary>
         LowObstaclesWalkable = 0x040,
 
         /// <summary>
-        /// The 0x01 flag should be applied to all polygons in the
-        /// <see cref="PolyMesh"/> object.
+        /// Apply the 0x01 flag to all polygons in the <see cref="PolyMesh"/> object.
         /// </summary>
         ApplyPolyFlags = 0x080
     }
