@@ -53,21 +53,6 @@ namespace org.critterai
         public const int MSToTicks = 10000;
 
         /// <summary>
-        /// The minimum permitted priority for non-system (custom) elements.
-        /// </summary>
-        public const int MinPriority = ushort.MinValue;
-
-        /// <summary>
-        /// The maximum permitted priority for non-system (custom) elements.
-        /// </summary>
-        public const int MaxPriority = ushort.MaxValue;
-
-        /// <summary>
-        /// The standard default priority for priority elements.
-        /// </summary>
-        public const int DefaultPriority = 100;
-
-        /// <summary>
         /// Gets the number of milliseconds since the start <see cref="DateTime"/> tick to now.
         /// </summary>
         /// <param name="start">The start time in <see cref="DateTime"/ ticks.</param>
@@ -85,18 +70,6 @@ namespace org.critterai
         public static int GetNowDeltaSec(long start)
         {
             return (int)((DateTime.Now.Ticks - start) * TicksToSec);
-        }
-
-        /// <summary>
-        /// Clamps the value to the allowed non-system (custom) priority range.
-        /// </summary>
-        /// <param name="value">The value to clamp.</param>
-        /// <returns>The clamped value. 
-        /// (<see cref="MinPriority"/> &lt;= clampedValue &lt;= <see cref="MaxPriority"/>
-        /// </returns>
-        public static int ClampPriority(int value)
-        {
-            return Math.Max(MinPriority, Math.Min(MaxPriority, value));
         }
     }
 }
