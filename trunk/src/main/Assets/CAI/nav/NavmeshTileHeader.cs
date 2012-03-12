@@ -46,14 +46,14 @@ namespace org.critterai.nav
         public int version;
 
         /// <summary>
-        /// The x-position of the tile within the tile grid. (x, z)
+        /// The x-index of the tile within the tile grid. (x, z)
         /// </summary>
-        public int x;
+        public int tileX;
 
         /// <summary>
-        /// The z-position of the tile within the tile grid. (x, z)
+        /// The z-index of the tile within the tile grid. (x, z)
         /// </summary>
-        public int z;
+        public int tileZ;
 
         /// <summary>
         /// The layer of the tile.
@@ -165,7 +165,7 @@ namespace org.critterai.nav
                 + "MaxLinks: {8}, BVQuantFactor: {20}, BVNodes: {12}\n"
                 + "Magic: {0}\n"
                 , magic, version
-                , x, z, layer
+                , tileX, tileZ, layer
                 , userId
                 , polyCount, vertCount
                 , maxLinkCount
