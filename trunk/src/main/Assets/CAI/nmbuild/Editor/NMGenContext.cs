@@ -24,6 +24,13 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// An NMGen build context.
+    /// </summary>
+    /// <remarks>
+    /// <para>Holds objects releated to an NMGen build during the build process.  The builder
+    /// defines which assets are available at which point in the build.</para>
+    /// </remarks>
     public class NMGenContext
         : BuildContext
     {
@@ -40,46 +47,81 @@ namespace org.critterai.nmbuild
         private PolyMesh mPolyMesh;
         private PolyMeshDetail mDetailMesh;
 
-        public NMGenParams Config { get { return mConfig; } } 
+        /// <summary>
+        /// The associated build configuation.
+        /// </summary>
+        public NMGenParams Config { get { return mConfig; } }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
         public int TileX { get { return mTileX; } }
+
+        /// <summary>
+        /// The z-index of the tile within the tile grid. (x, z)
+        /// </summary>
         public int TileZ { get { return mTileZ; } }
 
+        /// <summary>
+        /// The build has not produced a result.
+        /// </summary>
         public bool NoResult 
         { 
             get { return mNoResult; }
             set { mNoResult = true; }
         }
 
+        /// <summary>
+        /// The heightfield.
+        /// </summary>
         public Heightfield Heightfield
         {
             get { return mHeightfield; }
             set { mHeightfield = value; }
         }
 
+        /// <summary>
+        /// The compact field.
+        /// </summary>
         public CompactHeightfield CompactField
         {
             get { return mCompactField; }
             set { mCompactField = value; }
         }
 
+        /// <summary>
+        /// The contour set.
+        /// </summary>
         public ContourSet Contours
         {
             get { return mContours; }
             set { mContours = value; }
         }
 
+        /// <summary>
+        /// The polygon mesh.
+        /// </summary>
         public PolyMesh PolyMesh
         {
             get { return mPolyMesh; }
             set { mPolyMesh = value; }
         }
 
+        /// <summary>
+        /// The detail mesh.
+        /// </summary>
         public PolyMeshDetail DetailMesh
         {
             get { return mDetailMesh; }
             set { mDetailMesh = value; }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="config">The build configuration.</param>
         public NMGenContext(int tx, int tz, NMGenParams config)
         {
             mTileX = tx;
@@ -88,6 +130,9 @@ namespace org.critterai.nmbuild
             mConfig = config;
         }
 
+        /// <summary>
+        /// Sets the context as having produced no result.
+        /// </summary>
         public void SetAsNoResult()
         {
             mHeightfield = null;

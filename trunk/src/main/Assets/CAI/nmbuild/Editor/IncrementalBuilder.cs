@@ -71,8 +71,8 @@ namespace org.critterai.nmbuild
             }
         }
 
-        public int TileX { get { return mTileConfig.X; } }
-        public int TileZ { get { return mTileConfig.Z; } }
+        public int TileX { get { return mTileConfig.TileX; } }
+        public int TileZ { get { return mTileConfig.TileZ; } }
 
         public NMGenAssets Result
         {
@@ -80,7 +80,7 @@ namespace org.critterai.nmbuild
             {
                 if (mState == NMGenState.Complete)
                 {
-                    return new NMGenAssets(mTileConfig.X, mTileConfig.Z
+                    return new NMGenAssets(mTileConfig.TileX, mTileConfig.TileZ
                         , mBuildContext.PolyMesh, mBuildContext.DetailMesh
                         , mBuildContext.Heightfield, mBuildContext.CompactField, mBuildContext.Contours);
                 }
@@ -102,7 +102,7 @@ namespace org.critterai.nmbuild
         /// Constructor
         /// </summary>
         /// <remarks>
-        /// <para>WARNING: Don't forget to set the easily overlooked tile size
+        /// <para>Warning: Don't forget to set the easily overlooked tile size
         /// and bounds properties in the <paramref name="config"/>
         /// object!  These properties don't have any valid default values 
         /// and using the configuration without setting them will result in 
@@ -137,9 +137,9 @@ namespace org.critterai.nmbuild
             mProcessors = processors;
             mResultOptions = resultOptions;
 
-            mBuildContext = new NMGenContext(tileConfig.X, tileConfig.Z, mConfig.Clone());
+            mBuildContext = new NMGenContext(tileConfig.TileX, tileConfig.TileZ, mConfig.Clone());
 
-            mTileText = string.Format("({0},{1})", tileConfig.X, tileConfig.Z);
+            mTileText = string.Format("({0},{1})", tileConfig.TileX, tileConfig.TileZ);
 
             mState = NMGenState.Initialized;
         }
@@ -414,7 +414,7 @@ namespace org.critterai.nmbuild
                 , mBuildContext.CompactField
                 , mConfig.EdgeMaxDeviation
                 , mConfig.MaxEdgeLength
-                , mConfig.ContourFlags);
+                , mConfig.ContourOptions);
 
             if (cset == null)
             {
@@ -875,7 +875,7 @@ namespace org.critterai.nmbuild
     //    /// Constructor
     //    /// </summary>
     //    /// <remarks>
-    //    /// <para>WARNING: Don't forget to set the easily overlooked tile size
+    //    /// <para>Warning: Don't forget to set the easily overlooked tile size
     //    /// and bounds properties in the <paramref name="config"/>
     //    /// object!  These properties don't have any valid default values 
     //    /// and using the configuration without setting them will result in 

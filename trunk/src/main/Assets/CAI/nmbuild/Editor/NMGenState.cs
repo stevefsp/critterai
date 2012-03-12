@@ -23,8 +23,7 @@
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents the build state for an <see cref="IncrementalBuilder"/>
-    /// object.
+    /// Represents the build state for an <see cref="IncrementalBuilder"/> object.
     /// </summary>
     /// <remarks>There are three finished states: <see cref="Complete"/>,
     /// <see cref="NoResult"/>, and <see cref="Aborted"/>.</remarks>
@@ -41,11 +40,12 @@ namespace org.critterai.nmbuild
         Aborted,
 
         /// <summary>
-        /// The build was completed, producing a result. (Finished state.)
+        /// The build was completed and produced a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// It is possible to complete, but have no resulting meshes.
-        /// See <see cref="NoResult"/>.
+        /// <para>The build produced at least a <see cref="PolyMesh"/> object with at least one
+        /// polygon.</para>
+        /// It is possible to complete, but have no resulting meshes. See <see cref="NoResult"/>.
         /// </remarks>
         Complete,
 
@@ -53,10 +53,9 @@ namespace org.critterai.nmbuild
         /// The build completed without producing a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// <para>While having no result is usually considered a failure
-        /// when building a single tile mesh, it is not unexpected for tiled
-        /// meshes. (Some tiles may not contain geometry, or not enough to result
-        /// in a final mesh.)</para>
+        /// <para>While having no result is usually considered a failure when building a single 
+        /// tile mesh, it is not unexpected for tiled meshes. (Some tiles may not contain 
+        /// input geometry, or not enough to result in a usable surface.)</para>
         /// </remarks>
         NoResult,
 
@@ -64,11 +63,6 @@ namespace org.critterai.nmbuild
         /// At the step to build the heightfield.
         /// </summary>
         HeightfieldBuild,
-
-        ///// <summary>
-        ///// At the step to perform heightfield post-processing.
-        ///// </summary>
-        //HeightfieldPostProcess,
 
         /// <summary>
         /// At the step to build the compact heightfield.
@@ -81,7 +75,7 @@ namespace org.critterai.nmbuild
         RegionBuild,
 
         /// <summary>
-        /// At the step to build raw and detail contours.
+        /// At the step to build the raw and detail contours.
         /// </summary>
         ContourBuild,
 
@@ -93,6 +87,10 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// At the step to build the detail mesh.
         /// </summary>
+        /// <remarks>
+        /// <para>This state will only be reached if the build is set up to produce a detail mesh.
+        /// </para>
+        /// </remarks>
         DetailMeshBuild,
     }
 }

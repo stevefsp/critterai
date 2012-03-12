@@ -31,8 +31,27 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Provides utility methods related to the NMGen build process.
+    /// </summary>
 	public static class NMBuild
 	{
+        /// <summary>
+        /// Creates a standard <see cref="NavmeshTileBuildData"/> object
+        /// from the provided parameters.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <paramref name="connections"/> parameter is required.  Supply an empty
+        /// connection set if there are no off-mesh connections.</para>
+        /// <para>Errors will be logged to the build context.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile.</param>
+        /// <param name="tz">The z-index of the tile.</param>
+        /// <param name="polyMesh">The polygon mesh data.</param>
+        /// <param name="detailMesh">The detail mesh data. (Null allowed.)</param>
+        /// <param name="connections">The off-mesh connections. (Required.)</param>
+        /// <param name="context">The build context.</param>
+        /// <returns>The tile build data, or null on error.</returns>
         public static NavmeshTileBuildData GetBuildData(int tx, int tz
             , PolyMeshData polyMesh
             , PolyMeshDetailData detailMesh
@@ -50,8 +69,10 @@ namespace org.critterai.nmbuild
             ushort[] flags;
             uint[] userIds;
 
-            int connCount = connections.GetConnections(
-                polyMesh.boundsMin, polyMesh.boundsMax
+            Vector3 bmin = polyMesh.boundsMin;
+            Vector3 bmax = polyMesh.boundsMax;
+
+            int connCount = connections.GetConnections(bmin.x, bmin.z, bmax.x, bmax.z
                 , out verts, out radii, out dirs, out areas, out flags, out userIds);
 
             NavmeshTileBuildData result = new NavmeshTileBuildData(

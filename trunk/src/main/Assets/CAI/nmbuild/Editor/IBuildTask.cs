@@ -21,14 +21,58 @@
  */
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Represents the interface for a standard build task.
+    /// </summary>
     public interface IBuildTask
         : IPriorityItem
     {
+        /// <summary>
+        /// If true, the task can be safely run on a separate thread from the object(s) monitoring
+        /// its state.
+        /// </summary>
+        /// <remarks>
+        /// <para>If true, the <see cref="Run"/> method will never throw exceptions.</para>
+        /// <para>The value of this property is immutable after construction.</para>
+        /// </remarks>
         bool IsThreadSafe { get; }
+
+        /// <summary>
+        /// The task is in a finished state.
+        /// </summary>
         bool IsFinished { get; }
+
+        /// <summary>
+        /// Messages available after the task is finished.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return a zero length array if the task is not finished or there are
+        /// no messages.  Will always provide a message if on abort.</para>
+        /// </remarks>
         string[] Messages { get; }
+
+        /// <summary>
+        /// Requests an abort of the request.
+        /// </summary>
+        /// <remarks>
+        /// <para>There may be a delay in the actual abort for tasks running on a separate thread.
+        /// </para>
+        /// </remarks>
+        /// <param name="reason">The reason for the abort.</param>
         void Abort(string reason);
+
+        /// <summary>
+        /// The current state of the task.
+        /// </summary>
         BuildTaskState TaskState { get; }
+
+        /// <summary>
+        /// Runs the task through to a finished state.
+        /// </summary>
+        /// <remarks>
+        /// <para>If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
+        /// thread form the object(s) that are monitoring the task state.</para>
+        /// </remarks>
         void Run();
     }
 }

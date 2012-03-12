@@ -29,6 +29,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Used to compile a set of off-mesh connections in a dynamic fashion.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This class is useful for dynamically building a set of off-mesh connections.</para>
+    /// </remarks>
+    /// <seealso cref="ConnectionSet"/>
 	public sealed class ConnectionSetCompiler
 	{
         private readonly List<Vector3> mVerts;
@@ -38,8 +46,15 @@ namespace org.critterai.nmbuild
         private readonly List<ushort> mFlags;
         private readonly List<uint> mUserIds;
 
+        /// <summary>
+        /// The number of loaded connections.
+        /// </summary>
         public int Count { get { return mRadii.Count; } }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="initialCapacity">The initial capacity of the internal buffers.</param>
         public ConnectionSetCompiler(int initialCapacity)
         {
             mVerts = new List<Vector3>(initialCapacity);
@@ -50,7 +65,20 @@ namespace org.critterai.nmbuild
             mUserIds = new List<uint>(initialCapacity);
         }
 
-        // Note: Auto-clamps values.
+        /// <summary>
+        /// Add a connection.
+        /// </summary>
+        /// <remarks>
+        /// <para>All values are auto-clamped to valid values.</para>
+        /// </remarks>
+        /// <param name="start">The connection start point.</param>
+        /// <param name="end">The connection end point.</param>
+        /// <param name="radius">The radius of the connection vertices.</param>
+        /// <param name="isBidirectional">True if the connection can be traversed in both
+        /// directions. (Start to end, end to start.)</param>
+        /// <param name="area">The connection area id.</param>
+        /// <param name="flags">The connection flags.</param>
+        /// <param name="userId">The connection user id.</param>
         public void Add(Vector3 start, Vector3 end, float radius
             , bool isBidirectional
             , byte area
@@ -66,7 +94,12 @@ namespace org.critterai.nmbuild
             this.mUserIds.Add(userId);
         }
 
-        public ConnectionSet GetConnectionSet()
+        /// <summary>
+        /// Creates a thread-safe, immutable, fully validated connection set from the compiled 
+        /// connections.
+        /// </summary>
+        /// <returns>A conneciton set created form the compiled connections.</returns>
+        public ConnectionSet CreateConnectionSet()
         {
             if (mVerts.Count == 0)
                 return ConnectionSet.CreateEmpty();
@@ -91,6 +124,9 @@ namespace org.critterai.nmbuild
             return null;
         }
 
+        /// <summary>
+        /// Resets the compiler to zero connections.
+        /// </summary>
         public void Reset()
         {
             mVerts.Clear();

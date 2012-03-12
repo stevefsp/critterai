@@ -73,7 +73,7 @@ namespace org.critterai.nmbuild
             return new TileBuildTask(tx, tz, polyData, detailData, conns, isThreadSafe, priority);
         }
 
-        protected override bool LocalRun() 
+        protected override bool LocalUpdate() 
         { 
             // All the work is done in GetResult().
             return false; 

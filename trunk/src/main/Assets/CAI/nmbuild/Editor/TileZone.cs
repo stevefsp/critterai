@@ -20,16 +20,40 @@
  * THE SOFTWARE.
  */
 
-
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A contiguous range of tiles, defined by tile grid indices.
+    /// </summary>
 	public struct TileZone
 	{
+        /// <summary>
+        /// The minimum x-index of the zone.
+        /// </summary>
         public int xmin;
+        
+        /// <summary>
+        /// The mimimum z-index of the zone.
+        /// </summary>
         public int zmin;
+
+        /// <summary>
+        /// The maximum x-index of the zone.
+        /// </summary>
         public int xmax;
+
+        /// <summary>
+        /// The maximum z-index of the zone.
+        /// </summary>
         public int zmax;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="xmin">The minimum x-index of the zone.</param>
+        /// <param name="zmin">The mimimum z-index of the zone.</param>
+        /// <param name="xmax">The maximum x-index of the zone.</param>
+        /// <param name="zmax">The maximum z-index of the zone.</param>
         public TileZone(int xmin, int zmin, int xmax, int zmax)
         {
             this.xmin = xmin;
@@ -38,7 +62,14 @@ namespace org.critterai.nmbuild
             this.zmax = zmax;
         }
 
+        /// <summary>
+        /// The number of tiles along the x-axis.
+        /// </summary>
         public int Width { get { return (xmax - xmin) + 1; } }
+
+        /// <summary>
+        /// The number of tiles along the z-axis.
+        /// </summary>
         public int Depth { get { return (zmax - zmin) + 1; } }
 	}
 }

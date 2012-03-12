@@ -23,13 +23,35 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Asset types created during the NMGen build process.
+    /// </summary>
     [System.Flags]
     public enum NMGenAssetFlag
     {
+        /// <summary>
+        /// The <see cref="Heightfield"/> intermediate asset.
+        /// </summary>
         Heightfield  = 0x01,
+
+        /// <summary>
+        /// The <see cref="CompactHeightfield"/> intermediate asset.
+        /// </summary>
         CompactField = 0x02,
+
+        /// <summary>
+        /// The <see cref="ContourSet"/> intermediate asset.
+        /// </summary>
         ContourSet   = 0x04,
+
+        /// <summary>
+        /// The <see cref="PolyMesh"/> final asset.
+        /// </summary>
         PolyMesh     = 0x08,
+
+        /// <summary>
+        /// The <see cref="PolyMeshDetail"/> final asset.
+        /// </summary>
         DetailMesh   = 0x10
     }
 }

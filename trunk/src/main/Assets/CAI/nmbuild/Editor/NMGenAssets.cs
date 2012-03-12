@@ -24,10 +24,18 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Represents a group of releated NMGen assets.
+    /// </summary>
+    /// <remarks>
+    /// <para>This object holds the result of an NMGen build.</para>
+    /// <para>All assets will be null if there is no result.  Otherwise the only only asset expected to 
+    /// be guarenteed is the <see cref="PolyMesh"/> object.</para>
+    /// </remarks>
     public struct NMGenAssets
     {
-        private readonly int tileX;
-        private readonly int tileZ;
+        private readonly int mTileX;
+        private readonly int mTileZ;
 
         private readonly PolyMesh mPolyMesh;
         private readonly PolyMeshDetail mDetailMesh;
@@ -36,16 +44,20 @@ namespace org.critterai.nmbuild
         private readonly CompactHeightfield mCompactField;
         private readonly ContourSet mContours;
 
-        public int TileX { get { return tileX; } }
-        public int TileZ { get { return tileZ; } } 
-        public PolyMesh PolyMesh { get { return mPolyMesh; } }
-        public PolyMeshDetail DetailMesh { get { return mDetailMesh; } }
-        public Heightfield Heightfield { get { return mHeightfield; } }
-        public CompactHeightfield CompactField { get { return mCompactField; } }
-        public ContourSet Contours { get { return mContours; } } 
-
-        public bool NoResult { get { return (mPolyMesh == null); } }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
+        /// is null or has a polygon count of zero.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="polyMesh">The polymesh.</param>
+        /// <param name="detailMesh">The detail mesh.</param>
+        /// <param name="heightfield">The heightfield.</param>
+        /// <param name="compactField">The compact field.</param>
+        /// <param name="contours">The contour set.</param>
         public NMGenAssets(int tx, int tz
             , PolyMesh polyMesh
             , PolyMeshDetail detailMesh
@@ -53,8 +65,8 @@ namespace org.critterai.nmbuild
             , CompactHeightfield compactField
             , ContourSet contours)
         {
-            tileX = tx;
-            tileZ = tz;
+            mTileX = tx;
+            mTileZ = tz;
 
             if (polyMesh == null || polyMesh.PolyCount == 0)
             {
@@ -74,10 +86,21 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
+        /// is null or has a polygon count of zero.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
+        /// <param name="polyMesh">The polymesh.</param>
+        /// <param name="detailMesh">The detail mesh. (Null allowed.)</param>
         public NMGenAssets(int tx, int tz, PolyMesh polyMesh, PolyMeshDetail detailMesh)
         {
-            tileX = tx;
-            tileZ = tz;
+            mTileX = tx;
+            mTileZ = tz;
 
             if (polyMesh == null || polyMesh.PolyCount == 0)
             {
@@ -94,5 +117,48 @@ namespace org.critterai.nmbuild
             mCompactField = null;
             mContours = null;
         }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileX { get { return mTileX; } }
+
+        /// <summary>
+        /// The z-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileZ { get { return mTileZ; } }
+
+        /// <summary>
+        /// The polygon mesh.
+        /// </summary>
+        public PolyMesh PolyMesh { get { return mPolyMesh; } }
+
+        /// <summary>
+        /// The detail mesh.
+        /// </summary>
+        public PolyMeshDetail DetailMesh { get { return mDetailMesh; } }
+
+        /// <summary>
+        /// The heightfield.
+        /// </summary>
+        public Heightfield Heightfield { get { return mHeightfield; } }
+
+        /// <summary>
+        /// The compact field.
+        /// </summary>
+        public CompactHeightfield CompactField { get { return mCompactField; } }
+
+        /// <summary>
+        /// The contour set.
+        /// </summary>
+        public ContourSet Contours { get { return mContours; } }
+
+        /// <summary>
+        /// The assets are emtpy.  (The build did not produce any results.)
+        /// </summary>
+        /// <remarks>
+        /// <para>If true, all assets will be null.</para>
+        /// </remarks>
+        public bool NoResult { get { return (mPolyMesh == null); } }
     }
 }
