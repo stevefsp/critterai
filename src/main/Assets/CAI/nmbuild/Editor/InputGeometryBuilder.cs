@@ -128,6 +128,8 @@ namespace org.critterai.nmbuild
                 return null;
 
             TriangleMesh lmesh = new TriangleMesh(mesh.vertCount, mesh.triCount);
+            lmesh.triCount = mesh.triCount;
+            lmesh.vertCount = mesh.vertCount;
 
             System.Array.Copy(mesh.verts, 0, lmesh.verts, 0, lmesh.verts.Length);
             System.Array.Copy(mesh.tris, 0, lmesh.tris, 0, lmesh.tris.Length);

@@ -24,40 +24,59 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="Heightfield.MarkLowHeightSpansNotWalkable"/> to 
+    /// a <see cref="Heightfield"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>This is a system processor.</para>
+    /// </remarks>
     public sealed class FilterLowHeightSpans
         : NMGenProcessor
     {
-        public static int ProcessorPriority = FilterLedgeSpans.ProcessorPriority + 5;
+        private const int ProcessorPriority = FilterLedgeSpans.ProcessorPriority + 5;
 
         private static FilterLowHeightSpans mInstance = new FilterLowHeightSpans();
-
-        public override bool IsThreadSafe { get { return true; } }
 
         private FilterLowHeightSpans()
             : base(typeof(FilterLowHeightSpans).Name, ProcessorPriority)
         {
         }
 
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will be applied during the <see cref="NMGenState.HeightfieldBuild"/> state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
-            if (state == NMGenState.HeightfieldBuild)
+
+            if (state != NMGenState.HeightfieldBuild)
+                return true;
+
+            if (context.Heightfield.MarkLowHeightSpansNotWalkable(context
+                , context.Config.WalkableHeight))
             {
-                if (context.Heightfield.MarkLowHeightSpansNotWalkable(context
-                    , context.Config.WalkableHeight))
-                {
-                    context.Log(Name + ": Marked low height spans as not walklable.", this);
-                    return true;
-                }
-                else
-                {
-                    context.Log(Name + ": Mark low height spans failed.", this);
-                    return false;
-                }
+                context.Log(Name + ": Marked low height spans as not walklable.", this);
+                return true;
             }
 
-            return true;
+            context.Log(Name + ": Mark low height spans failed.", this);
+            return false;
         }
 
+        /// <summary>
+        /// The processor instance.
+        /// </summary>
         public static FilterLowHeightSpans Instance { get { return mInstance; } }
     }
 }

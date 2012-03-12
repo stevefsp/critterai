@@ -37,6 +37,39 @@ namespace org.critterai.nmbuild
 	public static class NMBuild
 	{
         /// <summary>
+        /// The default flag applied to polygons during the build process if the 
+        /// <see cref="NMGenFlags.ApplyPolyFlags"/> is set.
+        /// </summary>
+        public const ushort DefaultFlag = 0x01;
+
+        /// <summary>
+        /// The minimum permitted priority for non-system (custom) elements.
+        /// </summary>
+        public const int MinPriority = ushort.MinValue;
+
+        /// <summary>
+        /// The maximum permitted priority for non-system (custom) elements.
+        /// </summary>
+        public const int MaxPriority = ushort.MaxValue;
+
+        /// <summary>
+        /// The standard default priority for priority elements.
+        /// </summary>
+        public const int DefaultPriority = 100;
+
+        /// <summary>
+        /// Clamps the value to the allowed non-system (custom) priority range.
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>The clamped value. 
+        /// (<see cref="MinPriority"/> &lt;= clampedValue &lt;= <see cref="MaxPriority"/>
+        /// </returns>
+        public static int ClampPriority(int value)
+        {
+            return Math.Max(MinPriority, Math.Min(MaxPriority, value));
+        }
+
+        /// <summary>
         /// Creates a standard <see cref="NavmeshTileBuildData"/> object
         /// from the provided parameters.
         /// </summary>

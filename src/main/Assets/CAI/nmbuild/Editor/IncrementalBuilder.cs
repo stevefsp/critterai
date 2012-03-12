@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using org.critterai.nmgen;
 using org.critterai.geom;
+
 #if NUNITY
 using Vector3 = org.critterai.Vector3;
 #else
@@ -31,6 +32,31 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Provides a way of building navigation mesh data in incremental steps.
+    /// </summary>
+    /// <remarks>
+    /// <para>Processors will be called for processing after each step. (Post-processing)
+    /// The assests available by default at each step will be as follows:
+    /// </para>
+    /// <para>
+    /// HeightfieldBuild: <see cref="Heightfield"/><br/>
+    /// CompactFieldBuild: <see cref="ComplactHeightfield"/><br/>
+    /// RegionBuild: <see cref="ComplactHeightfield"/><br/>
+    /// ContourBuild: <see cref="ContourSet"/> and <see cref="ComplactHeightfield"/><br/>
+    /// PolyMeshBuild: <see cref="PolyMesh"/> and <see cref="ComplactHeightfield"/><br/>
+    /// DetailMeshBuild: <see cref="PolyMeshDetail"/> and <see cref="ComplactHeightfield"/><br/>
+    /// </para>
+    /// <para>More assets will be avialable based on <see cref="INMGenProcessor.PreserveAssets"/> 
+    /// <see cref="ResultOptions"/> requirements.
+    /// </para>
+    /// <para>The detail mesh step will only occur if the <see cref="ResultOptions"/> settings 
+    /// require it.
+    /// </para>
+    /// <para>Processors are allowed to replace assets.  But they must never set the assets to
+    /// an invalid state.</para>
+    /// <para>Each instance can be used to perform only a single build.</para>
+    /// </remarks>
     public sealed class IncrementalBuilder
     {
         private readonly string mTileText;
@@ -46,20 +72,26 @@ namespace org.critterai.nmbuild
 
         private NMGenContext mBuildContext;
 
+        /// <summary>
+        /// True if the builder is safe to run on a separate thread from which it was created.
+        /// </summary>
+        /// <remarks>
+        /// <para>Thread-safely only applies to running the build. Builder objects are
+        /// never safe to access from multiple threads at the same time.</para>
+        /// </remarks>
         public bool IsThreadSafe { get { return mProcessors.IsThreadSafe; } }
 
         /// <summary>
         /// The current state of the builder.
         /// </summary>
         /// <remarks>
-        /// If the value is an unfinished state, then it represents the 
-        /// build step that will occur the next time the <see cref="Build"/> 
-        /// method called.
+        /// If the value is an unfinished state, then it represents the build step that will 
+        /// occur the next time the <see cref="Build"/> method called.
         /// </remarks>
         public NMGenState State { get { return mState; } }
 
         /// <summary>
-        /// TRUE if the the build has finished.  (Successfully or not.)
+        /// True if the the build has finished.  (Successfully or not.)
         /// </summary>
         public bool IsFinished
         {
@@ -71,9 +103,23 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
         public int TileX { get { return mTileConfig.TileX; } }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
         public int TileZ { get { return mTileConfig.TileZ; } }
 
+        /// <summary>
+        /// The result of the build.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return a result only when in the <see cref="NMGenState.Complete"/>
+        /// state.</para>
+        /// </remarks>
         public NMGenAssets Result
         {
             get
@@ -88,6 +134,12 @@ namespace org.critterai.nmbuild
             }
         }
 
+        /// <summary>
+        /// The NMGen assets that will be included in the <see cref="Result"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will always include <see cref="NMGenAssetFlag.PolyMesh"/></para>
+        /// </remarks>
         public NMGenAssetFlag ResultOptions { get { return mResultOptions; } }
 
         /// <summary>
@@ -98,32 +150,6 @@ namespace org.critterai.nmbuild
             get { return (IsFinished ? mBuildContext.MessageCount : 0); }
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <remarks>
-        /// <para>Warning: Don't forget to set the easily overlooked tile size
-        /// and bounds properties in the <paramref name="config"/>
-        /// object!  These properties don't have any valid default values 
-        /// and using the configuration without setting them will result in 
-        /// empty meshes.
-        /// </para>
-        /// <para>The <typeparamref name="areas"/> parameter is optional.
-        /// If provided, it is expected to contain the area ids associated
-        /// with each triangle in the source.  The build process will only clear
-        /// the walkable area for triangles determined to be unwalkable.</para>
-        /// <para>If <typeparamref name="areas"/> is null, all walkable
-        /// triangles will be assigned an area id of 
-        /// <see cref="NMGen.WalkableArea"/>.</para>
-        /// </remarks>
-        /// <param name="trace">TRUE if detailed trace messages should be
-        /// recored during the build process.</param>
-        /// <param name="config">The build configuration.</param>
-        /// <param name="buildFlags">Flags indicating which optional build
-        /// steps to include.</param>
-        /// <param name="source">The source geometry.</param>
-        /// <param name="areas">Area ids to apply to the source triangles.
-        /// [Size: >= triangle count] [Optional]</param>
         private IncrementalBuilder(NMGenTileParams tileConfig
             , NMGenParams config
             , NMGenAssetFlag resultOptions
@@ -148,12 +174,22 @@ namespace org.critterai.nmbuild
         /// Gets available build messages, or a zero length array if no messages
         /// are available.
         /// </summary>
+        /// <remarks>
+        /// <para>Messages will only be available when the build is finished.</para>
+        /// </remarks>
         /// <returns>Available build messages.</returns>
         public string[] GetMessages()
         {
             return (IsFinished ? mBuildContext.GetMessages() : new string[0]);
         }
 
+        /// <summary>
+        /// Gets a new line delimited flattened version of all build messages.
+        /// </summary>
+        /// <remarks>
+        /// <para>Messages will only be available when the build is finished.</para>
+        /// </remarks>
+        /// <returns>All build messages.</returns>
         public string GetMessagesFlat()
         {
             return (IsFinished ? mBuildContext.GetMessagesFlat() : "");
@@ -162,9 +198,10 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// Performs a single build step.
         /// </summary>
-        /// <remarks><para>The result state will represent either a finished state
-        /// or the build step that will be performed during the next call to
-        /// the method.</para></remarks>
+        /// <remarks>
+        /// <para>The result state will represent either a finished state or the build step that 
+        /// will be performed during the next call to the method.</para>
+        /// </remarks>
         /// <returns>The state at the end of the build step.</returns>
         public NMGenState Build()
         {
@@ -213,6 +250,9 @@ namespace org.critterai.nmbuild
             return mState;
         }
 
+        /// <summary>
+        /// Performs all build steps.
+        /// </summary>
         public void BuildAll()
         {
             while (!IsFinished) { Build(); }
@@ -645,6 +685,19 @@ namespace org.critterai.nmbuild
             return ((mProcessors.PreserveAssets & asset) == 0 && (mResultOptions & asset) == 0);
         }
 
+        /// <summary>
+        /// Creates a new builder for a single tile mesh build.
+        /// </summary>
+        /// <remarks>
+        /// <para>The bounds of the tile will be based on the geometry.</para>
+        /// <para>Will return null if a processor requires the the detail mesh but
+        /// the detail mesh is not included in the result options.</para>
+        /// </remarks>
+        /// <param name="buildConfig">The build configuration.</param>
+        /// <param name="resultOptions">The assets to include in the result.</param>
+        /// <param name="geometry">The input geometry.</param>
+        /// <param name="processors">The processors to apply.</param>
+        /// <returns>A new builder, or null on error.</returns>
         public static IncrementalBuilder Create(NMGenParams buildConfig
             , NMGenAssetFlag resultOptions
             , InputGeometry geometry
@@ -673,6 +726,19 @@ namespace org.critterai.nmbuild
                 , buildConfig, resultOptions, geometry, processors);
         }
 
+        /// <summary>
+        /// Creates a new builder for a multi-tile mesh build.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return null if a processor requires the the detail mesh but
+        /// the detail mesh is not included in the result options.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile to build.</param>
+        /// <param name="tz">The z-index of the tile to build.</param>
+        /// <param name="resultOptions">The assets to include in the result.</param>
+        /// <param name="tileDef">The tile set definition to base the build on.</param>
+        /// <param name="processors">The processors to apply.</param>
+        /// <returns>A new builder, or null on error.</returns>
         public static IncrementalBuilder Create(int tx, int tz
             , NMGenAssetFlag resultOptions
             , TileSetDefinition tileDef
@@ -741,8 +807,8 @@ namespace org.critterai.nmbuild
         /// Returns a progress value associated with the specified state. 
         /// </summary>
         /// <remarks>
-        /// The value will be between 0 and 1.0 and is suitable for providing
-        /// build progress feedback.
+        /// <para>The value will be between 0 and 1.0, suitable for providing
+        /// build progress feedback.</para>
         /// </remarks>
         /// <param name="state">The state.</param>
         /// <returns>A progress value for the state.</returns>
@@ -775,730 +841,4 @@ namespace org.critterai.nmbuild
             return 1;
         }
     }
-
-    //public sealed class IncrementalBuilder 
-    //{
-    //    private readonly NMGenTileParams mTileConfig;
-    //    private readonly NMGenParams mConfig;
-    //    private readonly BuildFlags mFlags;
-    //    private readonly BuildAssetFlag mResultOptions;
-
-    //    private NMGenBuildState mState = NMGenBuildState.Initialized;
-
-    //    private readonly InputGeometry mGeometry;
-    //    private readonly ProcessorSet mProcessors;
-
-    //    private readonly BuildContext mLogger;
-    //    private readonly NMGenBuildContext mContext;
-
-    //    public bool IsThreadSafe { get { return mProcessors.IsThreadSafe; } }
-
-    //    /// <summary>
-    //    /// The current state of the builder.
-    //    /// </summary>
-    //    /// <remarks>
-    //    /// If the value is an unfinished state, then it represents the 
-    //    /// build step that will occur the next time the <see cref="Build"/> 
-    //    /// method called.
-    //    /// </remarks>
-    //    public NMGenBuildState State { get { return mState; } }
-
-    //    /// <summary>
-    //    /// TRUE if the the build has finished.  (Successfully or not.)
-    //    /// </summary>
-    //    public bool IsFinished
-    //    {
-    //        get
-    //        {
-    //            return (mState == NMGenBuildState.Aborted
-    //                || mState == NMGenBuildState.Complete
-    //                || mState == NMGenBuildState.NoResult);
-    //        }
-    //    }
-
-    //    public int TileX { get { return mTileConfig.X; } }
-    //    public int TileZ { get { return mTileConfig.Z; } }
-
-    //    /// <summary>
-    //    /// The <see cref="PolyMesh"/> created by the build, or NULL if no
-    //    /// mesh is available.
-    //    /// </summary>
-    //    public PolyMesh PolyMesh
-    //    {
-    //        get
-    //        {
-    //            if (mState == NMGenBuildState.Complete)
-    //                return mContext.polyMesh;
-    //            return null;
-    //        }
-    //    }
-
-    //    /// <summary>
-    //    /// The <see cref="PolyMeshDetail"/> created by the build, or NULL
-    //    /// if no mesh is available.
-    //    /// </summary>
-    //    public PolyMeshDetail DetailMesh
-    //    {
-    //        get
-    //        {
-    //            if (mState == NMGenBuildState.Complete)
-    //                return mContext.detailMesh;
-    //            return null;
-    //        }
-    //    }
-
-    //    public BuildAssets BuildResult
-    //    {
-    //        get
-    //        {
-    //            if (mState == NMGenBuildState.Complete)
-    //            {
-    //                return new BuildAssets(mTileConfig.X, mTileConfig.Z
-    //                    , mContext.polyMesh, mContext.detailMesh
-    //                    , mContext.heightfield, mContext.compactField, mContext.contours);
-    //            }
-    //            return new BuildAssets();
-    //        }
-    //    }
-
-    //    public BuildAssetFlag ResultOptions { get { return mResultOptions; } } 
-
-    //    /// <summary>
-    //    /// The number of messages generated by the build.
-    //    /// </summary>
-    //    public int MessageCount 
-    //    {
-    //        get { return (IsFinished ? mLogger.MessageCount : 0); }  
-    //    }
-
-    //    /// <summary>
-    //    /// Constructor
-    //    /// </summary>
-    //    /// <remarks>
-    //    /// <para>Warning: Don't forget to set the easily overlooked tile size
-    //    /// and bounds properties in the <paramref name="config"/>
-    //    /// object!  These properties don't have any valid default values 
-    //    /// and using the configuration without setting them will result in 
-    //    /// empty meshes.
-    //    /// </para>
-    //    /// <para>The <typeparamref name="areas"/> parameter is optional.
-    //    /// If provided, it is expected to contain the area ids associated
-    //    /// with each triangle in the source.  The build process will only clear
-    //    /// the walkable area for triangles determined to be unwalkable.</para>
-    //    /// <para>If <typeparamref name="areas"/> is null, all walkable
-    //    /// triangles will be assigned an area id of 
-    //    /// <see cref="NMGen.WalkableArea"/>.</para>
-    //    /// </remarks>
-    //    /// <param name="trace">TRUE if detailed trace messages should be
-    //    /// recored during the build process.</param>
-    //    /// <param name="config">The build configuration.</param>
-    //    /// <param name="buildFlags">Flags indicating which optional build
-    //    /// steps to include.</param>
-    //    /// <param name="source">The source geometry.</param>
-    //    /// <param name="areas">Area ids to apply to the source triangles.
-    //    /// [Size: >= triangle count] [Optional]</param>
-    //    private IncrementalBuilder(NMGenTileParams tileConfig
-    //        , NMGenParams config
-    //        , BuildFlags buildFlags
-    //        , BuildAssetFlag resultOptions
-    //        , InputGeometry source
-    //        , ProcessorSet processors)
-    //    {
-    //        mLogger = new BuildContext(true);
-
-    //        mConfig = config;
-    //        mTileConfig = tileConfig;
-
-    //        mGeometry = source;
-    //        mProcessors = processors;
-    //        mFlags = buildFlags;
-    //        mResultOptions = resultOptions;
-
-    //        mContext = new NMGenBuildContext(tileConfig.X, tileConfig.Z, mConfig.Clone(), mLogger);
-
-    //        mState = NMGenBuildState.Initialized;
-    //    }
-
-    //    private IncrementalBuilder()
-    //    {
-    //        mLogger = new BuildContext(true);
-    //        mLogger.Log("Nothing to build. (Usually means no geometry in tile bounds.)");
-    //        mState = NMGenBuildState.NoResult;
-    //    }
-
-    //    /// <summary>
-    //    /// Gets available build messages, or a zero length array if no messages
-    //    /// are available.
-    //    /// </summary>
-    //    /// <returns>Available build messages.</returns>
-    //    public string[] GetMessages() 
-    //    {
-    //        return (IsFinished ? mLogger.GetMessages() : new string[0]);
-    //    }
-
-    //    public string GetMessagesFlat()
-    //    {
-    //        return (IsFinished ? mLogger.GetMessagesFlat() : "");
-    //    }
-
-    //    /// <summary>
-    //    /// Performs a single build step.
-    //    /// </summary>
-    //    /// <remarks><para>The result state will represent either a finished state
-    //    /// or the build step that will be performed during the next call to
-    //    /// the method.</para></remarks>
-    //    /// <returns>The state at the end of the build step.</returns>
-    //    public NMGenBuildState Build()
-    //    {
-    //        switch (mState)
-    //        {
-    //            case NMGenBuildState.Initialized:
-    //                mState = NMGenBuildState.HeightfieldBuild;
-    //                break;
-    //            case NMGenBuildState.HeightfieldBuild:
-    //                BuildHeightfield();
-    //                break;
-    //            case NMGenBuildState.CompactFieldBuild:
-    //                BuildCompactField();
-    //                break;
-    //            case NMGenBuildState.RegionBuild:
-    //                BuildRegions();
-    //                break;
-    //            case NMGenBuildState.ContourBuild:
-    //                BuildContours();
-    //                break;
-    //            case NMGenBuildState.PolyMeshBuild:
-    //                BuildPolyMesh();
-    //                break;
-    //            case NMGenBuildState.DetailMeshBuild:
-    //                BuildDetailMesh();
-    //                break;
-    //        }
-    //        return mState;
-    //    }
-
-    //    private NMGenBuildState BuildAll()
-    //    {
-    //        while (!IsFinished)
-    //            Build();
-
-    //        return mState;
-    //    }
-
-    //    private void BuildHeightfield()
-    //    {
-    //        int width;
-    //        int depth;
-
-    //        NMGen.DeriveSizeOfCellGrid(mTileConfig.BoundsMin
-    //            , mTileConfig.BoundsMax
-    //            , mConfig.XZCellSize
-    //            , out width
-    //            , out depth);
-
-    //        Heightfield hf = new Heightfield(width
-    //            , depth
-    //            , mTileConfig.BoundsMin
-    //            , mTileConfig.BoundsMax
-    //            , mConfig.XZCellSize
-    //            , mConfig.YCellSize);
-
-    //        hf.AddTriangles(mLogger
-    //            , mGeometry.Mesh
-    //            , mTileConfig.boundsMin
-    //            , mTileConfig.boundsMax
-    //            , mConfig.WalkableStep);  // Merge for any spans less than step.
-            
-
-    //        if (hf.GetSpanCount() < 1)
-    //        {
-    //            mLogger.Log("Complete at heightfield build. No spans.");
-    //            mState = NMGenBuildState.NoResult;
-    //            return;
-    //        }
-
-    //        mLogger.Log("Voxelized triangles. Span count: " + hf.GetSpanCount());
-
-    //        mContext.heightfield = hf;
-
-    //        HeightfieldPostProcess();  // Sets the state.
-    //    }
-
-    //    private void HeightfieldPostProcess()
-    //    {
-    //        Heightfield hf = mContext.heightfield;
-
-    //        if ((mFlags & BuildFlags.LowObstaclesWalkable) != 0
-    //            && mConfig.WalkableStep > 0)
-    //        {
-    //            hf.MarkLowObstaclesWalkable(mLogger, mConfig.WalkableStep);
-    //            mLogger.Log("Flagged low obstacles as walkable.");
-
-    //        }
-
-    //        if ((mFlags & BuildFlags.LedgeSpansNotWalkable) != 0)
-    //        {
-    //            hf.MarkLedgeSpansNotWalkable(mLogger
-    //                , mConfig.WalkableHeight
-    //                , mConfig.WalkableStep);
-    //            mLogger.Log("Flagged ledge spans as not walklable");
-    //        }
-
-    //        if ((mFlags & BuildFlags.LowHeightSpansNotWalkable) != 0)
-    //        {
-    //            hf.MarkLowHeightSpansNotWalkable(mLogger
-    //                , mConfig.WalkableHeight);
-    //            mLogger.Log("Flagged low height spans as not walkable.");
-    //        }
-
-    //        if (PostProcess() && PostHeightfieldCheck())
-    //            mState = NMGenBuildState.CompactFieldBuild;
-    //    }
-
-    //    private bool PostHeightfieldCheck()
-    //    {
-    //        Heightfield hf = mContext.heightfield;
-
-    //        if (hf == null || hf.IsDisposed)
-    //        {
-    //            mLogger.Log("Custom processors destroyed the heightfield. (" + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-    //        else if (hf.GetSpanCount() < 1)
-    //        {
-    //            mLogger.Log("Complete at heightfield build. No spans. (" + mState + " Post)");
-    //            mState = NMGenBuildState.NoResult;
-    //            return false;
-    //        }
-
-    //        return true;
-    //    }
-
-    //    private bool PostProcess()
-    //    {
-    //        if (!mProcessors.Process(mState, mContext))
-    //        {
-    //            mLogger.Log("Abort requested by custom processors. (" + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-    //        if (mContext.NoResult)
-    //        {
-    //            mLogger.Log("Custom processors set as no result. (" + mState + " Post)");
-    //            mState = NMGenBuildState.NoResult;
-    //            return false;
-    //        }
-    //        return true;
-    //    }
-
-    //    private void BuildCompactField()
-    //    {
-    //        Heightfield hf = mContext.heightfield;
-
-    //        CompactHeightfield chf = CompactHeightfield.Build(mLogger
-    //            , hf
-    //            , mConfig.WalkableHeight
-    //            , mConfig.WalkableStep);
-
-    //        hf.RequestDisposal();
-    //        mContext.heightfield = null;
-
-    //        if (chf == null)
-    //        {
-    //            mLogger.Log("Aborted at compact heightfield build.");
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        if (chf.SpanCount < 1)
-    //        {
-    //            mLogger.Log("Complete at compact heightfield build. No spans.");
-    //            mState = NMGenBuildState.NoResult;
-    //            return;
-    //        }
-
-    //        mLogger.Log("Built compact heightfield. Spans: "+ chf.SpanCount);
-
-    //        mContext.compactField = chf;
-
-    //        // Note: Post process is done before eroding the walkable area
-    //        // so that the processors can stamp additional obstructions into
-    //        // the heightfield.
-    //        if (PostProcess() && PostCompactFieldCheck())
-    //            mState = NMGenBuildState.RegionBuild;
-    //    }
-
-    //    private bool PostCompactFieldCheck()
-    //    {
-
-    //        CompactHeightfield chf = mContext.compactField;
-
-    //        if (chf == null || chf.IsDisposed)
-    //        {
-    //            mLogger.Log(
-    //                "Custom processors destroyed the compact heightfield. (" + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-    //        else if (chf.SpanCount < 1)
-    //        {
-    //            mLogger.Log(
-    //                "Complete at compact heightfield build. No spans. (" + mState + " Post)");
-    //            mState = NMGenBuildState.NoResult;
-    //            return false;
-    //        }
-    //        return true;
-    //    }
-
-    //    private void ErodeWalkableArea()
-    //    {
-    //        if (mConfig.WalkableRadius > 0)
-    //        {
-    //            CompactHeightfield chf = mContext.compactField;
-    //            chf.ErodeWalkableArea(mLogger, mConfig.WalkableRadius);
-    //            mLogger.Log("Eroded walkable area by radius: " + mConfig.walkableRadius);
-    //        }
-
-    //        mState = NMGenBuildState.DistanceFieldBuild;
-    //    }
-
-    //    private void BuildDistanceField()
-    //    {
-    //        CompactHeightfield chf = mContext.compactField;
-
-    //        chf.BuildDistanceField(mLogger);
-    //        mLogger.Log("Built distance field. Max Distance: " + chf.MaxDistance);
-
-    //        mState = NMGenBuildState.RegionBuild;
-    //    }
-
-    //    private void BuildRegions()
-    //    {
-    //        CompactHeightfield chf = mContext.compactField;
-
-    //        if ((mFlags & BuildFlags.UseMonotonePartitioning) != 0)
-    //        {
-    //            chf.BuildRegionsMonotone(mLogger
-    //                , mConfig.BorderSize
-    //                , mConfig.MinRegionArea
-    //                , mConfig.MergeRegionArea);
-
-    //            mLogger.Log("Built monotone regions.");
-    //        }
-    //        else
-    //        {
-    //            chf.BuildRegions(mLogger
-    //                , mConfig.BorderSize
-    //                , mConfig.MinRegionArea
-    //                , mConfig.MergeRegionArea);
-
-    //            mLogger.Log("Built regions. Region Count: " + chf.MaxRegion);
-    //        }
-
-    //        if (chf.MaxRegion < 2)
-    //        {
-    //            // Null region counts as a region.  So expect
-    //            // at least 2.
-    //            mLogger.Log("Completed after region build. No useable regions formed.");
-    //            mState = NMGenBuildState.NoResult;
-    //            return;
-    //        }
-
-    //        mState = NMGenBuildState.ContourBuild;
-    //    }
-
-    //    private void BuildContours()
-    //    {
-    //        ContourBuildFlags cflags = (ContourBuildFlags)((int)mFlags & 0x03);
-
-    //        ContourSet cset = ContourSet.Build(mLogger
-    //            , mContext.compactField
-    //            , mConfig.EdgeMaxDeviation
-    //            , mConfig.MaxEdgeLength
-    //            , cflags);
-
-    //        if (cset == null)
-    //        {
-    //            mLogger.Log("Aborted at contour set build.");
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        if (cset.Count < 1)
-    //        {
-    //            mLogger.Log("Completed after contour build. No useable contours generated.");
-    //            mState = NMGenBuildState.NoResult;
-    //            return;
-    //        }
-
-    //        mLogger.Log("Build contour set. Contour count: " + cset.Count);
-
-    //        mContext.contours = cset;
-
-    //        mState = NMGenBuildState.PolyMeshBuild;
-    //    }
-
-    //    private void BuildPolyMesh()
-    //    {
-    //        ContourSet cset = mContext.contours;
-
-    //        PolyMesh polyMesh = PolyMesh.Build(mLogger
-    //            , cset
-    //            , mConfig.MaxVertsPerPoly
-    //            , mConfig.WalkableHeight
-    //            , mConfig.WalkableRadius
-    //            , mConfig.WalkableStep);
-
-    //        cset.RequestDisposal();
-    //        mContext.contours = null;
-
-    //        if (polyMesh == null)
-    //        {
-    //            mLogger.Log("Aborted at poly mesh build.");
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        if (polyMesh.PolyCount < 1)
-    //        {
-    //            mLogger.Log("Aborted after poly mesh build. No polygons generated.");
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        mLogger.Log("Built poly mesh. PolyCount: " + polyMesh.PolyCount);
-
-    //        if ((mFlags & BuildFlags.ApplyPolyFlags) != 0)
-    //        {
-    //            PolyMeshData data = polyMesh.GetData(false);
-    //            for (int i = 0; i < data.flags.Length; i++)
-    //            {
-    //                data.flags[i] = NMGen.DefaultFlag;
-    //            }
-
-    //            polyMesh.Load(data);
-    //            mLogger.Log("Applied polymesh flag to all polys: 0x01");
-    //        }
-
-    //        mContext.polyMesh = polyMesh;
-
-    //        if (PostProcess() & PostPolyMeshCheck() & PostCompactFieldCheck())
-    //            mState = NMGenBuildState.DetailMeshBuild;
-    //    }
-
-    //    private bool PostPolyMeshCheck()
-    //    {
-    //        PolyMesh polyMesh = mContext.polyMesh;
-
-    //        if (polyMesh == null || polyMesh.IsDisposed)
-    //        {
-    //            mLogger.Log("Custom processors destroyed the poly mesh. (" + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-    //        else if (polyMesh.PolyCount < 1)
-    //        {
-    //            mLogger.Log(
-    //                "Aborted after poly mesh build. No polygons generated. (" + mState + " Post)");
-    //            mState = NMGenBuildState.NoResult;
-    //            return false;
-    //        }
-    //        return true;
-    //    }
-
-    //    private void BuildDetailMesh()
-    //    {
-    //        PolyMesh polyMesh = mContext.polyMesh;
-    //        CompactHeightfield chf = mContext.compactField;
-
-    //        PolyMeshDetail detailMesh = PolyMeshDetail.Build(mLogger
-    //            , polyMesh
-    //            , chf
-    //            , mConfig.detailSampleDistance
-    //            , mConfig.detailMaxDeviation);
-
-    //        chf.RequestDisposal();
-    //        mContext.compactField = null;
-
-    //        if (detailMesh == null)
-    //        {
-    //            mLogger.Log("Aborted at detail mesh build.");
-
-    //            polyMesh.RequestDisposal();
-    //            mContext.polyMesh = null;
-
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        mContext.detailMesh = detailMesh;
-
-    //        if (detailMesh.MeshCount < 1)
-    //        {
-    //            mLogger.Log("Aborted after detail mesh build. No detail meshes generated.");
-
-    //            polyMesh.RequestDisposal();
-    //            detailMesh.RequestDisposal();
-    //            mContext.polyMesh = null;
-    //            mContext.detailMesh = null;
-
-    //            mState = NMGenBuildState.Aborted;
-    //            return;
-    //        }
-
-    //        mLogger.Log("Built detail mesh. TriangleCount: " + detailMesh.TriCount);
-
-    //        if (PostProcess() & PostPolyMeshCheck() & PostDetailCheck())
-    //            mState = NMGenBuildState.Complete;
-    //    }
-
-    //    private bool PostDetailCheck()
-    //    {
-    //        PolyMeshDetail detailMesh = mContext.detailMesh;
-    //        PolyMesh polyMesh = mContext.polyMesh;
-
-    //        if (detailMesh == null || detailMesh.IsDisposed)
-    //        {
-    //            mLogger.Log("Custom processors destroyed the detail mesh.  (" + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-    //        else if (polyMesh.PolyCount != detailMesh.MeshCount)
-    //        {
-    //            mLogger.Log("Custom processors returned with poly/detail count mismatch. (" 
-    //                + mState + " Post)");
-    //            mState = NMGenBuildState.Aborted;
-    //            return false;
-    //        }
-
-    //        return true;
-    //    }
-
-    //    public static IncrementalBuilder Create(NMGenParams buildConfig
-    //        , BuildFlags buildFlags
-    //        , BuildAssetFlag resultOptions
-    //        , InputGeometry geometry
-    //        , ProcessorSet processors)
-    //    {
-    //        if (buildConfig == null
-    //            || geometry == null
-    //            || processors == null)
-    //        {
-    //            return null;
-    //        }
-
-    //        NMGenTileParams tileConfig = 
-    //            new NMGenTileParams(0, 0, geometry.BoundsMin, geometry.BoundsMax);
-
-    //        resultOptions |= BuildAssetFlag.PolyMesh;
-
-    //        return new IncrementalBuilder(tileConfig
-    //            , buildConfig, buildFlags, resultOptions, geometry, processors);
-    //    }
-
-    //    public static IncrementalBuilder Create(int tx, int tz
-    //        , TileSetDefinition tileDef
-    //        , BuildAssetFlag resultOptions
-    //        , ProcessorSet processors)
-    //    {
-    //        if (tileDef == null || processors == null)
-    //            return null;
-
-    //        Vector3 bmin;
-    //        Vector3 bmax;
-
-    //        // This next call checks for valid tx/tz.
-    //        if (!tileDef.GetTileBounds(tx, tz, out bmin, out bmax))
-    //            return null;
-
-    //        NMGenTileParams tileConfig = new NMGenTileParams(tx, tz, bmin, bmax);
-
-    //        resultOptions |= BuildAssetFlag.PolyMesh;
-
-    //        return new IncrementalBuilder(tileConfig
-    //            , tileDef.GetBaseConfig()
-    //            , tileDef.BuildFlags
-    //            , resultOptions
-    //            , tileDef.Geometry
-    //            , processors);
-    //    }
-
-    //    /// <summary>
-    //    /// Returns human friendly text for the specified state.
-    //    /// </summary>
-    //    /// <param name="state">The state.</param>
-    //    /// <returns>Human friendly text.</returns>
-    //    public static string ToLabel(NMGenBuildState state)
-    //    {
-    //        switch (state)
-    //        {
-    //            case NMGenBuildState.Aborted:
-    //                return "Aborted.";
-    //            case NMGenBuildState.CompactFieldBuild:
-    //                return "Building compact heightfield.";
-    //            case NMGenBuildState.Complete:
-    //                return "Complete";
-    //            case NMGenBuildState.ContourBuild:
-    //                return "Building contours.";
-    //            case NMGenBuildState.DetailMeshBuild:
-    //                return "Building detail mesh.";
-    //            case NMGenBuildState.DistanceFieldBuild:
-    //                return "Building distance field.";
-    //            case NMGenBuildState.ErodeWalkableArea:
-    //                return "Eroding walkable area.";
-    //            case NMGenBuildState.HeightfieldBuild:
-    //                return "Building heightfield.";
-    //            case NMGenBuildState.PolyMeshBuild:
-    //                return "Building polygon mesh.";
-    //            case NMGenBuildState.RegionBuild:
-    //                return "Building regions.";
-    //            case NMGenBuildState.NoResult:
-    //                return "No result.";
-    //        }
-    //        return "Unhandled state: " + state;
-    //    }
-
-    //    /// <summary>
-    //    /// Returns a progress value associated with the specified state. 
-    //    /// </summary>
-    //    /// <remarks>
-    //    /// The value will be between 0 and 1.0 and is suitable for providing
-    //    /// build progress feedback.
-    //    /// </remarks>
-    //    /// <param name="state">The state.</param>
-    //    /// <returns>A progress value for the state.</returns>
-    //    public static float ToProgress(NMGenBuildState state)
-    //    {
-    //        const float inc = 1 / 8;
-    //        switch (state)
-    //        {
-    //            case NMGenBuildState.Initialized:
-    //                return 0;
-    //            case NMGenBuildState.HeightfieldBuild:
-    //                return inc * 1;
-    //            case NMGenBuildState.CompactFieldBuild:
-    //                return inc * 2;
-    //            case NMGenBuildState.ErodeWalkableArea:
-    //                return inc * 3;
-    //            case NMGenBuildState.DistanceFieldBuild:
-    //                return inc * 4;
-    //            case NMGenBuildState.RegionBuild:
-    //                return inc * 5;
-    //            case NMGenBuildState.ContourBuild:
-    //                return inc * 6;
-    //            case NMGenBuildState.PolyMeshBuild:
-    //                return inc * 7;
-    //            case NMGenBuildState.DetailMeshBuild:
-    //                return inc * 8;
-    //            case NMGenBuildState.Complete:
-    //                return 1;
-    //            case NMGenBuildState.Aborted:
-    //                return 1;
-    //            case NMGenBuildState.NoResult:
-    //                return 1;
-    //        }
-    //        return 1;
-    //    }
-    //}
 }

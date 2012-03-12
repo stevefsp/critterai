@@ -24,40 +24,59 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="Heightfield.MarkLowObstaclesWalkable"/> to 
+    /// a <see cref="Heightfield"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>This is a system processor.</para>
+    /// </remarks>
     public sealed class LowObstaclesWalkable
         : NMGenProcessor
     {
-        public static int ProcessorPriority = CAIUtil.MinPriority - 100;
+        internal const int ProcessorPriority = NMBuild.MinPriority - 100;
 
         private static LowObstaclesWalkable mInstance = new LowObstaclesWalkable();
-
-        public override bool IsThreadSafe { get { return true; } }
 
         private LowObstaclesWalkable()
             : base(typeof(LowObstaclesWalkable).Name, ProcessorPriority)
         {
         }
 
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will be applied during the <see cref="NMGenState.HeightfieldBuild"/> state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
-            if (state == NMGenState.HeightfieldBuild)
+            if (state != NMGenState.HeightfieldBuild)
+                return true;
+
+            if (context.Heightfield.MarkLowObstaclesWalkable(context
+                , context.Config.WalkableStep))
             {
-                if (context.Heightfield.MarkLowObstaclesWalkable(context
-                    , context.Config.WalkableStep))
-                {
-                    context.Log(Name + ": Marked low obstacles as walklable.", this);
-                    return true;
-                }
-                else
-                {
-                    context.Log(Name + ": Mark low obstacles failed.", this);
-                    return false;
-                }
+                context.Log(Name + ": Marked low obstacles as walklable.", this);
+                return true;
             }
 
-            return true;
+            context.Log(Name + ": Mark low obstacles failed.", this);
+            return false;
+
         }
 
+        /// <summary>
+        /// The processor instance.
+        /// </summary>
         public static LowObstaclesWalkable Instance { get { return mInstance; } }
     }
 }

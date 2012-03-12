@@ -24,17 +24,30 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// The base class for markers that apply an area id during the
+    /// <see cref="NMGenState.CompactFieldBuild"/> state of an NMGen build.
+    /// </summary>
 	public abstract class AreaMarker
         : NMGenProcessor
 	{
         private readonly byte mArea;
 
+        /// <summary>
+        /// The area to apply.
+        /// </summary>
         public byte Area { get { return mArea; } }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The processor name.</param>
+        /// <param name="priority">The processor priority.</param>
+        /// <param name="area">The area to apply.</param>
         public AreaMarker(string name, int priority, byte area)
             : base(name, priority)
         {
-            mArea = Math.Min(NMGen.WalkableArea, area);
+            mArea = NMGen.ClampArea(area);
         }
     }
 }

@@ -24,6 +24,13 @@ using org.critterai.nav;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A task used manage the build of an a tile from NMGen and connection data.
+    /// </summary>
+    /// <remarks>
+    /// <para>This task performs the tile build step in the navigation mesh build pipeline.
+    /// </para>
+    /// </remarks>
     public sealed class TileBuildTask
         : BuildTask<TileBuildAssets>
     {
@@ -33,11 +40,6 @@ namespace org.critterai.nmbuild
         private PolyMeshData mPolyData;
         private PolyMeshDetailData mDetailData;
         private ConnectionSet mConnections;
-
-        public override bool IsThreadSafe { get { return mIsThreadSafe; } }
-
-        public int TileX { get { return mTileX; } }
-        public int TileZ { get { return mTileZ; } }
 
         private TileBuildTask(int tx, int tz
             , PolyMeshData polyData
@@ -55,7 +57,38 @@ namespace org.critterai.nmbuild
             mIsThreadSafe = isThreadSafe;
         }
 
-        // Will only accept builders marked at threadsafe.
+        /// <summary>
+        /// If true, the task is safe to run on its own thread.
+        /// </summary>
+        public override bool IsThreadSafe { get { return mIsThreadSafe; } }
+
+        /// <summary>
+        /// The x-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileX { get { return mTileX; } }
+
+        /// <summary>
+        /// The z-index of the tile within the tile grid. (x, z)
+        /// </summary>
+        public int TileZ { get { return mTileZ; } }
+
+        /// <summary>
+        /// Creates a new task.
+        /// </summary>
+        /// <remarks>
+        /// <para>The task should only be marked as thread-safe if the data parameters are treated 
+        /// as immutable while the task is running.</para>
+        /// <para>Creation will fail on null parameters, invalid tile indices, and an empty
+        /// polygon mesh.</para>
+        /// </remarks>
+        /// <param name="tx">The x-index of the tile within the tile grid. (x, z)</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. (x, z)</param>
+        /// <param name="polyData">The polygon mesh data.</param>
+        /// <param name="detailData">The detail mesh data. (Optional.)</param>
+        /// <param name="conns">The off-mesh connection set.</param>
+        /// <param name="isThreadSafe">True if the task is safe to run on its own thread.</param>
+        /// <param name="priority">The task priority.</param>
+        /// <returns>A new task, or null on error.</returns>
         public static TileBuildTask Create(int tx, int tz
             , PolyMeshData polyData
             , PolyMeshDetailData detailData

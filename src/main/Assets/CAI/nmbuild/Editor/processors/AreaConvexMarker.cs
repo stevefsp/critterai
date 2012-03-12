@@ -29,14 +29,15 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="CompactField.MarkConvexPolyArea"/> to a <see cref="CompactHeightfield"/>.
+    /// </summary>
     public sealed class AreaConvexMarker
         : AreaMarker
     {
         private readonly Vector3[] verts;
         private readonly float ymin;
         private readonly float ymax;
-
-        public override bool IsThreadSafe { get { return true; } }
 
         private AreaConvexMarker(string name
             , int priority
@@ -51,6 +52,21 @@ namespace org.critterai.nmbuild
             this.ymax = ymax;
         }
 
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
+        /// state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
             if (state != NMGenState.HeightfieldBuild)
@@ -67,16 +83,24 @@ namespace org.critterai.nmbuild
             }
 
             context.Log(Name + ": Failed to mark convex polygon area.", this);
-
             return false;
         }
 
-        public static AreaConvexMarker Create(string name
-            , byte area
-            , Vector3[] verts
-            , float ymin
-            , float ymax
-            , int priority)
+        /// <summary>
+        /// Creates a new marker.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return null on an invalid vertices array or invalid min/max values.</para>
+        /// </remarks>
+        /// <param name="name">The processor name.</param>
+        /// <param name="priority">The processor priority.</param>
+        /// <param name="area">The area to apply.</param>
+        /// <param name="verts">A list of vertices that form a convex polygon.</param>
+        /// <param name="boundsMin">The minimum y-axis world position.</param>
+        /// <param name="boundsMax">The maximum y-axis world position.</param>
+        /// <returns>A new marker, or null on error.</returns>
+        public static AreaConvexMarker Create(string name, int priority, byte area
+            , Vector3[] verts, float ymin, float ymax)
         {
             if (verts == null || verts.Length == 0 || ymin > ymax)
                 return null;

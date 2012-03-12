@@ -31,6 +31,15 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Represents the definition of a set of tiles that make up a tiled navigation mesh.
+    /// </summary>
+    /// <remarks>
+    /// <para>This object is used to provides common configuration and input geometry for a tiled
+    /// navigation mesh build.  For example, the <see cref="IncrementalBuilder"/> will create
+    /// a builder from a tile set defintion.</para>
+    /// <para>Objects of this type are thread-safe and immutable.</para>
+    /// </remarks>
     public sealed class TileSetDefinition
     {
         private readonly InputGeometry mGeometry;
@@ -40,12 +49,6 @@ namespace org.critterai.nmbuild
 
         private int mWidth;
         private int mDepth;
-
-        public int Width { get { return mWidth; } }
-        public int Depth { get { return mDepth; } }
-        public Vector3 BoundsMin { get { return mBoundsMin; } }
-        public Vector3 BoundsMax { get { return mBoundsMax; } }
-        public InputGeometry Geometry { get { return mGeometry; } } 
 
         private TileSetDefinition(int width, int depth
             , Vector3 bmin, Vector3 bmax
@@ -62,13 +65,58 @@ namespace org.critterai.nmbuild
             mBoundsMax = bmax;
         }
 
+        /// <summary>
+        /// The width of the tile grid.  (Number of tiles along the x-axis.)
+        /// </summary>
+        public int Width { get { return mWidth; } }
+
+        /// <summary>
+        /// The depth of the tile grid.  (Number of tiles along the z-axis.)
+        /// </summary>
+        public int Depth { get { return mDepth; } }
+
+        /// <summary>
+        /// The maximum AABB bounds of the set.
+        /// </summary>
+        /// <remarks>
+        /// <para>This value will be the origin of the navigation mesh created from the tile set.
+        /// </para></remarks>
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
+
+        /// <summary>
+        /// The minimum AABB bounds of the set for build purposes.
+        /// </summary>
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
+
+        /// <summary>
+        /// The common input geometry used to build tiles in the set.
+        /// </summary>
+        public InputGeometry Geometry { get { return mGeometry; } }
+ 
+        /// <summary>
+        /// The world size of the tiles in the set.
+        /// </summary>
+        public float TileWorldSize { get { return mBaseConfig.TileWorldSize; } }
+
+        /// <summary>
+        /// Gets a copy of the shared NMGen configuration.
+        /// </summary>
+        /// <returns>A copy of the shared NMGen configuration.</returns>
         public NMGenParams GetBaseConfig()
         {
             return mBaseConfig.Clone();
         }
 
-        public float TileWorldSize { get { return mBaseConfig.TileWorldSize; } }
-
+        /// <summary>
+        /// Gets the bounds of the specified tile.
+        /// </summary>
+        /// <param name="tx">The x-index of the tile within the tile grid. (x, z) 
+        /// [0 &lt;= value &lt; <see cref="Width"/>]</param>
+        /// <param name="tx">The z-index of the tile within the tile grid. (x, z) 
+        /// [0 &lt;= value &lt; <see cref="Depth"/>]</param>
+        /// <param name="boundsMin">The minimum AABB bounds of the tile.</param>
+        /// <param name="boundsMax">The maximum AABB bounds of the tile.</param>
+        /// <returns>True if the tile is valid, otherwise false.</returns>
         public bool GetTileBounds(int tx, int tz
             , out Vector3 boundsMin, out Vector3 boundsMax)
         {
@@ -101,6 +149,17 @@ namespace org.critterai.nmbuild
             return true;
         }
 
+        /// <summary>
+        /// Creates a new tile set.
+        /// </summary>
+        /// <remarks>
+        /// <para>The bounds is normally based on the desired origin of the navigation mesh
+        /// and the maximum bounds of the input geometry.</para></remarks>
+        /// <param name="boundsMin">The minimum AABB bounds of the set.</param>
+        /// <param name="boundsMax">The maximum AABB counds of the set.</param>
+        /// <param name="config">The shared NMGen configuration.</param>
+        /// <param name="geom">The input geometry.</param>
+        /// <returns>A new tile set, or null on error.</returns>
         public static TileSetDefinition Create(Vector3 boundsMin
             , Vector3 boundsMax
             , NMGenParams config

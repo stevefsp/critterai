@@ -24,41 +24,60 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="Heightfield.MarkLedgeSpansNotWalkable"/> to 
+    /// a <see cref="Heightfield"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>This is a system processor.</para>
+    /// </remarks>
     public sealed class FilterLedgeSpans
         : NMGenProcessor
     {
-        public static int ProcessorPriority = LowObstaclesWalkable.ProcessorPriority + 5;
+        internal const int ProcessorPriority = LowObstaclesWalkable.ProcessorPriority + 5;
 
         private static FilterLedgeSpans mInstance = new FilterLedgeSpans();
 
-        public override bool IsThreadSafe { get { return true; } }
 
         private FilterLedgeSpans()
             : base(typeof(FilterLedgeSpans).Name, ProcessorPriority)
         {
         }
 
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will be applied during the <see cref="NMGenState.HeightfieldBuild"/> state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
-            if (state == NMGenState.HeightfieldBuild)
+            if (state != NMGenState.HeightfieldBuild)
+                return true;
+
+            if (context.Heightfield.MarkLedgeSpansNotWalkable(context
+                , context.Config.WalkableHeight
+                , context.Config.WalkableStep))
             {
-                if (context.Heightfield.MarkLedgeSpansNotWalkable(context
-                    , context.Config.WalkableHeight
-                    , context.Config.WalkableStep))
-                {
-                    context.Log(Name + ": Marked ledge spans as not walklable.", this);
-                    return true;
-                }
-                else
-                {
-                    context.Log(Name + ": Mark ledge spans failed.", this);
-                    return false;
-                }
+                context.Log(Name + ": Marked ledge spans as not walklable.", this);
+                return true;
             }
 
-            return true;
+            context.Log(Name + ": Mark ledge spans failed.", this);
+            return false;
         }
 
+        /// <summary>
+        /// The processor instance.
+        /// </summary>
         public static FilterLedgeSpans Instance { get { return mInstance; } }
     }
 }
