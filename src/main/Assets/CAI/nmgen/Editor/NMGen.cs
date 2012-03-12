@@ -37,18 +37,19 @@ namespace org.critterai.nmgen
     public static class NMGen
     {
         /// <summary>
-        /// The default area id used to indicate a walkable polygon.
+        /// The maximum allowed area id.
         /// </summary>
-        /// <remarks>
-        /// <para>This is also the maximum value that can be used as an area id.</para>
-        /// </remarks>
-        public const byte WalkableArea = 63;
+        public const byte MaxArea = 63;
 
         /// <summary>
-        /// The default flag applied to polygons during the build process if the 
-        /// <see cref="BuildFlags.ApplyPolyFlags"/> is set.
+        /// Represents an unwalkable area.
         /// </summary>
-        public const ushort DefaultFlag = 0x01;
+        /// <remarks>
+        /// <para>When a data element is given this value it is considered to no longer be 
+        /// assigned to a usable area. (It usually becomes an obstruction.)</para>
+        /// <para>This is also the minimum value that can be used as an area id.</para>
+        /// </remarks>
+        public const byte NullArea = 0;
 
         /// <summary>
         /// Represents the null region.
@@ -60,26 +61,6 @@ namespace org.critterai.nmgen
         /// from the final mesh. When applied to an edge, it means the edge is a solid wall.</para>
         /// </remarks>
         public const byte NullRegion = 0;
-
-        /// <summary>
-        /// Represents a null area.
-        /// </summary>
-        /// <remarks>
-        /// <para>When a data item is given this value it is considered to no longer be assigned 
-        /// to a usable area.</para>
-        /// </remarks>
-        [System.Obsolete("Use Unwalkable area. Will be removed in v0.5")]
-        public const byte NullArea = 0;
-
-        /// <summary>
-        /// Represents an unwalkable area.
-        /// </summary>
-        /// <remarks>
-        /// <para>When a data element is given this value it is considered to  no longer be 
-        /// assigned to a usable area.</para>
-        /// <para>This is also the minimum value that can be used as an area id.</para>
-        /// </remarks>
-        public const byte UnwalkableArea = 0;
 
         /// <summary>
         /// The minimum allowed value for cells size parameters.
@@ -163,7 +144,7 @@ namespace org.critterai.nmgen
         /// <returns>An buffer with all values set to <see cref="WalkableArea"/>.</returns>
         public static byte[] CreateWalkableAreaBuffer(int size)
         {
-            return CreateAreaBuffer(size, WalkableArea);
+            return CreateAreaBuffer(size, MaxArea);
         }
 
         /// <summary>
@@ -202,7 +183,7 @@ namespace org.critterai.nmgen
 
             for (int i = 0; i < areaCount; i++)
             {
-                if (areas[i] > WalkableArea)
+                if (areas[i] > MaxArea)
                     return false;
             }
             return true;
@@ -331,7 +312,7 @@ namespace org.critterai.nmgen
         /// <returns>A valid area id.</returns>
         public static byte ClampArea(byte value)
         {
-            return Math.Min(WalkableArea, value);
+            return Math.Min(MaxArea, value);
         }
 
         /// <summary>
@@ -342,7 +323,7 @@ namespace org.critterai.nmgen
         /// <returns>A valid area id.</returns>
         public static byte ClampArea(int value)
         {
-            return (byte)Math.Min(NMGen.WalkableArea, Math.Max(0, value));
+            return (byte)Math.Min(NMGen.MaxArea, Math.Max(0, value));
         }
     }
 }

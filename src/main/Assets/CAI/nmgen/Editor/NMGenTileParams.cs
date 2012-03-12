@@ -63,7 +63,7 @@ namespace org.critterai.nmgen
         public Vector3 boundsMax;
 
         /// <summary>
-        /// The Z position of the tile. [Limit: >= 0]
+        /// The z-index of the tile within the tile grid. [Limit: >= 0]
         /// </summary>
         /// <remarks>
         /// <para>This value is a zero based tile index representing the position of the
@@ -76,7 +76,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The X position of the tile. [Limit: >= 0]
+        /// The x-index of the tile within the tile grid. [Limit: >= 0]
         /// </summary>
         /// <remarks>
         /// <para>This value is a zero based tile index representing the position of the
@@ -89,7 +89,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The minimum bounds of the tile's AABB.[Units: World]
+        /// The minimum bounds of the tile's AABB. [Units: World]
         /// </summary>
         public Vector3 BoundsMin 
         { 
@@ -98,7 +98,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The maximum bounds of the tile's AABB.[Units: World]
+        /// The maximum bounds of the tile's AABB. [Units: World]
         /// </summary>
         public Vector3 BoundsMax
         {
@@ -109,8 +109,8 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="tx">The x index of the tile within the tile grid.</param>
-        /// <param name="tz">The z index of the tile within the tile grid.</param>
+        /// <param name="tx">The x-index of the tile within the tile grid.</param>
+        /// <param name="tz">The z-index of the tile within the tile grid.</param>
         /// <param name="boundsMin">The minimum bounds of the tile.</param>
         /// <param name="boundsMax">The maximum bounds of the tile.</param>
         public NMGenTileParams(int tx, int tz, Vector3 boundsMin, Vector3 boundsMax) 
