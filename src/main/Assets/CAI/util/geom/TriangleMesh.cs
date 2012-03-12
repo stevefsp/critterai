@@ -33,7 +33,6 @@ namespace org.critterai.geom
     /// </summary>
     /// <remarks>
     /// <para>The buffers may contain unused space.</para></remarks>
-    [Serializable]
     public class TriangleMesh
     {
         /// <summary>
@@ -150,7 +149,7 @@ namespace org.critterai.geom
         /// <param name="includeContent">If true, the content will be checked.  Otherwise only
         /// the structure will be checked.</param>
         /// <returns>True if the validation tests pass.</returns>
-        public static bool Validate(Vector3[] verts, int vertCount
+        public static bool IsValid(Vector3[] verts, int vertCount
             , int[] tris, int triCount
             , bool includeContent)
         {
@@ -198,12 +197,12 @@ namespace org.critterai.geom
         /// <param name="includeContent">If true, the content will be checked.  Otherwise only
         /// the structure will be checked.</param>
         /// <returns>True if the validation tests pass.</returns>
-        public static bool Validate(TriangleMesh mesh, bool includeContent)
+        public static bool IsValid(TriangleMesh mesh, bool includeContent)
         {
             if (mesh == null)
                 return false;
 
-            return Validate(mesh.verts, mesh.vertCount
+            return IsValid(mesh.verts, mesh.vertCount
                 , mesh.tris, mesh.triCount
                 , includeContent);
         }
