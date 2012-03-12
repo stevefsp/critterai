@@ -25,26 +25,53 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A processor that applies polygon flags to all polygons a <see cref="PolyMesh"/>.
+    /// </summary>
     public sealed class ApplyPolygonFlags
         : NMGenProcessor
     {
         private readonly ushort mFlags;
 
-        public ushort Flags { get { return mFlags; } }
-        public override bool IsThreadSafe { get { return true; } }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">The name of the processor.</param>
+        /// <param name="priority">The prioity.</param>
+        /// <param name="flags">The flags to apply.</param>
         public ApplyPolygonFlags(string name, int priority, ushort flags)
             : base(name, priority)
         {
             mFlags = flags;
         }
 
+        /// <summary>
+        /// The flags to apply.
+        /// </summary>
+        public ushort Flags { get { return mFlags; } }
+
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>The flags will be applied during the <see cref="NMGenState.PolyMeshBuild"/>
+        /// state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>True</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
             if (state != NMGenState.PolyMeshBuild)
                 return true;
 
             PolyMeshData data = context.PolyMesh.GetData(false);
+
             for (int i = 0; i < data.flags.Length; i++)
             {
                 data.flags[i] |= mFlags;

@@ -27,6 +27,11 @@ namespace org.critterai.nmbuild
     /// <summary>
     /// A task used manage the build of an <see cref="IncrementalBuilder"/> object.
     /// </summary>
+    /// <remarks>
+    /// <para>The primary purpose of this class run the builder on a background thread.
+    /// It handles aborts and exception handling, which are not possible if the
+    /// builder is run directly on a thread.</para>
+    /// </remarks>
     public sealed class NMGenTask
         : BuildTask<NMGenAssets>
     {
@@ -41,6 +46,8 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// If true, the task is safe to run on its own thread.
         /// </summary>
+        /// <remarks>
+        /// <para>Will be true if the root builder is thread-safe.</para></remarks>
         public override bool IsThreadSafe { get { return mBuilder.IsThreadSafe; } }
 
         /// <summary>
@@ -54,7 +61,7 @@ namespace org.critterai.nmbuild
         public int TileZ { get { return mBuilder.TileZ; } }
 
         /// <summary>
-        /// Creates a new NMGen task.
+        /// Creates a new task.
         /// </summary>
         /// <param name="builder">The builder to manage.</param>
         /// <param name="priority">The task priority.</param>

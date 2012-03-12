@@ -28,19 +28,43 @@ namespace org.critterai.nmbuild
         private readonly string mName;
         private readonly int mPriority;
 
+        /// <summary>
+        /// The name of the processor.
+        /// </summary>
         public string Name { get { return mName; } }
+
+        /// <summary>
+        /// The processor priority.
+        /// </summary>
         public int Priority { get { return mPriority; } }
 
+        /// <summary>
+        /// True if the processor is safe to use for threaded builds.
+        /// </summary>
         public abstract bool IsThreadSafe { get; }
 
+        /// <summary>
+        /// The build assets that should be preserved past their normal disposal point.
+        /// </summary>
         public virtual NMGenAssetFlag PreserveAssets { get { return 0; } }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">The name of the processor.</param>
+        /// <param name="priority">The processor priority.</param>
         public NMGenProcessor(string name, int priority)
         {
-            mPriority = CAIUtil.ClampPriority(priority);
+            mPriority = NMBuild.ClampPriority(priority);
             mName = (name == null || name.Length == 0) ? "Unnamed" : name;
         }
 
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False if the build should abort.  Otherwise true.</returns>
         public abstract bool ProcessBuild(NMGenState state, NMGenContext context);
     }
 }

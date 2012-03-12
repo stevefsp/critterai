@@ -29,23 +29,48 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="CompactField.MarkBoxArea"/> to a <see cref="CompactHeightfield"/>.
+    /// </summary>
 	public sealed class AreaBoxMarker
         : AreaMarker
 	{
         private readonly Vector3 mBoundsMin;
         private readonly Vector3 mBoundsMax;
 
-        public Vector3 BoundsMin { get { return mBoundsMin; } }
-        public Vector3 BoundsMax { get { return mBoundsMax; } }
-        public override bool IsThreadSafe { get { return true; } }
-
-        public AreaBoxMarker(string name, int priority, byte area, Vector3 boundsMin, Vector3 boundsMax)
+        private AreaBoxMarker(string name, int priority, byte area
+            , Vector3 boundsMin, Vector3 boundsMax)
             : base(name, priority, area)
         {
             mBoundsMin = boundsMin;
             mBoundsMax = boundsMax;
         }
 
+        /// <summary>
+        /// The mimimum world bounds of the area to mark.
+        /// </summary>
+        public Vector3 BoundsMin { get { return mBoundsMin; } }
+
+        /// <summary>
+        /// The maximum world bounds of the area to mark.
+        /// </summary>
+        public Vector3 BoundsMax { get { return mBoundsMax; } }
+
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
+        /// state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
             if (state != NMGenState.CompactFieldBuild)
@@ -54,11 +79,34 @@ namespace org.critterai.nmbuild
             if (context.CompactField.MarkBoxArea(context, mBoundsMin, mBoundsMax, Area))
             {
                 context.Log(string.Format("{0} : Marked box area: Area: {1}, Priority: {2}"
-                    ,  Name, Area, Priority)
+                    , Name, Area, Priority)
                     , this);
                 return true;
             }
+
+            context.Log(Name + ": Failed to mark box area.", this);
             return false;
+        }
+
+        /// <summary>
+        /// Creates a new marker.
+        /// </summary>
+        /// <remarks>
+        /// <para>Will return null if the bounds are invalid.</para>
+        /// </remarks>
+        /// <param name="name">The processor name.</param>
+        /// <param name="priority">The processor priority.</param>
+        /// <param name="area">The area to apply.</param>
+        /// <param name="boundsMin">The mimimum world bounds of the area to mark.</param>
+        /// <param name="boundsMax">The maximum world bounds of the area to mark.</param>
+        /// <returns>A new marker, or null on error.</returns>
+        public static AreaBoxMarker Create(string name, int priority, byte area
+            , Vector3 boundsMin, Vector3 boundsMax)
+        {
+            if (org.critterai.geom.TriangleMesh.IsBoundsValid(boundsMin, boundsMax))
+                return new AreaBoxMarker(name, priority, area, boundsMin, boundsMax);
+
+            return null;
         }
     }
 }

@@ -23,9 +23,15 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A processor used during the NMGen build process.
+    /// </summary>
 	public interface INMGenProcessor
         : IPriorityItem
     {
+        /// <summary>
+        /// The name of the processor.
+        /// </summary>
         string Name { get; }
 
         /// <summary>
@@ -37,35 +43,28 @@ namespace org.critterai.nmbuild
         /// The build assets that should be preserved past their normal disposal point.
         /// </summary>
         /// <remarks>
-        /// <para>Most processors will return zero. Use judiciously  since it can result in large 
+        /// <para>Most processors will return zero. Use judiciously since it can result in large 
         /// increases in memory consumption during a build.</para>
-        /// <para>Builders usually dispose of assets as soon as the asset is no
-        /// longer needed for a 'normal' build.  For example, 
-        /// the <see cref="Heightfield"/> is usually disposed as soon as the 
-        /// <see cref="CompactHeightfield"/> is created.  So if a processor needs
-        /// the heightfield for processing after heightfield post-processing,
-        /// it should indicate so through this field.</para>
+        /// <para>Builders usually dispose of assets as soon as the asset is no longer needed for 
+        /// a 'normal' build.  For example, the <see cref="Heightfield"/> is usually disposed as 
+        /// soon as the <see cref="CompactHeightfield"/> is created.  So if a processor needs
+        /// the heightfield for processing after heightfield post-processing, it should indicate 
+        /// so through this field.</para>
         /// </remarks>
         NMGenAssetFlag PreserveAssets { get; }
 
         /// <summary>
-        /// Process the build item.
+        /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>When this method is called is implementation dependant.
-        /// Most implementations only process processors at specific pre-
-        /// and post-processing stages.</para>
-        /// <para>The content of the <paramref name="context"/> parameter will be 
-        /// dependant on the build state.</para>
-        /// <para>It is an considered an error if the processor is returned
-        /// in an invalid state.  If the processor wants the build to abort
-        /// it should return false rather than resetting or nulling values.</para>
-        /// <para>The processor should always log a message to the context when it returns
-        /// false.  It it also a good idea to log summary messages for use in debugging.</para>
+        /// <para>The processor will never return the context in an invalid state.  If it processor
+        /// wants the build to abort it will return false rather than resetting or nulling 
+        /// values in the context.</para>
+        /// <para>The processor will always log a message to the context when it returns false.  
+        /// It may also log summary messages for use in debugging.</para>
         /// </remarks>
-        /// <param name="context">The build context.</param>
         /// <param name="state">The current build state.</param>
-        /// <param name="item">The tile to process.</param>
+        /// <param name="context">The context to process.</param>
         /// <returns>False if the build should abort.  Otherwise true.</returns>
         bool ProcessBuild(NMGenState state, NMGenContext context);
 	}

@@ -29,6 +29,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Applies <see cref="CompactField.MarkCylinderArea"/> to a <see cref="CompactHeightfield"/>.
+    /// </summary>
 	public sealed class AreaCylinderMarker
         : AreaMarker
 	{
@@ -36,16 +39,8 @@ namespace org.critterai.nmbuild
         private readonly float mRadius;
         private readonly float mHeight;
 
-        public float Radius { get { return mRadius; } }
-        public float Height { get { return mHeight; } }
-        public override bool IsThreadSafe { get { return true; } }
-
-        public AreaCylinderMarker(string name
-            , int priority
-            , byte area
-            , Vector3 centerBase
-            , float radius
-            , float height)
+        private AreaCylinderMarker(string name, int priority, byte area
+            , Vector3 centerBase, float radius, float height)
             : base(name, priority, area)
         {
             mCenterBase = centerBase;
@@ -53,8 +48,36 @@ namespace org.critterai.nmbuild
             mHeight = Math.Max(0, height);
         }
 
+        /// <summary>
+        /// The center point of the cylinder base.
+        /// </summary>
         public Vector3 GetCenterBase { get { return mCenterBase; } }
 
+        /// <summary>
+        /// The radius of the cylinder.
+        /// </summary>
+        public float Radius { get { return mRadius; } }
+
+        /// <summary>
+        /// The height of the cylinder. (From the base.)
+        /// </summary>
+        public float Height { get { return mHeight; } }
+
+        /// <summary>
+        /// Always threadsafe. (True)
+        /// </summary>
+        public override bool IsThreadSafe { get { return true; } }
+
+        /// <summary>
+        /// Process the build context.
+        /// </summary>
+        /// <remarks>
+        /// <para>The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
+        /// state.</para>
+        /// </remarks>
+        /// <param name="state">The current build state.</param>
+        /// <param name="context">The context to process.</param>
+        /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
             if (state != NMGenState.CompactFieldBuild)
@@ -69,7 +92,16 @@ namespace org.critterai.nmbuild
                     , this);
                 return true;
             }
+
+            context.Log(Name + ": Failed to mark cylinder area.", this);
             return false;
+        }
+
+        public static AreaCylinderMarker Create(string name, int priority, byte area
+            , Vector3 centerBase, float radius, float height)
+        {
+            // Implemented as a create method for consistency with other markers.
+            return new AreaCylinderMarker(name, priority, area, centerBase, radius, height);
         }
     }
 }

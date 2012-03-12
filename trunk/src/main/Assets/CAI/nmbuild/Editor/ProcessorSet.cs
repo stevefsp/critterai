@@ -126,7 +126,7 @@ namespace org.critterai.nmbuild
             if ((options & NMGenFlag.ApplyPolyFlags) != 0)
             {
                 ps.Add(new ApplyPolygonFlags("ApplyDefaultPolyFlag"
-                    , CAIUtil.MinPriority, NMGen.DefaultFlag));
+                    , NMBuild.MinPriority, NMBuild.DefaultFlag));
             }
 
             if ((options & NMGenFlag.LedgeSpansNotWalkable) != 0)

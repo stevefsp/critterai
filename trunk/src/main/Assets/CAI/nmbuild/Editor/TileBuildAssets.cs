@@ -25,11 +25,8 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents a group of releated tile build assets.
+    /// Represents the result of a tile build.
     /// </summary>
-    /// <remarks>
-    /// <para>This object holds the result of a tile build.</para>
-    /// </remarks>
     public struct TileBuildAssets
     {
         private readonly int mTileX;

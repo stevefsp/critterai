@@ -25,12 +25,11 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents a group of releated NMGen assets.
+    /// Represents the result of a NMGen build.
     /// </summary>
     /// <remarks>
-    /// <para>This object holds the result of an NMGen build.</para>
-    /// <para>All assets will be null if there is no result.  Otherwise the only only asset expected to 
-    /// be guarenteed is the <see cref="PolyMesh"/> object.</para>
+    /// <para>All assets will be null if there is no result.  Otherwise the only asset guarenteed 
+    /// to be present is the <see cref="PolyMesh"/> object.</para>
     /// </remarks>
     public struct NMGenAssets
     {
