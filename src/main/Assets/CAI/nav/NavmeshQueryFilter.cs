@@ -117,7 +117,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public override bool IsDisposed
         {

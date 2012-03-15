@@ -66,7 +66,7 @@ namespace org.critterai.nav
         /// <para>The polygon id can be found as follows:
         /// <c>(int)neighborPolyRefs[n] &amp; 0xff</c></para>
         /// <para>The edge is an external (portal) edge if the following test
-        /// is TRUE: 
+        /// istrue: 
         /// <c>(neighborPolyRefs[n] &amp; Navmesh.ExternalLink) == 0</c></para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray

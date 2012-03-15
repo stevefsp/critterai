@@ -125,7 +125,7 @@ namespace org.critterai.nav
         public AllocType ResourceType { get { return AllocType.External; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return (mRoot == IntPtr.Zero); } }
 

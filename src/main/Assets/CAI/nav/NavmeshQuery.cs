@@ -922,6 +922,15 @@ namespace org.critterai.nav
                 , visitedPolyRefs.Length);
         }
 
+        /// <summary>
+        /// Returns a random point on the navigation mesh.
+        /// </summary>
+        /// <remarks>
+        /// <para>The search speed is linear to the number of polygons.</para>
+        /// </remarks>
+        /// <param name="filter">The filter to apply to the query.</param>
+        /// <param name="randomPoint">A random point on the navigation mesh.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetRandomPoint(NavmeshQueryFilter filter, out NavmeshPoint randomPoint)
         {
             randomPoint = new NavmeshPoint();
@@ -929,6 +938,20 @@ namespace org.critterai.nav
             return NavmeshQueryEx.dtqFindRandomPoint(root, filter.root, ref randomPoint);
         }
 
+        /// <summary>
+        /// Returns a random point within reach of the specified location.
+        /// </summary>
+        /// <remarks>
+        /// <para>The result point is constrainted to the polygons overlapped by the circle, not 
+        /// the circle itself.  The overlap test follows the same rules as the FindPolys method.
+        /// </para>
+        /// <para>The search speed is linear to the number of polygons.</para>
+        /// </remarks>
+        /// <param name="start">The points to search from.</param>
+        /// <param name="radius">The polygon overlap radius.</param>
+        /// <param name="filter">The filter to apply to the query.</param>
+        /// <param name="randomPoint">A random point witin reach of the specified location.</param>
+        /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
         public NavStatus GetRandomPoint(NavmeshPoint start, float radius
             , NavmeshQueryFilter filter
             , out NavmeshPoint randomPoint)

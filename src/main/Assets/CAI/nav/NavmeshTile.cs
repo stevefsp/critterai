@@ -49,7 +49,7 @@ namespace org.critterai.nav
         private IntPtr mTile;
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         /// <remarks>
         /// <para>Just because a tile has no polygons does not mean it is

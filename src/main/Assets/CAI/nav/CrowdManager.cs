@@ -144,7 +144,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public override bool IsDisposed
         {
@@ -259,7 +259,7 @@ namespace org.critterai.nav
         /// [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
         /// </param>
         /// <param name="config">The avoidance configuration.</param>
-        /// <returns>TRUE if the configuration is successfully set.</returns>
+        /// <returns>True if the configuration is successfully set.</returns>
         public bool SetAvoidanceConfig(int index
             , CrowdAvoidanceParams config)
         {

@@ -57,7 +57,7 @@ namespace org.critterai.nav
         public int Size { get { return mDataLength; } }
 
         /// <summary>
-        /// TRUE if the memory for the buffer is managed by another object.
+        /// True if the memory for the buffer is managed by another object.
         /// </summary>
         public bool IsOwned { get { return mIsOwned; } }
 
