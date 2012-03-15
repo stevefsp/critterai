@@ -34,30 +34,30 @@ namespace org.critterai.nav
     public static class NavUtil
     {
         /// <summary>
-        /// Returns TRUE if the status includes the success flag.
+        /// Returns true if the status includes the success flag.
         /// </summary>
         /// <param name="status">The status to check.</param>
-        /// <returns>TRUE if the status includes the success flag.</returns>
+        /// <returns>True if the status includes the success flag.</returns>
         public static bool Succeeded(NavStatus status)
         {
             return (status & NavStatus.Sucess) != 0;
         }
 
         /// <summary>
-        /// Returns TRUE if the status includes the failure flag.
+        /// Returns true if the status includes the failure flag.
         /// </summary>
         /// <param name="status">The status to check.</param>
-        /// <returns>TRUE if the status includes the failure flag.</returns>
+        /// <returns>True if the status includes the failure flag.</returns>
         public static bool Failed(NavStatus status)
         {
             return (status & NavStatus.Failure) != 0;
         }
 
         /// <summary>
-        /// Returns TRUE if the status includes the in-progress flag.
+        /// Returns true if the status includes the in-progress flag.
         /// </summary>
         /// <param name="status">The status to check.</param>
-        /// <returns>TRUE if the status includes the in-progress flag.
+        /// <returns>True if the status includes the in-progress flag.
         /// </returns>
         public static bool IsInProgress(NavStatus status)
         {

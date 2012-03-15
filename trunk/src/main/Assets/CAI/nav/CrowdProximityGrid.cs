@@ -78,7 +78,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// TRUE if the object has been disposed.
+        /// True if the object has been disposed.
         /// </summary>
         public bool IsDisposed
         {

@@ -218,7 +218,7 @@ namespace org.critterai.nav
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
         /// <param name="targetPoint">The target position.</param>
-        /// <returns>TRUE if the target was successfully set.</returns>
+        /// <returns>True if the target was successfully set.</returns>
         public bool RequestMoveTarget(NavmeshPoint target)
         {
             if (IsDisposed)
@@ -240,7 +240,7 @@ namespace org.critterai.nav
         /// <param name="polyRef">The refernece id of the polygon containing
         /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
-        /// <returns>TRUE if the adjustment was successfully applied.</returns>
+        /// <returns>True if the adjustment was successfully applied.</returns>
         public bool AdjustMoveTarget(NavmeshPoint position)
         {
             if (IsDisposed)

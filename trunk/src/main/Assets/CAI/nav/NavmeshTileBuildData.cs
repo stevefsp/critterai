@@ -43,8 +43,8 @@ namespace org.critterai.nav
     /// <li>Construct the object.</li>
     /// <li><see cref="LoadBase"/></li>
     /// <li><see cref="LoadPolys"/></li>
-    /// <li><see cref="LoadDetail"/> (Optional.)</li>
-    /// <li><see cref="LoadConns"/> (Optional.)</li>
+    /// <li><see cref="LoadDetail"/> (Optional)</li>
+    /// <li><see cref="LoadConns"/> (Optional)</li>
     /// </ol>
     /// <para>The design permits re-use of the data buffers for multiple tile
     /// builds.  Just set the buffer sizes to the maximum size required then
@@ -313,14 +313,14 @@ namespace org.critterai.nav
         public float YCellSize { get { return mYCellSize; } }
 
         /// <summary>
-        /// TRUE if bounding volumn data should be generated for the tile.
+        /// True if bounding volumn data should be generated for the tile.
         /// </summary>
         /// <remarks>This value is normally set to FALSE if the tile is small
         /// or layers are being used.</remarks>
         public bool BVTreeEnabled { get { return mBVTreeEnabled; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return mIsDisposed; } }
 
@@ -662,9 +662,9 @@ namespace org.critterai.nav
         /// <param name="walkableHeight">The walkable height.</param>
         /// <param name="walkableRadius">The walkable radius.</param>
         /// <param name="walkableStep">The walkable step.</param>
-        /// <param name="bvTreeEnabled">TRUE if bounding volumes should be
+        /// <param name="bvTreeEnabled">True if bounding volumes should be
         /// used.</param>
-        /// <returns>TRUE if the load succeeded.</returns>
+        /// <returns>True if the load succeeded.</returns>
         public bool LoadBase(int tileX
             , int tileZ
             , int tileLayer
@@ -717,7 +717,7 @@ namespace org.critterai.nav
         /// <param name="polyFlags">Polygon flags.</param>
         /// <param name="polyAreas">Polygon areas ids.</param>
         /// <param name="polyCount">The number of polygons.</param>
-        /// <returns>TRUE if the load succeeded.</returns>
+        /// <returns>True if the load succeeded.</returns>
         public bool LoadPolys(ushort[] polyVerts
             , int vertCount
             , ushort[] polys
@@ -768,7 +768,7 @@ namespace org.critterai.nav
         /// <param name="triCount">The number of detail triagles.</param>
         /// <param name="meshes">Detail meshes.</param>
         /// <param name="meshCount">The number of detail meshes.</param>
-        /// <returns>TRUE if the load succeeded.</returns>
+        /// <returns>True if the load succeeded.</returns>
         public bool LoadDetail(Vector3[] verts
             , int vertCount
             , byte[] tris
@@ -820,7 +820,7 @@ namespace org.critterai.nav
         /// <param name="connFlags">Connection flags.</param>
         /// <param name="connUserIds">Connection user ids.</param>
         /// <param name="connCount">The number of connections.</param>
-        /// <returns>TRUE if the load succeeded.</returns>
+        /// <returns>True if the load succeeded.</returns>
         public bool LoadConns(Vector3[] connVerts
             , float[] connRadii
             , byte[] connDirs

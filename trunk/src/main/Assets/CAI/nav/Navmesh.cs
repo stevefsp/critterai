@@ -158,7 +158,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public override bool IsDisposed
         {
@@ -379,7 +379,7 @@ namespace org.critterai.nav
         /// for the navigation mesh.
         /// </summary>
         /// <param name="polyRef">The reference id to check.</param>
-        /// <returns>TRUE if the provided reference id valid.</returns>
+        /// <returns>True if the provided reference id valid.</returns>
         public bool IsValidPolyRef(uint polyRef)
         {
             return NavmeshEx.dtnmIsValidPolyRef(root, polyRef);

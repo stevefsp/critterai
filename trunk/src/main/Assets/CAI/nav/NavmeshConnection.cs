@@ -85,7 +85,7 @@ namespace org.critterai.nav
         public uint userId;
 
         /// <summary>
-        /// TRUE if the traversal of the connection can start from either 
+        /// True if the traversal of the connection can start from either 
         /// endpoint.  FALSE if the connection can only be travered from
         /// vertex A to vertex B.
         /// </summary>
