@@ -209,5 +209,17 @@ namespace org.critterai.nav.rcn
             , [In, Out] uint[] path
             , ref int pathCount
             , int maxPath);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindRandomPoint(IntPtr query
+            , IntPtr filter
+            , ref NavmeshPoint randomPt);
+
+        [DllImport(InteropUtil.PLATFORM_DLL)]
+        public static extern NavStatus dtqFindRandomPointCircle(IntPtr query
+            , NavmeshPoint start
+            , float radius
+            , IntPtr filter
+            , ref NavmeshPoint randomPt);
     }
 }
