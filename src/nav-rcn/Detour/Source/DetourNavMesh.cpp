@@ -198,6 +198,7 @@ dtNavMesh::dtNavMesh() :
 	m_tileBits(0),
 	m_polyBits(0)
 {
+	memset(&m_params, 0, sizeof(dtNavMeshParams));
 	m_orig[0] = 0;
 	m_orig[1] = 0;
 	m_orig[2] = 0;
@@ -493,19 +494,19 @@ void dtNavMesh::connectExtOffMeshLinks(dtMeshTile* tile, dtMeshTile* target, int
 		// Link target poly to off-mesh connection.
 		if (targetCon->flags & DT_OFFMESH_CON_BIDIR)
 		{
-			unsigned int idx = allocLink(tile);
-			if (idx != DT_NULL_LINK)
+			unsigned int tidx = allocLink(tile);
+			if (tidx != DT_NULL_LINK)
 			{
 				const unsigned short landPolyIdx = (unsigned short)decodePolyIdPoly(ref);
 				dtPoly* landPoly = &tile->polys[landPolyIdx];
-				dtLink* link = &tile->links[idx];
+				dtLink* link = &tile->links[tidx];
 				link->ref = getPolyRefBase(target) | (dtPolyRef)(targetCon->poly);
 				link->edge = 0xff;
 				link->side = (unsigned char)side;
 				link->bmin = link->bmax = 0;
 				// Add to linked list.
 				link->next = landPoly->firstLink;
-				landPoly->firstLink = idx;
+				landPoly->firstLink = tidx;
 			}
 		}
 	}
@@ -600,19 +601,19 @@ void dtNavMesh::connectIntOffMeshLinks(dtMeshTile* tile)
 				if (j == 0 || (j == 1 && (con->flags & DT_OFFMESH_CON_BIDIR)))
 				{
 					// Link target poly to off-mesh connection.
-					unsigned int idx = allocLink(tile);
-					if (idx != DT_NULL_LINK)
+					unsigned int tidx = allocLink(tile);
+					if (tidx != DT_NULL_LINK)
 					{
 						const unsigned short landPolyIdx = (unsigned short)decodePolyIdPoly(ref);
 						dtPoly* landPoly = &tile->polys[landPolyIdx];
-						dtLink* link = &tile->links[idx];
+						dtLink* link = &tile->links[tidx];
 						link->ref = base | (dtPolyRef)(con->poly);
 						link->edge = 0xff;
 						link->side = 0xff;
 						link->bmin = link->bmax = 0;
 						// Add to linked list.
 						link->next = landPoly->firstLink;
-						landPoly->firstLink = idx;
+						landPoly->firstLink = tidx;
 					}
 				}
 				
@@ -744,8 +745,11 @@ int dtNavMesh::queryPolygonsInTile(const dtMeshTile* tile, const float* qmin, co
 		dtPolyRef base = getPolyRefBase(tile);
 		for (int i = 0; i < tile->header->polyCount; ++i)
 		{
-			// Calc polygon bounds.
 			dtPoly* p = &tile->polys[i];
+			// Do not return off-mesh connection polygons.
+			if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)
+				continue;
+			// Calc polygon bounds.
 			const float* v = &tile->verts[p->verts[0]*3];
 			dtVcopy(bmin, v);
 			dtVcopy(bmax, v);
@@ -1191,7 +1195,7 @@ dtStatus dtNavMesh::removeTile(dtTileRef ref, unsigned char** data, int* dataSiz
 dtTileRef dtNavMesh::getTileRef(const dtMeshTile* tile) const
 {
 	if (!tile) return 0;
-	const unsigned int it = tile - m_tiles;
+	const unsigned int it = (unsigned int)(tile - m_tiles);
 	return (dtTileRef)encodePolyId(tile->salt, it, 0);
 }
 
@@ -1212,7 +1216,7 @@ dtTileRef dtNavMesh::getTileRef(const dtMeshTile* tile) const
 dtPolyRef dtNavMesh::getPolyRefBase(const dtMeshTile* tile) const
 {
 	if (!tile) return 0;
-	const unsigned int it = tile - m_tiles;
+	const unsigned int it = (unsigned int)(tile - m_tiles);
 	return encodePolyId(tile->salt, it, 0);
 }
 
