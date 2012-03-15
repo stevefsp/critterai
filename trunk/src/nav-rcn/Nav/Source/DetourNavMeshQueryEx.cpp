@@ -19,9 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <stdlib.h>
 #include <string.h>
 #include "DetourNavMeshQuery.h"
 #include "DetourEx.h"
+
+// Returns a random number [0..1)
+static float frand()
+{
+	return (float)rand()/(float)RAND_MAX;
+}
 
 extern "C"
 {
@@ -369,5 +376,23 @@ extern "C"
     {
         return query->finalizeSlicedFindPath(path, pathCount, maxPath);
     }
+
+	EXPORT_API dtStatus dtqFindRandomPoint(dtNavMeshQuery* query
+		, const dtQueryFilter* filter
+		, rcnNavmeshPoint* randomPt)
+	{
+		return query->findRandomPoint(filter, frand, &randomPt->polyRef, &randomPt->point[0]);
+	}
+
+	EXPORT_API dtStatus dtqFindRandomPointCircle(dtNavMeshQuery* query
+		, rcnNavmeshPoint start
+        , const float radius
+		, const dtQueryFilter* filter
+		, rcnNavmeshPoint* randomPt)
+	{
+		return query->findRandomPointAroundCircle(start.polyRef, &start.point[0], radius
+			, filter, frand
+			, &randomPt->polyRef, &randomPt->point[0]);
+	}
 
 }
