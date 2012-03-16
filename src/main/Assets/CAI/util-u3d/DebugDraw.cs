@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2012 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ namespace org.critterai.u3d
         private static Material mSimpleMaterial = null;
 
         /// <summary>
-        /// Provides a shared material suitable for simple drawing operations.
+        /// A shared material suitable for simple drawing operations. 
         /// (Such as debug visualizations.)
         /// </summary>
         public static Material SimpleMaterial

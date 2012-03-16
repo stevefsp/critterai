@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,20 @@
  * THE SOFTWARE.
  */
 using UnityEngine;
-using Buffer = System.Buffer;
 using System.Collections.Generic;
+using UnityEditor;
+using System.IO;
 
-namespace org.critterai.util.u3d.editor
+namespace org.critterai.u3d.editor
 {
     /// <summary>
-    /// Provides general purpose utility functions for Unity.
+    /// Provides general purpose editor utility functions for Unity.
     /// </summary>
-    public static class EditorUtil
+    internal static class EditorUtil
     {
-
-        // TODO: Review functions.  Should some of these be moved to an 
-        // editor only class?
+        public const int AssetGroup = 100;
+        public const int ViewGroup = 1000;
+        public const int ManagerGroup = 2000;
 
         private static GUIStyle mHelpStyle;
         private static GUIStyle mWarningStyle;
@@ -93,58 +94,164 @@ namespace org.critterai.util.u3d.editor
             }
         }
 
-        public static Texture2D CreateTexture(int width, int height, Color color)
+        public static bool OnGUIManageObjectList<T>(string label
+            , List<T> items
+            , bool allowScene) 
+            where T : UnityEngine.Object
         {
-            Color[] pixels = new Color[width * height];
+            if (items == null)
+                return false;
 
-            for (int i = 0; i < pixels.Length; i++)
-                pixels[i] = color;
+            // Never allow nulls.  So get rid of them first.
+            for (int i = items.Count - 1; i >= 0; i--)
+            {
+                if (items[i] == null)
+                    items.RemoveAt(i);
+            }
 
-            Texture2D result = new Texture2D(width, height, TextureFormat.ARGB32, false);
-            result.SetPixels(pixels);
-            result.Apply();
+            GUILayout.Label(label);
+
+            if (items.Count > 0)
+            {
+                int delChoice = -1;
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+
+#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
+                    T item = (T)EditorGUILayout.ObjectField(items[i], typeof(T));
+#else
+                    T item = (T)EditorGUILayout.ObjectField(items[i], typeof(T), allowScene);
+#endif
+
+                    if (item == items[i] || !items.Contains(item))
+                        items[i] = item;
+
+                    if (GUILayout.Button("Remove"))
+                        delChoice = i;
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                if (delChoice >= 0)
+                    items.RemoveAt(delChoice);
+            }
+
+            EditorGUILayout.Separator();
+
+            T nitem = (T)EditorGUILayout.ObjectField("Add", null, typeof(T), allowScene);
+
+            if (nitem != null)
+            {
+                if (!items.Contains(nitem))
+                    items.Add(nitem);
+            }
+
+            return GUI.changed;
+        }
+
+        public static bool OnGUIManageStringList(List<string> items, bool isTags)
+        {
+            if (items == null)
+                return false;
+
+            if (items.Count > 0)
+            {
+                GUILayout.Label((isTags ? "Tags" : "Items"));
+
+                int delChoice = -1;
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+
+                    string item;
+
+                    if (isTags)
+                        item = EditorGUILayout.TagField(items[i]);
+                    else
+                        item = EditorGUILayout.TextField(items[i]);
+
+                    if (item == items[i] || !items.Contains(item))
+                        items[i] = item;
+
+                    if (GUILayout.Button("Remove"))
+                        delChoice = i;
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                if (delChoice >= 0)
+                    items.RemoveAt(delChoice);
+            }
+
+            EditorGUILayout.Separator();
+
+            string ntag = EditorGUILayout.TagField("Add", "");
+
+            if (ntag.Length > 0)
+            {
+                if (!items.Contains(ntag))
+                    items.Add(ntag);
+            }
+
+            return GUI.changed;
+        }
+
+        public static T CreateAsset<T>(ScriptableObject atAsset, string label) where T : ScriptableObject
+        {
+            string name = typeof(T).ToString();
+            string path = GenerateStandardPath(atAsset, name);
+
+            T result = ScriptableObject.CreateInstance<T>();
+            result.name = name;
+
+            AssetDatabase.CreateAsset(result, path);
+
+            if (label.Length > 0)
+                AssetDatabase.SetLabels(result, new string[1] { label });
+
+            AssetDatabase.SaveAssets();
 
             return result;
         }
 
-        /// <summary>
-        /// Recursively searches the provided game objects for a type of
-        /// component.
-        /// </summary>
-        /// <typeparam name="T">The type of component to search for.</typeparam>
-        /// <param name="sources">An array of game objects to search.</param>
-        /// <returns>The components found during the search.</returns>
-        public static T[] GetComponents<T>(GameObject[] sources)
-            where T : Component
+        public static T CreateAsset<T>(string label) where T : ScriptableObject
         {
-            return GetComponents<T>(sources, false);
+            string name = typeof(T).Name;
+            string path = GenerateStandardPath(name);
+
+            T result = ScriptableObject.CreateInstance<T>();
+            result.name = name;
+
+            AssetDatabase.CreateAsset(result, path);
+
+            if (label.Length > 0)
+                AssetDatabase.SetLabels(result, new string[1] { label });
+
+            AssetDatabase.SaveAssets();
+
+            return result;
         }
 
-        /// <summary>
-        /// Recursively searches the provided game objects for a type of
-        /// component.
-        /// </summary>
-        /// <typeparam name="T">The type of component to search for.</typeparam>
-        /// <param name="sources">An array of game objects to search.</param>
-        /// <returns>The components found during the search.</returns>
-        private static T[] GetComponents<T>(GameObject[] sources
-            , bool includeInactive)
-            where T : Component
+        private static string GenerateStandardPath(string name)
         {
-            List<T> result = new List<T>();
-            foreach (GameObject go in sources)
-            {
-                if (go == null)
-                    continue;
+            return GenerateStandardPath(Selection.activeObject, name);
+        }
 
-                T[] cs = go.GetComponentsInChildren<T>(includeInactive);
+        private static string GenerateStandardPath(Object atAsset, string name)
+        {
+            string dir = AssetDatabase.GetAssetPath(atAsset);
 
-                if (cs == null)
-                    continue;
+            if (dir.Length == 0)
+                // Selection must not be an asset.
+                dir = "Assets";
+            else if (!Directory.Exists(dir))
+                // Selection must be a file asset.
+                dir = Path.GetDirectoryName(dir);
 
-                result.AddRange(cs);
-            }
-            return result.ToArray();
+            return AssetDatabase.GenerateUniqueAssetPath(dir + "/" + name + ".asset");
         }
     }
 }
