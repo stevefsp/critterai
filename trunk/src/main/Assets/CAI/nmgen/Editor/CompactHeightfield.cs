@@ -221,7 +221,7 @@ namespace org.critterai.nmgen
         public AllocType ResourceType { get { return AllocType.External; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return (mCells == IntPtr.Zero); } }
 
@@ -265,7 +265,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetCellData(CompactCell[] buffer)
         {
             if (IsDisposed)
@@ -282,7 +282,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= SpanCount]</param>
-        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetSpanData(CompactSpan[] buffer)
         {
             if (IsDisposed)
@@ -306,7 +306,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= SpanCount]</param>
-        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetDistanceData(ushort[] buffer)
         {
             if (IsDisposed
@@ -333,7 +333,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= SpanCount]</param>
-        /// <returns>TRUE if the buffer was successfully loaded.</returns>
+        /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetAreaData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mSpanCount)
@@ -348,7 +348,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// TRUE if distance data is available.
+        /// True if distance data is available.
         /// </summary>
         public bool HasDistanceData 
         { 
@@ -368,7 +368,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use during the operation.
         /// </param>
         /// <param name="radius">The radius to apply. (In voxels.)</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool ErodeWalkableArea(BuildContext context, int radius)
         {
             if (IsDisposed)
@@ -383,7 +383,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool ApplyMedianFilter(BuildContext context)
         {
             if (IsDisposed)
@@ -408,10 +408,9 @@ namespace org.critterai.nmgen
         /// [Form: (x, y, z)]
         /// </param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
-            , Vector3 boundsMin
-            , Vector3 boundsMax
+            , Vector3 boundsMin, Vector3 boundsMax
             , byte area)
         {
             if (IsDisposed)
@@ -442,11 +441,9 @@ namespace org.critterai.nmgen
         /// <param name="yMin">The height of the base of the polygon.</param>
         /// <param name="yMax">The height of the top of the polygon.</param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkConvexPolyArea(BuildContext context
-            , Vector3[] verts
-            , float yMin
-            , float yMax
+            , Vector3[] verts, float yMin, float yMax
             , byte area)
         {
             if (IsDisposed)
@@ -475,11 +472,9 @@ namespace org.critterai.nmgen
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>
         /// <param name="area">The area id to apply.</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
-            , Vector3 centerBase
-            , float radius
-            , float height
+            , Vector3 centerBase, float radius, float height
             , byte area)
         {
             if (IsDisposed)
@@ -503,7 +498,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
         /// </param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildDistanceField(BuildContext context)
         {
             if (IsDisposed)
@@ -535,11 +530,9 @@ namespace org.critterai.nmgen
         /// <param name="mergeRegionArea">The maximum region size that will be
         /// considered for merging with another region.
         /// (In voxels.)</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegions(BuildContext context
-            , int borderSize
-            , int minRegionArea
-            , int mergeRegionArea)
+            , int borderSize, int minRegionArea, int mergeRegionArea)
         {
             if (IsDisposed)
                 return false;
@@ -574,14 +567,13 @@ namespace org.critterai.nmgen
         /// <param name="mergeRegionArea">The maximum region size that will be
         /// considered for merging with another region.
         /// (In voxels.)</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegionsMonotone(BuildContext context
-            , int borderSize
-            , int minRegionArea
-            , int mergeRegionArea)
+            , int borderSize, int minRegionArea, int mergeRegionArea)
         {
             if (IsDisposed)
                 return false;
+
             return CompactHeightfieldEx.nmcfBuildRegionsMonotone(context.root
                 , this
                 , borderSize
@@ -596,20 +588,27 @@ namespace org.critterai.nmgen
         /// </param>
         /// <param name="sourceField">The solid heighfield to derive the
         /// compact heightfield from.</param>
-        /// <param name="walkableHeight">The minimum floor to ceiling height
-        /// that is still considered walkable.</param>
+        /// <param name="walkableHeight">The minimum floor to ceiling height that is still 
+        /// considered walkable. [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
+        /// </param>
         /// <param name="walkableStep">The maximum floor to floor step
         /// that is still considered walkable.</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public static CompactHeightfield Build(BuildContext context
             , Heightfield sourceField
             , int walkableHeight
             , int walkableStep)
         {
-            if (context == null || sourceField == null)
+            if (context == null
+                || sourceField == null || sourceField.IsDisposed
+                || walkableHeight < NMGen.MinWalkableHeight
+                || walkableStep < 0)
+            {
                 return null;
+            }
 
             CompactHeightfield field = new CompactHeightfield();
+
             if (CompactHeightfieldEx.nmcfBuildField(context.root
                 , walkableHeight
                 , walkableStep

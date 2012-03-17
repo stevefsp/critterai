@@ -41,7 +41,7 @@ namespace org.critterai.nmgen
         private int mLayerCount;
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return (root == IntPtr.Zero); } }
 

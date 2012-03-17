@@ -108,12 +108,6 @@ namespace org.critterai.nmgen.rcn
         public float yCellSize;
         public int borderSize;
 
-        public void Initialize()
-        {
-            boundsMax = Vector3Util.Zero;
-            boundsMin = Vector3Util.Zero;
-        }
-
         public void Reset()
         {
             verts = IntPtr.Zero;

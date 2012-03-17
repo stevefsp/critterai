@@ -104,7 +104,7 @@ namespace org.critterai.nmgen
         public Vector3 BoundsMax { get { return root.boundsMax; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed 
         {
@@ -198,27 +198,27 @@ namespace org.critterai.nmgen
         /// simplified edge. [Limit: >= 0]</param>
         /// <param name="flags">The build flags.</param>
         /// <returns>The contour set, or NULL on failure.</returns>
-        public static ContourSet Build(BuildContext context
-            , CompactHeightfield field
-            , float edgeMaxDeviation
-            , int maxEdgeLength
-            , ContourBuildFlags flags)
+        public static ContourSet Build(BuildContext context, CompactHeightfield field
+            , float edgeMaxDeviation, int maxEdgeLength, ContourBuildFlags flags)
         {
-            ContourSetEx root = new ContourSetEx();
-
-            if (!ContourSetEx.nmcsBuildSet(context.root
-                , field
-                , edgeMaxDeviation
-                , maxEdgeLength
-                , root
-                , flags))
+            if (context == null || field == null || field.IsDisposed
+                || edgeMaxDeviation < 0
+                || maxEdgeLength < 0)
             {
                 return null;
             }
 
-            ContourSet result = new ContourSet(root);
+            ContourSetEx root = new ContourSetEx();
 
-            return result;
+            if (ContourSetEx.nmcsBuildSet(context.root, field
+                , edgeMaxDeviation, maxEdgeLength
+                , root
+                , flags))
+            {
+                return new ContourSet(root);
+            }
+
+            return null;
         }
     }
 }

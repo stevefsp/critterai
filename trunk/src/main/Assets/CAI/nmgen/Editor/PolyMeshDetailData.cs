@@ -226,7 +226,7 @@ namespace org.critterai.nmgen
         /// hold.</param>
         /// <param name="meshCount">The maximum sub-meshes the object
         /// needs to hold.</param>
-        /// <returns>TRUE if all buffers are large enough to fit the data.
+        /// <returns>True if all buffers are large enough to fit the data.
         /// </returns>
         public bool CanFit(int vertCount
             , int triCount

@@ -90,7 +90,7 @@ namespace org.critterai.nmgen
         public byte Area { get { return mArea; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return (mVerts == IntPtr.Zero); } }
 
@@ -150,7 +150,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetVerts(int[] buffer)
         {
             if (IsDisposed)
@@ -171,7 +171,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= 4 * VertCount]</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetRawVerts(int[] buffer)
         {
             if (IsDisposed)

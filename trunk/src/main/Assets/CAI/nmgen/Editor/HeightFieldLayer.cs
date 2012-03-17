@@ -131,7 +131,7 @@ namespace org.critterai.nmgen
         public int ZMax { get { return mYMax; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return (mHeights == IntPtr.Zero); } }
 
@@ -184,7 +184,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetHeightData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -200,7 +200,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetAreaData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)
@@ -216,7 +216,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="buffer">The buffer to load the data into.
         /// [Size: >= Width * Depth]</param>
-        /// <returns>TRUE if the operation completed successfully.</returns>
+        /// <returns>True if the operation completed successfully.</returns>
         public bool GetConnectionData(byte[] buffer)
         {
             if (IsDisposed || buffer.Length < mWidth * mDepth)

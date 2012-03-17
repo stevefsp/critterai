@@ -271,7 +271,7 @@ namespace org.critterai.nmgen
             , out Vector3[] verts
             , out int[] tris)
         {
-            // TODO: EVAL: Inefficient.
+            // TODO: EVAL: v0.5: Inefficient.
 
             verts = null;
             tris = null;

@@ -129,48 +129,16 @@ namespace org.critterai.nmgen
         public AllocType ResourceType { get { return AllocType.External; } }
 
         /// <summary>
-        /// TRUE if the object has been disposed and should no longer be used.
+        /// True if the object has been disposed and should no longer be used.
         /// </summary>
         public bool IsDisposed { get { return root == IntPtr.Zero; } }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="width">The width of the field. 
-        /// [Limit: >= 1] [Units: Cells]
-        /// </param>
-        /// <param name="depth">The depth of the field.
-        /// [Limit: >= 1] [Units: Cells]
-        /// </param>
-        /// <param name="boundsMin">The minimum bounds of the field's AABB.
-        /// [Form: (x, y, z)] [Units: World]
-        /// </param>
-        /// <param name="boundsMax">The maximum bounds of the field's AABB.
-        /// [Form: (x, y, z)] [Units: World]
-        /// </param>
-        /// <param name="xzCellSize">The xz-plane cell size.
-        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
-        /// </param>
-        /// <param name="yCellSize">The y-axis span increments. 
-        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
-        /// </param>
-        public Heightfield(int width
-            , int depth
-            , Vector3 boundsMin
-            , Vector3 boundsMax
-            , float xzCellSize
-            , float yCellSize)
+        private Heightfield(IntPtr root
+            , int width, int depth
+            , Vector3 boundsMin, Vector3 boundsMax
+            , float xzCellSize, float yCellSize)
         {
-            root = HeightfieldEx.nmhfAllocField(width
-                , depth
-                , ref boundsMin
-                , ref boundsMax
-                , xzCellSize
-                , yCellSize);
-
-            if (root == IntPtr.Zero)
-                return;
-
+            this.root = root;
             mWidth = width;
             mDepth = depth;
             mBoundsMin = boundsMin;
@@ -185,6 +153,47 @@ namespace org.critterai.nmgen
         ~Heightfield()
         {
             RequestDisposal();
+        }
+
+        /// <summary>
+        /// Creates a new heightfield object.
+        /// </summary>
+        /// <param name="width">The width of the field. [Limit: >= 1] [Units: Cells]
+        /// </param>
+        /// <param name="depth">The depth of the field. [Limit: >= 1] [Units: Cells]
+        /// </param>
+        /// <param name="boundsMin">The minimum bounds of the field's AABB. [Units: World]
+        /// </param>
+        /// <param name="boundsMax">The maximum bounds of the field's AABB. [Units: World]
+        /// </param>
+        /// <param name="xzCellSize">The xz-plane cell size.
+        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// </param>
+        /// <param name="yCellSize">The y-axis span increments. 
+        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// </param>
+        public static Heightfield Create(int width, int depth
+            , Vector3 boundsMin, Vector3 boundsMax
+            , float xzCellSize, float yCellSize)
+        {
+            if (width < 1 || depth < 1
+                || !TriangleMesh.IsBoundsValid(boundsMin, boundsMax)
+                || xzCellSize < NMGen.MinCellSize
+                || yCellSize < NMGen.MinCellSize)
+            {
+                return null;
+            }
+
+            IntPtr root = HeightfieldEx.nmhfAllocField(width, depth
+                , ref boundsMin, ref boundsMax, xzCellSize, yCellSize);
+
+            if (root == IntPtr.Zero)
+                return null;
+
+            return new Heightfield(root
+                , width, depth
+                , boundsMin, boundsMax
+                , xzCellSize, yCellSize);
         }
 
         /// <summary>
@@ -279,7 +288,7 @@ namespace org.critterai.nmgen
         /// <param name="walkableStep">The maximum allowed difference between
         /// span maximum's for the step to be considered waklable.
         /// [Limit: > 0]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool MarkLowObstaclesWalkable(BuildContext context
             , int walkableStep)
         {
@@ -311,7 +320,7 @@ namespace org.critterai.nmgen
         /// span maximum's for the step to be considered walkable. 
         /// [Limit: > 0]
         /// </param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool MarkLedgeSpansNotWalkable(BuildContext context
             , int walkableHeight
             , int walkableStep)
@@ -338,7 +347,7 @@ namespace org.critterai.nmgen
         /// <param name="walkableHeight">The maximum allowed floor to ceiling
         /// height that is considered still walkable.
         /// [Limit: > <see cref="NMGen.MinWalkableHeight"/>]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool MarkLowHeightSpansNotWalkable(BuildContext context
             , int walkableHeight)
         {
@@ -361,7 +370,7 @@ namespace org.critterai.nmgen
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool AddTriangle(BuildContext context
             , Vector3[] verts
             , byte area
@@ -389,7 +398,7 @@ namespace org.critterai.nmgen
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , TriangleMesh mesh
             , byte[] areas
@@ -454,7 +463,7 @@ namespace org.critterai.nmgen
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
-        /// <returns>TRUE if the operation was successful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , Vector3[] verts
             , ushort[] tris
