@@ -334,7 +334,7 @@ namespace org.critterai.nmgen
         /// needs to hold.</param>
         /// <param name="maxVertsPerPoly">The maximum allowed vertices
         /// for a polygon.</param>
-        /// <returns>TRUE if all buffers are large enough to fit the data.
+        /// <returns>True if all buffers are large enough to fit the data.
         /// </returns>
         public bool CanFit(int vertCount
             , int polyCount

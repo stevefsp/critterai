@@ -96,7 +96,7 @@ namespace org.critterai.nmgen
         /// Posts an informational message to the message buffer.
         /// </summary>
         /// <param name="message">The message to post.</param>
-        /// <param name="context">The context of the message. (Null allowed.)</param>
+        /// <param name="context">The context of the message. (Optional)</param>
         public void Log(string message, Object context)
         {
             Log(InfoLabel, message, context);
@@ -122,7 +122,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="category">The message category.</param>
         /// <param name="message">The message to post.</param>
-        /// <param name="context">The context of the message. (Null allowed.)</param>
+        /// <param name="context">The context of the message. (Optional)</param>
         public void Log(string category, string message, Object context)
         {
             if (message != null && message.Length > 0)
@@ -136,7 +136,7 @@ namespace org.critterai.nmgen
         /// Posts a warning message to the message buffer.
         /// </summary>
         /// <param name="message">The message to post.</param>
-        /// <param name="context">The context of the message. (Null allowed.)</param>
+        /// <param name="context">The context of the message. (Optional)</param>
         public void LogWarning(string message, Object context)
         {
             Log(WarningLabel, message, context);
@@ -146,7 +146,7 @@ namespace org.critterai.nmgen
         /// Posts an error message to the message buffer.
         /// </summary>
         /// <param name="message">The message to post.</param>
-        /// <param name="context">The context of the message. (Null allowed.)</param>
+        /// <param name="context">The context of the message. (Optional)</param>
         public void LogError(string message, Object context)
         {
             Log(ErrorLabel, message, context);
