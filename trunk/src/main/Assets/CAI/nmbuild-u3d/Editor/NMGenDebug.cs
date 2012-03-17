@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,10 @@
  * THE SOFTWARE.
  */
 using UnityEngine;
+using org.critterai.nmgen;
+using org.critterai.u3d;
 
-namespace org.critterai.nmgen.u3d
+namespace org.critterai.nmbuild.u3d
 {
     /// <summary>
     /// Provides debug utilities related to navigation mesh generation.
@@ -38,7 +40,7 @@ namespace org.critterai.nmgen.u3d
         /// <param name="polyData">The polygon mesh to draw.</param>
         public static void Draw(PolyMeshData polyData)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             Color walkableColor = new Color(0, 0.75f, 1.0f, 0.25f);
             Color nullRegionColor = new Color(0, 0, 0, 0.25f);
@@ -50,7 +52,7 @@ namespace org.critterai.nmgen.u3d
             {
                 int pPoly = iPoly * polyData.maxVertsPerPoly * 2;
 
-                if (polyData.areas[iPoly] == NMGen.WalkableArea)
+                if (polyData.areas[iPoly] == NMGen.MaxArea)
                     GL.Color(walkableColor);
                 else if (polyData.areas[iPoly] == NMGen.NullRegion)
                     GL.Color(nullRegionColor);
@@ -151,7 +153,7 @@ namespace org.critterai.nmgen.u3d
         /// <param name="detailData">The detail mesh to draw.</param>
         public static void Draw(PolyMeshDetailData detailData)
         {
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.TRIANGLES);
             for (int iMesh = 0; iMesh < detailData.meshCount; iMesh++)
@@ -159,7 +161,7 @@ namespace org.critterai.nmgen.u3d
                 GL.Color(ColorUtil.IntToColor(iMesh, 0.75f));
 
                 int pMesh = iMesh * 4;
-                int pVertBase = (int)detailData.meshes[pMesh + 0] * 3;
+                int pVertBase = (int)detailData.meshes[pMesh + 0];
                 int pTriBase = (int)detailData.meshes[pMesh + 2] * 4;
                 int tCount = (int)detailData.meshes[pMesh + 3];
 
@@ -168,12 +170,9 @@ namespace org.critterai.nmgen.u3d
                     for (int iVert = 0; iVert < 3; iVert++)
                     {
                         int pVert = pVertBase
-                            + (detailData.tris[pTriBase 
-                                + (iTri * 4 + iVert)] * 3);
+                            + (detailData.tris[pTriBase + (iTri * 4 + iVert)]);
 
-                        GL.Vertex3(detailData.verts[pVert + 0]
-                            , detailData.verts[pVert + 1]
-                            , detailData.verts[pVert + 2]);
+                        GL.Vertex(detailData.verts[pVert]);
                     }
                 }
             }
@@ -188,7 +187,7 @@ namespace org.critterai.nmgen.u3d
                 Color meshColor = ColorUtil.IntToColor(iMesh, 1.0f);
 
                 int pMesh = iMesh * 4;
-                int pVertBase = (int)detailData.meshes[pMesh + 0] * 3;
+                int pVertBase = (int)detailData.meshes[pMesh + 0];
                 int pTriBase = (int)detailData.meshes[pMesh + 2] * 4;
                 int tCount = (int)detailData.meshes[pMesh + 3];
 
@@ -205,23 +204,16 @@ namespace org.critterai.nmgen.u3d
                             GL.Color(portalColor);
 
                         int pVert = pVertBase
-                            + (detailData.tris[pTriBase 
-                                + (iTri * 4 + iVert)] * 3);
+                            + (detailData.tris[pTriBase + (iTri * 4 + iVert)]);
                         int pPrevVert = pVertBase
-                            + (detailData.tris[pTriBase 
-                                + (iTri * 4 + iPrevVert)] * 3);
+                            + (detailData.tris[pTriBase + (iTri * 4 + iPrevVert)]);
 
-                        GL.Vertex3(detailData.verts[pVert + 0]
-                            , detailData.verts[pVert + 1]
-                            , detailData.verts[pVert + 2]);
-                        GL.Vertex3(detailData.verts[pPrevVert + 0]
-                            , detailData.verts[pPrevVert + 1]
-                            , detailData.verts[pPrevVert + 2]);
+                        GL.Vertex(detailData.verts[pVert]);
+                        GL.Vertex(detailData.verts[pPrevVert]);
                     }
                 }
             }
             GL.End();
         }
-
     }
 }

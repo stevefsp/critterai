@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,29 +20,104 @@
  * THE SOFTWARE.
  */
 using UnityEngine;
-using Array = System.Array;
-using Math = System.Math;
+using Math = System.Math;  // Used for rounding.
+using org.critterai.nmgen;
 
-namespace org.critterai.nmgen.u3d
+namespace org.critterai.nmbuild.u3d
 {
     /// <summary>
     /// Represents a configuration for a navigation mesh build in Unity.
     /// </summary>
     /// <remarks>
-    /// <para>See 
-    /// <a href="http://www.critterai.org/projects/cainav/common/commonparams.html">
-    /// Common Parameters</a> for details on the various properties. The primary
-    /// difference between this class and the <see cref="NMGenParams"/> class
-    /// is that some values in this class are in world units rather than cell
-    /// units.</para>
+    /// <para>See <see cref="NMGenParams"/> for details on the various 
+    /// properties. The primary difference between this class and 
+    /// <see cref="NMGenParams"/> is that some values in this class are in 
+    /// world units rather than cell units.</para>
     /// </remarks>
     [System.Serializable]
-    public sealed class NMGenBuildParams
+    public sealed class NMGenConfig
     {
+        /**
+         * Design notes:
+         * 
+         * Important: This configuration should not contain any new data not
+         * already contained by NMGenParams.  E.g. No Unity specific flags
+         * or other values. SetConfig() must effectively clone the configuration.
+         */
+
+        public const NMGenFlag DefaultBuildFlags = 
+            NMGenFlag.LowHeightSpansNotWalkable
+            | NMGenFlag.LowObstaclesWalkable
+            | NMGenFlag.ApplyPolyFlags;
+
+        #region Standard Param Labels
+
+        public const string TileSizeLabel = "Tile Size (vx)";
+
+        public const string XZSizeLabel = "XZ Cell Size";
+
+        public const string YSizeLabel = "Y Cell Size";
+
+        public const string HeightLabel = "Walkable Height";
+
+        public const string StepLabel = "Walkable Step";
+
+        public const string SlopeLabel = "Walkable Slope";
+
+        public const string RadiusLabel = "Walkable Radius";
+
+        public const string EdgeLenLabel = "Max Edge Length";
+
+        public const string EdgeDevLabel = "Edge Max Deviation";
+
+        public const string DetailSampleLabel = "Detail Sample Dist";
+
+        public const string DetailDevLabel = "Detail Max Deviation";
+
+        public const string IslandRegionLabel = "Min Island Area";
+
+        public const string MaxPolyVertLabel = "Max Vertices Per Polygon";
+
+        public const string HFBorderLabel = "Border Size (vx)";
+
+        public const string TileBorderLabel = "Tile Border Size (vx)";
+
+        public const string MergeSizeLabel = "Merge Region Area";
+
+        public const string LedgeSpansLabel = "Ledges Not Walkable";
+
+        public const string LowHeightLabel = "Low Height Not Walkable";
+
+        public const string LowObstacleLabel = "Low Obstacles Walkable";
+
+        public const string TessAreasLabel =  "Tessellate Area Edges";
+
+        public const string TessWallsLabel = "Tessellate Wall Edges";
+
+        public const string UseMonoLabel = "Use Monotone Partitioning";
+
+        public const string FlagPolysLabel = "Apply Poly Flag";
+
+        #endregion
+
         private static int mXZResolution = 1000;
         private static int mYResolution = 1000;
         private static int mDeviationFactor = 20;
         private static int mSampleResolution = 100;
+        private static int mMaxCells = 1500;
+        private static int mStandardCells = 1000;
+
+        public static int MaxCells
+        {
+            get { return mMaxCells; }
+            set { mMaxCells = Mathf.Max(4, value); }
+        }
+
+        public static int StandardCells
+        {
+            get { return mStandardCells; }
+            set { mStandardCells = Mathf.Max(4, value); }
+        }
 
         /// <summary>
         /// The xz-plane resolution to use when deriving a configuration.
@@ -50,7 +125,7 @@ namespace org.critterai.nmgen.u3d
         public static int XZResolution
         {
             get { return mXZResolution; }
-            set { mXZResolution = Math.Max(1, value); }
+            set { mXZResolution = Mathf.Max(1, value); }
         }
 
         /// <summary>
@@ -59,7 +134,7 @@ namespace org.critterai.nmgen.u3d
         public static int YResolution
         {
             get { return mYResolution; }
-            set { mYResolution = Math.Max(1, value); }
+            set { mYResolution = Mathf.Max(1, value); }
         }
 
         /// <summary>
@@ -68,7 +143,7 @@ namespace org.critterai.nmgen.u3d
         public static int DetailDeviation
         {
             get { return mDeviationFactor; }
-            set { mDeviationFactor = Math.Max(0, value); }
+            set { mDeviationFactor = Mathf.Max(0, value); }
         }
 
         /// <summary>
@@ -77,14 +152,14 @@ namespace org.critterai.nmgen.u3d
         public static int DetailSampleResolution
         {
             get { return mSampleResolution; }
-            set { mSampleResolution = Math.Max(1, value); }
+            set { mSampleResolution = Mathf.Max(1, value); }
         }
 
         // Remember:  All locally stored fields are ignored
         // in the root.  So the root is not valid until the local
         // data is transferred into it.
         [SerializeField]
-        private NMGenParams mRoot = new NMGenParams();
+        private NMGenParams mRoot;
 
         [SerializeField]
         private float mWalkableRadius;
@@ -100,24 +175,27 @@ namespace org.critterai.nmgen.u3d
         private float mWalkableStep;
 
         [SerializeField]
-        private BuildFlags mBuildFlags;
+        private NMGenFlag mBuildFlags;
 
-        /// <summary>
-        /// The width of the heightfield along the x-axis.
-        /// </summary>
-        public int Width
+        [SerializeField]
+        private NMGenAssetFlag mResultOptions = NMGenAssetFlag.DetailMesh | NMGenAssetFlag.PolyMesh;
+
+        public NMGenAssetFlag ResultOptions
         {
-            get { return mRoot.Width; }
-            set { mRoot.Width = value; }
+            get { return mResultOptions; }
+            set { mResultOptions = value; }
         }
 
-        /// <summary>
-        /// The depth of the heightfield along the z-axis.
-        /// </summary>
-        public int Depth
+        public ContourBuildFlags ContourOptions
         {
-            get { return mRoot.Depth; }
-            set { mRoot.Depth = value; }
+            get { return mRoot.ContourOptions; }
+            set { mRoot.ContourOptions = value; }
+        }
+
+        public bool UseMonotone
+        {
+            get { return mRoot.UseMonotone; }
+            set { mRoot.UseMonotone = value; }
         }
 
         /// <summary>
@@ -129,48 +207,9 @@ namespace org.critterai.nmgen.u3d
             set { mRoot.TileSize = value; }
         }
 
-        /// <summary>
-        /// Gets a copy of the minimum bounds of the grid's AABB.
-        /// </summary>
-        /// <returns>The maximum bounds of the grid.</returns>
-        public float[] GetBoundsMin()
+        public float TileWorldSize
         {
-            return mRoot.GetBoundsMin();
-        }
-
-        /// <summary>
-        /// Sets the minimum bounds of the grid's AABB.
-        /// </summary>
-        /// <remarks>The values are not validated against the maximum
-        /// bounds.</remarks>
-        /// <param name="x">The x-value of the bounds.</param>
-        /// <param name="y">The y-value of the bounds.</param>
-        /// <param name="z">The z-value of the bounds.</param>
-        public void SetBoundsMin(float x, float y, float z)
-        {
-            mRoot.SetBoundsMin(x, y, z);
-        }
-
-        /// <summary>
-        /// Gets a copy of the maximum bounds of the grid's AABB.
-        /// </summary>
-        /// <returns>The maximum bounds of the grid.</returns>
-        public float[] GetBoundsMax()
-        {
-            return mRoot.GetBoundsMax();
-        }
-
-        /// <summary>
-        /// Sets the minimum bounds of the grid's AABB.
-        /// </summary>
-        /// <remarks>The values are not validated against the minimum
-        /// bounds.</remarks>
-        /// <param name="x">The x-value of the bounds.</param>
-        /// <param name="y">The y-value of the bounds.</param>
-        /// <param name="z">The z-value of the bounds.</param>
-        public void SetBoundsMax(float x, float y, float z)
-        {
-            mRoot.SetBoundsMax(x, y, z);
+            get { return mRoot.TileWorldSize; }
         }
 
         /// <summary>
@@ -350,7 +389,7 @@ namespace org.critterai.nmgen.u3d
         /// <summary>
         /// Flags used to control optional build steps. 
         /// </summary>
-        public BuildFlags BuildFlags
+        public NMGenFlag BuildFlags
         {
             get { return mBuildFlags; }
             set { mBuildFlags = value; }
@@ -359,18 +398,26 @@ namespace org.critterai.nmgen.u3d
         /// <summary>
         /// Constructor.
         /// </summary>
-        public NMGenBuildParams()
+        public NMGenConfig()
         {
-            UpdateLocals();
-            mBuildFlags = BuildFlags.LowHeightSpansNotWalkable
-                | BuildFlags.LowObstaclesWalkable
-                | BuildFlags.TessellateWallEdges
-                | BuildFlags.ApplyPolyFlags;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            mRoot = new NMGenParams();
+            UpdateLocalsFrom(mRoot);
+            mBuildFlags = DefaultBuildFlags;
         }
 
         /// <summary>
         /// Sets the configuration to match the provided configuration.
         /// </summary>
+        /// <remarks>
+        /// <para>The <paramref name="config"/> parameter will be cleaned
+        /// during this operation.</para>
+        /// <para>This method can be used to copy a configuration between
+        /// two <see cref="NMGenBuildParams"/> objects.</para></remarks>
         /// <param name="config">The configuration to match.</param>
         public void SetConfig(NMGenParams config)
         {
@@ -378,22 +425,30 @@ namespace org.critterai.nmgen.u3d
                 return;
 
             mRoot = config.Clone();
-            Clean(mRoot);
-            UpdateLocals();
+            mRoot.Clean();
+            UpdateLocalsFrom(mRoot);
         }
 
-        private void UpdateLocals()
+        private void UpdateLocalsFrom(NMGenParams config)
         {
-            float xz = mRoot.XZCellSize;
-            float y = mRoot.YCellSize;
-            float a = xz * xz;
+            mMaxEdgeLength = config.WorldMaxEdgeLength;
+            mMergeRegionArea = config.WorldMergeRegionArea;
+            mMinRegionArea = config.WorldMinRegionArea;
 
-            mMaxEdgeLength = mRoot.MaxEdgeLength * xz;
-            mMergeRegionArea = mRoot.MergeRegionArea * a;
-            mMinRegionArea = mRoot.MinRegionArea * a;
-            mWalkableHeight = mRoot.WalkableHeight * y;
-            mWalkableRadius = mRoot.WalkableRadius * xz;
-            mWalkableStep = mRoot.WalkableStep * y;
+            mWalkableHeight = config.WorldWalkableHeight;
+            mWalkableRadius = config.WorldWalkableRadius;
+            mWalkableStep = config.WorldWalkableStep;
+        }
+
+        private void ApplyLocalsTo(NMGenParams config)
+        {
+            config.SetMaxEdgeLength(mMaxEdgeLength);
+            config.SetMergeRegionArea(mMergeRegionArea);
+            config.SetMinRegionArea(mMinRegionArea);
+
+            config.SetWalkableHeight(mWalkableHeight);
+            config.SetWalkableRadius(mWalkableRadius);
+            config.SetWalkableStep(mWalkableStep);
         }
 
         /// <summary>
@@ -406,20 +461,80 @@ namespace org.critterai.nmgen.u3d
         /// <param name="maxX">The maximum x of the AABB.</param>
         /// <param name="maxY">The maximum y of the AABB.</param>
         /// <param name="maxZ">The maximum z of the AABB.</param>
-        public void Derive(float minX, float minY, float minZ
-            , float maxX, float maxY, float maxZ)
+        public void Derive(Vector3 boundsMin, Vector3 boundsMax)
         {
-            float maxXZLength = Mathf.Max(maxX - minX, maxZ - minZ);
+            // Order is important.
+            XZCellSize = DeriveXZCellSize(this);
+            YCellSize = DeriveYCellSize(this);
+            TileSize = DeriveTileSize(this, boundsMin, boundsMax);
+            BorderSize = DeriveBorderSize(this);
+            DetailSampleDistance =
+                DeriveDetailSampleDistance(this, boundsMin, boundsMax);
 
-            // Default to 1000 x 1000 resolution.
-            XZCellSize = Mathf.Max(0.05f, maxXZLength / mXZResolution);
-            YCellSize = Mathf.Max(0.05f, (maxY - minY) / mYResolution);
+            DetailMaxDeviation = DeriveDetailMaxDeviation(this);
+        }
 
-            // Default sample at 100 resolution. (Or minimum effective of 0.9f);
-            DetailSampleDistance = 
-                Mathf.Max(0.9f, maxXZLength / mSampleResolution);
+        public static float DeriveXZCellSize(NMGenConfig config)
+        {
+            return (float)Math.Round(Mathf.Max(0.05f, config.WalkableRadius / 2), 2);
+        }
 
-            DetailMaxDeviation = YCellSize * mDeviationFactor;
+        public static float DeriveYCellSize(NMGenConfig config)
+        {
+            return (float)Math.Round(Mathf.Max(0.05f, config.WalkableStep / 3), 2);
+        }
+
+        public static float DeriveDetailMaxDeviation(NMGenConfig config)
+        {
+            return (float)Math.Round(config.YCellSize * mDeviationFactor, 2);
+        }
+
+        public static int DeriveBorderSize(NMGenConfig config)
+        {
+            if (config.TileSize > 0)
+            {
+                return (int)Mathf.Ceil(
+                    config.WalkableRadius / config.mRoot.xzCellSize) + 3;
+            }
+            return 0;
+        }
+
+        public static float DeriveDetailSampleDistance(
+            NMGenConfig config
+            , Vector3 boundsMin
+            , Vector3 boundsMax)
+        {
+            Vector3 diff = boundsMax - boundsMin;
+
+            float maxXZLength = Mathf.Max(diff.x, diff.z);
+
+            int maxCells = Mathf.CeilToInt(maxXZLength / config.XZCellSize);
+
+            if (config.TileSize == 0 || maxCells <= MaxCells)
+            {
+                return (float)Math.Round(
+                    Mathf.Max(0.9f, maxXZLength / mSampleResolution), 2);
+            }
+            else
+                return (float)Math.Round(Mathf.Max(0.9f
+                    , config.TileSize * config.XZCellSize / mSampleResolution), 2);
+        }
+
+        public static int DeriveTileSize(
+            NMGenConfig config
+            , Vector3 boundsMin
+            , Vector3 boundsMax)
+        {
+            Vector3 diff = boundsMax - boundsMin;
+
+            float maxXZLength = Mathf.Max(diff.x, diff.z);
+
+            int maxCells = Mathf.CeilToInt(maxXZLength / config.XZCellSize);
+
+            if (maxCells <= MaxCells)
+                return 0;
+            else
+                return Mathf.Min(mStandardCells, maxCells / 2);
         }
 
         /// <summary>
@@ -431,16 +546,7 @@ namespace org.critterai.nmgen.u3d
         {
             NMGenParams result = mRoot.Clone();
 
-            float y = mRoot.YCellSize;
-            float xz = mRoot.XZCellSize;
-            float a = xz * xz;
-
-            result.MaxEdgeLength = Mathf.CeilToInt(mMaxEdgeLength / xz);
-            result.MergeRegionArea = Mathf.CeilToInt(mMergeRegionArea / a);
-            result.MinRegionArea = Mathf.CeilToInt(mMinRegionArea / a);
-            result.WalkableHeight = Mathf.CeilToInt(mWalkableHeight / y);
-            result.WalkableRadius = Mathf.CeilToInt(mWalkableRadius / xz);
-            result.WalkableStep = Mathf.FloorToInt(mWalkableStep / y);
+            ApplyLocalsTo(result);
 
             return result;
         }
@@ -449,9 +555,9 @@ namespace org.critterai.nmgen.u3d
         /// Duplicates the object.
         /// </summary>
         /// <returns>A duplicate of the object.</returns>
-        public NMGenBuildParams Clone()
+        public NMGenConfig Clone()
         {
-            NMGenBuildParams result = new NMGenBuildParams();
+            NMGenConfig result = new NMGenConfig();
             result.mRoot = mRoot;
             result.mMaxEdgeLength = mMaxEdgeLength;
             result.mMergeRegionArea = mMergeRegionArea;
@@ -463,51 +569,31 @@ namespace org.critterai.nmgen.u3d
             return result;
         }
 
-        /// <summary>
-        /// Forces all field values to within the mandatory limits.
-        /// </summary>
-        /// <param name="config">The configuration to clean.</param>
-        public static void Clean(NMGenParams config)
+        public void Clean()
         {
-            if (config == null)
-                return;
+            mRoot.Clean();
+            UpdateLocalsFrom(mRoot);
+        }
 
-            config.XZCellSize = config.xzCellSize;
-            config.WalkableHeight = config.walkableHeight;
-            config.YCellSize = config.yCellSize;
+        public void ApplyDecimalLimits()
+        {
+            XZCellSize = (float)Math.Round(XZCellSize, 2);
+            YCellSize = (float)Math.Round(YCellSize, 2);
 
-            config.Depth = config.depth;
-            config.DetailMaxDeviation = config.detailMaxDeviation;
-            config.DetailSampleDistance = config.detailSampleDistance;
-            config.EdgeMaxDeviation = config.edgeMaxDeviation;
-            config.BorderSize = config.borderSize;
-            config.MaxEdgeLength = config.maxEdgeLength;
-            config.MaxVertsPerPoly = config.MaxVertsPerPoly;
-            config.MergeRegionArea = config.mergeRegionArea;
-            config.MinRegionArea = config.minRegionArea;
-            config.TileSize = config.tileSize;
-            config.WalkableRadius = config.walkableRadius;
-            config.WalkableSlope = config.walkableSlope;
-            config.WalkableStep = config.walkableStep;
-            config.Width = config.width;
+            DetailMaxDeviation =
+                (float)Math.Round(DetailMaxDeviation, 2);
+            DetailSampleDistance =
+                (float)Math.Round(DetailSampleDistance, 2);
+            EdgeMaxDeviation =
+                (float)Math.Round(EdgeMaxDeviation, 2);
 
-            if (config.boundsMin == null || config.boundsMin.Length < 3)
-                config.boundsMin = new float[3];
-            else if (config.boundsMin.Length > 3)
-            {
-                float[] a = new float[3];
-                Array.Copy(config.boundsMin, a, 3);
-                config.boundsMin = a;
-            }
-
-            if (config.boundsMax == null || config.boundsMax.Length < 3)
-                config.boundsMax = new float[3];
-            else if (config.boundsMax.Length > 3)
-            {
-                float[] a = new float[3];
-                Array.Copy(config.boundsMax, a, 3);
-                config.boundsMax = a;
-            }
+            MaxEdgeLength = (float)Math.Round(MaxEdgeLength, 2);
+            MergeRegionArea = (float)Math.Round(MergeRegionArea, 2);
+            MinRegionArea = (float)Math.Round(MinRegionArea, 2);
+            WalkableHeight = (float)Math.Round(WalkableHeight, 2);
+            WalkableRadius = (float)Math.Round(WalkableRadius, 2);
+            WalkableSlope = (float)Math.Round(WalkableSlope, 2);
+            WalkableStep = (float)Math.Round(WalkableStep, 2);
         }
     }
 }
