@@ -167,7 +167,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>During the standard build process, all walkable polygons
-        /// get the default value of <see cref="NMGen.WalkableArea"/>.
+        /// get the default value of <see cref="NMGen.MaxArea"/>.
         /// This value can then be changed to meet user requirements.</para>
         /// </remarks>
         public byte[] areas;

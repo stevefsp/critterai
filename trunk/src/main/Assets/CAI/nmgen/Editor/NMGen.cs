@@ -95,7 +95,7 @@ namespace org.critterai.nmgen
         /// <param name="boundsMax">The maximum bounds.</param>
         /// <param name="xzCellSize">The cell size on the xz-plane. 
         /// (<see cref="NMGenParams.XZCellSize"/>)</param>
-        /// <param name="tileSize">The tile size. (<see cref="NNGenParams.TileSize"/>)</param>
+        /// <param name="tileSize">The tile size. (<see cref="NMGenParams.TileSize"/>)</param>
         /// <param name="width">The number of tiles along the x-axis.</param>
         /// <param name="depth">The number of tiles along the z-axis.</param>
         public static void DeriveSizeOfTileGrid(Vector3 boundsMin, Vector3 boundsMax
@@ -108,7 +108,7 @@ namespace org.critterai.nmgen
                 depth = 1;
                 return;
             }
-
+            
             int cellGridWidth = (int)((boundsMax.x - boundsMin.x) / xzCellSize + 0.5f);
             int cellGridDepth = (int)((boundsMax.z - boundsMin.z) / xzCellSize + 0.5f);
 
@@ -138,10 +138,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Creates an area buffer with all values set to <see cref="WalkableArea"/>.
+        /// Creates an area buffer with all values set to <see cref="MaxArea"/>.
         /// </summary>
         /// <param name="size">The length of the buffer.</param>
-        /// <returns>An buffer with all values set to <see cref="WalkableArea"/>.</returns>
+        /// <returns>An buffer with all values set to <see cref="MaxArea"/>.</returns>
         public static byte[] CreateWalkableAreaBuffer(int size)
         {
             return CreateAreaBuffer(size, MaxArea);
@@ -191,7 +191,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Set the area id of all triangles with a slope below the specified value to 
-        /// <see cref="WalkableArea"/>.
+        /// <see cref="MaxArea"/>.
         /// </summary>
         /// <param name="context">The context to use duing the operation.</param>
         /// <param name="mesh">The source mesh.</param>
@@ -223,8 +223,8 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Set the area id of all triangles with a slope above the specifiedvalue to 
-        /// <see cref="UnwalkableArea"/>.
+        /// Set the area id of all triangles with a slope above the specified value to 
+        /// <see cref="NullArea"/>.
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -306,7 +306,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Clamps the value to the valid area range. 
-        /// (0 &lt;= value &lt;= <see cref="WalkableArea"/>)
+        /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <returns>A valid area id.</returns>
@@ -317,7 +317,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// Clamps the value to the valid area range. 
-        /// (0 &lt;= value &lt;= <see cref="WalkableArea"/>)
+        /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <returns>A valid area id.</returns>

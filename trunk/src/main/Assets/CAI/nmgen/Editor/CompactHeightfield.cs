@@ -471,7 +471,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>
-        /// <param name="area">The area id to apply.</param>
+        /// <param name="area">The area to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool MarkCylinderArea(BuildContext context
             , Vector3 centerBase, float radius, float height
