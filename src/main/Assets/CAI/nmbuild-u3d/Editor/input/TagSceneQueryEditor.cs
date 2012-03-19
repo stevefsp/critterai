@@ -25,6 +25,9 @@ using System.Collections.Generic;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
 
+/// <summary>
+/// <see cref="TagSceneQuery"/> editor.
+/// </summary>
 [CustomEditor(typeof(TagSceneQuery))]
 public class TagSceneQueryEditor
     : Editor

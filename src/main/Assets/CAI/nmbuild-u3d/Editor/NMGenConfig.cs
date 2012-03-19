@@ -23,7 +23,7 @@ using UnityEngine;
 using Math = System.Math;  // Used for rounding.
 using org.critterai.nmgen;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
     /// Represents a configuration for a navigation mesh build in Unity.
@@ -35,7 +35,7 @@ namespace org.critterai.nmbuild.u3d
     /// world units rather than cell units.</para>
     /// </remarks>
     [System.Serializable]
-    public sealed class NMGenConfig
+    internal sealed class NMGenConfig
     {
         /**
          * Design notes:
@@ -414,10 +414,10 @@ namespace org.critterai.nmbuild.u3d
         /// Sets the configuration to match the provided configuration.
         /// </summary>
         /// <remarks>
-        /// <para>The <paramref name="config"/> parameter will be cleaned
-        /// during this operation.</para>
-        /// <para>This method can be used to copy a configuration between
-        /// two <see cref="NMGenBuildParams"/> objects.</para></remarks>
+        /// <para>
+        /// The <paramref name="config"/> parameter will be cleaned during this operation.
+        /// </para>
+        /// </remarks>
         /// <param name="config">The configuration to match.</param>
         public void SetConfig(NMGenParams config)
         {
@@ -452,15 +452,10 @@ namespace org.critterai.nmbuild.u3d
         }
 
         /// <summary>
-        /// Attempts the derive the best configuration for the provided
-        /// source geometry AABB.
+        /// Attempts the derive the best configuration for the provided source geometry AABB.
         /// </summary>
-        /// <param name="minX">The minimum x of the AABB.</param>
-        /// <param name="minY">The minimum y of the AABB.</param>
-        /// <param name="minZ">The minimum z of the AABB.</param>
-        /// <param name="maxX">The maximum x of the AABB.</param>
-        /// <param name="maxY">The maximum y of the AABB.</param>
-        /// <param name="maxZ">The maximum z of the AABB.</param>
+        /// <param name="boundsMin">The minimum bounds of the source geometry.</param>
+        /// <param name="boundsMax">The maximum bounds of the source geometry.</param>
         public void Derive(Vector3 boundsMin, Vector3 boundsMax)
         {
             // Order is important.

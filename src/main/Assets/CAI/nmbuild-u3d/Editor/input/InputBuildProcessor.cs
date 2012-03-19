@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 using org.critterai;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
@@ -56,9 +56,11 @@ public abstract class InputBuildProcessor
     /// </summary>
     /// <remarks>
     /// <para>
-    /// If this property is false and the input builder will discard duplicate processors of the
+    /// If this property is false, the input builder will discard duplicate processors of the
     /// same type.  Which duplicate is discarded is undefined.
     /// </para>
+    /// <para>This restricts same type processors only.  The input builder never accepts duplicate
+    /// objects.</para>
     /// </remarks>
     public abstract bool DuplicatesAllowed { get; } 
 }

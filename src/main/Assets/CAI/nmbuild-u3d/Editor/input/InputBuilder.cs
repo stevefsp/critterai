@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using org.critterai.nmgen;
 using UnityEngine;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
     internal sealed class InputBuilder
     {

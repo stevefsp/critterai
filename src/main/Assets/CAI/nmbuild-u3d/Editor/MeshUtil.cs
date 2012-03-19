@@ -23,7 +23,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using org.critterai.nmgen;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
     internal static class MeshUtil
     {

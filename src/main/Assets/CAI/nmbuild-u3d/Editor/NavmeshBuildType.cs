@@ -20,11 +20,21 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
-    public enum NavmeshBuildType
+    /// <summary>
+    /// The build type to use for a <see cref="NavmeshBuild"/> asset.
+    /// </summary>
+    internal enum NavmeshBuildType
     {
+        /// <summary>
+        /// Standard foreground build.
+        /// </summary>
         Standard = 0,
+
+        /// <summary>
+        /// Advanced build using the <see cref="NavmeshBuildManager"/>.
+        /// </summary>
         Advanced,
     }
 }

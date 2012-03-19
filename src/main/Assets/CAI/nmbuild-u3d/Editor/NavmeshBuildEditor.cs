@@ -25,10 +25,12 @@ using org.critterai.u3d.editor;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using org.critterai.nav.editor;
+using org.critterai.nav.u3d.editor;
 using org.critterai.geom;
-using org.critterai.nmbuild.u3d;
 
+/// <summary>
+/// <see cref="NavmeshBuild"/> editor.
+/// </summary>
 [CustomEditor(typeof(NavmeshBuild))]
 public class NavmeshBuildEditor
     : Editor

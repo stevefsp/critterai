@@ -21,11 +21,11 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Applies areas to MeshFilter components based on the component's mesh.
+/// Assigns areas to MeshFilter components based on the component's mesh.
 /// </summary>
 public class MeshAreaDef 
     : InputBuildProcessor

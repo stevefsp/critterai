@@ -22,7 +22,7 @@
 
 namespace org.critterai.nmbuild
 {
-    public enum TileBuildState
+    internal enum TileBuildState
     {
         /// <summary>
         /// Tile has no state. (Not built, not baked, build not queued.)

@@ -21,31 +21,59 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Filters out all mesh filters that reference a list of meshes.
+/// Filters out all components with the specified tag.
 /// </summary>
 [System.Serializable]
 public class TagInputFilter 
     : InputBuildProcessor
 {
+    /// <summary>
+    /// True if the filter should apply to components with a tagged parent.
+    /// </summary>
     public bool recursive;
+
+    /// <summary>
+    /// The tags that should result in filtering.
+    /// </summary>
     public List<string> tags = new List<string>();
 
     [SerializeField]
     private int mPriority = NMBuild.DefaultPriority;
 
+    /// <summary>
+    /// The priority of the processor.
+    /// </summary>
     public override int Priority { get { return mPriority; } }
 
+    /// <summary>
+    /// Sets the priority.
+    /// </summary>
+    /// <param name="value">The new priority.</param>
     public void SetPriority(int value)
     {
         mPriority = NMBuild.ClampPriority(value);
     }
 
+    /// <summary>
+    /// Multiple processors of this type are allowed. (Always true.)
+    /// </summary>
     public override bool DuplicatesAllowed { get { return true; } }
 
+    /// <summary>
+    /// Processes the context.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Applied during the <see cref="InputBuildState.FilterComponents"/> state.
+    /// </para>
+    /// </remarks>
+    /// <param name="state">The current state of the input build.</param>
+    /// <param name="context">The input context to process.</param>
+    /// <returns>False if the input build should abort.</returns>
     public override bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state != InputBuildState.FilterComponents || context == null)

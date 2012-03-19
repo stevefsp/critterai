@@ -21,7 +21,7 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
@@ -211,6 +211,6 @@ public sealed class MeshCompiler
             }
         }
 
-        org.critterai.nmbuild.u3d.MeshUtil.CombineMeshes(combineInstances, area, compiler);
+        MeshUtil.CombineMeshes(combineInstances, area, compiler);
     }
 }

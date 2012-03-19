@@ -22,7 +22,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
     /// The context for an input build.
@@ -124,7 +124,6 @@ namespace org.critterai.nmbuild.u3d
         /// <summary>
         /// Loads the components into the <see cref="components"/> list.
         /// </summary>
-        /// <typeparam name="T">The components to load.</typeparam>
         /// <param name="items"></param>
         public void Load(Component[] items)
         {

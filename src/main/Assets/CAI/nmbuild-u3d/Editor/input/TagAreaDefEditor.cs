@@ -27,6 +27,9 @@ using org.critterai.nav;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
 
+/// <summary>
+/// <see cref="TagAreaDef"/> editor.
+/// </summary>
 [CustomEditor(typeof(TagAreaDef))]
 public class TagAreaDefEditor
     : Editor

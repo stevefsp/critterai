@@ -7,7 +7,7 @@
  * 
  */
 
-///*
+//*
 // * Copyright (c) 2012 Stephen A. Pratt
 // * 
 // * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +30,7 @@
 // */
 //using System.Collections.Generic;
 //using org.critterai.nmbuild;
-//using org.critterai.nmbuild.u3d;
+//using org.critterai.nmbuild.u3d.editor;
 //using UnityEngine;
 
 //[System.Serializable]

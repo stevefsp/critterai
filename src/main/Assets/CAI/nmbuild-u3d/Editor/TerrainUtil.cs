@@ -24,12 +24,12 @@ using org.critterai.geom;
 using System.Collections.Generic;
 using org.critterai.nmgen;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
     /// Provides utility methods related to the UnityEngine.Terrain class.
     /// </summary>
-    public static class TerrainUtil
+    internal static class TerrainUtil
     {
         public static TriangleMesh TriangulateSurface(Terrain terrain, float resolution)
         {

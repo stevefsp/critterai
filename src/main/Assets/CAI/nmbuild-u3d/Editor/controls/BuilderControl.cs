@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 using UnityEngine;
-using org.critterai.nav.editor;
+using org.critterai.nav.u3d.editor;
 
 namespace org.critterai.nmbuild.u3d.editor
 {

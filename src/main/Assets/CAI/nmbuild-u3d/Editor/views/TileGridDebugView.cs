@@ -116,7 +116,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 DebugDraw.Grid(origin, tileWorldSize, gridWidth, gridDepth, Color.gray);
             else
                 // Single tile.
-                DebugDraw.Square(origin, whd.x, whd.z, Color.gray, false);
+                DebugDraw.Rect(origin, whd.x, whd.z, Color.gray, false);
         }
 	}
 }

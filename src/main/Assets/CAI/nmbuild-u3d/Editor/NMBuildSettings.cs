@@ -24,12 +24,14 @@ using org.critterai.u3d.editor;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Handles setting configuration values related to the Navmesh build.
+/// </summary>
 public sealed class NMBuildSettings
     : EditorWindow
 {
-    public const string MaxConcurrKey = "org.critterai.nmbuild.MaxConcurrency";
-
-    public const string WindowTitle = "Build Config";
+    private const string MaxConcurrKey = "org.critterai.nmbuild.MaxConcurrency";
+    private const string WindowTitle = "Build Config";
 
     void OnEnable()
     {
@@ -61,6 +63,9 @@ public sealed class NMBuildSettings
         GUILayout.EndArea();
     }
 
+    /// <summary>
+    /// Opens and focus' the build settings window.
+    /// </summary>
     [MenuItem("CritterAI/Settings", false, EditorUtil.ManagerGroup + 10)]
     public static void OpenWindow()
     {

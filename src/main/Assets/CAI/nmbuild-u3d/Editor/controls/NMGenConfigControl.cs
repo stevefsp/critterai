@@ -35,11 +35,6 @@ namespace org.critterai.nmbuild.u3d.editor
             "Values in parentheses represent the effective"
                 + " world units based on cell size.";
 
-        private bool mFromTarget;
-        // private readonly BuildContext mLogger = new BuildContext();
-
-        public NMGenConfigControl() { }
-
         public override void Exit()
         {
             base.Exit();
