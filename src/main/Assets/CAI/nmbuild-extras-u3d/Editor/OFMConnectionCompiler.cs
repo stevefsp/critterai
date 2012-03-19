@@ -21,7 +21,7 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 public sealed class OFMConnectionCompiler
