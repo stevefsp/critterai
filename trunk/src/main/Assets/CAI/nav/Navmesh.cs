@@ -531,8 +531,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Builds a single tile navigation mesh from the provided
-        /// data.
+        /// Builds a single-tile navigation mesh from the provided data.
         /// </summary>
         /// <param name="buildData">The tile build data.</param>
         /// <param name="resultMesh">The result mesh.</param>
@@ -541,7 +540,6 @@ namespace org.critterai.nav
         public static NavStatus Create(NavmeshTileBuildData buildData
             , out Navmesh resultMesh)
         {
-            // TODO: Refactor method name to "Create". (Along with overloads.)
             IntPtr navMesh = IntPtr.Zero;
 
             NavStatus status = NavmeshEx.dtnmBuildSingleTileMesh(buildData
