@@ -99,7 +99,7 @@ namespace org.critterai.geom
         /// <param name="minBY">The minimum y-axis bounds of rectangle B.</param>
         /// <param name="maxBX">The maximum x-axis bounds of rectangle B.</param>
         /// <param name="maxBY">The maximum y-axis bounds of rectangle B.</param>
-        /// <returns>TRUE if the two rectangles intersect in any manner.</returns>
+        /// <returns>True if the two rectangles intersect in any manner.</returns>
         public static bool IntersectsAABB(float minAX, float minAY, float maxAX, float maxAY
             , float minBX, float minBY, float maxBX, float maxBY)
         {

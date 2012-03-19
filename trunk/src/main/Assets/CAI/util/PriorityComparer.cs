@@ -40,7 +40,7 @@ namespace org.critterai
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="assending">True for an ascending sort, otherwise false.</param>
+        /// <param name="ascending">True for an ascending sort, otherwise false.</param>
         public PriorityComparer(bool ascending)
         {
             mAscending = ascending;

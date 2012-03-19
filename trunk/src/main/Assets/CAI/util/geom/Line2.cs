@@ -69,7 +69,7 @@ namespace org.critterai.geom
         /// <param name="b">Point B on ling AB.</param>
         /// <param name="c">Point C on line CD.</param>
         /// <param name="d">Point D on line CD.</param>
-        /// <returns>TRUE if the two lines are either collinear or intersect 
+        /// <returns>True if the two lines are either collinear or intersect 
         /// at one point.</returns>
         public static bool LinesIntersect(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
         {
@@ -208,7 +208,7 @@ namespace org.critterai.geom
         /// <remarks>
         /// While this check is technically inclusive of segment end points, floating point errors
         /// can result in end point intersection being missed.  If this matters, a 
-        /// <see  cref="Vector2Util.SloppyEquals(float, float, float, float, float)">
+        /// <see  cref="Vector2Util.SloppyEquals(Vector2, Vector2, float)">
         /// SloppyEquals</see> or similar test of the intersection point can be performed.
         /// </remarks>
         /// <param name="a">Point A on line AB.</param>

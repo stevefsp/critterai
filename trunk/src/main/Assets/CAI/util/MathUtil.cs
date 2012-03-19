@@ -51,7 +51,7 @@ namespace org.critterai
         /// </param>
         /// <param name="tolerance">The tolerance to use for the comparison.
         /// </param>
-        /// <returns>TRUE if the values are within the specified tolerance
+        /// <returns>True if the values are within the specified tolerance
         /// of each other.</returns>
         public static bool SloppyEquals(float a, float b, float tolerance)
         {

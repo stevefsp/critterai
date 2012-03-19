@@ -116,7 +116,7 @@ namespace org.critterai.geom
         /// </remarks>
         /// <param name="vertices">An array of vertices which contains a representation of 
         /// triangles. The wrap direction is  expected to be clockwise.</param>
-        /// <param name="startVertIndex">The index of the first vertex in the triangle.</param>
+        /// <param name="triangle">The index of the first vertex in the triangle.</param>
         /// <returns>The normal of the triangle.</returns>
         public static Vector3 GetNormal(Vector3[] vertices, int triangle)
         {

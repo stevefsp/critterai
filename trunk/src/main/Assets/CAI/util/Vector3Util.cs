@@ -68,7 +68,7 @@ namespace org.critterai
         /// Returns the square of the distance between two points.
         /// </summary>
         /// <param name="a">Point A.</param>
-        /// <param name="bx">Point B.</param>
+        /// <param name="b">Point B.</param>
         /// <returns> The square of the distance between the points.</returns>
         public static float GetDistanceSq(Vector3 a, Vector3 b)
         {
@@ -168,11 +168,10 @@ namespace org.critterai
         /// tested for inclusion.</para>
         /// </remarks>
         /// <param name="a">Point A.</param>
-        /// <param name="b">Point B.<param>
+        /// <param name="b">Point B.</param>
         /// <param name="radius">The allowed radius on the xz-plane.</param>
         /// <param name="height">The allowed y-axis delta.</param>
-        /// <returns>True if the two vectors are within the xz-radius and y-height of each other.
-        /// </returns>
+        /// <returns>True if the two vectors are within the xz-radius and y-height of each other.</returns>
         public static bool IsInRange(Vector3 a, Vector3 b, float radius, float height)
         {
             Vector3 d = b - a;
@@ -205,11 +204,12 @@ namespace org.critterai
         /// Flattens the vector array into a float array in the form (x, y, z) * vertCount.
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
+        /// <param name="count">The number of vectors.</param>
         /// <returns>An array of flattened vectors.</returns>
-        public static float[] Flatten(Vector3[] vectors, int vertCount)
+        public static float[] Flatten(Vector3[] vectors, int count)
         {
-            float[] result = new float[vertCount * 3];
-            for (int i = 0; i < vertCount; i++)
+            float[] result = new float[count * 3];
+            for (int i = 0; i < count; i++)
             {
                 result[i * 3] = vectors[i].x;
                 result[i * 3 + 1] = vectors[i].y;
@@ -277,17 +277,18 @@ namespace org.critterai
         /// Gets the minimum and maximum bounds of the AABB which contains the array of vectors.
         /// </summary>
         /// <param name="vectors">An array of vectors.</param>
-        /// <param name="minBounds">The mimimum bounds of the AABB.</param>
-        /// <param name="maxBounds">The maximum bounds of the AABB.</param>
+        /// <param name="count">The number of vectors.</param>
+        /// <param name="boundsMin">The mimimum bounds of the AABB.</param>
+        /// <param name="boundsMax">The maximum bounds of the AABB.</param>
         public static void GetBounds(Vector3[] vectors
-            , int vectorCount
+            , int count
             , out Vector3 boundsMin
             , out Vector3 boundsMax)
         {
             boundsMin = vectors[0];
             boundsMax = vectors[0];
 
-            for (int i = 1; i < vectorCount; i++)
+            for (int i = 1; i < count; i++)
             {
                 boundsMin.x = Math.Min(boundsMin.x, vectors[i].x);
                 boundsMin.y = Math.Min(boundsMin.y, vectors[i].y);
