@@ -38,7 +38,7 @@ namespace org.critterai.nmbuild
 	{
         /// <summary>
         /// The default flag applied to polygons during the build process if the 
-        /// <see cref="NMGenFlags.ApplyPolyFlags"/> is set.
+        /// <see cref="NMGenFlag.ApplyPolyFlags"/> is set.
         /// </summary>
         public const ushort DefaultFlag = 0x01;
 
@@ -81,8 +81,8 @@ namespace org.critterai.nmbuild
         /// <param name="tx">The x-index of the tile.</param>
         /// <param name="tz">The z-index of the tile.</param>
         /// <param name="polyMesh">The polygon mesh data.</param>
-        /// <param name="detailMesh">The detail mesh data. (Null allowed.)</param>
-        /// <param name="connections">The off-mesh connections. (Required.)</param>
+        /// <param name="detailMesh">The detail mesh data. (Optional)</param>
+        /// <param name="connections">The off-mesh connections. (Required)</param>
         /// <param name="context">The build context.</param>
         /// <returns>The tile build data, or null on error.</returns>
         public static NavmeshTileBuildData GetBuildData(int tx, int tz

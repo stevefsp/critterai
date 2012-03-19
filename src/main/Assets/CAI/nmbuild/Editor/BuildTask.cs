@@ -90,7 +90,7 @@ namespace org.critterai.nmbuild
         /// Gets the result of the completed task.
         /// </summary>
         /// <remarks>Called by <see cref="Run"/> after the task completes and before 
-        /// <see cref="FinaliTask"/> is run.  Will not be called on tasks in the aborted state.
+        /// <see cref="FinalizeTask"/> is run.  Will not be called on tasks in the aborted state.
         /// </remarks>
         /// <param name="result">The result of the completed task.</param>
         /// <returns>True if the result is available, false if the task should abort with no
@@ -192,7 +192,7 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// Requests an abort of the request.
+        /// Requests an abort of the task.
         /// </summary>
         /// <remarks>
         /// <para>There may be a delay in the actual abort for tasks running on a separate thread.
@@ -249,7 +249,8 @@ namespace org.critterai.nmbuild
         {
             lock (mMessages)
             {
-                mMessages.Add("Aborted on exception: " + ex.Message);
+                mMessages.Add(string.Format("Build task aborted on exception: {0} ({1})"
+                    , ex.Message, this.GetType().Name));
                 mData = default(T);
                 mState = BuildTaskState.Aborted;
                 mIsFinished = true;

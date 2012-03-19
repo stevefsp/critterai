@@ -95,7 +95,7 @@ namespace org.critterai.nmbuild
         /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
         /// <param name="polyMesh">The polymesh.</param>
-        /// <param name="detailMesh">The detail mesh. (Null allowed.)</param>
+        /// <param name="detailMesh">The detail mesh. (Optional)</param>
         public NMGenAssets(int tx, int tz, PolyMesh polyMesh, PolyMeshDetail detailMesh)
         {
             mTileX = tx;

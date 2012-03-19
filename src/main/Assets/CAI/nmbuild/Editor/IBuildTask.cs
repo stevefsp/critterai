@@ -52,7 +52,7 @@ namespace org.critterai.nmbuild
         string[] Messages { get; }
 
         /// <summary>
-        /// Requests an abort of the request.
+        /// Requests an abort of the task.
         /// </summary>
         /// <remarks>
         /// <para>There may be a delay in the actual abort for tasks running on a separate thread.

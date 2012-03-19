@@ -159,7 +159,7 @@ namespace org.critterai.nmbuild
         /// <para>This method performs a full validation of the structure and content of the 
         /// connection data.</para>
         /// <para>This method cannot be used to create an empty set.  Attempting to do so will 
-        /// return null. Use <see cref="CreateEmtpy"/> instead.
+        /// return null. Use <see cref="CreateEmpty"/> instead.
         /// </para>
         /// </remarks>
         /// <returns>A connection set, or null on failure.</returns>

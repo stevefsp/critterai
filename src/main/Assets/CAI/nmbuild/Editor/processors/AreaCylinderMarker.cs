@@ -30,7 +30,8 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Applies <see cref="CompactField.MarkCylinderArea"/> to a <see cref="CompactHeightfield"/>.
+    /// Applies <see cref="CompactHeightfield.MarkCylinderArea"/> to a 
+    /// <see cref="CompactHeightfield"/>.
     /// </summary>
 	public sealed class AreaCylinderMarker
         : AreaMarker
@@ -97,6 +98,18 @@ namespace org.critterai.nmbuild
             return false;
         }
 
+        /// <summary>
+        /// Creates a new marker.
+        /// </summary>
+        /// <param name="name">The processor name.</param>
+        /// <param name="priority">The processor priority.</param>
+        /// <param name="area">The area to apply.</param>
+        /// <param name="centerBase">The center of the base of the cylinder.
+        /// [Form: (x, y, z)]
+        /// </param>
+        /// <param name="radius">The radius of the cylinder.</param>
+        /// <param name="height">The height of the cylinder.</param>
+        /// <returns>A new area marker, or null on error.</returns>
         public static AreaCylinderMarker Create(string name, int priority, byte area
             , Vector3 centerBase, float radius, float height)
         {

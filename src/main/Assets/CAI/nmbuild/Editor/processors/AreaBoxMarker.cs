@@ -30,7 +30,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Applies <see cref="CompactField.MarkBoxArea"/> to a <see cref="CompactHeightfield"/>.
+    /// Applies <see cref="CompactHeightfield.MarkBoxArea"/> to a <see cref="CompactHeightfield"/>.
     /// </summary>
 	public sealed class AreaBoxMarker
         : AreaMarker

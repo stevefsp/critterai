@@ -112,7 +112,7 @@ namespace org.critterai.nmbuild
         /// </summary>
         /// <param name="tx">The x-index of the tile within the tile grid. (x, z) 
         /// [0 &lt;= value &lt; <see cref="Width"/>]</param>
-        /// <param name="tx">The z-index of the tile within the tile grid. (x, z) 
+        /// <param name="tz">The z-index of the tile within the tile grid. (x, z) 
         /// [0 &lt;= value &lt; <see cref="Depth"/>]</param>
         /// <param name="boundsMin">The minimum AABB bounds of the tile.</param>
         /// <param name="boundsMax">The maximum AABB bounds of the tile.</param>
@@ -184,10 +184,7 @@ namespace org.critterai.nmbuild
             if (w < 1 || d < 1)
                 return null;
 
-            return new TileSetDefinition(w, d
-                , boundsMin, boundsMax
-                , config
-                , geom);
+            return new TileSetDefinition(w, d, boundsMin, boundsMax, config, geom);
         }
     }
 }

@@ -74,12 +74,22 @@ namespace org.critterai.nmbuild
             return new NMGenTask(builder, priority);
         }
 
+        /// <summary>
+        /// Performs a work increment.
+        /// </summary>
+        /// <returns>True if the task is not yet finished.  Otherwise false.</returns>
         protected override bool LocalUpdate()
         {
             mBuilder.Build();
             return !mBuilder.IsFinished;  // Go to false when IsFinished.
         }
 
+        /// <summary>
+        /// Gets the result of the completed task.
+        /// </summary>
+        /// <param name="result">The result of the completed task.</param>
+        /// <returns>True if the result is available, false if the task should abort with no
+        /// result. (I.e. An internal abort.)</returns>
         protected override bool GetResult(out NMGenAssets result)
         {
             AddMessages(mBuilder.GetMessages());
