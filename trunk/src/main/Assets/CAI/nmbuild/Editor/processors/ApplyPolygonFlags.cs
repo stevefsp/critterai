@@ -26,7 +26,7 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// A processor that applies polygon flags to all polygons a <see cref="PolyMesh"/>.
+    /// A processor that applies polygon flags to all polygons in a <see cref="PolyMesh"/>.
     /// </summary>
     public sealed class ApplyPolygonFlags
         : NMGenProcessor

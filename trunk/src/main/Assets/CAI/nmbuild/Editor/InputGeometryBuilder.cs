@@ -60,7 +60,7 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// The input geometry created by the builder. (Null until finished.)
         /// </summary>
-        public InputGeometry Geometry { get { return mGeom; } }
+        public InputGeometry Result { get { return mGeom; } }
 
         /// <summary>
         /// True if the builder is finished and the input geometry is avaiable.
@@ -111,7 +111,7 @@ namespace org.critterai.nmbuild
         /// <para>The input mesh and area parameters are fully validated.</para>
         /// <para>Will return null if there are zero triangles.</para>
         /// <para>If the <paramref name="areas"/> parameter is null, all triangles
-        /// will default to the <see cref="NMGen.WalkableArea"/>.</para>
+        /// will default to the <see cref="NMGen.MaxArea"/>.</para>
         /// <para>If walkable slope if greather than zero then the builder will
         /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> to the areas.</para>
         /// </remarks>
@@ -155,7 +155,7 @@ namespace org.critterai.nmbuild
         /// <para>Builders created using this method are not guarenteed to produce a usable
         /// result.</para>
         /// <para>It is the responsibility of the caller to ensure thread safely if 
-        /// <see cref="isThreadSafe"/> is set to true.</para>
+        /// <paramref name="isThreadSafe"/>is set to true.</para>
         /// <para>Warning: If walkable slope if greather than zero then the builder will
         /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> directly to the areas parameter.
         /// </para>

@@ -84,7 +84,7 @@ namespace org.critterai.nmbuild
         /// <param name="tx">The x-index of the tile within the tile grid. (x, z)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (x, z)</param>
         /// <param name="polyData">The polygon mesh data.</param>
-        /// <param name="detailData">The detail mesh data. (Optional.)</param>
+        /// <param name="detailData">The detail mesh data. (Optional)</param>
         /// <param name="conns">The off-mesh connection set.</param>
         /// <param name="isThreadSafe">True if the task is safe to run on its own thread.</param>
         /// <param name="priority">The task priority.</param>
@@ -106,12 +106,22 @@ namespace org.critterai.nmbuild
             return new TileBuildTask(tx, tz, polyData, detailData, conns, isThreadSafe, priority);
         }
 
+        /// <summary>
+        /// Performs a work increment.
+        /// </summary>
+        /// <returns>True if the task is not yet finished.  Otherwise false.</returns>
         protected override bool LocalUpdate() 
         { 
             // All the work is done in GetResult().
             return false; 
         }
 
+        /// <summary>
+        /// Gets the result of the completed task.
+        /// </summary>
+        /// <param name="result">The result of the completed task.</param>
+        /// <returns>True if the result is available, false if the task should abort with no
+        /// result. (I.e. An internal abort.)</returns>
         protected override bool GetResult(out TileBuildAssets result)
         {
             BuildContext logger = new BuildContext();
@@ -147,6 +157,9 @@ namespace org.critterai.nmbuild
             return true;
         }
 
+        /// <summary>
+        /// Finalize the task.
+        /// </summary>
         protected override void FinalizeTask()
         {
             mPolyData = null;

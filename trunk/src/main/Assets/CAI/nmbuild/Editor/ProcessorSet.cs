@@ -149,7 +149,7 @@ namespace org.critterai.nmbuild
         /// </para></remarks>
         /// <param name="options">The processors to include.</param>
         /// <returns>A processor set with the standard processors.</returns>
-        public static ProcessorSet CreateStanard(NMGenFlag options)
+        public static ProcessorSet CreateStandard(NMGenFlag options)
         {
             return Create(GetStandard(options));
         }

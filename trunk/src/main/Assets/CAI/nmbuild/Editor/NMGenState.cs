@@ -43,8 +43,8 @@ namespace org.critterai.nmbuild
         /// The build was completed and produced a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// <para>The build produced at least a <see cref="PolyMesh"/> object with at least one
-        /// polygon.</para>
+        /// <para>The build produced at least a <see cref="org.critterai.nmgen.PolyMesh"/> object 
+        /// with at least one polygon.</para>
         /// It is possible to complete, but have no resulting meshes. See <see cref="NoResult"/>.
         /// </remarks>
         Complete,

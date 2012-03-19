@@ -30,7 +30,8 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Applies <see cref="CompactField.MarkConvexPolyArea"/> to a <see cref="CompactHeightfield"/>.
+    /// Applies <see cref="CompactHeightfield.MarkConvexPolyArea"/> to a 
+    /// <see cref="CompactHeightfield"/>.
     /// </summary>
     public sealed class AreaConvexMarker
         : AreaMarker
@@ -69,7 +70,7 @@ namespace org.critterai.nmbuild
         /// <returns>False on error, otherwise true.</returns>
         public override bool ProcessBuild(NMGenState state, NMGenContext context)
         {
-            if (state != NMGenState.HeightfieldBuild)
+            if (state != NMGenState.CompactFieldBuild)
                 return true;
 
             if (context.CompactField.MarkConvexPolyArea(context, verts, ymin, ymax, Area))
@@ -96,8 +97,8 @@ namespace org.critterai.nmbuild
         /// <param name="priority">The processor priority.</param>
         /// <param name="area">The area to apply.</param>
         /// <param name="verts">A list of vertices that form a convex polygon.</param>
-        /// <param name="boundsMin">The minimum y-axis world position.</param>
-        /// <param name="boundsMax">The maximum y-axis world position.</param>
+        /// <param name="ymin">The minimum y-axis world position.</param>
+        /// <param name="ymax">The maximum y-axis world position.</param>
         /// <returns>A new marker, or null on error.</returns>
         public static AreaConvexMarker Create(string name, int priority, byte area
             , Vector3[] verts, float ymin, float ymax)

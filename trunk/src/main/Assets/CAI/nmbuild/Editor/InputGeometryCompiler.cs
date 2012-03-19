@@ -96,7 +96,7 @@ namespace org.critterai.nmbuild
         /// Adds an arbitrary group of triangles.  
         /// </summary>
         /// <remarks>
-        /// <para>All triangles will default to <see cref="NMGen.WalkableArea"/> if the 
+        /// <para>All triangles will default to <see cref="NMGen.MaxArea"/> if the 
         /// <paramref name="areas"/> parameter is null.</para>
         /// </remarks>
         /// <param name="verts">The triangle vertices. 
@@ -106,7 +106,7 @@ namespace org.critterai.nmbuild
         /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]
         /// [Length: >= 3 * <paramref name="triCount"/>]
         /// </param>
-        /// <param name="areas">The triangle areas. (Null allowed.)
+        /// <param name="areas">The triangle areas. (Optional)
         /// [Length: >= <paramref name="triCount"/>]</param>
         /// <param name="triCount">The number of triangles. [Limit: > 0]</param>
         /// <returns>True if the triangles were successfully added.</returns>
@@ -166,12 +166,12 @@ namespace org.critterai.nmbuild
         /// Adds an triangle mesh.  
         /// </summary>
         /// <remarks>
-        /// <para>All triangles will default to <see cref="NMGen.WalkableArea"/> if the 
+        /// <para>All triangles will default to <see cref="NMGen.MaxArea"/> if the 
         /// <paramref name="areas"/> parameter is null.</para>
         /// <para>Will return false if the mesh triangle count is zero.</para>
         /// </remarks>
         /// <param name="mesh">The triangle mesh.</param>
-        /// <param name="areas">The triangle areas. (Null allowed.)
+        /// <param name="areas">The triangle areas. (Optional)
         /// [Length: >= mesh.triCount]</param>
         /// <returns>True if the triangles were successfully added.</returns>
         public bool AddTriangles(TriangleMesh mesh, byte[] areas)

@@ -41,11 +41,11 @@ namespace org.critterai.nmbuild
     /// </para>
     /// <para>
     /// HeightfieldBuild: <see cref="Heightfield"/><br/>
-    /// CompactFieldBuild: <see cref="ComplactHeightfield"/><br/>
-    /// RegionBuild: <see cref="ComplactHeightfield"/><br/>
-    /// ContourBuild: <see cref="ContourSet"/> and <see cref="ComplactHeightfield"/><br/>
-    /// PolyMeshBuild: <see cref="PolyMesh"/> and <see cref="ComplactHeightfield"/><br/>
-    /// DetailMeshBuild: <see cref="PolyMeshDetail"/> and <see cref="ComplactHeightfield"/><br/>
+    /// CompactFieldBuild: <see cref="CompactHeightfield"/><br/>
+    /// RegionBuild: <see cref="CompactHeightfield"/><br/>
+    /// ContourBuild: <see cref="ContourSet"/> and <see cref="CompactHeightfield"/><br/>
+    /// PolyMeshBuild: <see cref="PolyMesh"/> and <see cref="CompactHeightfield"/><br/>
+    /// DetailMeshBuild: <see cref="PolyMeshDetail"/> and <see cref="CompactHeightfield"/><br/>
     /// </para>
     /// <para>More assets will be avialable based on <see cref="INMGenProcessor.PreserveAssets"/> 
     /// <see cref="ResultOptions"/> requirements.
@@ -269,12 +269,9 @@ namespace org.critterai.nmbuild
                 , out width
                 , out depth);
 
-            Heightfield hf = new Heightfield(width
-                , depth
-                , mTileConfig.BoundsMin
-                , mTileConfig.BoundsMax
-                , mConfig.XZCellSize
-                , mConfig.YCellSize);
+            Heightfield hf = Heightfield.Create(width, depth
+                , mTileConfig.BoundsMin, mTileConfig.BoundsMax
+                , mConfig.XZCellSize, mConfig.YCellSize);
 
             hf.AddTriangles(mBuildContext
                 , mGeometry.Mesh
@@ -402,8 +399,6 @@ namespace org.critterai.nmbuild
         private void BuildRegions()
         {
             CompactHeightfield chf = mBuildContext.CompactField;
-
-            System.Type typ = this.GetType();
 
             chf.BuildDistanceField(mBuildContext);
             mBuildContext.Log("Built distance field. Max Distance: " + chf.MaxDistance, this);
@@ -736,15 +731,15 @@ namespace org.critterai.nmbuild
         /// <param name="tx">The x-index of the tile to build.</param>
         /// <param name="tz">The z-index of the tile to build.</param>
         /// <param name="resultOptions">The assets to include in the result.</param>
-        /// <param name="tileDef">The tile set definition to base the build on.</param>
+        /// <param name="tdef">The tile set definition to base the build on.</param>
         /// <param name="processors">The processors to apply.</param>
         /// <returns>A new builder, or null on error.</returns>
         public static IncrementalBuilder Create(int tx, int tz
             , NMGenAssetFlag resultOptions
-            , TileSetDefinition tileDef
+            , TileSetDefinition tdef
             , ProcessorSet processors)
         {
-            if (tileDef == null || processors == null)
+            if (tdef == null || processors == null)
                 return null;
 
             resultOptions |= NMGenAssetFlag.PolyMesh;
@@ -760,15 +755,15 @@ namespace org.critterai.nmbuild
             Vector3 bmax;
 
             // This next call checks for valid tx/tz.
-            if (!tileDef.GetTileBounds(tx, tz, out bmin, out bmax))
+            if (!tdef.GetTileBounds(tx, tz, out bmin, out bmax))
                 return null;
 
             NMGenTileParams tileConfig = new NMGenTileParams(tx, tz, bmin, bmax);
 
             return new IncrementalBuilder(tileConfig
-                , tileDef.GetBaseConfig()
+                , tdef.GetBaseConfig()
                 , resultOptions
-                , tileDef.Geometry
+                , tdef.Geometry
                 , processors);
         }
 

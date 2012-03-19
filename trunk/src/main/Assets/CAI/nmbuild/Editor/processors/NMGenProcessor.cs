@@ -22,6 +22,9 @@
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// A standard processor used during the NMGen build process.
+    /// </summary>
     public abstract class NMGenProcessor
         : INMGenProcessor
     {
