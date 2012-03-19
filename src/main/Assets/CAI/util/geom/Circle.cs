@@ -43,15 +43,16 @@ namespace org.critterai.geom
         /// <para>Containment of one circle by another is considered intersection.
         /// </para>
         /// </remarks>
-        /// <param name="a">The center point of circle A.</param>
-        /// <param name="ar">The radius of circle A.</param>
-        /// <param name="b">The center point of circle B.</param>
-        /// <param name="br">The radius of Circle B.</param>
+        /// <param name="acenter">The center point of circle A.</param>
+        /// <param name="aradius">The radius of circle A.</param>
+        /// <param name="bcenter">The center point of circle B.</param>
+        /// <param name="bradius">The radius of Circle B.</param>
         /// <returns>True if the circles intersect.</returns>
-        public static bool Intersects(Vector2 a, float aradius, Vector2 b, float bradius)
+        public static bool Intersects(Vector2 acenter, float aradius
+            , Vector2 bcenter, float bradius)
         {
-            float dx = a.x - b.x;
-            float dy = a.y - b.y;
+            float dx = acenter.x - bcenter.x;
+            float dy = acenter.y - bcenter.y;
             return (dx * dx + dy * dy) <= (aradius + bradius) * (aradius + bradius);
         }
 
@@ -59,9 +60,9 @@ namespace org.critterai.geom
         /// Determines whether or not a point is contained within a circle.
         /// </summary>
         /// <remarks>
-        /// <para>The test is inclusive of the circle boundary</para><
-        /// /remarks>
-        /// <param name="p">The point to test.</param>
+        /// <para>The test is inclusive of the circle boundary</para>
+        /// </remarks>
+        /// <param name="point">The point to test.</param>
         /// <param name="circle">The center point of the circle.</param>
         /// <param name="radius">The radius of the circle.</param>
         /// <returns>True if the point is contained within the circle.</returns>

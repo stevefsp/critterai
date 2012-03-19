@@ -104,20 +104,20 @@ namespace org.critterai.geom
         /// </remarks>
         /// <param name="boundsMin">The minimum bounds of the mesh.</param>
         /// <param name="boundsMax">The maximum bounds of the mesh.</param>
-        public void GetBounds(out Vector3 bmin, out Vector3 bmax)
+        public void GetBounds(out Vector3 boundsMin, out Vector3 boundsMax)
         {
-            bmin = verts[tris[0]];
-            bmax = verts[tris[0]];
+            boundsMin = verts[tris[0]];
+            boundsMax = verts[tris[0]];
 
             for (int i = 1; i < triCount * 3; i++)
             {
                 Vector3 v = verts[tris[i]];
-                bmin.x = Math.Min(bmin.x, v.x);
-                bmin.y = Math.Min(bmin.y, v.y);
-                bmin.z = Math.Min(bmin.z, v.z);
-                bmax.x = Math.Max(bmax.x, v.x);
-                bmax.y = Math.Max(bmax.y, v.y);
-                bmax.z = Math.Max(bmax.z, v.z);
+                boundsMin.x = Math.Min(boundsMin.x, v.x);
+                boundsMin.y = Math.Min(boundsMin.y, v.y);
+                boundsMin.z = Math.Min(boundsMin.z, v.z);
+                boundsMax.x = Math.Max(boundsMax.x, v.x);
+                boundsMax.y = Math.Max(boundsMax.y, v.y);
+                boundsMax.z = Math.Max(boundsMax.z, v.z);
             }
         }
 

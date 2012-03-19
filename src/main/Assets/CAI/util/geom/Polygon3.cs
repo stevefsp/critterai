@@ -47,7 +47,7 @@ namespace org.critterai.geom
         /// </remarks>
         /// <param name="vertices">An array of vertices that contains a representation of 
         /// polygons with an  arbitrary number of sides. Wrap direction does not matter.</param>
-        /// <param name="startVertIndex">The index of the first vertex in the polygon.</param>
+        /// <param name="startVert">The index of the first vertex in the polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.
         /// </param>
         /// <returns>True if the polygon is convex.</returns>

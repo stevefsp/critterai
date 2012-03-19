@@ -55,7 +55,7 @@ namespace org.critterai
         /// <summary>
         /// Gets the number of milliseconds since the start <see cref="DateTime"/> tick to now.
         /// </summary>
-        /// <param name="start">The start time in <see cref="DateTime"/ ticks.</param>
+        /// <param name="start">The start time in <see cref="DateTime"/> ticks.</param>
         /// <returns>The number of milliseconds since the start tick.</returns>
         public static int GetNowDeltaMS(long start)
         {
