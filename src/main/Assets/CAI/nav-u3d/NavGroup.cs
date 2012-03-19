@@ -20,8 +20,6 @@
  * THE SOFTWARE.
  */
 using UnityEngine;
-using org.critterai;
-using org.critterai.nav;
 
 namespace org.critterai.nav.u3d
 {
@@ -39,7 +37,7 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// A navigation mesh query.
         /// </summary>
-        public U3DNavmeshQuery query;
+        public NavmeshQuery query;
 
         /// <summary>
         /// The filter to use with <see cref="query"/>.
@@ -54,7 +52,7 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// The extents to use with <see cref="query"/>.
         /// </summary>
-        public float[] extents;
+        public Vector3 extents;
 
         /// <summary>
         /// Constructor.
@@ -68,25 +66,17 @@ namespace org.critterai.nav.u3d
         /// <param name="cloneFE">If true, the filter and extents will be
         /// cloned.  Otherwise they will be referenced.</param>
         public NavGroup(Navmesh mesh
-            , U3DNavmeshQuery query
+            , NavmeshQuery query
             , CrowdManager crowd
             , NavmeshQueryFilter filter
-            , float[] extents
+            , Vector3 extents
             , bool cloneFE)
         {
             this.mesh = mesh;
             this.query = query;
             this.crowd = crowd;
-            if (cloneFE)
-            {
-                this.extents = (float[])extents.Clone();
-                this.filter = filter.Clone();
-            }
-            else
-            {
-                this.extents = extents;
-                this.filter = filter;
-            }
+            this.filter = (cloneFE ? filter.Clone() : filter);
+            this.extents = extents;
         }
 
         /// <summary>
@@ -100,16 +90,8 @@ namespace org.critterai.nav.u3d
             this.mesh = copy.mesh;
             this.query = copy.query;
             this.crowd = copy.crowd;
-            if (cloneFE)
-            {
-                this.extents = (float[])copy.extents.Clone();
-                this.filter = copy.filter.Clone();
-            }
-            else
-            {
-                this.extents = copy.extents;
-                this.filter = copy.filter;
-            }
+            this.filter = (cloneFE ? copy.filter.Clone() : copy.filter);
+            this.extents = copy.extents;
         }
     }
 }

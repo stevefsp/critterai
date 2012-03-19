@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.u3d;
 using UnityEngine;
+using org.critterai.u3d;
 
 namespace org.critterai.nav.u3d
 {
@@ -115,22 +115,22 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Draws the basic agent debug information.
         /// </summary>
+        /// <remarks>This does not include the duplicate agent information
+        /// such as target and corner positions.</remarks>
         /// <param name="agent">The agent to draw.</param>
         public void DrawBase(CrowdAgent agent)
         {
-            Vector3 pos = Vector3Util.GetVector(agent.Position);
+            Vector3 pos = agent.Position;
             CrowdAgentParams config = agent.GetConfig();
             
             DebugDraw.Circle(pos, config.radius, neighborColor);
 
-            Vector3 v = Vector3Util.GetVector(agent.DesiredVelocity);
             DebugDraw.Arrow(pos + Vector3.up * config.height
-                , pos + v + Vector3.up * config.height
+                , pos + agent.DesiredVelocity + Vector3.up * config.height
                 , 0, 0.05f, desiredVelocityColor);
 
-            v = Vector3Util.GetVector(agent.Velocity);
             DebugDraw.Arrow(pos + Vector3.up * config.height
-                , pos + v + Vector3.up * config.height
+                , pos + agent.Velocity + Vector3.up * config.height
                 , 0, 0.05f, velocityColor);
         }
 
@@ -147,16 +147,14 @@ namespace org.critterai.nav.u3d
 
             agent.GetNeighbors(neighbors);
 
-            Vector3 pos = Vector3Util.GetVector(agent.Position);
             for (int i = 0; i < neighborCount; i++)
             {
                 CrowdAgent n = agent.GetNeighbor(neighbors[i]);
                 if (n == null)
                     // Not sure why this happens.  Bug in CrowdAgent?
                     continue;
-                Vector3 npos = Vector3Util.GetVector(n.Position);
-                DebugDraw.Arrow(pos, npos, 0, 0.05f, neighborColor);
-                DebugDraw.Circle(npos, agent.GetConfig().radius, neighborColor);
+                DebugDraw.Arrow(agent.Position, n.Position, 0, 0.05f, neighborColor);
+                DebugDraw.Circle(n.Position, agent.GetConfig().radius, neighborColor);
             }
         }
 
@@ -171,10 +169,10 @@ namespace org.critterai.nav.u3d
             if (boundary.segmentCount == 0)
                 return;
 
-            DebugDraw.XMarker(Vector3Util.GetVector(boundary.center)
+            DebugDraw.XMarker(boundary.center
                 , 0.1f, boundaryColor);
 
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
             GL.Color(boundaryColor);
@@ -182,12 +180,8 @@ namespace org.critterai.nav.u3d
             for (int i = 0; i < boundary.segmentCount; i++)
             {
                 int p = i * 6;
-                GL.Vertex3(boundary.segments[p + 0]
-                    , boundary.segments[p + 1]
-                    , boundary.segments[p + 2]);
-                GL.Vertex3(boundary.segments[p + 3]
-                    , boundary.segments[p + 4]
-                    , boundary.segments[p + 5]);
+                GL.Vertex(boundary.segments[p]);
+                GL.Vertex(boundary.segments[p + 1]);
             }
 
             GL.End();

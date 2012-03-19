@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,18 @@ namespace org.critterai.nav.u3d
     /// be called from within the OnRenderObject() method.</para></remarks>
     public static class NavDebug
     {
+        #region Static Config
+
+        /// <summary>
+        /// The alpha to use for the surface fill.
+        /// </summary>
+        public static float surfaceAlpha = 0.25f;
+
         /// <summary>
         /// The color to use when drawing corner visualizations.
         /// </summary>
-        public static Color cornerColor = new Color(Color.blue.r
-            , Color.blue.g
-            , Color.blue.b
-            , 0.66f);
+        public static Color cornerColor = 
+            new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.66f);
 
         /// <summary>
         /// The scale to use for corner markers.
@@ -49,10 +54,8 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// The color to use when drawing position visualizations.
         /// </summary>
-        public static Color positionColor = new Color(Color.blue.r
-            , Color.blue.g
-            , Color.blue.b
-            , 0.5f);
+        public static Color positionColor = 
+            new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.5f);
 
         /// <summary>
         /// The scale to use for position markers.
@@ -62,10 +65,8 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// The base color to use when drawing goal visualizations.
         /// </summary>
-        public static Color goalColor = new Color(Color.green.r
-            , Color.green.g
-            , Color.green.b
-            , 0.5f);
+        public static Color goalColor = 
+            new Color(Color.green.r, Color.green.g, Color.green.b, 0.5f);
 
         /// <summary>
         /// The scale to use for goal marks.
@@ -75,66 +76,55 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// The color to use for drawing visualizations that overlay polygons.
         /// </summary>
-        public static Color polygonOverlayColor = new Color(Color.yellow.r
-            , Color.yellow.g
-            , Color.yellow.b
-            , 0.33f);
+        public static Color polygonOverlayColor = 
+            new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.33f);
 
-        /// <summary>
-        /// Privides a human readable string representing the provided tile
-        /// header.
-        /// </summary>
-        /// <param name="header">The header.</param>
-        /// <returns>A string representing the tile header.</returns>
-        public static string ToString(NavmeshTileHeader header)
-        {
-            return string.Format("Tile: X: {2}, Z: {3}, Layer: {4}\n"
-                + "Version: {1}, UserId: {5}\n"
-                + "Polys: {6}, Verts: {7}\n"
-                + "Detail: Meshes: {9}, Tris: {11}, Verts: {10}\n"
-                + "Conns: {13}, ConnBase: {14}\n"
-                + "Walkable: Height: {15}, Radius: {16}, Step: {17}\n"
-                + "Bounds: Min: {18}, Max: {19}\n"
-                + "MaxLinks: {8}, BVQuantFactor: {20}, BVNodes: {12}\n"
-                + "Magic: {0}\n" 
-                , header.magic, header.version
-                , header.x, header.z, header.layer
-                , header.userId
-                , header.polyCount, header.vertCount
-                , header.maxLinkCount
-                , header.detailMeshCount
-                , header.detailVertCount
-                , header.detailTriCount
-                , header.bvNodeCount
-                , header.connCount, header.connBase
-                , header.walkableHeight
-                , header.walkableRadius
-                , header.walkableStep
-                , Vector3Util.ToString(header.boundsMin)
-                , Vector3Util.ToString(header.boundsMax)
-                , header.bvQuantFactor);
-        }
+        #endregion
+
+        #region Navmesh
 
         /// <summary>
         /// Draws a debug visualization of the navigation mesh.
         /// </summary>
         /// <param name="mesh">The mesh to draw.</param>
-        public static void Draw(Navmesh mesh)
+        /// <param name="colorByArea">If true, the mesh will be colored 
+        /// by polygon area id.  If false, will be colored by tile index.</param>
+        public static void Draw(Navmesh mesh, bool colorByArea)
         {
             int count = mesh.GetMaxTiles();
             for (int i = 0; i < count; i++)
             {
-                Draw(mesh.GetTile(i), null, null, 0, i);
+                Draw(mesh.GetTile(i), null, null, 0, colorByArea ? -1 : i);
             }
         }
 
         /// <summary>
-        /// Draws a debug visualization of the navigation mesh with
-        /// the closed nodes highlighted.
+        /// Draws a debug visualization of the specified navigation mesh tile.
+        /// </summary>
+        /// <remarks>This method is safe to call on empty tile locations.</remarks>
+        /// <param name="mesh">The mesh.</param>
+        /// <param name="tx">The tile grid x-location.</param>
+        /// <param name="tz">The tile grid z-location.</param>
+        /// <param name="layer">The tile layer.</param>
+        /// <param name="colorByArea">If true, will be colored  by polygon area id.  
+        /// If false, will be colored by tile index.</param>
+        public static void Draw(Navmesh mesh, int tx, int tz, int layer, bool colorByArea)
+        {
+            NavmeshTile tile = mesh.GetTile(tx, tz, layer);
+
+            if (tile == null)
+                // No tile at grid location.
+                return;
+            
+            Draw(tile, null, null, 0
+                , colorByArea ? -1 : tx.GetHashCode() ^ tz.GetHashCode() ^ layer.GetHashCode());
+        }
+
+        /// <summary>
+        /// Draws a debug visualization of the navigation mesh with the closed nodes highlighted.
         /// </summary>
         /// <param name="mesh">The mesh to draw.</param>
-        /// <param name="query">The query which provides the list of closed 
-        /// nodes.</param>
+        /// <param name="query">The query which provides the list of closed nodes.</param>
         public static void Draw(Navmesh mesh, NavmeshQuery query)
         {
             int count = mesh.GetMaxTiles();
@@ -145,14 +135,14 @@ namespace org.critterai.nav.u3d
         }
         
         /// <summary>
-        /// Draws a debug visualization of the navigation mesh with the
-        /// specified polygons highlighted.
+        /// Draws a debug visualization of the navigation mesh with the specified polygons 
+        /// highlighted.
         /// </summary>
         /// <param name="mesh">The mesh to draw.</param>
-        /// <param name="markPolys">The reference ids of the polygons that
-        /// should be highlighted.</param>
-        /// <param name="polyCount">The number of polygons in the
-        /// <paramref name="markPolys"/> array.</param>
+        /// <param name="markPolys">The reference ids of the polygons that should be highlighted.
+        /// </param>
+        /// <param name="polyCount">The number of polygons in the <paramref name="markPolys"/> 
+        /// array.</param>
         public static void Draw(Navmesh mesh, uint[] markPolys, int polyCount)
         {
             int count = mesh.GetMaxTiles();
@@ -163,25 +153,6 @@ namespace org.critterai.nav.u3d
                     , markPolys
                     , polyCount
                     , i);
-            }
-        }
-
-
-        /// <summary>
-        /// Draws a debug visualization of corner data.
-        /// </summary>
-        /// <param name="corners">The corners to draw.</param>
-        public static void Draw(CornerData corners)
-        {
-            if (corners.cornerCount == 0)
-                return;
-
-            GLUtil.SimpleMaterial.SetPass(0);
-
-            for (int i = 0; i < corners.cornerCount; i++)
-            {
-                DebugDraw.XMarker(Vector3Util.GetVector(corners.verts, i)
-                    , cornerScale, cornerColor);
             }
         }
 
@@ -197,9 +168,9 @@ namespace org.critterai.nav.u3d
             if (corridor.pathCount == 0)
                 return;
 
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
-            float[] tileVerts = null;
+            Vector3[] tileVerts = null;
 
             for (int iPoly = 0; iPoly < corridor.pathCount; iPoly++)
             {
@@ -215,7 +186,7 @@ namespace org.critterai.nav.u3d
                     || tileVerts.Length < 3 * header.vertCount)
                 {
                     // Resize.
-                    tileVerts = new float[3 * header.vertCount];
+                    tileVerts = new Vector3[header.vertCount];
                 }
 
                 tile.GetVerts(tileVerts);
@@ -223,41 +194,64 @@ namespace org.critterai.nav.u3d
                 GL.Begin(GL.TRIANGLES);
                 GL.Color(polygonOverlayColor);
 
-                int pA = poly.indices[0] * 3;
+                int pA = poly.indices[0];
                 for (int i = 2; i < poly.vertCount; i++)
                 {
-                    int pB = poly.indices[i - 1] * 3;
-                    int pC = poly.indices[i] * 3;
+                    int pB = poly.indices[i - 1];
+                    int pC = poly.indices[i];
 
-                    GL.Vertex3(tileVerts[pA + 0]
-                        , tileVerts[pA + 1]
-                        , tileVerts[pA + 2]);
-
-                    GL.Vertex3(tileVerts[pB + 0]
-                        , tileVerts[pB + 1]
-                        , tileVerts[pB + 2]);
-
-                    GL.Vertex3(tileVerts[pC + 0]
-                        , tileVerts[pC + 1]
-                        , tileVerts[pC + 2]);
+                    GL.Vertex(tileVerts[pA]);
+                    GL.Vertex(tileVerts[pB]);
+                    GL.Vertex(tileVerts[pC]);
                 }
+
                 GL.End();
 
                 // Not drawing boundaries since it would obscure other agent
                 // debug data.
             }
 
-            Vector3 v = Vector3Util.GetVector(corridor.position);
+            Vector3 v = corridor.position;
             DebugDraw.XMarker(v, positionScale, positionColor);
             DebugDraw.Circle(v, positionScale, positionColor);
             DebugDraw.Circle(v, positionScale * 0.5f, positionColor);
             DebugDraw.Circle(v, positionScale * 0.25f, positionColor);
 
-            v = Vector3Util.GetVector(corridor.target);
+            v = corridor.target;
             DebugDraw.XMarker(v, goalScale, goalColor);
             DebugDraw.Circle(v, goalScale, goalColor);
             DebugDraw.Circle(v, goalScale * 0.5f, goalColor);
             DebugDraw.Circle(v, goalScale * 0.25f, goalColor);
+        }
+
+        private static Color GetStandardColor(uint polyRef
+            , int polyArea
+            , int colorId
+            , NavmeshQuery query
+            , uint[] markPolys
+            , int markPolyCount)
+        {
+            Color result;
+
+            if ((query != null && query.IsInClosedList(polyRef))
+                || IsInList(polyRef, markPolys, markPolyCount) != -1)
+            {
+                result = polygonOverlayColor;
+            }
+            else
+            {
+                if (colorId == -1)
+                {
+                    if (polyArea == 0)
+                        result = new Color(0, 0.75f, 1, surfaceAlpha);
+                    else
+                        result = ColorUtil.IntToColor(polyArea, surfaceAlpha);
+                }
+                else
+                    result = ColorUtil.IntToColor(colorId, surfaceAlpha);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -265,11 +259,11 @@ namespace org.critterai.nav.u3d
         /// </summary>
         /// <remarks>
         /// <para>The tile will be checked to see if it is in use before it is
-        /// drawn.  So there is no need for client to do so.</para></remarks>
+        /// drawn.  So there is no need for caller to do so.</para></remarks>
         private static void Draw(NavmeshTile tile
             , NavmeshQuery query
             , uint[] markPolys
-            , int polyCount
+            , int markPolyCount
             , int colorId)
         {
             NavmeshTileHeader header = tile.GetHeader();
@@ -278,14 +272,14 @@ namespace org.critterai.nav.u3d
             if (header.polyCount < 1)
                 return;
 
-            GLUtil.SimpleMaterial.SetPass(0);
+            DebugDraw.SimpleMaterial.SetPass(0);
 
             uint polyBase = tile.GetBasePolyRef();
 
             NavmeshPoly[] polys = new NavmeshPoly[header.polyCount];
             tile.GetPolys(polys);
              
-            float[] verts = new float[header.vertCount * 3];
+            Vector3[] verts = new Vector3[header.vertCount];
             tile.GetVerts(verts);
 
             NavmeshDetailMesh[] meshes = 
@@ -295,10 +289,8 @@ namespace org.critterai.nav.u3d
             byte[] detailTris = new byte[header.detailTriCount * 4];
             tile.GetDetailTris(detailTris);
 
-            float[] detailVerts = new float[header.detailVertCount * 3];
+            Vector3[] detailVerts = new Vector3[header.detailVertCount];
             tile.GetDetailVerts(detailVerts);
-
-            float alpha = polygonOverlayColor.a;
 
             GL.Begin(GL.TRIANGLES);
             for (int i = 0; i < header.polyCount; i++)
@@ -310,25 +302,9 @@ namespace org.critterai.nav.u3d
 
                 NavmeshDetailMesh mesh = meshes[i];
 
-                Color color;
-                uint polyRef = polyBase | (uint)i;
-                if ((query != null && query.IsInClosedList(polyRef))
-                    || IsInList(polyRef, markPolys, polyCount) != -1)
-                {
-                    color = polygonOverlayColor;
-                }
-                else
-                {
-                    if (colorId == -1)
-                    {
-                        if (poly.Area == 0)
-                            color = new Color(0, 0.75f, 1, alpha);
-                        else
-                            color = ColorUtil.IntToColor(poly.Area, alpha);
-                    }
-                    else
-                        color = ColorUtil.IntToColor(colorId, alpha);
-                }
+                Color color = GetStandardColor(polyBase | (uint)i
+                    , poly.Area, colorId
+                    , query, markPolys, markPolyCount);
 
                 GL.Color(color);
 
@@ -343,18 +319,16 @@ namespace org.critterai.nav.u3d
                         int iVert = detailTris[pTri + k];
                         if (iVert < poly.vertCount)
                         {
-                            int pVert = poly.indices[iVert] * 3;
-                            GL.Vertex3(verts[pVert + 0]
-                                , verts[pVert + 1]
-                                , verts[pVert + 2]);
+                            // Get the vertex from the main vertices.
+                            int pVert = poly.indices[iVert];
+                            GL.Vertex(verts[pVert]);
                         }
                         else
                         {
+                            // Get the vertex from the detail vertices.
                             int pVert = (int)
-                                (mesh.vertBase + iVert - poly.vertCount) * 3;
-                            GL.Vertex3(detailVerts[pVert + 0]
-                                , detailVerts[pVert + 1]
-                                , detailVerts[pVert + 2]);
+                                (mesh.vertBase + iVert - poly.vertCount);
+                            GL.Vertex(detailVerts[pVert]);
                         }
                     }
                 }
@@ -363,6 +337,8 @@ namespace org.critterai.nav.u3d
 
             NavmeshLink[] links = new NavmeshLink[header.maxLinkCount];
             tile.GetLinks(links);
+
+            GL.Begin(GL.LINES);
 
             DrawPolyBoundaries(header
                 , polys
@@ -384,9 +360,82 @@ namespace org.critterai.nav.u3d
                 , new Color(0.65f, 0.2f, 0, 0.9f)
                 , false);
 
-            // TODO: Add code to draw off-mesh connections
-            // once the demo is implemented.
+            if (header.connCount == 0)
+            {
+                GL.End();
+                return;
+            }
 
+            NavmeshConnection[] conns = new NavmeshConnection[header.connCount];
+            tile.GetConnections(conns);
+
+            for (int i = 0; i < header.polyCount; i++)
+            {
+                NavmeshPoly poly = polys[i];
+
+                if (poly.Type != NavmeshPolyType.OffMeshConnection)
+                    continue;
+
+                Color color = GetStandardColor(polyBase | (uint)i
+                    , poly.Area, colorId
+                    , query, markPolys, markPolyCount);
+                color.a = 0.75f;
+
+                GL.Color(color);
+
+                NavmeshConnection conn = conns[i - header.connBase];
+
+			    Vector3 va = verts[poly.indices[0]];
+			    Vector3 vb = verts[poly.indices[1]];
+
+			    // Check to see if start and end end-points have links.
+			    bool startSet = false;
+			    bool endSet = false;
+			    for (uint k = poly.firstLink; k != Navmesh.NullLink; k = links[k].next)
+			    {
+				    if (links[k].edge == 0)
+					    startSet = true;
+				    if (links[k].edge == 1)
+					    endSet = true;
+			    }
+    			
+                // For linked endpoints: Draw a line between on-mesh location and endpoint, 
+                // and draw circle at the endpoint.
+                // For un-linked endpoints: Draw a small red x-marker.
+
+                if (startSet)
+                {
+                    GL.Vertex(va);
+                    GL.Vertex(conn.endpoints[0]);
+                    DebugDraw.AppendCircle(conn.endpoints[0], conn.radius);
+                }
+                else
+                {
+                    GL.Color(Color.red);
+                    DebugDraw.AppendXMarker(conn.endpoints[0], 0.1f);
+                    GL.Color(color);
+                }
+
+                if (endSet)
+                {
+                    GL.Vertex(vb);
+                    GL.Vertex(conn.endpoints[1]);
+                    DebugDraw.AppendCircle(conn.endpoints[1], conn.radius);
+                }
+                else
+                {
+                    GL.Color(Color.red);
+                    DebugDraw.AppendXMarker(conn.endpoints[1], 0.1f);
+                    GL.Color(color);
+                }
+
+                DebugDraw.AppendArc(conn.endpoints[0], conn.endpoints[1]
+                    , 0.25f
+                    , conn.IsBiDirectional ? 0.6f : 0
+                    , 0.6f);
+            }
+
+            GL.End();
         }
 
         /// <summary>
@@ -414,17 +463,16 @@ namespace org.critterai.nav.u3d
         /// </summary>
         private static void DrawPolyBoundaries(NavmeshTileHeader header
             , NavmeshPoly[] polys
-            , float[] verts
+            , Vector3[] verts
             , NavmeshDetailMesh[] meshes
             , byte[] detailTris
-            , float[] detailVerts
+            , Vector3[] detailVerts
             , NavmeshLink[] links
             , Color color
             , bool inner)
         {
             const float thr = 0.01f * 0.01f;
 
-            GL.Begin(GL.LINES);
             for (int i = 0; i < header.polyCount; i++)
             {
                 NavmeshPoly poly = polys[i];
@@ -433,7 +481,7 @@ namespace org.critterai.nav.u3d
                     continue;
 
                 NavmeshDetailMesh mesh = meshes[i];
-                float[] tv = new float[9];
+                Vector3[] tv = new Vector3[3];
 
                 for (int j = 0, nj = (int)poly.vertCount; j < nj; j++)
                 {
@@ -472,8 +520,8 @@ namespace org.critterai.nav.u3d
 
                     GL.Color(c);
 
-                    int pVertA = poly.indices[j] * 3;
-                    int pVertB = poly.indices[(j + 1) % nj] * 3;
+                    int pVertA = poly.indices[j];
+                    int pVertB = poly.indices[(j + 1) % nj];
 
                     for (int k = 0; k < mesh.triCount; k++)
                     {
@@ -483,18 +531,14 @@ namespace org.critterai.nav.u3d
                             int iVert = detailTris[pTri + m];
                             if (iVert < poly.vertCount)
                             {
-                                int pv = poly.indices[iVert] * 3;
-                                tv[m * 3 + 0] = verts[pv + 0];
-                                tv[m * 3 + 1] = verts[pv + 1];
-                                tv[m * 3 + 2] = verts[pv + 2];
+                                int pv = poly.indices[iVert];
+                                tv[m] = verts[pv];
                             }
                             else
                             {
                                 int pv = (int)(mesh.vertBase 
-                                    + (iVert - poly.vertCount)) * 3;
-                                tv[m * 3 + 0] = detailVerts[pv + 0];
-                                tv[m * 3 + 1] = detailVerts[pv + 1];
-                                tv[m * 3 + 2] = detailVerts[pv + 2];
+                                    + (iVert - poly.vertCount));
+                                tv[m] = detailVerts[pv];
                             }
                         }
                         for (int m = 0, n = 2; m < 3; n = m++)
@@ -502,38 +546,34 @@ namespace org.critterai.nav.u3d
                             if (((detailTris[pTri + 3] >> (n * 2)) & 0x3) == 0)
                                 // Skip inner detail edges.
                                 continue;
+
                             float distN = Line2.GetPointLineDistanceSq(
-                                tv[n * 3 + 0], tv[n * 3 + 2]
-                                , verts[pVertA + 0], verts[pVertA + 2]
-                                , verts[pVertB + 0], verts[pVertB + 2]);
+                                new Vector2(tv[n].x, tv[n].z)
+                                , new Vector2(verts[pVertA].x, verts[pVertA].z)
+                                , new Vector2(verts[pVertB].x, verts[pVertB].z));
                             float distM = Line2.GetPointLineDistanceSq(
-                                tv[m * 3 + 0], tv[m * 3 + 2]
-                                , verts[pVertA + 0], verts[pVertA + 2]
-                                , verts[pVertB + 0], verts[pVertB + 2]);
+                                new Vector2(tv[m].x, tv[m].z)
+                                , new Vector2(verts[pVertA].x, verts[pVertA].z)
+                                , new Vector2(verts[pVertB].x, verts[pVertB].z));
+
                             if (distN < thr && distM < thr)
                             {
-                                GL.Vertex3(tv[n * 3 + 0]
-                                    , tv[n * 3 + 1]
-                                    , tv[n * 3 + 2]);
-                                GL.Vertex3(tv[m * 3 + 0]
-                                    , tv[m * 3 + 1]
-                                    , tv[m * 3 + 2]);
+                                GL.Vertex(tv[n]);
+                                GL.Vertex(tv[m]);
                             }
                         }
                     }
                 }
             }
-            GL.End();
         }
 
         /// <summary>
         /// Returns the 3D centroids of the provided navigation mesh polygons.
         /// </summary>
         /// <remarks>
-        /// <para>If a polygon does not exist within the mesh, its associated
-        /// centroid will not be altered.  So some centroid data will be
-        /// invalid if <paramref name="polyCount"/> is not equal to the result
-        /// count.</para>
+        /// <para>If a polygon does not exist within the mesh, its associated centroid will not 
+        /// be altered.  So some centroid data will be invalid if  <paramref name="polyCount"/> 
+        /// is not equal to the result count.</para>
         /// </remarks>
         /// <param name="mesh">The navigation mesh containing the polygons.
         /// </param>
@@ -580,7 +620,7 @@ namespace org.critterai.nav.u3d
             NavmeshPoly[] polys = new NavmeshPoly[header.polyCount];
             tile.GetPolys(polys);
 
-            float[] verts = new float[header.vertCount * 3];
+            Vector3[] verts = new Vector3[header.vertCount];
             tile.GetVerts(verts);
 
             int resultCount = 0;
@@ -607,7 +647,7 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Gets the centroid for a polygon.
         /// </summary>
-        private static Vector3 GetCentroid(float[] verts
+        private static Vector3 GetCentroid(Vector3[] verts
             , ushort[] indices
             , int vertCount)
         {
@@ -617,10 +657,8 @@ namespace org.critterai.nav.u3d
 
             for (int i = 0; i < vertCount; i++)
             {
-                int p = (ushort)indices[i] * 3;
-                result.x += verts[p];
-                result.y += verts[p + 1];
-                result.z += verts[p + 2];
+                int p = (ushort)indices[i];
+                result += verts[p];
             }
 
             result.x /= vertCount;
@@ -629,5 +667,34 @@ namespace org.critterai.nav.u3d
 
             return result;
         }
+
+        #endregion
+
+        #region Miscellaneous
+
+        /// <summary>
+        /// Draws a debug visualization of corner data.
+        /// </summary>
+        /// <param name="corners">The corners to draw.</param>
+        public static void Draw(CornerData corners)
+        {
+            if (corners.cornerCount == 0)
+                return;
+
+            DebugDraw.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+
+            GL.Color(cornerColor);
+
+            for (int i = 0; i < corners.cornerCount; i++)
+            {
+                DebugDraw.AppendXMarker(corners.verts[i], cornerScale);
+            }
+
+            GL.End();
+        }
+
+        #endregion
     }
 }
