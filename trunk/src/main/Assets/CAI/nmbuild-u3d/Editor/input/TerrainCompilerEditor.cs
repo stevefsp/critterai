@@ -24,9 +24,11 @@ using UnityEditor;
 using org.critterai.u3d.editor;
 using org.critterai.geom;
 using org.critterai.nmbuild.u3d.editor;
-using org.critterai.nmbuild.u3d;
 using org.critterai.u3d;
 
+/// <summary>
+/// <see cref="TerrainCompiler"/> editor.
+/// </summary>
 [CustomEditor(typeof(TerrainCompiler))]
 public class TerrainCompilerEditor
     : Editor

@@ -23,7 +23,7 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.u3d.editor;
 using System;
-using org.critterai.nav.editor;
+using org.critterai.nav.u3d.editor;
 
 namespace org.critterai.nmbuild.u3d.editor
 {

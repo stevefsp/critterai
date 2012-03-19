@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using org.critterai.nav;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
-using org.critterai.nmbuild.u3d;
 
 /// <summary>
 /// <see cref="MeshAreaDef"/> editor.
@@ -90,13 +89,8 @@ public class MeshAreaDefEditor
             {
                 EditorGUILayout.BeginHorizontal();
 
-#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
-                Mesh mesh = (Mesh)
-                    EditorGUILayout.ObjectField(meshes[i], typeof(Mesh));
-#else
                 Mesh mesh = (Mesh)
                     EditorGUILayout.ObjectField(meshes[i], typeof(Mesh), false);
-#endif
 
                 if (mesh == null || mesh == meshes[i] || !meshes.Contains(mesh))
                     meshes[i] = mesh;

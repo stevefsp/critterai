@@ -22,27 +22,70 @@
 using System.Collections.Generic;
 using org.critterai.geom;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using org.critterai.nmgen;
 using UnityEngine;
 
+/// <summary>
+/// Loads and compiles a terrain component.
+/// </summary>
+/// <remarks>
+/// <para>
+/// The compiler is associated with a TerrainData asset.  If the scene contains a Terrain component
+/// that references the TerrainData it will be loaded and compiled.  Only one Terrain will ever be
+/// loaded. (Mutliple Terrain components referencing the same TerrainData is not supported.)
+/// </para>
+/// </remarks>
 [System.Serializable]
 public sealed class TerrainCompiler
     : InputBuildProcessor
 {
+    /// <summary>
+    /// The assset to use for the compile.
+    /// </summary>
     public TerrainData terrainData;
+
+    /// <summary>
+    /// True if tree's should also be triangulated.
+    /// </summary>
     public bool includeTrees;
 
     [SerializeField]
     private float mResolution = 0.1f;
 
+    /// <summary>
+    /// The resolution factor to use when triangulating the terrain surface. 
+    /// [0.001f &lt;= value &lt;= 1]
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The TerrainData heightfield has a build-in resolution that is usually much higher than
+    /// required for building the navigation mesh.  For example, a 1024x1024 heightmap for a
+    /// 2000x2000 unit terrain can generate over 8 million triangles at 100% resolution.
+    /// This property allows the resolution to be scaled down.  A good place to start for a normal
+    /// terrain is 0.1.
+    /// </para>
+    /// </remarks>
     public float Resolution
     {
         get { return mResolution; }
-        set { mResolution = Mathf.Clamp01(value); }
+        set { mResolution = Mathf.Max(0.001f, Mathf.Clamp01(value)); }
     }
 
+    /// <summary>
+    /// Duplicates allowed. (Always true.)
+    /// </summary>
     public override bool DuplicatesAllowed { get { return true; } }
+
+    /// <summary>
+    /// The priority of the processor.
+    /// </summary>    
+    public override int Priority { get { return NMBuild.MinPriority; } }
+
+    internal Terrain GetTerrain()
+    {
+        return GetTerrain(null);
+    }
 
     private Terrain GetTerrain(InputBuildContext context)
     {
@@ -88,14 +131,18 @@ public sealed class TerrainCompiler
         return selected;
     }
 
-    public Terrain GetTerrain() 
-    {
-        return GetTerrain(null);
-    }
-
-    public string Name { get { return name; } }
-    public override int Priority { get { return NMBuild.MinPriority; } }
-
+    /// <summary>
+    /// Processes the context.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Processes during the <see cref="InputBuildState.LoadComponents"/> 
+    /// and <see cref="InputBuildState.CompileInput"/> states.
+    /// </para>
+    /// </remarks>
+    /// <param name="state">The current state of the input build.</param>
+    /// <param name="context">The input context to process.</param>
+    /// <returns>False if the input build should abort.</returns>
     public override bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (context != null && terrainData)
@@ -126,14 +173,14 @@ public sealed class TerrainCompiler
         if (!item)
         {
             context.LogWarning(string.Format("{0}: No terrain found using {1} terrain data."
-                , Name, terrainData.name)
+                , name, terrainData.name)
                 , this);
         }
         else
         {
             context.Load(item);
             context.Log(string.Format("{0}: Loaded the {1} terrain object."
-                , Name, terrainData.name)
+                , name, terrainData.name)
                 , this);
         }
     }

@@ -20,15 +20,18 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
+    /// <summary>
+    /// The state of a <see cref="NavmeshBuild"/> asset.
+    /// </summary>
     public enum NavmeshBuildState
     {
         /// <summary>
         /// The build is missing core references needed to perform the build.
         /// </summary>
-        /// <remarks>In general, no build operations should be attempted
-        /// until the issue are resolved.</remarks>
+        /// <remarks>In general, no build operations can be performed until the issues are 
+        /// resolved.</remarks>
         Invalid,
 
         /// <summary>
@@ -37,15 +40,16 @@ namespace org.critterai.nmbuild.u3d
         /// <remarks>
         /// <para>The build data may have been left in place purposefully or accidentally.
         /// (E.g. An editor reset, user forgot to exit the build, etc.)</para>
-        /// <para>The next expected action is to either reset the build or set the input data.</para>
+        /// <para>The next expected action is to either reset the build or set the input data.
+        /// </para>
         /// </remarks>
         NeedsRecovery,
 
         /// <summary>
-        /// The build has no input data and no build data.
+        /// The build has not been started. (Has no input data and no build data.)
         /// </summary>
         /// <remarks>
-        /// <para>The next expected action is to set the input data.</para>
+        /// <para>The next step is to set the input data.</para>
         /// </remarks>
         Inactive,
 
@@ -53,7 +57,7 @@ namespace org.critterai.nmbuild.u3d
         /// The build has input data, but no build data.
         /// </summary>
         /// <remarks>
-        /// <para>The next expected step is to set the configuration and prepare the build.</para>
+        /// <para>The next step is to set the configuration and prepare the build.</para>
         /// </remarks>
         InputCompiled,
 

@@ -23,8 +23,11 @@ using org.critterai.nmgen;
 using UnityEditor;
 using UnityEngine;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
+    /// <summary>
+    /// A navigation mesh build context.
+    /// </summary>
     public class UnityBuildContext
         : BuildContext
     {
@@ -32,6 +35,9 @@ namespace org.critterai.nmbuild.u3d
 
         private static bool mTraceEnabled;
 
+        /// <summary>
+        /// True if the owner of the context should periodically post trace messages.
+        /// </summary>
         public static bool TraceEnabled
         {
             get { return mTraceEnabled; }
@@ -45,7 +51,21 @@ namespace org.critterai.nmbuild.u3d
             }
         }
 
-        public void PostError(string summary, Object context)
+        /// <summary>
+        /// Flushes all log messages to the console as an error.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The log will be reset.
+        /// </para>
+        /// <para>
+        /// This method should only be used by the owner of the context.  Other context users,
+        /// such as build processors, should use the <see cref="BuildContext.LogError"/> method.
+        /// </para>
+        /// </remarks>
+        /// <param name="summary">The error summary.</param>
+        /// <param name="context">The Unity object context. (Optional)</param>
+        internal void PostError(string summary, Object context)
         {
             Debug.LogError(string.Format("{0}\n{1}"
                     , summary
@@ -54,13 +74,45 @@ namespace org.critterai.nmbuild.u3d
             ResetLog();
         }
 
-        public void PostError(string summary, string[] messages, Object context)
+        /// <summary>
+        /// Appends the specified messages to the log then flushes all log messages to the console 
+        /// as an error.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The log will be reset.
+        /// </para>
+        /// <para>
+        /// This method should only be used by the owner of the context.  Other context users,
+        /// such as build processors, should use the <see cref="BuildContext.LogError"/> method.
+        /// </para>
+        /// </remarks>
+        /// <param name="summary">The error summary.</param>
+        /// <param name="messages">Messages to append to the log before posting to the console.
+        /// (Optional)
+        /// </param>
+        /// <param name="context">The Unity object context. (Optional)</param>
+        internal void PostError(string summary, string[] messages, Object context)
         {
             Log(messages);
             PostError(summary, context);
         }
 
-        public void PostTrace(string summary, Object context)
+        /// <summary>
+        /// Flushes all log messages to the console.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The log will be reset.
+        /// </para>
+        /// <para>
+        /// This method should only be used by the owner of the context.  Other context users,
+        /// such as build processors, should use the standard log methods.
+        /// </para>
+        /// </remarks>
+        /// <param name="summary">The trace summary.</param>
+        /// <param name="context">The Unity object context. (Optional)</param>
+        internal void PostTrace(string summary, Object context)
         {
             if (mTraceEnabled)
             {
@@ -72,7 +124,24 @@ namespace org.critterai.nmbuild.u3d
             ResetLog();
         }
 
-        public void PostTrace(string summary, string[] messages, Object context)
+        /// <summary>
+        /// Appends the specified messages to the log then flushes all log messages to the console.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The log will be reset.
+        /// </para>
+        /// <para>
+        /// This method should only be used by the owner of the context.  Other context users,
+        /// such as build processors, should use the standard log methods.
+        /// </para>
+        /// </remarks>
+        /// <param name="summary">The trace summary.</param>
+        /// <param name="messages">Messages to append to the log before posting to the console.
+        /// (Optional)
+        /// </param>
+        /// <param name="context">The Unity object context. (Optional)</param>
+        internal void PostTrace(string summary, string[] messages, Object context)
         {
             if (mTraceEnabled)
             {

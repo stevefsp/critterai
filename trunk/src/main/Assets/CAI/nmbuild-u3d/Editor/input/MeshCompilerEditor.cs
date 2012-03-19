@@ -23,7 +23,6 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
-using org.critterai.nmbuild.u3d;
 
 /// <summary>
 /// <see cref="MeshCompiler"/> editor.

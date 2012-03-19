@@ -21,7 +21,7 @@
  */
 using UnityEngine;
 
-namespace org.critterai.nmbuild.u3d
+namespace org.critterai.nmbuild.u3d.editor
 {
 	internal sealed class MatchPredicate
 	{

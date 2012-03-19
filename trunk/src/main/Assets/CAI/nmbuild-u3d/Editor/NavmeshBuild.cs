@@ -23,11 +23,13 @@ using System.Collections.Generic;
 using org.critterai.nav;
 using org.critterai.nav.u3d;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
 using org.critterai.nmbuild.u3d.editor;
 using org.critterai.nmgen;
 using UnityEngine;
 
+/// <summary>
+/// A navigation mesh build.
+/// </summary>
 [System.Serializable]
 public sealed class NavmeshBuild
     : ScriptableObject
@@ -47,11 +49,14 @@ public sealed class NavmeshBuild
      * there is build data.
      */
 
+    /// <summary>
+    /// The minimum supported tile size for tiled navigation meshes.
+    /// </summary>
     public const int MinAllowedTileSize = 12;
 
     #region Serialized Fields
 
-    public List<InputBuildProcessor> inputProcessors = new List<InputBuildProcessor>();
+    internal List<InputBuildProcessor> inputProcessors = new List<InputBuildProcessor>();
 
     [SerializeField]
     private NavmeshBuildType mBuildType = NavmeshBuildType.Standard;
@@ -90,6 +95,9 @@ public sealed class NavmeshBuild
 
     #endregion
 
+    /// <summary>
+    /// The state of the build.
+    /// </summary>
     public NavmeshBuildState BuildState
     {
         get
@@ -112,10 +120,10 @@ public sealed class NavmeshBuild
         }
     }
 
-    public NavmeshBuildType BuildType
+    internal NavmeshBuildType BuildType
     {
         get { return mBuildType; }
-        internal set
+        set
         {
             if (value != mBuildType)
             {
@@ -161,10 +169,10 @@ public sealed class NavmeshBuild
         get { return (mTarget == null) ? false : mTarget.HasNavmesh; }
     }
 
-    public SceneQuery SceneQuery
+    internal SceneQuery SceneQuery
     {
         get { return mSceneQuery; }
-        internal set
+        set
         {
             if (mSceneQuery != value)
             {
@@ -174,10 +182,10 @@ public sealed class NavmeshBuild
         }
     }
 
-    public CAINavmeshData BuildTarget
+    internal CAINavmeshData BuildTarget
     {
         get { return mTarget; }
-        internal set
+        set
         {
             if (mTarget != value)
             {
@@ -189,13 +197,6 @@ public sealed class NavmeshBuild
 
     internal NMGenConfig Config { get { return mConfig; } }
 
-    /// <summary>
-    /// True if build data is available.
-    /// </summary>
-    /// <remarks>
-    /// <para>The presence of build data does not indicate that builds are possible.
-    /// Use <see cref="BuildState"/> to check for buildability.</para>
-    /// </remarks>
     internal bool HasBuildData { get { return mBuildData.IsValid; } }
 
     internal TileBuildData BuildData 
@@ -215,6 +216,10 @@ public sealed class NavmeshBuild
         return false;
     }
 
+    /// <summary>
+    /// Resets the build to the <see cref="NavmeshBuildState.Inactive"/> state, clearing all 
+    /// build data.
+    /// </summary>
     public void ResetBuild()
     {
         mBuildData = new TileBuildData();

@@ -25,6 +25,9 @@ using System.Collections.Generic;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
 
+/// <summary>
+/// <see cref="TagInputFilter"/> editor.
+/// </summary>
 [CustomEditor(typeof(TagInputFilter))]
 public class TagInputFilterEditor
     : Editor

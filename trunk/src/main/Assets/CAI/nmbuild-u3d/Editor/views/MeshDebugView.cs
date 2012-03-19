@@ -21,7 +21,7 @@
  */
 using org.critterai.geom;
 using org.critterai.nav;
-using org.critterai.nav.editor;
+using org.critterai.nav.u3d.editor;
 using org.critterai.nav.u3d;
 using org.critterai.nmgen;
 using org.critterai.u3d;

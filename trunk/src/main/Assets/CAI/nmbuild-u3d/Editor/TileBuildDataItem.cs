@@ -24,6 +24,9 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild
 {
+    /// <summary>
+    /// Undocumented class meant for internal use only.
+    /// </summary>
     [System.Serializable]
 	public sealed class BuildDataItem
 	{
@@ -31,27 +34,57 @@ namespace org.critterai.nmbuild
          * 
          * Odd design due to the need to support Unity serialization.
          * 
+         * Arrays are set to zero length at construction.  Zero length represents an invalid
+         * state.
+         * 
          */
 
-        public const int EmptyId = -1;
-        public const int ErrorId = -2;
-        public const int QueuedId = -3;
-        public const int InProgressId = -4;
+        internal const int EmptyId = -1;
+        internal const int ErrorId = -2;
+        internal const int QueuedId = -3;
+        internal const int InProgressId = -4;
 
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public int tileX;
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public int tileZ;
 
-        // Arrays are set to zero length at construction.
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public byte[] polyMesh;
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public byte[] detailMesh;
 
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public byte[] bakedTile;
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public int bakedPolyCount;
 
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public byte[] workingTile;
+
+        /// <summary>
+        /// Undocumented.
+        /// </summary>
         public int workingPolyCount;
 
-        public TileBuildState TileState
+        internal TileBuildState TileState
         {
             get 
             {
@@ -90,13 +123,13 @@ namespace org.critterai.nmbuild
             Reset();
         }
 
-        public void SetAsEmpty()
+        internal void SetAsEmpty()
         {
             ClearUnbaked();
             workingPolyCount = EmptyId;
         }
 
-        public void ClearUnbaked()
+        internal void ClearUnbaked()
         {
             polyMesh = new byte[0];
             detailMesh = new byte[0];
@@ -105,25 +138,25 @@ namespace org.critterai.nmbuild
             workingPolyCount = 0;  // This clears special states.
         }
 
-        public void SetAsFailed()
+        internal void SetAsFailed()
         {
             ClearUnbaked();
             workingPolyCount = ErrorId;
         }
 
-        public void SetAsQueued()
+        internal void SetAsQueued()
         {
             ClearUnbaked();
             workingPolyCount = QueuedId;
         }
 
-        public void SetAsInProgress()
+        internal void SetAsInProgress()
         {
             ClearUnbaked();
             workingPolyCount = InProgressId;
         }
 
-        public void SetWorkingData(PolyMesh polyMesh, PolyMeshDetail detailMesh)
+        internal void SetWorkingData(PolyMesh polyMesh, PolyMeshDetail detailMesh)
         {
             if (polyMesh == null
                 || polyMesh.PolyCount == 0)
@@ -140,7 +173,7 @@ namespace org.critterai.nmbuild
                 this.detailMesh = detailMesh.GetSerializedData(false);
         }
 
-        public void SetWorkingData(NavmeshTileData tile, int polyCount)
+        internal void SetWorkingData(NavmeshTileData tile, int polyCount)
         {
             if (tile == null || polyCount <= 0)
             {
@@ -152,30 +185,7 @@ namespace org.critterai.nmbuild
             workingPolyCount = polyCount;
         }
 
-        //[System.Obsolete]
-        //public void SetWorkingData(TileBuildResult source)
-        //{
-        //    if (source == null
-        //        || source.NoResult
-        //        || source.PolyMesh == null
-        //        || source.Tile == null
-        //        || source.PolyCount <= 0)
-        //    {
-        //        SetAsEmpty();
-        //        return;
-        //    }
-
-        //    polyMesh = source.PolyMesh.GetSerializedData(false);
-        //    workingTile = source.Tile.GetData();
-        //    workingPolyCount = source.PolyCount;
-
-        //    if (source.DetailMesh == null)
-        //        detailMesh = new byte[0];
-        //    else
-        //        detailMesh = source.DetailMesh.GetSerializedData(false);
-        //}
-
-        public bool SetAsBaked(byte[] tile, int polyCount)
+        internal bool SetAsBaked(byte[] tile, int polyCount)
         {
             if (tile == null || tile.Length == 0 || polyCount <= 0)
             {
@@ -189,7 +199,7 @@ namespace org.critterai.nmbuild
             return true;
         }
 
-        public bool SetAsBaked()
+        internal bool SetAsBaked()
         {
             if (workingTile.Length > 0)
             {
@@ -202,7 +212,7 @@ namespace org.critterai.nmbuild
             return false;
         }
 
-        public void Reset()
+        internal void Reset()
         {
             polyMesh = new byte[0];
             detailMesh = new byte[0];

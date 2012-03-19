@@ -19,12 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.nmbuild.u3d;
 using org.critterai.nmbuild.u3d.editor;
 using org.critterai.u3d.editor;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Handles advanced build features for <see cref="NavmeshBuild"/> assets.
+/// </summary>
 public sealed class NavmeshBuildManager
     : EditorWindow
 {
@@ -35,7 +37,7 @@ public sealed class NavmeshBuildManager
      * A scene change is taken care of by the heirarchy change event.
      */
 
-    public const string WindowTitle = "Navmesh Build";
+    private const string WindowTitle = "Navmesh Build";
     private const int NoSelection = -1;  // Must be < 0;
 
     private static BuildProcessor mProcessor;
@@ -151,6 +153,9 @@ public sealed class NavmeshBuildManager
         BuildSelector.Instance.Select(build);
     }
 
+    /// <summary>
+    /// Opens and focus' the build manager window.
+    /// </summary>
     [MenuItem("CritterAI/Namesh Build Manager", false, EditorUtil.ManagerGroup)]
     public static void OpenWindow()
     {

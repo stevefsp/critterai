@@ -21,29 +21,64 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
-using org.critterai.nmbuild.u3d;
+using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
+/// <summary>
+/// Assigns areas to components based on tags.
+/// </summary>
 [System.Serializable]
 public class TagAreaDef 
     : InputBuildProcessor
 {
+    /// <summary>
+    /// True if components whose parents have one of the tags should be assigned the area.
+    /// </summary>
     public bool recursive;
+
+    /// <summary>
+    /// Tags to associate with areas.
+    /// </summary>
     public List<string> tags;
+
+    /// <summary>
+    /// The area associated with each tag.
+    /// </summary>
     public List<byte> areas;
 
     [SerializeField]
     private int mPriority = NMBuild.DefaultPriority;
 
+    /// <summary>
+    /// The priority of the processor.
+    /// </summary>    
     public override int Priority { get { return mPriority; } }
 
+    /// <summary>
+    /// Sets the priority.
+    /// </summary>
+    /// <param name="value">The new priority.</param>
     public void SetPriority(int value)
     {
         mPriority = NMBuild.ClampPriority(value);
     }
 
+    /// <summary>
+    /// Duplicates allowed. (Always true.)
+    /// </summary>
     public override bool DuplicatesAllowed { get { return true; } }
 
+    /// <summary>
+    /// Processes the context.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Applied during the <see cref="InputBuildState.ApplyAreaModifiers"/> state.
+    /// </para>
+    /// </remarks>
+    /// <param name="state">The current state of the input build.</param>
+    /// <param name="context">The input context to process.</param>
+    /// <returns>False if the input build should abort.</returns>
     public override bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state != InputBuildState.ApplyAreaModifiers || tags.Count == 0)

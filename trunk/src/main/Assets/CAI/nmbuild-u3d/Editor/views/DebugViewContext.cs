@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-using org.critterai.nav.editor;
+using org.critterai.nav.u3d.editor;
 using UnityEngine;
 
 namespace org.critterai.nmbuild.u3d.editor
