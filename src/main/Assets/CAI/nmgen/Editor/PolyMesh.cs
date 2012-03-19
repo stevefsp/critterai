@@ -46,9 +46,6 @@ namespace org.critterai.nmgen
     /// </para>
     /// <para>This class is moslty opaque.  The <see cref="PolyMeshData"/> 
     /// class provides the ability to inspect and update the content.</para>
-    /// <para>This object is normally built using one of the standard build 
-    /// processes.  E.g. <see cref="Build"/> 
-    /// and <see cref="NMGen.BuildPolyMesh"/>.</para>
     /// <para>This class is not compatible with Unity serialization.
     /// The <see cref="GetSerializedData"/> method can be used for
     /// manual serialization within Unity.</para>

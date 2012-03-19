@@ -366,7 +366,7 @@ namespace org.critterai.nmgen
         /// <param name="verts">The triangle vertices.
         /// [Form: (ax, ay, ax, bx, by, bz, cx, cy, cz)]</param>
         /// <param name="area">The id of the area the triangle belongs to.
-        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>]</param>
+        /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>]</param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
         /// [Normal: 1]</param>
@@ -392,7 +392,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use for the operation</param>
         /// <param name="mesh">The triangle mesh.</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] 
+        /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>] 
         /// [Size: >= mesh.triCount]
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
@@ -417,10 +417,25 @@ namespace org.critterai.nmgen
                 , flagMergeThreshold);
         }
 
+        /// <summary>
+        /// Voxelizes the triangles from the provided <see cref="ChunkyTriMesh"/> into the heightfield.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The chunks that are voxelized is controled by the bounds parameters.
+        /// </para>
+        /// </remarks>
+        /// <param name="context">The build context.</param>
+        /// <param name="mesh">The mesh.</param>
+        /// <param name="boundsMin">The minimum bounds for the mesh query.</param>
+        /// <param name="boundsMax">The maximum bounds for the mesh query.</param>
+        /// <param name="flagMergeThreshold">The distance where the
+        /// walkable flag is favored over the non-walkable flag. [Limit: >= 0] [Normal: 1]</param>
+        /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
             , ChunkyTriMesh mesh
-            , Vector3 bmin
-            , Vector3 bmax
+            , Vector3 boundsMin
+            , Vector3 boundsMax
             , int flagMergeThreshold)
         {
             if (IsDisposed || mesh == null || mesh.IsDisposed)
@@ -428,7 +443,9 @@ namespace org.critterai.nmgen
 
             List<ChunkyTriMeshNode> nodeList = new List<ChunkyTriMeshNode>();
             
-            int triCount =  mesh.GetChunks(bmin.x, bmin.z, bmax.x, bmax.z, nodeList);
+            int triCount =  mesh.GetChunks(boundsMin.x, boundsMin.z
+                , boundsMax.x, boundsMax.z
+                , nodeList);
 
             if (triCount == 0)
                 return true;
@@ -458,7 +475,7 @@ namespace org.critterai.nmgen
         /// [Form: vertAIndex, vertBIndex, vertCIndex) * triCount] 
         /// (No buffering allowed.)</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] [Size: >= triCount]
+        /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>] [Size: >= triCount]
         /// </param>
         /// <param name="flagMergeThreshold">The distance where the
         /// walkable flag is favored over the non-walkable flag. [Limit: >= 0]
@@ -488,9 +505,9 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="verts">The triangles.
-        /// [Form: (ax, ay, az, bx, by, bz, cx, by, cx) * triCount]</param>
+        /// [Form: (vertA, vertB, vertC) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
-        /// [Limit: &lt;= <see cref="NMGen.WalkableArea"/>] [Size: >= triCount]</param>
+        /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>] [Size: >= triCount]</param>
         /// <param name="triCount">The number of triangles in the vertex
         /// array.</param>
         /// <param name="flagMergeThreshold">The distance where the

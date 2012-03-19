@@ -387,7 +387,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Derives the <see cref="MergRegionArea"/> from a world units value.
+        /// Derives the <see cref="MergeRegionArea"/> from a world units value.
         /// </summary>
         /// <remarks>
         /// <para>Snapping to the base unit type will occur.</para>
@@ -429,7 +429,7 @@ namespace org.critterai.nmgen
         /// <para>Snapping to the base unit type will occur.</para>
         /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
         /// </remarks>
-        /// <param name="worldStep">The walkable radius in world units.</param>
+        /// <param name="worldLength">The walkable radius in world units.</param>
         public void SetMaxEdgeLength(float worldLength)
         {
             MaxEdgeLength = (int)Math.Ceiling(worldLength / xzCellSize);

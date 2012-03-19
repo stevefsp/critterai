@@ -118,6 +118,9 @@ namespace org.critterai.nmgen
             mNodeCount = nodeCount;
         }
 
+        /// <summary>
+        /// Destructor.
+        /// </summary>
         ~ChunkyTriMesh()
         {
             Dispose();
