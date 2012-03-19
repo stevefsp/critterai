@@ -24,10 +24,40 @@ using UnityEngine;
 namespace org.critterai.u3d
 {
     /// <summary>
-    /// Provides various drawing methods suitable for debug views.
+    /// Provides various GL-based drawing methods suitable for debug views.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Append methods require the caller to handle all GL setup and teardown. Unless otherwise
+    /// noted they expect GL to be in GL.Lines mode.
+    /// </para>
+    /// <para>
+    /// Example of using append methods:
+    /// </para>
+    /// <code>
+    /// Vector3 startPos = new Vector3(1, 0, 0);
+    /// Vector3 endPos = new Vector3(10, 15, 20);
+    /// float scale = 1;
+    /// float height = 5;
+    /// 
+    /// DebugDraw.SimpleMaterial.SetPass(0);
+    ///
+    /// GL.Begin(GL.LINES);
+    /// 
+    /// GL.Color(Color.green);
+    /// DebugDraw.AppendXMarker(startPos, scale);
+    /// DebugDraw.AppendArc(startPos, endPos, height, scale * 0, scale * 0.1f);
+    /// 
+    /// GL.Color(Color.red)
+    /// DebugDraw.AppendXMarker(endPos, scale);
+    ///
+    /// GL.End();
+    /// </code>
+    /// </remarks>
     public static class DebugDraw
     {
+        private const float DarkenFactor = 2;
+
         private const int CircleSegments = 40;
         private const float Epsilon = 0.001f;
 
@@ -56,7 +86,6 @@ namespace org.critterai.u3d
 
         /// <summary>
         /// A shared material suitable for simple drawing operations. 
-        /// (Such as debug visualizations.)
         /// </summary>
         public static Material SimpleMaterial
         {
@@ -79,21 +108,18 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws a partially transparent diamond at the specified position.
+        /// Draw a diamond shape at the specified position.
         /// </summary>
         /// <remarks>
-        /// <para>A <paramref name="scale"/> of 1.0 will result in a diamond with a
-        /// width and height of 2.0. (Each diamond point will be 1.0 from 
-        /// the position.)</para>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
+        /// <para>
+        /// A <paramref name="scale"/> of 1.0 will result in a diamond with a width and height of 
+        /// 2.0. (Each diamond point will be 1.0 units from the position.)
+        /// </para>
         /// </remarks>
         /// <param name="position">The position.</param>
         /// <param name="scale">The scale of the diamond.</param>
-        /// <param name="color">The color of the diamond.</param>
-        public static void DiamondMarker(Vector3 position
-            , float scale
-            , Color color)
+        /// <param name="color">The surface color of the diamond.</param>
+        public static void DiamondMarker(Vector3 position, float scale, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
@@ -106,7 +132,6 @@ namespace org.critterai.u3d
 
             GL.Begin(GL.TRIANGLES);
 
-            color.a = 0.6f;
             GL.Color(color);
 
             // Top
@@ -149,7 +174,7 @@ namespace org.critterai.u3d
 
             GL.Begin(GL.LINES);
 
-            color.a = 0.9f;
+            color.a *= DarkenFactor;
             GL.Color(color);
 
             // Top
@@ -198,14 +223,13 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws an X-marker at the specified position.
+        /// Draw an X-marker at the specified position.
         /// </summary>
         /// <remarks>
-        /// <para>A <paramref name="scale"/> of 1.0 will result in a marker with a
-        /// width and height of 2.0. (Each point of the x-marker will be 1.0 
-        /// from the position.)</para>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
+        /// <para>
+        /// A <paramref name="scale"/> of 1.0 will result in a marker with a width and height of 
+        /// 2.0. (Each point of the x-marker will be 1.0 from the position.)
+        /// </para>
         /// </remarks>
         /// <param name="position">The position.</param>
         /// <param name="scale">The scale of the marker.</param>
@@ -217,7 +241,6 @@ namespace org.critterai.u3d
             DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
-
             GL.Color(color);
 
             AppendXMarker(position, scale);
@@ -225,8 +248,18 @@ namespace org.critterai.u3d
             GL.End();
         }
 
-        public static void AppendXMarker(Vector3 position
-            , float scale)
+        /// <summary>
+        /// Draw an X-marker at the specified position.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A <paramref name="scale"/> of 1.0 will result in a marker with a width and height of 
+        /// 2.0. (Each point of the x-marker will be 1.0 from the position.)
+        /// </para>
+        /// </remarks>
+        /// <param name="position">The position.</param>
+        /// <param name="scale">The scale of the marker.</param>
+        public static void AppendXMarker(Vector3 position, float scale)
         {
             GL.Vertex(position + Vector3.right * scale);
             GL.Vertex(position + Vector3.left * scale);
@@ -237,26 +270,18 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws an outlined and filled, partially transparent convex polygon.
+        /// Append a filled convex polygon.
         /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="verts">The polygon vertices.
-        /// [(x, y, z) * <paramref name="vertCount"/>]</param>
+        /// <param name="verts">The polygon vertices. [Length: >= <paramref name="vertCount"/>]
+        /// </param>
         /// <param name="vertCount">The number of vertices.</param>
-        /// <param name="color">The color of the polygon. 
-        /// (The alpha is ignored.)</param>
-        public static void ConvexPoly(float[] verts
-            , int vertCount
-            , Color color)
+        /// <param name="color">The color of the polygon surface.</param>
+        public static void ConvexPoly(float[] verts, int vertCount, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.TRIANGLES);
 
-            color.a = 0.4f;
             GL.Color(color);
 
             for (int i = 2; i < vertCount; i++)
@@ -273,7 +298,7 @@ namespace org.critterai.u3d
 
             GL.Begin(GL.LINES);
 
-            color.a = 0.6f;
+            color.a *= DarkenFactor;
             GL.Color(color);
 
             for (int i = 1; i < vertCount; i++)
@@ -286,11 +311,33 @@ namespace org.critterai.u3d
             }
 
             GL.End();
-
         }
 
-        public static void AppendBounds(Vector3 boundsMin
-            , Vector3 boundsMax)
+
+        /// <summary>
+        /// Draw a wireframe axis-aligned bounding box.
+        /// </summary>
+        /// <param name="boundsMin">The minimum bounds.</param>
+        /// <param name="boundsMax">The maximum bounds.</param>
+        /// <param name="color">The wireframe color</param>
+        public static void Bounds(Vector3 boundsMin, Vector3 boundsMax, Color color)
+        {
+            DebugDraw.SimpleMaterial.SetPass(0);
+
+            GL.Begin(GL.LINES);
+            GL.Color(color);
+
+            AppendBounds(boundsMin, boundsMax);
+
+            GL.End();
+        }
+
+        /// <summary>
+        /// Append a wireframe axis-aligned bounding box.
+        /// </summary>
+        /// <param name="boundsMin">The minimum bounds.</param>
+        /// <param name="boundsMax">The maximum bounds.</param>
+        public static void AppendBounds(Vector3 boundsMin, Vector3 boundsMax)
         {
             Vector3 ua = boundsMax;
             Vector3 ub = boundsMax;
@@ -343,37 +390,29 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws a wireframe bounding box.
+        /// Draw a wireframe axis-aligned bounding box representing the extents.
         /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
         /// <param name="position">The center of the bounding box.</param>
-        /// <param name="extents">The extents of the bounding box. 
-        /// (Half-lengths.)
-        /// </param>
-        /// <param name="color">The color of the bounding box. 
-        /// (The alpha is ignored.)</param>
-        public static void Bounds(Vector3 boundsMin
-            , Vector3 boundsMax
-            , Color color)
+        /// <param name="extents">The extents of the bounding box. (Half-lengths.)</param>
+        /// <param name="color">The wireframe color.</param>
+        public static void Extents(Vector3 position, Vector3 extents, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
-
-            color.a = 0.6f;
             GL.Color(color);
 
-            AppendBounds(boundsMin, boundsMax);
+            AppendExtents(position, extents);
 
             GL.End();
         }
 
-
-        public static void AppendExtents(Vector3 position
-            , Vector3 extents)
+        /// <summary>
+        /// Append a wireframe axis-aligned bounding box representing the extents.
+        /// </summary>
+        /// <param name="position">The center of the bounding box.</param>
+        /// <param name="extents">The extents of the bounding box. (Half-lengths.)</param>
+        public static void AppendExtents(Vector3 position, Vector3 extents)
         {
             Vector3 ua = position + extents;
             Vector3 ub = new Vector3(
@@ -435,19 +474,16 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws a wireframe bounding box representing the extents.
+        /// Draw a simple wireframe cylinder with four risers.
         /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="position">The center of the bounding box.</param>
-        /// <param name="extents">The extents of the bounding box. 
-        /// (Half-lengths.)
-        /// </param>
-        /// <param name="color">The color of the bounding box. </param>
-        public static void Extents(Vector3 position
-            , Vector3 extents
+        /// <param name="position">The center point of the cylinder base.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="height">The cylinder height, relative to the base.</param>
+        /// <param name="includeHalf">True if a circle should be drawn halfway from the base to
+        /// the top of the cyclinder.</param>
+        /// <param name="color">The wireframe color.</param>
+        public static void Cylinder(Vector3 position, float radius, float height
+            , bool includeHalf
             , Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
@@ -455,14 +491,20 @@ namespace org.critterai.u3d
             GL.Begin(GL.LINES);
             GL.Color(color);
 
-            AppendExtents(position, extents);
+            AppendCylinder(position, radius, height, includeHalf);
 
             GL.End();
         }
 
-        public static void AppendCylinder(Vector3 position
-            , float radius
-            , float height
+        /// <summary>
+        /// Append a simple wireframe cylinder with four risers.
+        /// </summary>
+        /// <param name="position">The center point of the cylinder base.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="height">The cylinder height, relative to the base.</param>
+        /// <param name="includeHalf">True if a circle should be drawn halfway from the base to
+        /// the top of the cyclinder.</param>
+        public static void AppendCylinder(Vector3 position, float radius, float height
             , bool includeHalf)
         {
             AppendCircle(position, radius);
@@ -482,39 +524,17 @@ namespace org.critterai.u3d
             }
         }
 
-        public static void Cylinder(Vector3 position
-            , float radius
-            , float height
-            , bool includeHalf
-            , Color color)
-        {
-            DebugDraw.SimpleMaterial.SetPass(0);
-
-            GL.Begin(GL.LINES);
-
-            GL.Color(color);
-
-            AppendCylinder(position, radius, height, includeHalf);
-
-            GL.End();
-        }
-
         /// <summary>
-        /// Draws an unfilled circle on the xz-plane.
+        /// Draw an unfilled circle on the xz-plane.
         /// </summary>
-        /// <remarks>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="position">The position.</param>
+        /// <param name="position">The center position.</param>
         /// <param name="radius">The radius.</param>
-        /// <param name="color">The colore of the circle's boundary.</param>
+        /// <param name="color">The color.</param>
         public static void Circle(Vector3 position, float radius, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
-
             GL.Color(color);
 
             AppendCircle(position, radius);
@@ -522,6 +542,11 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Append an unfilled circle on the xz-plane.
+        /// </summary>
+        /// <param name="position">The center position.</param>
+        /// <param name="radius">The radius.</param>
         public static void AppendCircle(Vector3 position, float radius)
         {
             float[] dir = Dir;
@@ -538,31 +563,22 @@ namespace org.critterai.u3d
         }
 
         /// <summary>
-        /// Draws an arrow.
+        /// Draw an arrow.
         /// </summary>
-        /// <remarks>
-        /// <para>The arrow head can be attached to end A and/or end B of the
-        /// specified line segment.</para>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="pointA">The A end of the arrow.</param>
-        /// <param name="pointB">The B end of the arrow.</param>
-        /// <param name="headScaleA">The scale of the A end arrow head.
-        /// (Or zero for no head.)</param>
-        /// <param name="headScaleB">The scale of the B end arrow head.
-        /// (Or zero for no head.)</param>
-        /// <param name="color">The color of the arrow.</param>
-        public static void Arrow(Vector3 pointA
-            , Vector3 pointB
-            , float headScaleA
-            , float headScaleB
+        /// <param name="pointA">Endpoint A.</param>
+        /// <param name="pointB">Endpoint B.</param>
+        /// <param name="headScaleA">The scale of endpoint A arrow head. (Or zero for no head.)
+        /// </param>
+        /// <param name="headScaleB">The scale of the endpoint B arrow head.(Or zero for no head.)
+        /// </param>
+        /// <param name="color">The color.</param>
+        public static void Arrow(Vector3 pointA, Vector3 pointB
+            , float headScaleA, float headScaleB
             , Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
             GL.Begin(GL.LINES);
-
             GL.Color(color);
 
             AppendArrow(pointA, pointB, headScaleA, headScaleB);
@@ -570,27 +586,17 @@ namespace org.critterai.u3d
             GL.End();
         }
 
-
         /// <summary>
-        /// Draws an arrow.
+        /// Append an arrow.
         /// </summary>
-        /// <remarks>
-        /// <para>The arrow head can be attached to end A and/or end B of the
-        /// specified line segment.</para>
-        /// <para>This method uses GL.  So it should usually be called within 
-        /// OnRenderObject().</para>
-        /// </remarks>
-        /// <param name="pointA">The A end of the arrow.</param>
-        /// <param name="pointB">The B end of the arrow.</param>
-        /// <param name="headScaleA">The scale of the A end arrow head.
-        /// (Or zero for no head.)</param>
-        /// <param name="headScaleB">The scale of the B end arrow head.
-        /// (Or zero for no head.)</param>
-        /// <param name="color">The color of the arrow.</param>
-        public static void AppendArrow(Vector3 pointA
-            , Vector3 pointB
-            , float headScaleA
-            , float headScaleB)
+        /// <param name="pointA">Endpoint A.</param>
+        /// <param name="pointB">Endpoint B.</param>
+        /// <param name="headScaleA">The scale of endpoint A arrow head. (Or zero for no head.)
+        /// </param>
+        /// <param name="headScaleB">The scale of the endpoint B arrow head.(Or zero for no head.)
+        /// </param>
+        public static void AppendArrow(Vector3 pointA, Vector3 pointB
+            , float headScaleA, float headScaleB)
         {
             GL.Vertex(pointA);
             GL.Vertex(pointB);
@@ -620,24 +626,18 @@ namespace org.critterai.u3d
 
             GL.Vertex(start);
             GL.Vertex(vbase - offset);
-
-            //GL.Vertex(start);
-            //GL.Vertex3(
-            //      start.x + az.x * headScale + ax.x * headScaleAlt
-            //    , start.y + az.y * headScale + ax.y * headScaleAlt
-            //    , start.z + az.z * headScale + ax.z * headScaleAlt);
-
-            //GL.Vertex(start);
-            //GL.Vertex3(
-            //      start.x + az.x * headScale - ax.x * headScaleAlt
-            //    , start.y + az.y * headScale - ax.y * headScaleAlt
-            //    , start.z + az.z * headScale - ax.z * headScaleAlt);
-        	 
         }
 
-        public static void TriangleMesh(Vector3[] verts
-            , int[] tris
-            , int triCount
+        /// <summary>
+        /// Draw a triangle mesh.
+        /// </summary>
+        /// <param name="verts">The vertices.</param>
+        /// <param name="tris">The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]</param>
+        /// <param name="triCount">The number of triangles.</param>
+        /// <param name="includeEdges">True if the triangle edges should be drawn.</param>
+        /// <param name="color">The surface color.</param>
+        public static void TriangleMesh(Vector3[] verts, int[] tris, int triCount
             , bool includeEdges
             , Color color)
         {
@@ -660,8 +660,7 @@ namespace org.critterai.u3d
             if (!includeEdges)
                 return;
 
-            color.a *= 2;
-
+            color.a *= DarkenFactor;
             GL.Begin(GL.LINES);
             GL.Color(color);
 
@@ -677,10 +676,18 @@ namespace org.critterai.u3d
             GL.End();
         }
 
+        /// <summary>
+        /// Draw a triangle mesh, colored per triangle.
+        /// </summary>
+        /// <param name="verts">The vertices.</param>
+        /// <param name="tris">The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]</param>
+        /// <param name="areas">The color area assigned to the triangle.</param>
+        /// <param name="triCount">The number of triangles.</param>
+        /// <param name="includeEdges">True if the triangle edges should be drawn.</param>
+        /// <param name="surfaceAlpha">The surface alpha.</param>
         public static void TriangleMesh(Vector3[] verts
-            , int[] tris
-            , byte[] areas            
-            , int triCount
+            , int[] tris, byte[] areas, int triCount
             , bool includeEdges
             , float surfaceAlpha)
         {
@@ -699,11 +706,11 @@ namespace org.critterai.u3d
             GL.End();
             GL.Begin(GL.LINES);
 
+            Color c = Color.gray;
+            c.a = surfaceAlpha * DarkenFactor;
+
             for (int i = 0; i < triCount; i++)
             {
-
-                GL.Color(ColorUtil.IntToColor(areas[i], surfaceAlpha * 2)); 
-
                 for (int j = 0; j < 3; j++)
                 {
                     GL.Vertex(verts[tris[i * 3 + j]]);
@@ -715,16 +722,17 @@ namespace org.critterai.u3d
             GL.End();
         }
 
-        public static void Square(Vector3 origin
-            , float width
-            , float depth
-            , Color color
-            , bool fill)
+        /// <summary>
+        /// Draw an axis aligned rectangle on the xz-plane.
+        /// </summary>
+        /// <param name="origin">The mimimum origin.</param>
+        /// <param name="width">The width along the x-axis.</param>
+        /// <param name="depth">The depth along the z-axis.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="fill">True if the rectangle should be filled.</param>
+        public static void Rect(Vector3 origin, float width, float depth, Color color, bool fill)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
-
-            GL.Begin(GL.LINES);
-            GL.Color(color);
 
             Vector3 a = origin;
             Vector3 b = origin;
@@ -736,22 +744,9 @@ namespace org.critterai.u3d
             c.z += depth;
             d.z += depth;
 
-            GL.Vertex(a);
-            GL.Vertex(b);
-            GL.Vertex(b);
-            GL.Vertex(c);
-            GL.Vertex(c);
-            GL.Vertex(d);
-            GL.Vertex(d);
-            GL.Vertex(a);
-
-            GL.End();
-
             if (fill)
             {
                 GL.Begin(GL.TRIANGLES);
-
-                color.a *= 0.2f;
                 GL.Color(color);
 
                 GL.Vertex(a);
@@ -763,21 +758,38 @@ namespace org.critterai.u3d
                 GL.Vertex(d);
 
                 GL.End();
+
+                color.a *= DarkenFactor;
             }
+
+            GL.Begin(GL.LINES);
+            GL.Color(color);
+
+            GL.Vertex(a);
+            GL.Vertex(b);
+            GL.Vertex(b);
+            GL.Vertex(c);
+            GL.Vertex(c);
+            GL.Vertex(d);
+            GL.Vertex(d);
+            GL.Vertex(a);
+
+            GL.End();
         }
 
-        private static Vector3 EvalArc(Vector3 point, Vector3 delta, float h, float u)
-        {
-            return new Vector3(point.x + delta.x * u
-	            , point.y + delta.y * u + h * (1-(u*2-1)*(u*2-1))
-	            , point.z + delta.z * u);
-
-        }
-
-        public static void Arc(Vector3 start, Vector3 end
-            , float height
-            , float startHeadScale
-            , float endHeadScale
+        /// <summary>
+        /// Draws a simple arc.
+        /// </summary>
+        /// <param name="pointA">Endpoint A.</param>
+        /// <param name="pointB">Endpoint B.</param>
+        /// <param name="height">The relative height of the arc.</param>
+        /// <param name="headScaleA">The scale endpoint A arrow head. (Or zero for no head.)
+        /// </param>
+        /// <param name="headScaleB">The scale of endpoint B arrow head.(Or zero for no head.)
+        /// </param>
+        /// <param name="color">The color.</param>
+        public static void Arc(Vector3 pointA, Vector3 pointB, float height
+            , float headScaleA, float headScaleB
             , Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
@@ -785,30 +797,38 @@ namespace org.critterai.u3d
             GL.Begin(GL.LINES);
             GL.Color(color);
 
-            AppendArc(start, end, height, startHeadScale, endHeadScale);
+            AppendArc(pointA, pointB, height, headScaleA, headScaleB);
 
             GL.End();
         }
 
-        public static void AppendArc(Vector3 start, Vector3 end
-            , float height
-            , float startHeadScale
-            , float endHeadScale)
+        /// <summary>
+        /// Appends a simple arc.
+        /// </summary>
+        /// <param name="pointA">Endpoint A.</param>
+        /// <param name="pointB">Endpoint B.</param>
+        /// <param name="height">The relative height of the arc.</param>
+        /// <param name="headScaleA">The scale endpoint A arrow head. (Or zero for no head.)
+        /// </param>
+        /// <param name="headScaleB">The scale of endpoint B arrow head.(Or zero for no head.)
+        /// </param>
+        public static void AppendArc(Vector3 pointA, Vector3 pointB, float height
+            , float headScaleA, float headScaleB)
         {
 	        const int ArcPointCount = 8;
 	        const float Pad = 0.05f;
 	        const float ArcPointsScale = (1.0f - Pad  *2) / ArcPointCount;
 
-            Vector3 delta = end - start;
+            Vector3 delta = pointB - pointA;
 	        float len = delta.magnitude;
 
-	        Vector3 prev = EvalArc(start, delta, len*height, Pad);
+	        Vector3 prev = EvalArc(pointA, delta, len*height, Pad);
 
 	        for (int i = 1; i <= ArcPointCount; ++i)
 	        {
 		        float u = Pad + i * ArcPointsScale;
 
-		        Vector3 pt = EvalArc(start, delta, len*height, u);
+		        Vector3 pt = EvalArc(pointA, delta, len*height, u);
 
                 GL.Vertex(prev);
                 GL.Vertex(pt);
@@ -817,26 +837,38 @@ namespace org.critterai.u3d
 	        }
 
 	        // End arrows
-	        if (startHeadScale > 0.001f)
+	        if (headScaleA > 0.001f)
 	        {
-		        Vector3 p = EvalArc(start, delta, len * height, Pad);
-                Vector3 q = EvalArc(start, delta, len * height, Pad + 0.05f);
-                AppendArrowHead(p, q, startHeadScale);
+		        Vector3 p = EvalArc(pointA, delta, len * height, Pad);
+                Vector3 q = EvalArc(pointA, delta, len * height, Pad + 0.05f);
+                AppendArrowHead(p, q, headScaleA);
 	        }
 
-	        if (endHeadScale > 0.001f)
+	        if (headScaleB > 0.001f)
 	        {
-                Vector3 p = EvalArc(start, delta, len * height, 1 - Pad);
-                Vector3 q = EvalArc(start, delta, len * height, 1 - (Pad + 0.05f));
-                AppendArrowHead(p, q, endHeadScale);
+                Vector3 p = EvalArc(pointA, delta, len * height, 1 - Pad);
+                Vector3 q = EvalArc(pointA, delta, len * height, 1 - (Pad + 0.05f));
+                AppendArrowHead(p, q, headScaleB);
 	        }
         }
 
-        public static void Grid(Vector3 origin
-            , float gridSize
-            , int width
-            , int depth
-            , Color color)
+        private static Vector3 EvalArc(Vector3 point, Vector3 delta, float h, float u)
+        {
+            return new Vector3(point.x + delta.x * u
+                , point.y + delta.y * u + h * (1 - (u * 2 - 1) * (u * 2 - 1))
+                , point.z + delta.z * u);
+
+        }
+
+        /// <summary>
+        /// Draw a simple wireframe grid on the xz-plane.
+        /// </summary>
+        /// <param name="origin">The origin of the grid.</param>
+        /// <param name="gridSize">The grid cell size. [Limit: > 0]</param>
+        /// <param name="width">The number of cells along the x-axis.</param>
+        /// <param name="depth">The number of cells along the z-axis.</param>
+        /// <param name="color">The color.</param>
+        public static void Grid(Vector3 origin, float gridSize, int width, int depth, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 

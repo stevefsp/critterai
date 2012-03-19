@@ -32,8 +32,15 @@ namespace org.critterai.u3d.editor
     internal static class EditorUtil
     {
         public const int AssetGroup = 100;
+        public const int GameObjectGroup = 200;
         public const int ViewGroup = 1000;
         public const int ManagerGroup = 2000;
+
+        public const string MainMenu = "CritterAI/";
+        public const string NavAssetMenu = MainMenu + "Create Nav Asset/";
+        public const string NMGenAssetMenu = MainMenu + "Create NMGen Asset/";
+        public const string NMGenGameObjectMenu = MainMenu + "Create NMGen/";
+        public const string ViewMenu = MainMenu + "View/";
 
         private static GUIStyle mHelpStyle;
         private static GUIStyle mWarningStyle;
@@ -119,11 +126,7 @@ namespace org.critterai.u3d.editor
                 {
                     EditorGUILayout.BeginHorizontal();
 
-#if UNITY_3_0_0	|| UNITY_3_1 || UNITY_3_2 || UNITY_3_3
-                    T item = (T)EditorGUILayout.ObjectField(items[i], typeof(T));
-#else
                     T item = (T)EditorGUILayout.ObjectField(items[i], typeof(T), allowScene);
-#endif
 
                     if (item == items[i] || !items.Contains(item))
                         items[i] = item;
@@ -199,7 +202,8 @@ namespace org.critterai.u3d.editor
             return GUI.changed;
         }
 
-        public static T CreateAsset<T>(ScriptableObject atAsset, string label) where T : ScriptableObject
+        public static T CreateAsset<T>(ScriptableObject atAsset, string label) 
+            where T : ScriptableObject
         {
             string name = typeof(T).ToString();
             string path = GenerateStandardPath(atAsset, name);
@@ -213,11 +217,13 @@ namespace org.critterai.u3d.editor
                 AssetDatabase.SetLabels(result, new string[1] { label });
 
             AssetDatabase.SaveAssets();
+            AssetDatabase.ImportAsset(path);
 
             return result;
         }
 
-        public static T CreateAsset<T>(string label) where T : ScriptableObject
+        public static T CreateAsset<T>(string label) 
+            where T : ScriptableObject
         {
             string name = typeof(T).Name;
             string path = GenerateStandardPath(name);
@@ -230,7 +236,8 @@ namespace org.critterai.u3d.editor
             if (label.Length > 0)
                 AssetDatabase.SetLabels(result, new string[1] { label });
 
-            AssetDatabase.SaveAssets();
+            AssetDatabase.SaveAssets(); 
+            AssetDatabase.ImportAsset(path);
 
             return result;
         }
