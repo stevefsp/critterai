@@ -56,9 +56,6 @@
     <Compile Include="..\..\..\src\main\Assets\CAI\nmbuild-u3d\Editor\views\*.cs">
       <Link>views\fakename.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\src\main\Assets\CAI\util-u3d\Editor\EditorUtil.cs">
-      <Link>shared\EditorUtil.cs</Link>
-    </Compile>
     <Compile Include="..\..\assemblyInfo\cai-nmbuild-u3d-editor.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -79,6 +76,10 @@
     <ProjectReference Include="..\nmgen\cai-nmgen.csproj">
       <Project>{9DFC1FE0-6469-4a04-AB13-9EAC59087802}</Project>
       <Name>cai-nmgen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\util-u3d-editor\cai-util-u3d-editor.csproj">
+      <Project>{1FF01BFD-2593-406A-959E-D4D84CEB662C}</Project>
+      <Name>cai-util-u3d-editor</Name>
     </ProjectReference>
     <ProjectReference Include="..\util-u3d\cai-util-u3d.csproj">
       <Project>{AF812AB8-633B-4e23-ABA7-6D02082FB2EE}</Project>
