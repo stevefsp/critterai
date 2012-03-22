@@ -6,7 +6,7 @@
 	ProjectGUID="{B783B817-8746-4D54-A6CC-664C0A73186F}"
 	RootNamespace="org::critterai"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
