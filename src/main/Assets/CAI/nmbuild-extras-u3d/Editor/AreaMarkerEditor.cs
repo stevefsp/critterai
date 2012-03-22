@@ -23,6 +23,9 @@ using UnityEngine;
 using UnityEditor;
 using org.critterai.u3d;
 
+/// <summary>
+/// Base editor for <see cref="NMGenAreaMarker"/> components.
+/// </summary>
 public class AreaMarkerEditor
     : NMGenComponentEditor
 {
@@ -53,6 +56,11 @@ public class AreaMarkerEditor
         EditorGUILayout.Separator();
     }
 
+    /// <summary>
+    /// Draws the standard gizmo for <see cref="NMGenAreaMarker"/> components.
+    /// </summary>
+    /// <param name="marker">The marker to draw.</param>
+    /// <param name="type">The gizmo type.</param>
     protected static void DrawStandardGizmo(NMGenAreaMarker marker, GizmoType type)
     {
         if (!NMGenAreaMarker.debugEnabled && (type & GizmoType.SelectedOrChild) == 0)

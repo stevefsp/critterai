@@ -247,6 +247,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private void PostProcess()
         {
+            if ((mContext.Options & InputBuildOption.AutoCleanGeometry) != 0)
+            {
+                int removed = mContext.geomCompiler.CleanTriangles();
+                mContext.Log("Cleaned geometry. " + removed + " invalid triangles removed.", this);
+            }
+
             if (RunProcessors())
             {
                 mContext.Log(mState + " complete.", this);
@@ -355,6 +361,8 @@ namespace org.critterai.nmbuild.u3d.editor
                     return inc * 3;
                 case InputBuildState.CompileInput:
                     return inc * 4;
+                case InputBuildState.PostProcess:
+                    return inc * 5;
                 case InputBuildState.Aborted:
                     return 1.0f;
                 case InputBuildState.Complete:
@@ -375,6 +383,8 @@ namespace org.critterai.nmbuild.u3d.editor
                     return "Applying area modifiers...";
                 case InputBuildState.CompileInput:
                     return "Compiling input...";
+                case InputBuildState.PostProcess:
+                    return "Post-processing...";
                 case InputBuildState.Aborted:
                     return "Aborted.";
                 case InputBuildState.Complete:

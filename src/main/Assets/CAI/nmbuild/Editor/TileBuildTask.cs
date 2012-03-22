@@ -140,7 +140,7 @@ namespace org.critterai.nmbuild
             if (tbd == null)
                 return false;
 
-            NavmeshTileData td = new NavmeshTileData(tbd);
+            NavmeshTileData td = NavmeshTileData.Create(tbd);
 
             if (td.Size == 0)
             {

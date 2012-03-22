@@ -277,7 +277,7 @@ namespace org.critterai.nmbuild
 
             foreach (byte val in areas)
             {
-                if (val >= Navmesh.MaxAreas)
+                if (val > Navmesh.MaxArea)
                     return false;
             }
 

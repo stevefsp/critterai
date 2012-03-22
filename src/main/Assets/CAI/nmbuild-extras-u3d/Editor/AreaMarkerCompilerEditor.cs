@@ -24,6 +24,9 @@ using UnityEditor;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
 
+/// <summary>
+/// <see cref="AreaMarkerCompiler"/> editor.
+/// </summary>
 [CustomEditor(typeof(AreaMarkerCompiler))]
 public class AreaMarkerCompilerEditor
     : Editor

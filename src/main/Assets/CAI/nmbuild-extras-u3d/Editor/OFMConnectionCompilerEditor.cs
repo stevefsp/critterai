@@ -24,6 +24,9 @@ using UnityEditor;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
 
+/// <summary>
+/// <see cref="OFMConnectionCompiler"/> editor.
+/// </summary>
 [CustomEditor(typeof(OFMConnectionCompiler))]
 public class OFMConnectionCompilerEditor
     : Editor

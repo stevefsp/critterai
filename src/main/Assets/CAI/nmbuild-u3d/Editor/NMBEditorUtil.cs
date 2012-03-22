@@ -26,17 +26,47 @@ using org.critterai.nmgen;
 
 namespace org.critterai.nmbuild.u3d.editor
 {
-    internal static class NMBEditorUtil
+    /// <summary>
+    /// Provides various navmesh build utility constants.
+    /// </summary>
+    public static class NMBEditorUtil
     {
+        /// <summary>
+        /// The standard label for NMGen and navmesh build related assets.
+        /// </summary>
         public const string AssetLabel = "NMGen";
 
+        /// <summary>
+        /// The menu priority for the hight level build assets.
+        /// </summary>
         public const int BuildGroup = EditorUtil.AssetGroup;
+
+        /// <summary>
+        /// The menu priority for scene query assets.
+        /// </summary>
         public const int SceneGroup = BuildGroup + 100;
+
+        /// <summary>
+        /// The menu priority for input processor filter assets.
+        /// </summary>
         public const int FilterGroup = BuildGroup + 200;
+
+        /// <summary>
+        /// The menu priority for input processor area definition assets.
+        /// </summary>
         public const int AreaGroup = BuildGroup + 300;
+
+        /// <summary>
+        /// The menu priority for input processor compiler assets.
+        /// </summary>
         public const int CompilerGroup = BuildGroup + 400;
 
-        public static NavmeshBuildInfo GetConfig(NavmeshBuild build)
+        /// <summary>
+        /// The menu priority for input post-processor assets.
+        /// </summary>
+        public const int PostProcessGroup = BuildGroup + 500;
+
+        internal static NavmeshBuildInfo GetConfig(NavmeshBuild build)
         {
             NMGenParams config = build.Config.GetConfig();
 

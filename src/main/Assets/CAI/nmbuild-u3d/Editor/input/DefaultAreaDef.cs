@@ -62,7 +62,7 @@ public class DefaultAreaDef
     public override int Priority { get { return NMBuild.MinPriority - 1; } }
 
     /// <summary>
-    /// The priority of the processor.
+    /// Duplicates not allowed. (Always false.)
     /// </summary>
     public override bool DuplicatesAllowed { get { return false; } }
 

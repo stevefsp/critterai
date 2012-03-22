@@ -92,8 +92,10 @@ namespace org.critterai.nmbuild
         /// <returns>False if the build should abort.</returns>
         public bool Process(NMGenState state, NMGenContext context)
         {
+            //UnityEngine.Debug.Log("pset-A");
             foreach (INMGenProcessor p in mProcessors)
             {
+                //UnityEngine.Debug.Log("pset-B");
                 if (!p.ProcessBuild(state, context))
                     return false;
             }

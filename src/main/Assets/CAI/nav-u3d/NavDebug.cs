@@ -162,8 +162,7 @@ namespace org.critterai.nav.u3d
         /// <param name="mesh">The navigation mesh associated with the corridor.
         /// </param>
         /// <param name="corridor">The corridor to draw.</param>
-        public static void Draw(Navmesh mesh
-            , PathCorridorData corridor)
+        public static void Draw(Navmesh mesh, PathCorridorData corridor)
         {
             if (corridor.pathCount == 0)
                 return;
@@ -261,9 +260,7 @@ namespace org.critterai.nav.u3d
         /// <para>The tile will be checked to see if it is in use before it is
         /// drawn.  So there is no need for caller to do so.</para></remarks>
         private static void Draw(NavmeshTile tile
-            , NavmeshQuery query
-            , uint[] markPolys
-            , int markPolyCount
+            , NavmeshQuery query, uint[] markPolys, int markPolyCount
             , int colorId)
         {
             NavmeshTileHeader header = tile.GetHeader();

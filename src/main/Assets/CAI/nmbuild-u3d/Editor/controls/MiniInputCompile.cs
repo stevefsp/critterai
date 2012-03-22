@@ -81,13 +81,16 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NavmeshBuild build = context.Build;
 
+            InputBuildOption options = InputBuildOption.ThreadSafeOnly;
+            options |= (build.AutoCleanGeometry ? InputBuildOption.AutoCleanGeometry : 0);
+
             mBuilder = InputBuilder.Create(build.SceneQuery
                 , build.inputProcessors.ToArray()
-                , InputBuildOption.ThreadSafeOnly);
+                , options);
 
             if (mBuilder == null)
             {
-                FinalizeOnFail("Could not create input builder.");
+                FinalizeOnFail("Could not create input builder.", true);
                 return;
             }
 
@@ -102,7 +105,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (mContext.Build.BuildState == NavmeshBuildState.Invalid)
             {
-                FinalizeOnFail("Build has become invalid. Discarded input compile");
+                FinalizeOnFail("Build has become invalid. Discarded input compile", true);
                 return;
             }
 
@@ -121,11 +124,11 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (mTask.TaskState == BuildTaskState.Aborted)
             {
-                FinalizeOnFail("Input geometry build failed.");
+                FinalizeOnFail("Input geometry build failed.", true);
                 return;
             }
 
-            mGeometry = mTask.Data;
+            mGeometry = mTask.Result;
 
             mLogger.PostTrace("Completed input geometry build.", mTask.Messages, mContext.Build);
             mTask = null;
@@ -147,7 +150,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (mBuilder.State == InputBuildState.Aborted)
             {
-                FinalizeOnFail("Input data compile failed: Builder aborted.");
+                FinalizeOnFail("Input data compile failed: Builder aborted.", true);
                 return;
             }
 
@@ -157,7 +160,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (!InputGeometryBuilder.IsValid(mesh, mAssets.areas))
             {
-                FinalizeOnFail("Input geometry failed validation. (Malformed data.)");
+                FinalizeOnFail("Input geometry failed validation. (Malformed data.)", true);
                 return;
             }
 
@@ -168,7 +171,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (gbuilder == null)
             {
-                FinalizeOnFail("Could not create input geometry builder. (Internal error.)");
+                FinalizeOnFail("Could not create input geometry builder. (Internal error.)", true);
                 return;
             }
 
@@ -180,7 +183,7 @@ namespace org.critterai.nmbuild.u3d.editor
             mTask = InputBuildTask.Create(gbuilder, BuildTaskProcessor.HighPriority);
 
             if (mTask == null)
-                FinalizeOnFail("Task creation failed. (Internal error.)");
+                FinalizeOnFail("Task creation failed. (Internal error.)", true);
             else if (mContext.QueueTask(mTask))
             {
                 mLogger.PostTrace("Completed input build. Submitted geometry build task."
@@ -188,7 +191,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 mState = State.Task;
             }
             else
-                FinalizeOnFail("Task submission failed. (Internal error.");
+                FinalizeOnFail("Task submission failed. (Internal error.)", true);
 
         }
 
@@ -224,10 +227,10 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void Abort()
         {
-            FinalizeOnFail("User requested");
+            FinalizeOnFail("User requested abort.", false);
         }
 
-        private void FinalizeOnFail(string message)
+        private void FinalizeOnFail(string message, bool postError)
         {
             if (mTask != null)
             {
@@ -235,7 +238,8 @@ namespace org.critterai.nmbuild.u3d.editor
                 mTask = null;
             }
 
-            mLogger.PostError(message, mContext.Build);
+            if (postError)
+                mLogger.PostError(message, mContext.Build);
 
             mBuilder = null;
             mGeometry = null;

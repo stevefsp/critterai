@@ -60,6 +60,11 @@ public sealed class NMBuildSettings
             + "\nWill take effect next processor start."
             , EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
+        GUILayout.Space(ControlUtil.MarginSize * 2);
+
+        if (GUILayout.Button("Force Processor Reset"))
+            NavmeshBuildManager.ForceProcessorReset();
+
         GUILayout.EndArea();
     }
 

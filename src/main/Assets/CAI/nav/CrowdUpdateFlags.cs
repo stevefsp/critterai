@@ -46,13 +46,13 @@ namespace org.critterai.nav
 
         /// <summary>
         /// Optimize visibility using 
-        /// <see cref="PathCorridor.OptimizePathVisibility(Vector3, float)"/> .
+        /// <see cref="PathCorridor.OptimizePathVisibility"/> .
         /// </summary>
         OptimizeVis = 0x08,
 
         /// <summary>
         /// Optimize topology using 
-        /// <see cref="PathCorridor.OptimizePathTopology()"/>.
+        /// <see cref="PathCorridor.OptimizePathTopology"/>.
         /// </summary>
         OptimizeTopo = 0x10
     }

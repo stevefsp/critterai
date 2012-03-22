@@ -23,6 +23,9 @@ using org.critterai.u3d.editor;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// <see cref="CylinderAreaMarker"/> editor.
+/// </summary>
 [CustomEditor(typeof(CylinderAreaMarker))]
 public class CylinderAreaMarkerEditor
     : AreaMarkerEditor

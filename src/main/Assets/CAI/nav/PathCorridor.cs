@@ -84,9 +84,8 @@ namespace org.critterai.nav
     /// not be able to accurately find the new location.  Because of this 
     /// limiation, if a position is moved in a large increment, then compare 
     /// the desired and resulting polygon references. If the two do not match, 
-    /// then path replanning may be needed.  E.g. If you move the target, 
-    /// check <see cref="TargetPoly"/> and or <see cref="Target"/> to see if 
-    /// they are as expected.</para>
+    /// then path replanning may be needed.  E.g. If you move the target <see cref="Target"/> to 
+    /// see if it is as expected.</para>
     /// </remarks>
     public sealed class PathCorridor
         : IManagedObject
@@ -101,6 +100,11 @@ namespace org.critterai.nav
 
         private CornerData mCorners;
 
+        /// <summary>
+        /// The corner point for the specified index.
+        /// </summary>
+        /// <param name="index">The corner index. [Limit: &lt;= <see cref="MaxCorners"/></param>
+        /// <returns>The corner point.</returns>
         public NavmeshPoint this[int index]
         {
             get { return mCorners[index]; }
@@ -227,10 +231,8 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="filter">The query filter to be used by the corridor.
         /// </param>
-        public PathCorridor(int maxPathSize
-            , int maxCorners
-            , NavmeshQuery query
-            , NavmeshQueryFilter filter)
+        public PathCorridor(int maxPathSize, int maxCorners
+            , NavmeshQuery query, NavmeshQueryFilter filter)
         {
             maxPathSize = Math.Max(1, maxPathSize);
 
@@ -257,8 +259,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Immediately frees all unmanaged resources allocated by the
-        /// object.
+        /// Immediately frees all unmanaged resources allocated by the object.
         /// </summary>
         public void RequestDisposal()
         {
@@ -298,10 +299,7 @@ namespace org.critterai.nav
         /// <para>This method does not perform any validation of the input
         /// data.</para>
         /// </remarks>
-        /// <param name="polyRef">The reference of the polygon containing
-        /// the position.</param>
-        /// <param name="position">The position of the client. [(x, y, z)]
-        /// </param>
+        /// <param name="position">The position of the client.</param>
         public void Reset(NavmeshPoint position)
         {
             PathCorridorEx.dtpcReset(mRoot, position);
@@ -728,19 +726,12 @@ namespace org.critterai.nav
         /// Attempting to do so will result in a failure.</para>
         /// </remarks>
         /// <param name="corridor">The corridor to update.</param>
-        /// <param name="positionPoly">The reference  to reset
-        /// the corridor to. [Limit: > 0]</param>
-        /// <param name="position">The position to reset to corridor to.
-        /// [(x, y, z)]</param>
-        /// <param name="positionBuffer">The new position buffer. [Size: 3]</param>
-        /// <param name="targetBuffer">The new target buffer. [Size: 3]</param>
+        /// <param name="position">The position to reset to corridor to.</param>
         /// <param name="query">The query object to use.</param>
         /// <param name="filter">The filter object to use.</param>
         /// <returns>True if successful.</returns>
-        public static bool LoadLocals(PathCorridor corridor
-            , NavmeshPoint position
-            , NavmeshQuery query
-            , NavmeshQueryFilter filter)
+        public static bool LoadLocals(PathCorridor corridor, NavmeshPoint position
+            , NavmeshQuery query, NavmeshQueryFilter filter)
         {
             // Basic checks first.
             if (position.polyRef == 0
