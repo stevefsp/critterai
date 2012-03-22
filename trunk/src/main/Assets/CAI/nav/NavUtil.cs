@@ -64,17 +64,40 @@ namespace org.critterai.nav
             return (status & NavStatus.InProgress) != 0;
         }
 
+        /// <summary>
+        /// Clamps the value to the valid area range. 
+        /// (0 &lt;= value &lt;= <see cref="Navmesh.MaxArea"/>)
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>A valid area id.</returns>
         public static byte ClampArea(byte value)
         {
-            return Math.Min(Navmesh.WalkableArea, value);
+            return Math.Min(Navmesh.MaxArea, value);
         }
 
+        /// <summary>
+        /// Clamps the value to the valid area range. 
+        /// (0 &lt;= value &lt;= <see cref="Navmesh.MaxArea"/>)
+        /// </summary>
+        /// <param name="value">The value to clamp.</param>
+        /// <returns>A valid area id.</returns>
         public static byte ClampArea(int value)
         {
-            return (byte)Math.Min(Navmesh.WalkableArea, Math.Max(0, value));
+            return (byte)Math.Min(Navmesh.MaxArea, Math.Max(0, value));
         }
 
-        public static NavmeshParams GetConfig(NavmeshTileData tile)
+        /// <summary>
+        /// Derives the <see cref="NavmeshParams"/> for a tile.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is useful for getting the configuration required to build a single-tile
+        /// navigation mesh for the tile.
+        /// </para>
+        /// </remarks>
+        /// <param name="tile">The tile.</param>
+        /// <returns>The <see cref="NavmeshParams"/> for the tile.</returns>
+        public static NavmeshParams DeriveConfig(NavmeshTileData tile)
         {
             NavmeshTileHeader header = tile.GetHeader();
 
@@ -85,6 +108,21 @@ namespace org.critterai.nav
                     , header.polyCount);
         }
 
+        /// <summary>
+        /// Tests that vector interop functions correctly for vectors.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the test is successful the input and return vectors will be equal in value.
+        /// </para>
+        /// <para>
+        /// This method is used to validate that builds with custom vectors functions correctly
+        /// with interop.  (I.e. The custom vector is data compatible.)
+        /// </para>
+        /// </remarks>
+        /// <param name="v">The input vector.</param>
+        /// <returns>A vector equal to the input vector if interop is functioning correctly.
+        /// </returns>
         public static Vector3 TestVector(Vector3 v)
         {
             Vector3 result = new Vector3();
@@ -92,9 +130,27 @@ namespace org.critterai.nav
             return result;
         }
 
-        public static void TestVectorArray(Vector3[] vectors
-            , int vectorCount
-            , Vector3[] result)
+        /// <summary>
+        /// Tests that vector interop functions correctly for vector arrays.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the test is successful the input and result arrays will be equal in length and
+        /// element values.  (E.g. vectors[i] == result[i])
+        /// </para>
+        /// <para>
+        /// This method is used to validate that builds with custom vectors functions correctly
+        /// with interop.  (I.e. The custom vector is data compatible.)
+        /// </para>
+        /// </remarks>
+        /// <param name="vectors">
+        /// The input vector array. [Length: >= <paramref name="vectorCount"/>]
+        /// </param>
+        /// <param name="vectorCount">The number of vectors in the array.</param>
+        /// <param name="result">
+        /// The array to load the result into. [Length: >= <paramref name="vectorCount"/>]
+        /// </param>
+        public static void TestVectorArray(Vector3[] vectors, int vectorCount, Vector3[] result)
         {
             rcn.InteropUtil.dtvlVectorArrayTest(vectors, vectorCount, result);
         }

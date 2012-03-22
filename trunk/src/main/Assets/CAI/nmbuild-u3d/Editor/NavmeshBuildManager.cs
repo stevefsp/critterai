@@ -57,11 +57,7 @@ public sealed class NavmeshBuildManager
         minSize = new Vector2(MinWidth, MinHeight);
 
         // Remember, the processor is static, so it may have persisted.
-        if (mProcessor == null)
-        {
-            mProcessor = new BuildProcessor();
-            EditorApplication.update += mProcessor.Update;
-        }
+        SetProcessor();
 
         SceneView.onSceneGUIDelegate += OnSceneGUI;
     }
@@ -69,15 +65,30 @@ public sealed class NavmeshBuildManager
     void OnDisable()
     {
         if (mProcessor.TaskManager.TaskCount == 0)
-        {
-            // Don't want the the background thread to keep running
-            // if there is nothing to do.
-            EditorApplication.update -= mProcessor.Update;
-            mProcessor.Dispose();
-            mProcessor = null;
-        }
+            // Don't want the the background thread to keep running if there is nothing to do.
+            ClearProcessor();
 
         SceneView.onSceneGUIDelegate -= OnSceneGUI;
+    }
+
+    private static void ClearProcessor()
+    {
+        if (mProcessor == null)
+            return;
+
+        EditorApplication.update -= mProcessor.Update;
+        mProcessor.Dispose();
+
+        mProcessor = null;
+    }
+
+    private static void SetProcessor()
+    {
+        if (mProcessor == null)
+        {
+            mProcessor = new BuildProcessor();
+            EditorApplication.update += mProcessor.Update;
+        }
     }
 
     void OnGUI()
@@ -153,10 +164,16 @@ public sealed class NavmeshBuildManager
         BuildSelector.Instance.Select(build);
     }
 
+    internal static void ForceProcessorReset()
+    {
+        ClearProcessor();
+        SetProcessor();
+    }
+
     /// <summary>
     /// Opens and focus' the build manager window.
     /// </summary>
-    [MenuItem("CritterAI/Namesh Build Manager", false, EditorUtil.ManagerGroup)]
+    [MenuItem(EditorUtil.MainMenu + "Namesh Build Manager", false, EditorUtil.ManagerGroup)]
     public static void OpenWindow()
     {
         NavmeshBuildManager window = EditorWindow.GetWindow<NavmeshBuildManager>(false

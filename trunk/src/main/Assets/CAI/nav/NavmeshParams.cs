@@ -74,17 +74,13 @@ namespace org.critterai.nav
         /// <summary>
         /// Constructs and initializes the structure.
         /// </summary>
-        /// <param name="originX">The x-value of the tile space origin.</param>
-        /// <param name="originY">The y-value of the tile space origin.</param>
-        /// <param name="originZ">The z-value of the tile space origin.</param>
-        /// <param name="tileWidth">The width of each tile. (Along the x-axis.)
-        /// </param>
-        /// <param name="tileDepth">The depth of each tile. (Along the z-axis.)
-        /// </param>
-        /// <param name="maxTiles">The maximum number of tiles the navigation 
-        /// mesh can contain.</param>
-        /// <param name="maxPolysPerTile">The maximum number of polygons each 
-        /// tile can contain.</param>
+        /// <param name="origin">The tile space origin.</param>
+        /// <param name="tileWidth">The width of each tile. (Along the x-axis.)</param>
+        /// <param name="tileDepth">The depth of each tile. (Along the z-axis.)</param>
+        /// <param name="maxTiles">
+        /// The maximum number of tiles the navigation mesh can contain.</param>
+        /// <param name="maxPolysPerTile">
+        /// The maximum number of polygons each tile can contain.</param>
         public NavmeshParams(Vector3 origin
             , float tileWidth, float tileDepth
             , int maxTiles, int maxPolysPerTile)
@@ -98,13 +94,13 @@ namespace org.critterai.nav
 
         internal NavmeshParams() { }
 
+        /// <summary>
+        /// A clone of the parameters.
+        /// </summary>
+        /// <returns>A clone of the parameters.</returns>
         public NavmeshParams Clone()
         {
-            return new NavmeshParams(origin
-                , tileWidth
-                , tileDepth
-                , maxTiles
-                , maxPolysPerTile);
+            return new NavmeshParams(origin, tileWidth, tileDepth, maxTiles, maxPolysPerTile);
         }
     }
 }

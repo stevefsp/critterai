@@ -76,8 +76,10 @@ public class TagInputFilter
     /// <returns>False if the input build should abort.</returns>
     public override bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
-        if (state != InputBuildState.FilterComponents || context == null)
+        if (state != InputBuildState.FilterComponents)
             return true;
+
+        context.info.filterCount++;
 
         if (tags == null)
         {

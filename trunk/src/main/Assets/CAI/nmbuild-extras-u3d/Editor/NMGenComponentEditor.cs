@@ -22,21 +22,33 @@
 using org.critterai.u3d.editor;
 using UnityEditor;
 
+/// <summary>
+/// Base editor for <see cref="NMGenComponent"/> objects.
+/// </summary>
 public class NMGenComponentEditor
     : Editor
 {
+    /// <summary>
+    /// Run when the editor is enabled.
+    /// </summary>
     protected virtual void OnEnable()
     {
         ((NMGenComponent)target).debugEnabledLocal = true;
     }
 
+    /// <summary>
+    /// Run when the editor is disabled. (Goes out of scope.)
+    /// </summary>
     protected virtual void OnDisable()
     {
         ((NMGenComponent)target).debugEnabledLocal = false;
     }
 
+    /// <summary>
+    /// Toggles the debug visualizations for all <see cref="NMGenComponent"/> objects.
+    /// </summary>
     [MenuItem(EditorUtil.ViewMenu + "Toggle NMGen Extras", false, EditorUtil.ViewGroup)]
-    public static void ToggleView()
+    public static void ToggleDebugView()
     {
         NMGenComponent.debugEnabled = !NMGenComponent.debugEnabled;
         SceneView.RepaintAll();

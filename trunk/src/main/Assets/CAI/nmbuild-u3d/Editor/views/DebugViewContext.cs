@@ -109,25 +109,27 @@ namespace org.critterai.nmbuild.u3d.editor
 
             bool guiEnabled = GUI.enabled;
 
-            TileGridDebugView gridView = mGridView;
-            InputDebugView inputView = mInputView;
+            if (mInputView.Enabled)
+                mInputView.Show = GUILayout.Toggle(mInputView.Show, "Input Bounds");
 
-            if (inputView.Enabled)
-                inputView.Show = GUILayout.Toggle(inputView.Show, "Input Bounds");
-
-            if (gridView.Enabled)
+            if (mGridView.Enabled)
             {
-                gridView.Show = GUILayout.Toggle(gridView.Show, "Tile Grid");
+                mGridView.Show = GUILayout.Toggle(mGridView.Show, "Tile Grid");
 
                 GUILayout.Space(ControlUtil.MarginSize);
 
-                GUI.enabled = guiEnabled && gridView.Show;
+                GUI.enabled = guiEnabled && mGridView.Show;
 
-                gridView.YOffset =
-                    GUILayout.HorizontalSlider(gridView.YOffset, 0, 1);
+                mGridView.YOffset =
+                    GUILayout.HorizontalSlider(mGridView.YOffset, 0, 1);
+
+                GUI.enabled = guiEnabled;
             }
 
-            GUI.enabled = guiEnabled;
+            if (mSelectionView.Enabled)
+            {
+                mSelectionView.Show = GUILayout.Toggle(mSelectionView.Show, "Selection Bounds");
+            }
         }
 
         public void OnGUIMeshDisplayOptions()

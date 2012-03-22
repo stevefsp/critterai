@@ -27,25 +27,67 @@ using System.IO;
 namespace org.critterai.u3d.editor
 {
     /// <summary>
-    /// Provides general purpose editor utility functions for Unity.
+    /// Provides general purpose utility functions for the Unity Editor.
     /// </summary>
-    internal static class EditorUtil
+    public static class EditorUtil
     {
+        /// <summary>
+        /// The base priority for the CAI asset creation menu.
+        /// </summary>
         public const int AssetGroup = 100;
-        public const int GameObjectGroup = 200;
-        public const int ViewGroup = 1000;
-        public const int ManagerGroup = 2000;
 
+        /// <summary>
+        /// The base priority for the CAI game object creation menu.
+        /// </summary>
+        public const int GameObjectGroup = 1000;
+
+        /// <summary>
+        /// The base priority for the CAI view menu.
+        /// </summary>
+        public const int ViewGroup = 2000;
+
+        /// <summary>
+        /// The base priority for the CAI manager group.
+        /// </summary>
+        public const int ManagerGroup = 3000;
+
+        /// <summary>
+        /// The root CAI menu name.
+        /// </summary>
         public const string MainMenu = "CritterAI/";
+
+        /// <summary>
+        /// The navigation asset menu name.
+        /// </summary>
         public const string NavAssetMenu = MainMenu + "Create Nav Asset/";
+
+        /// <summary>
+        /// The NMGen asset menu name.
+        /// </summary>
         public const string NMGenAssetMenu = MainMenu + "Create NMGen Asset/";
+
+        /// <summary>
+        /// The NMGen GameObject menu name.
+        /// </summary>
         public const string NMGenGameObjectMenu = MainMenu + "Create NMGen/";
+
+        /// <summary>
+        /// The navigation GameObject menu name.
+        /// </summary>
+        public const string NavGameObjectMenu = MainMenu + "Create Nav/";
+
+        /// <summary>
+        /// The CAI view menu name.
+        /// </summary>
         public const string ViewMenu = MainMenu + "View/";
 
         private static GUIStyle mHelpStyle;
         private static GUIStyle mWarningStyle;
         private static GUIStyle mErrorStyle;
 
+        /// <summary>
+        /// A general purpose error text box.
+        /// </summary>
         public static GUIStyle ErrorStyle
         {
             get
@@ -64,6 +106,9 @@ namespace org.critterai.u3d.editor
             }
         }
 
+        /// <summary>
+        /// A general purpose warning text box.
+        /// </summary>
         public static GUIStyle WarningStyle
         {
             get
@@ -82,6 +127,9 @@ namespace org.critterai.u3d.editor
             }
         }
 
+        /// <summary>
+        /// A general purpose help text box.
+        /// </summary>
         public static GUIStyle HelpStyle
         {
             get
@@ -101,19 +149,31 @@ namespace org.critterai.u3d.editor
             }
         }
 
-        public static bool OnGUIManageObjectList<T>(string label
-            , List<T> items
-            , bool allowScene) 
+        /// <summary>
+        /// Provides an editor GUI for adding/removing objects from a list.
+        /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="label">The GUI label. (Type description.)</param>
+        /// <param name="items">The list of items to manage.</param>
+        /// <param name="allowScene">Allow scene objects in the list.</param>
+        /// <returns>True if the GUI changed within the method.</returns>
+        public static bool OnGUIManageObjectList<T>(string label, List<T> items, bool allowScene) 
             where T : UnityEngine.Object
         {
             if (items == null)
                 return false;
 
+            bool origChanged = GUI.changed;
+            GUI.changed = false;
+
             // Never allow nulls.  So get rid of them first.
             for (int i = items.Count - 1; i >= 0; i--)
             {
                 if (items[i] == null)
+                {
                     items.RemoveAt(i);
+                    GUI.changed = true;
+                }
             }
 
             GUILayout.Label(label);
@@ -138,7 +198,10 @@ namespace org.critterai.u3d.editor
                 }
 
                 if (delChoice >= 0)
+                {
+                    GUI.changed = true;
                     items.RemoveAt(delChoice);
+                }
             }
 
             EditorGUILayout.Separator();
@@ -148,16 +211,31 @@ namespace org.critterai.u3d.editor
             if (nitem != null)
             {
                 if (!items.Contains(nitem))
+                {
                     items.Add(nitem);
+                    GUI.changed = true;
+                }
             }
 
-            return GUI.changed;
+            bool result = GUI.changed;
+            GUI.changed = GUI.changed || origChanged;
+
+            return result;
         }
 
+        /// <summary>
+        /// Provides an editor GUI for adding/removing strings from a list.
+        /// </summary>
+        /// <param name="items">The list of strings to manage.</param>
+        /// <param name="isTags">True if the strings represent tags.</param>
+        /// <returns>True if the GUI changed within the method.</returns>
         public static bool OnGUIManageStringList(List<string> items, bool isTags)
         {
             if (items == null)
                 return false;
+
+            bool origChanged = GUI.changed;
+            GUI.changed = false;
 
             if (items.Count > 0)
             {
@@ -186,7 +264,10 @@ namespace org.critterai.u3d.editor
                 }
 
                 if (delChoice >= 0)
+                {
+                    GUI.changed = true;
                     items.RemoveAt(delChoice);
+                }
             }
 
             EditorGUILayout.Separator();
@@ -196,12 +277,25 @@ namespace org.critterai.u3d.editor
             if (ntag.Length > 0)
             {
                 if (!items.Contains(ntag))
+                {
+                    GUI.changed = true;
                     items.Add(ntag);
+                }
             }
 
-            return GUI.changed;
+            bool result = GUI.changed;
+            GUI.changed = GUI.changed || origChanged;
+
+            return result;
         }
 
+        /// <summary>
+        /// Creates a new asset in the same directory as the specified asset.
+        /// </summary>
+        /// <typeparam name="T">The type of asse to create.</typeparam>
+        /// <param name="atAsset">The asset where the new asset should be located.</param>
+        /// <param name="label">The asset label.</param>
+        /// <returns>The new asset.</returns>
         public static T CreateAsset<T>(ScriptableObject atAsset, string label) 
             where T : ScriptableObject
         {
@@ -222,6 +316,18 @@ namespace org.critterai.u3d.editor
             return result;
         }
 
+        /// <summary>
+        /// Creates a new asset at the standard path.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method tries to detect the directory of the currently selected asset.  If it 
+        /// can't, it will place the new asset in the root asset directory.
+        /// </para>
+        /// </remarks>
+        /// <typeparam name="T">The type of asse to create.</typeparam>
+        /// <param name="label">The asset label.</param>
+        /// <returns>The new asset.</returns>
         public static T CreateAsset<T>(string label) 
             where T : ScriptableObject
         {

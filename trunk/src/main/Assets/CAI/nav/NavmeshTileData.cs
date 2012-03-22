@@ -62,29 +62,6 @@ namespace org.critterai.nav
         public bool IsOwned { get { return mIsOwned; } }
 
         /// <summary>
-        /// Constructs a tile from the provided build data.
-        /// </summary>
-        /// <param name="buildData">The build data.</param>
-        public NavmeshTileData(NavmeshTileBuildData buildData)
-        {
-            NavmeshTileEx.dtnmBuildTileData(buildData, this);
-        }
-
-        /// <summary>
-        /// Constructs a tile from a serialized data created by 
-        /// <see cref="GetData"/>.
-        /// </summary>
-        /// <param name="rawTileData">The serialized tile data.</param>
-        public NavmeshTileData(byte[] rawTileData)
-        {
-            if (rawTileData == null)
-                return;
-            NavmeshTileEx.dtnmBuildTileDataRaw(rawTileData
-                , rawTileData.Length
-                , this);
-        }
-
-        /// <summary>
         /// Destructor
         /// </summary>
         ~NavmeshTileData()
@@ -108,6 +85,10 @@ namespace org.critterai.nav
             return result;
         }
 
+        /// <summary>
+        /// Gets the tile header.
+        /// </summary>
+        /// <returns>The tile header.</returns>
         public NavmeshTileHeader GetHeader()
         {
             NavmeshTileHeader result = new NavmeshTileHeader();
@@ -120,6 +101,48 @@ namespace org.critterai.nav
             return result;
         }
 
+        /// <summary>
+        /// Create tile data from the provided build data.
+        /// </summary>
+        /// <param name="buildData">The build data.</param>
+        /// <returns>A new tile data object, or null on error.</returns>
+        public static NavmeshTileData Create(NavmeshTileBuildData buildData)
+        {
+            if (buildData == null || buildData.IsDisposed)
+                return null;
+
+            NavmeshTileData result = new NavmeshTileData();
+
+            if (NavmeshTileEx.dtnmBuildTileData(buildData, result))
+                return result;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Creates tile data from a serialized data created by <see cref="GetData"/>.
+        /// </summary>
+        /// <param name="rawTileData">The serialized tile data.</param>
+        /// <returns>A new tile data object, or null on error.</returns>
+        public static NavmeshTileData Create(byte[] rawTileData)
+        {
+            if (rawTileData == null)
+                return null;
+
+            NavmeshTileData result = new NavmeshTileData();
+
+            if (NavmeshTileEx.dtnmBuildTileDataRaw(rawTileData, rawTileData.Length, result))
+                return result;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the tile header from the raw tile data.
+        /// </summary>
+        /// <param name="rawTileData">The raw tile data.</param>
+        /// <param name="header">The header.</param>
+        /// <returns>The status of the request.</returns>
         public static NavStatus GetHeader(byte[] rawTileData, out NavmeshTileHeader header)
         {
             header = new NavmeshTileHeader();

@@ -119,12 +119,9 @@ namespace org.critterai.nav
         /// <param name="searchPoint">The center of the search box.</param>
         /// <param name="extents">The search distance along each axis.</param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPolyRef">The reference id of the nearest polygon. Or zero if none 
-        /// could be found within the search box.</param>
         /// <param name="result">The nearest point on the polygon.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the query.</returns>
-        public NavStatus GetNearestPoly(Vector3 searchPoint
-            , Vector3 extents
+        public NavStatus GetNearestPoly(Vector3 searchPoint, Vector3 extents
             , NavmeshQueryFilter filter
             , out NavmeshPoint result)
         {
@@ -273,9 +270,9 @@ namespace org.critterai.nav
         /// <para>If the buffers are to small to hold the entire result set, they will be filled to 
         /// capacity.</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the polygon to start the search at.
+        /// <param name="start">
+        /// The center point to start from which to start the search. (Must be valid.)
         /// </param>
-        /// <param name="centerPoint">The center of the query circle.</param>
         /// <param name="radius">The radius of the query circle.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPolyRefs">The reference ids of the polygons touched by the circle. 
@@ -289,12 +286,9 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPolys(NavmeshPoint start
-            , float radius
+        public NavStatus FindPolys(NavmeshPoint start, float radius
             , NavmeshQueryFilter filter
-            , uint[] resultPolyRefs
-            , uint[] resultParentRefs
-            , float[] resultCosts
+            , uint[] resultPolyRefs, uint[] resultParentRefs, float[] resultCosts
             , out int resultCount)
         {
             resultCount = 0;
@@ -417,9 +411,9 @@ namespace org.critterai.nav
         /// <para>If the buffers are is too small to hold the entire result set, they will be 
         /// filled to capacity.</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the polygon to start the search at.
+        /// <param name="start">
+        /// The center point to start from which to start the search. (Must be valid.)
         /// </param>
-        /// <param name="centerPoint">The center of the search circle.</param>
         /// <param name="radius">The radius of the search circle.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPolyRefs">The reference ids of the polygons touched by the circle. 
@@ -429,12 +423,9 @@ namespace org.critterai.nav
         /// Zero if a result polygon has no parent. [(parentRef) * resultCount] (Optional)</param>
         /// <param name="resultCount">The number of polygons found.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolysLocal(NavmeshPoint start
-            , float radius
+        public NavStatus GetPolysLocal(NavmeshPoint start, float radius
             , NavmeshQueryFilter filter
-            , uint[] resultPolyRefs
-            , uint[] resultParentRefs
-            , out int resultCount)
+            , uint[] resultPolyRefs, uint[] resultParentRefs, out int resultCount)
         {
             resultCount = 0;
 
@@ -519,13 +510,11 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>The method will return falure if the provided point is outside the xz-column 
         /// of the polygon.</remarks>
-        /// <param name="polyRef">The polygon reference.</param>
         /// <param name="point">The point within the polygon's xz-column.</param>
         /// <param name="height">The height at the surface of the polygon.
         /// </param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetPolyHeight(NavmeshPoint point
-            , out float height)
+        public NavStatus GetPolyHeight(NavmeshPoint point, out float height)
         {
             height = 0;
 
@@ -544,9 +533,7 @@ namespace org.critterai.nav
         /// In this case the values of closestPoint and normal are undefined.</para>
         /// <para>The normal will become unpredicable if the distance is a very small number.</para>
         /// </remarks>
-        /// <param name="polyRef">The reference id of the polygon.</param>
-        /// <param name="searchPoint">The center of the search circle.
-        /// </param>
+        /// <param name="searchPoint">The center of the search circle.</param>
         /// <param name="searchRadius">The radius of the search circle.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="distance">Distance to nearest wall.</param>
@@ -585,20 +572,16 @@ namespace org.critterai.nav
         /// <para>The start and end points are used to calculate traversal costs. 
         /// (y-values matter.)</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the start polygon.</param>
-        /// <param name="endPolyRef">The reference id of the end polygon.</param>
-        /// <param name="startPoint">A point within the start polygon.</param>
-        /// <param name="endPoint">A point within the end polygon.</param>
+        /// <param name="start">A point within the start polygon.</param>
+        /// <param name="end">A point within the end polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPath">An ordered list of reference ids in the path. (Start to end.) 
         /// [(polyRef) * pathCount] [Out]</param>
         /// <param name="pathCount">The number of polygons in the path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPath(NavmeshPoint start
-            , NavmeshPoint end
+        public NavStatus FindPath(NavmeshPoint start, NavmeshPoint end
             , NavmeshQueryFilter filter
-            , uint[] resultPath
-            , out int pathCount)
+            , uint[] resultPath, out int pathCount)
         {
             pathCount = 0;
 
@@ -649,29 +632,23 @@ namespace org.critterai.nav
         /// <para>The start and end points are used to calculate traversal costs. 
         /// (y-values matter.)</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the start polygon. (An input value of 
-        /// zero triggers a search.)</param>
-        /// <param name="endPolyRef">The reference id of the end polygon.(An input value of zero 
-        /// triggers a search.)</param>
-        /// <param name="startPoint">A point within the start polygon.
-        /// ([(x, y, z)] [In] (Also Out if <paramref name="startPolyRef"/>
-        /// is zero.)]</param>
-        /// <param name="endPoint">A point within the end polygon.
-        /// [(x, y, z)]  [In] (Also Out if <paramref name="endPolyRef"/>
-        /// is zero.)]</param>
-        /// <param name="extents">The search extents to use if the start
-        /// or end point polygon reference is zero.</param>
+        /// <param name="start">
+        /// A point within the start polygon. [In] (Also Out if this poly reference is zero.)
+        /// </param>
+        /// <param name="end">
+        /// A point within the end polygon. [In] (Also Out if this poly reference is zero.)
+        /// </param>
+        /// <param name="extents">
+        /// The search extents to use if the start or end point polygon reference is zero.
+        /// </param>
         /// <param name="filter">The filter to apply to the query.</param>
-        /// <param name="resultPath">An ordered list of reference ids in the
-        /// path. (Start to end.) [(polyRef) * pathCount] [Out]</param>
+        /// <param name="resultPath">An ordered list of reference ids in the path. (Start to end.) 
+        /// [(polyRef) * pathCount] [Out]</param>
         /// <param name="pathCount">The number of polygons in the path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus FindPath(ref NavmeshPoint start
-            , ref NavmeshPoint end
-            , Vector3 extents
-            , NavmeshQueryFilter filter
-            , uint[] resultPath
-            , out int pathCount)
+        public NavStatus FindPath(ref NavmeshPoint start, ref NavmeshPoint end
+            , Vector3 extents, NavmeshQueryFilter filter
+            , uint[] resultPath, out int pathCount)
         {
             pathCount = 0;
 
@@ -746,11 +723,10 @@ namespace org.critterai.nav
         /// reaches the end point's xz-coordinates it will indicate 'no hit', meaning it reached 
         /// the end point.</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the start polygon.
+        /// <param name="start">
+        /// A point within the start polygon representing the start of the ray.
         /// </param>
-        /// <param name="startPoint">A point within the start polygon representing the start of the 
-        /// ray.</param>
-        /// <param name="endPoint">The point to cast the ray toward.</param>
+        /// <param name="end">The point to cast the ray toward.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="hitParameter">The hit parameter.  (>1E38 if no hit.)
         /// </param>
@@ -760,13 +736,10 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="pathCount">The number of visited polygons.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus Raycast(NavmeshPoint startPoint
-            , Vector3 endPoint
+        public NavStatus Raycast(NavmeshPoint start, Vector3 end
             , NavmeshQueryFilter filter
-            , out float hitParameter
-            , out Vector3 hitNormal
-            , uint[] path
-            , out int pathCount)
+            , out float hitParameter, out Vector3 hitNormal
+            , uint[] path, out int pathCount)
         {
             pathCount = 0;
             hitParameter = 0;
@@ -775,8 +748,8 @@ namespace org.critterai.nav
             int maxCount = (path == null ? 0 : path.Length);
 
             return NavmeshQueryEx.dtqRaycast(root
-                , startPoint
-                , ref endPoint
+                , start
+                , ref end
                 , filter.root
                 , ref hitParameter
                 , ref hitNormal
@@ -823,55 +796,50 @@ namespace org.critterai.nav
         ///     , out straightCount);
         /// </code></para>
         /// </remarks>
-        /// <param name="startPoint">The start point.</param>
-        /// <param name="endPoint">The end point.</param>
+        /// <param name="start">The start point.</param>
+        /// <param name="end">The end point.</param>
         /// <param name="path">The list of polygon references that represent the path corridor.
         /// </param>
         /// <param name="pathStart">The index within the path buffer of the polygon that contains 
         /// the start point.</param>
         /// <param name="pathCount">The length of the path within the path buffer. 
         /// (endPolyIndex - startPolyIndex)</param>
-        /// <param name="straightPathPoints">Points describing the straight path. 
+        /// <param name="resultPoints">Points describing the straight path. 
         /// [Length: straightPathCount].</param>
-        /// <param name="straightPathFlags">Flags describing each point.
+        /// <param name="resultFlags">Flags describing each point.
         /// [(flag) * striaghtPathCount] (Optional)</param>
-        /// <param name="straightPathRefs">The reference id of the polygon that is being entered at 
+        /// <param name="resultRefs">The reference id of the polygon that is being entered at 
         /// the point position. [(polyRef) * straightPathCount] (Optional)</param>
-        /// <param name="straightPathCount">The number of points in the straight path.</param>
+        /// <param name="resultCount">The number of points in the straight path.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetStraightPath(Vector3 startPoint
-            , Vector3 endPoint
-            , uint[] path
-            , int pathStart
-            , int pathCount
-            , Vector3[] straightPathPoints
-            , WaypointFlag[] straightPathFlags
-            , uint[] straightPathRefs
-            , out int straightPathCount)
+        public NavStatus GetStraightPath(Vector3 start, Vector3 end
+            , uint[] path, int pathStart, int pathCount
+            , Vector3[] resultPoints, WaypointFlag[] resultFlags, uint[] resultRefs
+            , out int resultCount)
         {
-            straightPathCount = 0;
+            resultCount = 0;
 
-            int maxPath = straightPathPoints.Length;
+            int maxPath = resultPoints.Length;
 
-            maxPath = (straightPathFlags == null ? maxPath
-                : Math.Min(straightPathFlags.Length, maxPath));
+            maxPath = (resultFlags == null ? maxPath
+                : Math.Min(resultFlags.Length, maxPath));
 
-            maxPath = (straightPathRefs == null ? maxPath
-                : Math.Min(straightPathRefs.Length, maxPath));
+            maxPath = (resultRefs == null ? maxPath
+                : Math.Min(resultRefs.Length, maxPath));
 
             if (maxPath < 1)
                 return (NavStatus.Failure | NavStatus.InvalidParam);
 
             return NavmeshQueryEx.dtqFindStraightPath(root
-                , ref startPoint
-                , ref endPoint
+                , ref start
+                , ref end
                 , path
                 , pathStart
                 , pathCount
-                , straightPathPoints
-                , straightPathFlags
-                , straightPathRefs
-                , ref straightPathCount
+                , resultPoints
+                , resultFlags
+                , resultRefs
+                , ref resultCount
                 , maxPath);
         }
 
@@ -891,10 +859,8 @@ namespace org.critterai.nav
         /// <para>If the result buffer is too small to hold the entire result set, it will be 
         /// filled as far as possible from the start point toward the end point.</para>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the start polygon.
-        /// </param>
-        /// <param name="startPoint">A position within the start polygon.</param>
-        /// <param name="endPoint">The end position.</param>
+        /// <param name="start">A position within the start polygon.</param>
+        /// <param name="end">The end position.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="resultPoint">The result point form the move.</param>
         /// <param name="visitedPolyRefs">The reference ids of the polygons
@@ -902,19 +868,17 @@ namespace org.critterai.nav
         /// <param name="visitedCount">The number of polygons visited during
         /// the move.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus MoveAlongSurface(NavmeshPoint start
-            , Vector3 endPoint
+        public NavStatus MoveAlongSurface(NavmeshPoint start, Vector3 end
             , NavmeshQueryFilter filter
             , out Vector3 resultPoint
-            , uint[] visitedPolyRefs
-            , out int visitedCount)
+            , uint[] visitedPolyRefs, out int visitedCount)
         {
             visitedCount = 0;
             resultPoint = Vector3Util.Zero;
 
             return NavmeshQueryEx.dtqMoveAlongSurface(root
                 , start
-                , ref endPoint
+                , ref end
                 , filter.root
                 , ref resultPoint
                 , visitedPolyRefs
@@ -978,16 +942,11 @@ namespace org.critterai.nav
         /// <li>Call <see cref="FinalizeSlicedFindPath"/> to get the path.</li>
         /// </ol>
         /// </remarks>
-        /// <param name="startPolyRef">The reference id of the start polygon.
-        /// </param>
-        /// <param name="endPolyRef">The reference id of the end polygon.
-        /// </param>
-        /// <param name="startPoint">A point within the start polygon.</param>
-        /// <param name="endPoint">A point within the end polygon.</param>
+        /// <param name="start">A point within the start polygon.</param>
+        /// <param name="end">A point within the end polygon.</param>
         /// <param name="filter">The filter to apply to the query.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus InitSlicedFindPath(NavmeshPoint start
-            , NavmeshPoint end
+        public NavStatus InitSlicedFindPath(NavmeshPoint start, NavmeshPoint end
             , NavmeshQueryFilter filter)
         {
             if (mIsRestricted)

@@ -74,7 +74,7 @@ namespace org.critterai.nav
         public int AreaCount
         {
             get { return mAreaCount; }
-            set { mAreaCount = Math.Min(Navmesh.MaxAreas, value); }
+            set { mAreaCount = Math.Min(Navmesh.MaxArea + 1, value); }
         }
 
         /// <summary>
@@ -125,14 +125,14 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Constructor for a filter with the maximum number of areas.
-        /// (<see cref="Navmesh.MaxAreas"/>)
+        /// Constructor for a filter with the maximum number of areas. 
+        /// (<see cref="Navmesh.MaxArea"/> + 1)
         /// </summary>
         public NavmeshQueryFilter()
             : base(AllocType.Local)
         {
             root = NavmeshQueryFilterEx.dtqfAlloc();
-            mAreaCount = Navmesh.MaxAreas;
+            mAreaCount = Navmesh.MaxArea + 1;
         }
 
         /// <summary>
@@ -143,14 +143,14 @@ namespace org.critterai.nav
             : base(AllocType.Local) 
         {
             root = NavmeshQueryFilterEx.dtqfAlloc();
-            mAreaCount = Math.Min(Navmesh.MaxAreas, mAreaCount);
+            mAreaCount = Math.Min(Navmesh.MaxArea + 1, mAreaCount);
         }
 
         internal NavmeshQueryFilter(IntPtr filter, AllocType type)
                 : base(type)
         {
             root = filter;
-            mAreaCount = Navmesh.MaxAreas;
+            mAreaCount = Navmesh.MaxArea + 1;
         }
 
         /// <summary>

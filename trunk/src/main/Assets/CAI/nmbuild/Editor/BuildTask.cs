@@ -149,7 +149,7 @@ namespace org.critterai.nmbuild
         /// </summary>
         /// <remarks>Will only contain useable data when the task is finished with a state of
         /// <see cref="BuildTaskState.Complete"/>.</remarks>
-        public T Data { get { return mData; } }
+        public T Result { get { return mData; } }
 
         /// <summary>
         /// Runs the task through to a finished state.

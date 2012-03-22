@@ -226,12 +226,12 @@ namespace org.critterai.nmbuild.u3d.editor
                 case TileBuildState.Built:
 
                     polyCount = item.workingPolyCount;
-                    return new NavmeshTileData(item.workingTile);
+                    return NavmeshTileData.Create(item.workingTile);
 
                 case TileBuildState.Baked:
 
                     polyCount = item.bakedPolyCount;
-                    return new NavmeshTileData(item.bakedTile);
+                    return NavmeshTileData.Create(item.bakedTile);
             }
 
             polyCount = 0;

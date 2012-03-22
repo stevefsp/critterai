@@ -37,7 +37,7 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>Warning: The serializable attribute and interface will be removed 
-    /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
+    /// in v0.5. Use <see cref="GetSerializedMesh"/> instead.</para>
     /// <para>This class is usually used in conjunction with the
     /// <see cref="NavmeshQuery"/> class.</para>
     /// <para>Tile and Polygon Reference Ids: Reference ids are essentially 
@@ -85,28 +85,16 @@ namespace org.critterai.nav
         public const int MaxAllowedVertsPerPoly = 6;
 
         /// <summary>
-        /// The maximum supported number of areas.
+        /// The maximum allowed area id.
         /// </summary>
-        /// <remarks>
-        /// <para>Area ids are zero based.  Zero indicates un-walkable.  So
-        /// the usable values are 1 through MaxAreas - 1</para>
-        /// </remarks>
-        public const int MaxAreas = 64;
-
-        /// <summary>
-        /// The standard area id used to indicate a walkable polygon.
-        /// </summary>
-        /// <remarks>
-        /// <para>This is also the maximum value that can be used as an area id.</para>
-        /// </remarks>
-        public const byte WalkableArea = 63;
+        public const byte MaxArea = 63;
 
         /// <summary>
         /// Represents an unwalkable area.
         /// </summary>
         /// <remarks>
-        /// <para>When a data item is given this value it is considered to 
-        /// no longer be assigned to a usable area.</para>
+        /// <para>When a data item is given this value it is considered to no longer be assigned 
+        /// to a walkable area.</para>
         /// <para>This is also the minimum value that can be used as an area id.</para>
         /// </remarks>
         public const byte UnwalkableArea = 0;
@@ -483,7 +471,7 @@ namespace org.critterai.nav
         /// </summary>
         /// <param name="polyRef">The reference id of the polygon.</param>
         /// <param name="area">The area id of the polygon.
-        /// [Limit: &lt; <see cref="Navmesh.MaxAreas"/>]</param>
+        /// [Limit: &lt;= <see cref="Navmesh.MaxArea"/>]</param>
         /// <returns>The <see cref="NavStatus"/> flags for the operation.
         /// </returns>
         public NavStatus SetPolyArea(uint polyRef, byte area)

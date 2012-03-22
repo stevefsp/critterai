@@ -100,8 +100,9 @@ public class MeshAreaDefEditor
                         + mesh.name + " is already defined.  Change ignored.");
                 }
 
-                int area = EditorGUILayout.IntField(areas[i], GUILayout.Width(40));
-                areas[i] = (byte)Mathf.Clamp(area, 0, Navmesh.MaxAreas - 1);
+
+                areas[i] = NavUtil.ClampArea(
+                    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
 
                 if (GUILayout.Button("Remove"))
                     delChoice = i;

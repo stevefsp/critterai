@@ -23,6 +23,9 @@ using org.critterai.u3d.editor;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// <see cref="BoxAreaMarker"/> editor.
+/// </summary>
 [CustomEditor(typeof(BoxAreaMarker))]
 public class BoxAreaMarkerEditor
     : AreaMarkerEditor

@@ -127,6 +127,10 @@ public class NavmeshBuildEditor
 
             EditorGUILayout.Separator();
 
+            targ.AutoCleanGeometry = EditorGUILayout.Toggle("Auto-Clean", targ.AutoCleanGeometry);
+
+            EditorGUILayout.Separator();
+
             targ.SceneQuery = (SceneQuery)EditorGUILayout.ObjectField(
                 "Scene Query"
                 , targ.SceneQuery

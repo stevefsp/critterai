@@ -32,5 +32,10 @@ namespace org.critterai.nmbuild.u3d.editor
         /// Only permit <see cref="INMGenProcessor"/> objects that are marked as thread-safe.
         /// </summary>
         ThreadSafeOnly = 0x01,
+
+        /// <summary>
+        /// Automatically remove invalid triangles during post-processing.
+        /// </summary>
+        AutoCleanGeometry = 0x02,
     }
 }

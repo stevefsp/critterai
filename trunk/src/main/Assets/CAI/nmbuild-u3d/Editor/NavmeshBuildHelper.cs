@@ -66,7 +66,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
                     tiles = new NavmeshTileData[1] { mBuild.BuildData.GetTileData(0, 0) };
 
-                    nconfig = NavUtil.GetConfig(tiles[0]);
+                    nconfig = NavUtil.DeriveConfig(tiles[0]);
                 }
                 else if (BuildMultiTiled())
                 {
@@ -221,7 +221,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 return false;
             }
 
-            NavmeshTileData td = new NavmeshTileData(tbd);
+            NavmeshTileData td = NavmeshTileData.Create(tbd);
 
             if (td.Size == 0)
             {
@@ -304,7 +304,7 @@ namespace org.critterai.nmbuild.u3d.editor
                         return false;
                     }
 
-                    NMGenAssets nr = ntask.Data;
+                    NMGenAssets nr = ntask.Result;
 
                     if (nr.NoResult)
                     {
@@ -336,7 +336,7 @@ namespace org.critterai.nmbuild.u3d.editor
                         return false;
                     }
 
-                    TileBuildAssets tr = ttask.Data;
+                    TileBuildAssets tr = ttask.Result;
 
                     tdata.SetWorkingData(tx, tz, nr.PolyMesh, nr.DetailMesh);
                     tdata.SetWorkingData(tx, tz, tr.Tile, tr.PolyCount);
@@ -405,8 +405,11 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private InputAssets BuildInput(bool ownProgress)
         {
+            InputBuildOption options = 
+                (mBuild.AutoCleanGeometry ? InputBuildOption.AutoCleanGeometry : 0);
+
             InputBuilder builder = 
-                InputBuilder.Create(mBuild.SceneQuery, mBuild.inputProcessors.ToArray(), 0);
+                InputBuilder.Create(mBuild.SceneQuery, mBuild.inputProcessors.ToArray(), options);
 
             if (builder == null)
             {
@@ -440,7 +443,6 @@ namespace org.critterai.nmbuild.u3d.editor
                 mContext.LogError("Input builder aborted.", mBuild);
                 return new InputAssets();
             }
-
 
             InputAssets assets = builder.Result;
 

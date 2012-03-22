@@ -23,10 +23,25 @@ using System;
 
 namespace org.critterai.nav
 {
+    /// <summary>
+    /// Represents tile data extracted from a <see cref="Navmesh"/> object.
+    /// </summary>
+    /// <seealso cref="Navmesh.ExtractTileData"/>
     public struct NavmeshTileExtract
     {
+        /// <summary>
+        /// The tile header.
+        /// </summary>
         public NavmeshTileHeader header;
+
+        /// <summary>
+        /// The packed tile data.
+        /// </summary>
         public byte[] data;
+
+        /// <summary>
+        /// The tile reference in the original mesh.
+        /// </summary>
         public uint tileRef;
     }
 }

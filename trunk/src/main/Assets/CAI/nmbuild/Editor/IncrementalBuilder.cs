@@ -219,21 +219,25 @@ namespace org.critterai.nmbuild
 
                 case NMGenState.HeightfieldBuild:
 
+                    //UnityEngine.Debug.Log("hfb");
                     BuildHeightfield();
                     break;
 
                 case NMGenState.CompactFieldBuild:
 
+                    //UnityEngine.Debug.Log("cfb");
                     BuildCompactField();
                     break;
 
                 case NMGenState.RegionBuild:
 
+                    //UnityEngine.Debug.Log("rb");
                     BuildRegions();
                     break;
 
                 case NMGenState.ContourBuild:
 
+                    //UnityEngine.Debug.Log("cb");
                     BuildContours();
                     break;
 
@@ -263,15 +267,21 @@ namespace org.critterai.nmbuild
             int width;
             int depth;
 
+            //UnityEngine.Debug.Log("A");
+
             NMGen.DeriveSizeOfCellGrid(mTileConfig.BoundsMin
                 , mTileConfig.BoundsMax
                 , mConfig.XZCellSize
                 , out width
                 , out depth);
 
+            //UnityEngine.Debug.Log("B");
+
             Heightfield hf = Heightfield.Create(width, depth
                 , mTileConfig.BoundsMin, mTileConfig.BoundsMax
                 , mConfig.XZCellSize, mConfig.YCellSize);
+
+            //UnityEngine.Debug.Log("C");
 
             hf.AddTriangles(mBuildContext
                 , mGeometry.Mesh
@@ -279,25 +289,32 @@ namespace org.critterai.nmbuild
                 , mTileConfig.boundsMax
                 , mConfig.WalkableStep);  // Merge for any spans less than step.
 
+            //UnityEngine.Debug.Log("D");
 
             if (hf.GetSpanCount() < 1)
             {
                 FinalizeNoResult("Complete at heightfield build. No spans.");
+                //UnityEngine.Debug.Log("E");
                 return;
             }
 
+            //UnityEngine.Debug.Log("F");
 
             mBuildContext.Heightfield = hf;
 
             if (PostProcess() && PostHeightfieldCheck())
             {
+                //UnityEngine.Debug.Log("F2");
                 mBuildContext.Log("Voxelized triangles. Span count: " + hf.GetSpanCount(), this);
                 mState = NMGenState.CompactFieldBuild;
             }
+
+            //UnityEngine.Debug.Log("G");
         }
 
         private bool PostHeightfieldCheck()
         {
+            //UnityEngine.Debug.Log("phfc");
             Heightfield hf = mBuildContext.Heightfield;
 
             if (hf == null || hf.IsDisposed)
@@ -310,22 +327,25 @@ namespace org.critterai.nmbuild
                 FinalizeNoResult("Complete at heightfield build. No spans. (" + mState + " Post)");
                 return false;
             }
-
             return true;
         }
 
         private bool PostProcess()
         {
+            //UnityEngine.Debug.Log("pp-A");
             if (!mProcessors.Process(mState, mBuildContext))
             {
+                //UnityEngine.Debug.Log("pp-B");
                 FinalizeAbort("Abort requested by custom processors. (" + mState + " Post)");
                 return false;
             }
             if (mBuildContext.NoResult)
             {
+                //UnityEngine.Debug.Log("pp-C");
                 FinalizeNoResult("Custom processors set as no result. (" + mState + " Post)");
                 return false;
             }
+            //UnityEngine.Debug.Log("pp-D");
             return true;
         }
 

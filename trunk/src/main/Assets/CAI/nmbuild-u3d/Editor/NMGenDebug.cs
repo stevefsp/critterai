@@ -97,16 +97,18 @@ namespace org.critterai.nmbuild.u3d.editor
             {
                 int pPoly = iPoly * polyData.maxVertsPerPoly * 2;
 
-                for (int iPolyVert = 0
-                    ; iPolyVert < polyData.maxVertsPerPoly
-                    ; iPolyVert++)
+                for (int iPolyVert = 0; iPolyVert < polyData.maxVertsPerPoly; iPolyVert++)
                 {
                     int iv = polyData.polys[pPoly + iPolyVert];
+
                     if (iv == PolyMesh.NullIndex)
                         break;
+
                     if (polyData.polys[pPoly + polyData.maxVertsPerPoly + iPolyVert]
                                 == PolyMesh.NullIndex)
+                    {
                         GL.Color(boundaryEdgeColor);
+                    }
                     else
                         GL.Color(internalEdgeColor);
 
@@ -114,15 +116,19 @@ namespace org.critterai.nmbuild.u3d.editor
                     pTargetVert[0] = iv * 3;
 
                     if (iPolyVert + 1 >= polyData.maxVertsPerPoly)
+                    {
                         // Reached hard end of polygon.  Loop back.
                         iv = polyData.polys[pPoly + 0];
+                    }
                     else
                     {
                         iv = polyData.polys[pPoly + iPolyVert + 1];
+
                         if (iv == PolyMesh.NullIndex)
-                            // Reached soft send of polygon.  Loop back.
+                            // Reached soft end of polygon.  Loop back.
                             iv = polyData.polys[pPoly + 0];
                     }
+
                     pTargetVert[1] = iv * 3;
 
                     for (int i = 0; i < 2; i++)
@@ -133,6 +139,7 @@ namespace org.critterai.nmbuild.u3d.editor
                         // source geometry.
                         int y = polyData.verts[p + 1] + 1;
                         int z = polyData.verts[p + 2];
+
                         GL.Vertex3(polyData.boundsMin[0] + x * polyData.xzCellSize
                             , polyData.boundsMin[1] + y * polyData.yCellSize
                             , polyData.boundsMin[2] + z * polyData.xzCellSize);

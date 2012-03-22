@@ -24,14 +24,35 @@ using org.critterai.nmbuild;
 using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
+/// <summary>
+/// Loads and compiles all <see cref="CylinderAreaMarker"/> and <see cref="BoxAreaMarker"/>
+/// components in the scene, based on the standard scene query behavior.
+/// </summary>
 public sealed class AreaMarkerCompiler
     : InputBuildProcessor
 {
-    public string Name { get { return name; } }
+    /// <summary>
+    /// The priority of the processor.
+    /// </summary>
     public override int Priority { get { return NMBuild.MinPriority; } }
 
+    /// <summary>
+    /// Duplicates not allowed. (Always false.)
+    /// </summary>
     public override bool DuplicatesAllowed { get { return false; } }
 
+    /// <summary>
+    /// Processes the context.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Processes during the <see cref="InputBuildState.LoadComponents"/> 
+    /// and <see cref="InputBuildState.CompileInput"/> states.
+    /// </para>
+    /// </remarks>
+    /// <param name="state">The current state of the input build.</param>
+    /// <param name="context">The input context to process.</param>
+    /// <returns>False if the input build should abort.</returns>
     public override bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (context != null)
@@ -59,7 +80,7 @@ public sealed class AreaMarkerCompiler
 
         int count = context.LoadFromScene<NMGenAreaMarker>();
 
-        context.Log(string.Format("{0}: Loaded {1} area markers.", Name, count), this);
+        context.Log(string.Format("{0}: Loaded {1} area markers.", name, count), this);
     }
 
     private void Compile(InputBuildContext context)
@@ -106,6 +127,6 @@ public sealed class AreaMarkerCompiler
             }
         }
 
-        context.Log(string.Format("{0}: Loaded {1} area markers.", Name, count), this);
+        context.Log(string.Format("{0}: Loaded {1} area markers.", name, count), this);
     }
 }

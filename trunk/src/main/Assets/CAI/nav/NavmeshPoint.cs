@@ -57,16 +57,32 @@ namespace org.critterai.nav
             this.point = point;
         }
 
+        /// <summary>
+        /// Equality operator.
+        /// </summary>
+        /// <param name="v">A navmesh point.</param>
+        /// <param name="u">A navmesh point.</param>
+        /// <returns>True if the points are equal.</returns>
         public static bool operator ==(NavmeshPoint v, NavmeshPoint u)
         {
             return (v.point == u.point && v.polyRef == u.polyRef);
         }
 
+        /// <summary>
+        /// Inequality operator.
+        /// </summary>
+        /// <param name="v">A navmesh point.</param>
+        /// <param name="u">A navmesh point.</param>
+        /// <returns>True if the points are not equal.</returns>
         public static bool operator !=(NavmeshPoint v, NavmeshPoint u)
         {
             return !(v.point == u.point && v.polyRef == u.polyRef);
         }
 
+        /// <summary>
+        /// The navmesh point hash code.
+        /// </summary>
+        /// <returns>The navmesh point hash code.</returns>
         public override int GetHashCode()
         {
             int result = 17;
@@ -77,6 +93,11 @@ namespace org.critterai.nav
             return result;
         }
 
+        /// <summary>
+        /// Tests the navmesh point for equality.
+        /// </summary>
+        /// <param name="obj">The point to compare.</param>
+        /// <returns>True if each element of the point is equal to this point.</returns>
         public override bool Equals(object obj)
         {
             if (obj is NavmeshPoint)
@@ -97,15 +118,33 @@ namespace org.critterai.nav
                 , point.x, point.y, point.z, polyRef);
         }
 
+        /// <summary>
+        /// The zero point.
+        /// </summary>
         public static NavmeshPoint Zero
         {
             get { return new NavmeshPoint(0, Vector3Util.Zero); }
         }
 
-        public static Vector3[] GetPoints(NavmeshPoint[] source
-            , int sourceIndex
-            , Vector3[] target
-            , int targetIndex
+        /// <summary>
+        /// Creates an array of vectors from the provided navmesh points.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A new array will be created if the <paramref name="target"/> array is null.
+        /// </para>
+        /// </remarks>
+        /// <param name="source">The source array.</param>
+        /// <param name="sourceIndex">The start of the copy in the source.</param>
+        /// <param name="target">The target of the copy. (Optional)</param>
+        /// <param name="targetIndex">The start copy location within the target.</param>
+        /// <param name="count">The number of vectors to copy.</param>
+        /// <returns>
+        /// An array containing the copied vectors. (A reference to <paramref name="target"/>
+        /// if it was non-null.)
+        /// </returns>
+        public static Vector3[] GetPoints(NavmeshPoint[] source, int sourceIndex
+            , Vector3[] target, int targetIndex
             , int count)
         {
             if (target == null)

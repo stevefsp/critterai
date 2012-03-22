@@ -105,7 +105,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 if (tdef == null)
                 {
                     tiles = new NavmeshTileData[1] { tdata.GetTileData(0, 0) };
-                    nconfig = NavUtil.GetConfig(tiles[0]);
+                    nconfig = NavUtil.DeriveConfig(tiles[0]);
                 }
                 else
                 {

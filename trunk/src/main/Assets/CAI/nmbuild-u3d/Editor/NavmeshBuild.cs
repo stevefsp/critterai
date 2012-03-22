@@ -56,6 +56,7 @@ public sealed class NavmeshBuild
 
     #region Serialized Fields
 
+    [SerializeField]
     internal List<InputBuildProcessor> inputProcessors = new List<InputBuildProcessor>();
 
     [SerializeField]
@@ -77,6 +78,9 @@ public sealed class NavmeshBuild
 
     [SerializeField]
     private TileBuildData mBuildData;
+
+    [SerializeField]
+    private bool mCleanInputGeometry = true;
 
     [SerializeField]
     private bool mIsDirty = false;
@@ -118,6 +122,12 @@ public sealed class NavmeshBuild
             else
                 return NavmeshBuildState.InputCompiled;
         }
+    }
+
+    internal bool AutoCleanGeometry
+    {
+        get { return mCleanInputGeometry; }
+        set { mCleanInputGeometry = value; }
     }
 
     internal NavmeshBuildType BuildType
@@ -325,7 +335,6 @@ public sealed class NavmeshBuild
         List<INMGenProcessor> lprocessors = new List<INMGenProcessor>();
         if (processors != null)
             lprocessors.AddRange(processors);
-
 
         NMGenFlag bflags = mConfig.BuildFlags;
         bool threadCheckFail = false;

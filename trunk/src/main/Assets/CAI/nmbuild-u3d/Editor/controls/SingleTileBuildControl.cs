@@ -198,7 +198,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 build.BuildData.GetTileData(0, 0)
             };
 
-            NavmeshParams nconfig = NavUtil.GetConfig(tiles[0]);
+            NavmeshParams nconfig = NavUtil.DeriveConfig(tiles[0]);
 
             NavStatus status = build.BuildTarget.Load(nconfig, tiles, NMBEditorUtil.GetConfig(build));
 

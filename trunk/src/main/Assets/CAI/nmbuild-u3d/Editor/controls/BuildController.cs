@@ -228,7 +228,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
                         case BuildTaskState.Complete:
 
-                            NMGenAssets r = item.Data;
+                            NMGenAssets r = item.Result;
 
                             if (r.NoResult)
                             {
@@ -298,7 +298,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
                         case BuildTaskState.Complete:
 
-                            TileBuildAssets r = item.Data;
+                            TileBuildAssets r = item.Result;
 
                             string msg;
 

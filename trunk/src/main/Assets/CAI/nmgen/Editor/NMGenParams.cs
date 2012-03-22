@@ -197,6 +197,25 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
+        /// Derives the recommended border size for tiled mesh builds.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The tile size and agent settings should be set before deriving the border size.
+        /// </para>
+        /// </remarks>
+        /// <param name="config">The configuration to derive the border size from.</param>
+        /// <returns></returns>
+        public static int DeriveBorderSize(NMGenParams config)
+        {
+            if (config.TileSize > 0)
+            {
+                return config.WalkableRadius + 3;
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// The maximum slope that is considered walkable.
         /// [Limits: 0 &lt;= value &lt;= <see cref="NMGen.MaxAllowedSlope"/>]
         /// [Units: Degrees]

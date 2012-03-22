@@ -212,17 +212,17 @@ namespace org.critterai.nav
         /// needed. (Such as happens when following a moving target.)</para>
         /// <para>The position will be constrained to the surface of the 
         /// navigation mesh.</para>
-        /// <para>The request will be processed during the next 
-        /// <see cref="Update"/>.</para>
+        /// <para>
+        /// The request will be processed during the next <see cref="CrowdManager.Update"/>.
+        /// </para>
         /// </remarks>
-        /// <param name="polyRef">The refernece id of the polygon containing
-        /// the targetPoint.</param>
-        /// <param name="targetPoint">The target position.</param>
+        /// <param name="target">The target position.</param>
         /// <returns>True if the target was successfully set.</returns>
         public bool RequestMoveTarget(NavmeshPoint target)
         {
             if (IsDisposed)
                 return false;
+
             return CrowdManagerEx.dtcRequestMoveTarget(mManager.root
                 , managerIndex
                 , target);
@@ -237,14 +237,13 @@ namespace org.critterai.nav
         /// target.) Use <see cref="RequestMoveTarget"/> when a new target is 
         /// needed.</para>
         /// </remarks>
-        /// <param name="polyRef">The refernece id of the polygon containing
-        /// the targetPoint.</param>
         /// <param name="position">The adjusted target position.</param>
         /// <returns>True if the adjustment was successfully applied.</returns>
         public bool AdjustMoveTarget(NavmeshPoint position)
         {
             if (IsDisposed)
                 return false;
+
             return CrowdManagerEx.dtcAdjustMoveTarget(mManager.root
                 , managerIndex
                 , position);

@@ -90,7 +90,7 @@ namespace org.critterai.nav
         /// <para>This value is often based on the agent radius. E.g. radius * 30
         /// </para>
         /// </remarks>
-        /// <seealso cref="PathCorridor.OptimizePathVisibility(Vector3, float)"/>
+        /// <seealso cref="PathCorridor.OptimizePathVisibility"/>
         public float pathOptimizationRange;
 
         /// <summary>

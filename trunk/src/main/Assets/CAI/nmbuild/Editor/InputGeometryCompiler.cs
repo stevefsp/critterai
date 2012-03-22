@@ -183,6 +183,52 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
+        /// Checks for a removes invalid triangles.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A triangle is considered invalid in the following cases:
+        /// </para>
+        /// <ul>
+        /// <li>A vertex index is out of range.</li>
+        /// <li>The triangle contains duplicate vertices. (E.g. vertAIndex = vertBIndex)</li>
+        /// </ul>
+        /// </remarks>
+        /// <returns>The number of triangles removed.</returns>
+        public int CleanTriangles()
+        {
+            int triCount = TriCount;
+            int vertCount = mVerts.Count;
+
+            if (triCount == 0)
+                return 0;
+
+            int result = 0;
+
+            for (int i = triCount - 1; i >= 0; i--)
+            {
+                int p = i * 3;
+
+                int a = mTris[p + 0];
+                int b = mTris[p + 1];
+                int c = mTris[p + 2];
+
+                if (a < 0 || a >= vertCount
+                    || b < 0 || b >= vertCount
+                    || c < 0 || c >= vertCount
+                    || a == b || b == c || c == a)
+                {
+                    // Bad triangle.
+                    mTris.RemoveRange(p, 3);
+                    mAreas.RemoveAt(i);
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Creates geometry from the compiled data.
         /// </summary>
         /// <param name="areas">The triangle areas.</param>
