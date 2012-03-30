@@ -47,9 +47,14 @@ namespace org.critterai.u3d.editor
         public const int ViewGroup = 2000;
 
         /// <summary>
-        /// The base priority for the CAI manager group.
+        /// The base priority for the CAI manager menu group.
         /// </summary>
         public const int ManagerGroup = 3000;
+
+        /// <summary>
+        /// The base priority for the global menu group.
+        /// </summary>
+        public const int GlobalGroup = 4000;
 
         /// <summary>
         /// The root CAI menu name.
@@ -191,7 +196,7 @@ namespace org.critterai.u3d.editor
                     if (item == items[i] || !items.Contains(item))
                         items[i] = item;
 
-                    if (GUILayout.Button("Remove"))
+                    if (GUILayout.Button("X"))
                         delChoice = i;
 
                     EditorGUILayout.EndHorizontal();
@@ -257,7 +262,7 @@ namespace org.critterai.u3d.editor
                     if (item == items[i] || !items.Contains(item))
                         items[i] = item;
 
-                    if (GUILayout.Button("Remove"))
+                    if (GUILayout.Button("X"))
                         delChoice = i;
 
                     EditorGUILayout.EndHorizontal();
@@ -332,7 +337,7 @@ namespace org.critterai.u3d.editor
             where T : ScriptableObject
         {
             string name = typeof(T).Name;
-            string path = GenerateStandardPath(name);
+            string path = GenerateStandardPath(Selection.activeObject, name);
 
             T result = ScriptableObject.CreateInstance<T>();
             result.name = name;
@@ -348,9 +353,83 @@ namespace org.critterai.u3d.editor
             return result;
         }
 
-        private static string GenerateStandardPath(string name)
+        /// <summary>
+        /// Gets the specified global asset.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Global assets are singleton assets that exist in a well known path within the project.
+        /// </para>
+        /// <para>
+        /// If the global asset does not exist a new one will be created.  So this method will
+        /// return null only on error.
+        /// </para>
+        /// </remarks>
+        /// <typeparam name="T">The type of global asset.</typeparam>
+        /// <returns>The global asset.</returns>
+        public static T GetGlobalAsset<T>()
+            where T : ScriptableObject
         {
-            return GenerateStandardPath(Selection.activeObject, name);
+            string name = typeof(T).Name;
+
+            const string rootPath = "Assets/CAI/GlobalAssets/";
+
+            if (!Directory.Exists(rootPath))
+            {
+                Debug.LogError("Global assets path does not exist: " + rootPath);
+                return null;
+            }
+
+            string path = rootPath + name + ".asset";
+
+            T result = (T)AssetDatabase.LoadMainAssetAtPath(path);
+
+            if (!result)
+            {
+
+                result = ScriptableObject.CreateInstance<T>();
+                result.name = name;
+
+                AssetDatabase.CreateAsset(result, path);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(path);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Attemps to create a scene position based on the current SceneView camera.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is useful for creating game objects in the scene via script.
+        /// </para>
+        /// <para>
+        /// The returned position will be one of the following. (In order of priority.)
+        /// </para>
+        /// <ol>
+        /// <li>The hit position of a ray cast from the SceneView camera.</li>
+        /// <li>A position aproximately 15 units forward from the SceneView camera.</li>
+        /// <li>The zero vector.</li>
+        /// </ol>
+        /// </remarks>
+        /// <returns>The recommended position in the scene.</returns>
+        public static Vector3 GetCreatePosition()
+        {
+            Camera cam = SceneView.lastActiveSceneView.camera;
+
+            if (!cam)
+                return Vector3.zero;
+
+            RaycastHit hit;
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+            if (Physics.Raycast(ray, out hit, 500))
+                return hit.point;
+                  
+            return cam.transform.position + cam.transform.forward * 15;
         }
 
         private static string GenerateStandardPath(Object atAsset, string name)

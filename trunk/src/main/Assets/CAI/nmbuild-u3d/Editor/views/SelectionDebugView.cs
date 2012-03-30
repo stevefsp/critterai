@@ -99,8 +99,8 @@ namespace org.critterai.nmbuild.u3d.editor
 
                 TileZone zone = selection.Zone;
 
-                tdef.GetTileBounds(zone.xmin, zone.zmin, out bmin, out trash);
-                tdef.GetTileBounds(zone.xmax, zone.zmax, out trash, out bmax);
+                tdef.GetTileBounds(zone.xmin, zone.zmin, true, out bmin, out trash);
+                tdef.GetTileBounds(zone.xmax, zone.zmax, true, out trash, out bmax);
 
                 DebugDraw.AppendBounds(bmin, bmax);
 
@@ -108,7 +108,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 {
                     GL.Color(new Color(0.93f, 0.58f, 0.11f)); // Orange
 
-                    tdef.GetTileBounds(selection.SelectedX, selection.SelectedZ
+                    tdef.GetTileBounds(selection.SelectedX, selection.SelectedZ, true
                         , out bmin, out bmax);
 
                     DebugDraw.AppendBounds(bmin, bmax);

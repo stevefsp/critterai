@@ -41,6 +41,7 @@ public abstract class NMGenComponent
     /// <summary>
     /// True if debug mode is enabled for the current component.
     /// </summary>
+    [System.NonSerialized]
     public bool debugEnabledLocal = false;
 
     /// <summary>

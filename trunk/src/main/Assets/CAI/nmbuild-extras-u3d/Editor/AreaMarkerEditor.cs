@@ -34,13 +34,14 @@ public class AreaMarkerEditor
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
-    public static void OnGUIStandard(NMGenAreaMarker targ)
+    public void OnGUIStandard(NMGenAreaMarker targ)
     {
         EditorGUILayout.Separator();
 
         bool changed = GUI.changed;
 
-        BoxAreaMarker.debugEnabled = EditorGUILayout.Toggle("Show All", BoxAreaMarker.debugEnabled);
+        NMGenComponent.debugEnabled = 
+            EditorGUILayout.Toggle("Show All", NMGenComponent.debugEnabled);
 
         if (GUI.changed)
             SceneView.RepaintAll();
@@ -51,7 +52,12 @@ public class AreaMarkerEditor
 
         // Note: Clamp before sending to property.
         targ.Priority = EditorGUILayout.IntField("Priority", targ.Priority);
-        targ.AreaInt = EditorGUILayout.IntField("Area", targ.Area);
+
+        int orig = settings.GetAreaNameIndex(targ.Area);
+        int curr = EditorGUILayout.Popup("Area", orig, areaNames);
+
+        if (curr != orig)
+            targ.Area = settings.GetArea(areaNames[curr]);
 
         EditorGUILayout.Separator();
     }

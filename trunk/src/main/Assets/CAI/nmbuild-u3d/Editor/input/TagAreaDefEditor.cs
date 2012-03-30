@@ -34,6 +34,15 @@ using org.critterai.nmbuild.u3d.editor;
 public class TagAreaDefEditor
     : Editor
 {
+    private CAINavSettings mSettings;
+    private string[] mAreaNames;
+
+    void OnEnable()
+    {
+        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mAreaNames = mSettings.GetAreaNames();
+    }
+
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
@@ -98,10 +107,17 @@ public class TagAreaDefEditor
                         + tag + " is already defined.  Change ignored.");
                 }
 
-                areas[i] = NavUtil.ClampArea(
-                    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
+                int orig = mSettings.GetAreaNameIndex(areas[i]);
 
-                if (GUILayout.Button("Remove"))
+                int curr = EditorGUILayout.Popup(orig, mAreaNames);
+
+                if (curr != orig)
+                    areas[i] = mSettings.GetArea(mAreaNames[curr]);
+
+                //areas[i] = NavUtil.ClampArea(
+                //    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
+
+                if (GUILayout.Button("X"))
                     delChoice = i;
 
                 EditorGUILayout.EndHorizontal();

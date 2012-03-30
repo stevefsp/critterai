@@ -53,6 +53,10 @@ public class CylinderAreaMarkerEditor
     static void CreateGameObject()
     {
         GameObject go = new GameObject("AreaMarker");
+        go.transform.position = EditorUtil.GetCreatePosition();
+
         go.AddComponent<CylinderAreaMarker>();
+
+        Selection.activeGameObject = go;
     }
 }

@@ -50,12 +50,6 @@ public class DefaultAreaDef
         set { mDefaultArea = NMGen.ClampArea(value); }
     }
 
-    internal int DefaultAreaInt
-    {
-        get { return mDefaultArea; }
-        set { mDefaultArea = NMGen.ClampArea(value); }
-    }
-
     /// <summary>
     /// The priority of the processor.
     /// </summary>

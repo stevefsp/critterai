@@ -21,6 +21,7 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmgen;
+using org.critterai.nav;
 #if NUNITY
 using Vector3 = org.critterai.Vector3;
 #else
@@ -34,7 +35,8 @@ namespace org.critterai.nmbuild
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This class is useful for dynamically building a set of off-mesh connections.</para>
+    /// Used for dynamically building a set of off-mesh connections.
+    /// </para>
     /// </remarks>
     /// <seealso cref="ConnectionSet"/>
 	public sealed class ConnectionSetCompiler
@@ -66,6 +68,48 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
+        /// The connections in the set.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the connection. [Limits: 0 &lt;= value &lt; <see cref="Count"/>].
+        /// </param>
+        /// <returns>The connection.</returns>
+        public OffMeshConnection this[int index]
+        {
+            get
+            {
+                // Not using parameterized constructor.  Don't need validation cost.
+                OffMeshConnection result = new OffMeshConnection();
+
+                result.start = mVerts[index * 2 + 0];
+                result.end = mVerts[index * 2 + 1];
+                result.radius = mRadii[index];
+                result.direction = mDirs[index];
+                result.flags = mFlags[index];
+                result.area = mAreas[index];
+                result.userId = mUserIds[index];
+
+                return result;
+            }
+
+            set
+            {
+                // Must be validated.
+                // Let exceptions be thrown.
+
+                mRadii[index] = MathUtil.ClampToPositiveNonZero(value.radius);
+                mDirs[index] = (byte)(value.IsBiDirectional ? 1 : 0);
+                mAreas[index] = NMGen.ClampArea(value.area);
+                mFlags[index] = value.flags;
+                mUserIds[index] = value.userId;
+
+                // Keep verts last.
+                mVerts[index * 2 + 0] = value.start;
+                mVerts[index * 2 + 1] = value.end;
+            }
+        }
+
+        /// <summary>
         /// Add a connection.
         /// </summary>
         /// <remarks>
@@ -80,25 +124,75 @@ namespace org.critterai.nmbuild
         /// <param name="flags">The connection flags.</param>
         /// <param name="userId">The connection user id.</param>
         public void Add(Vector3 start, Vector3 end, float radius
-            , bool isBidirectional
-            , byte area
-            , ushort flags
-            , uint userId)
+            , bool isBidirectional, byte area, ushort flags, uint userId)
         {
             mVerts.Add(start);
             mVerts.Add(end);
             mRadii.Add(System.Math.Max(MathUtil.Epsilon, radius));
             mDirs.Add((byte)(isBidirectional ? 1 : 0));
             mAreas.Add(NMGen.ClampArea(area));
-            this.mFlags.Add(flags);
-            this.mUserIds.Add(userId);
+            mFlags.Add(flags);
+            mUserIds.Add(userId);
         }
 
         /// <summary>
-        /// Creates a thread-safe, immutable, fully validated connection set from the compiled 
+        /// Add a connection.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The connection fields are auto-clamped to valid values.
+        /// </para>
+        /// </remarks>
+        /// <param name="connection">The connection to add.</param>
+        public void Add(OffMeshConnection connection)
+        {
+            // Must be validated.
+            mVerts.Add(connection.start);
+            mVerts.Add(connection.end);
+            mRadii.Add(MathUtil.ClampToPositiveNonZero(connection.radius));
+            mDirs.Add((byte)(connection.IsBiDirectional ? 1 : 0));
+            mAreas.Add(NMGen.ClampArea(connection.area));
+            mFlags.Add(connection.flags);
+            mUserIds.Add(connection.userId);
+        }
+
+        /// <summary>
+        /// Removes the connection at the specified index.
+        /// </summary>
+        /// <param name="index">The connection index.</param>
+        public void RemoveAt(int index)
+        {
+            // Let exceptions be thrown.
+
+            mRadii.RemoveAt(index);
+            mDirs.RemoveAt(index);
+            mAreas.RemoveAt(index);
+            mFlags.RemoveAt(index);
+            mUserIds.RemoveAt(index);
+
+            // Keep last.
+            mVerts.RemoveAt(index * 2 + 1);
+            mVerts.RemoveAt(index * 2 + 0);
+        }
+
+        /// <summary>
+        /// Resets the compiler to zero connections.
+        /// </summary>
+        public void Reset()
+        {
+            mVerts.Clear();
+            mRadii.Clear();
+            mDirs.Clear();
+            mAreas.Clear();
+            mFlags.Clear();
+            mUserIds.Clear();
+        }
+
+        /// <summary>
+        /// Creates a thread-safe, immutable, fully validated connection set from the 
         /// connections.
         /// </summary>
-        /// <returns>A conneciton set created form the compiled connections.</returns>
+        /// <returns>A conneciton set created form the connections.</returns>
         public ConnectionSet CreateConnectionSet()
         {
             if (mVerts.Count == 0)
@@ -122,19 +216,6 @@ namespace org.critterai.nmbuild
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Resets the compiler to zero connections.
-        /// </summary>
-        public void Reset()
-        {
-            mVerts.Clear();
-            mRadii.Clear();
-            mDirs.Clear();
-            mAreas.Clear();
-            mFlags.Clear();
-            mUserIds.Clear();
         }
 	}
 }

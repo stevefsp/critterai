@@ -69,9 +69,9 @@ public sealed class NMBuildSettings
     }
 
     /// <summary>
-    /// Opens and focus' the build settings window.
+    /// Opens and focuses the build settings window.
     /// </summary>
-    [MenuItem("CritterAI/Settings", false, EditorUtil.ManagerGroup + 10)]
+    [MenuItem("CritterAI/Navmesh Build Settings", false, EditorUtil.ManagerGroup + 10)]
     public static void OpenWindow()
     {
         NMBuildSettings window = EditorWindow.GetWindow<NMBuildSettings>(true

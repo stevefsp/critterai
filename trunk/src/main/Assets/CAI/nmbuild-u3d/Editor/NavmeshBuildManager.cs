@@ -173,7 +173,7 @@ public sealed class NavmeshBuildManager
     /// <summary>
     /// Opens and focus' the build manager window.
     /// </summary>
-    [MenuItem(EditorUtil.MainMenu + "Namesh Build Manager", false, EditorUtil.ManagerGroup)]
+    [MenuItem(EditorUtil.MainMenu + "Navmesh Build Manager", false, EditorUtil.ManagerGroup)]
     public static void OpenWindow()
     {
         NavmeshBuildManager window = EditorWindow.GetWindow<NavmeshBuildManager>(false

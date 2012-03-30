@@ -33,6 +33,25 @@ public class OFMConnectionEditor
 {
     private static Vector3 markerSize = new Vector3(0.3f, 0.05f, 0.3f);
 
+    private CAINavSettings mSettings;
+    private string[] mAreaNames;
+    private string[] mFlagNames;
+
+    void OnEnable()
+    {
+        ((NMGenComponent)target).debugEnabledLocal = true;
+
+        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mAreaNames = mSettings.GetAreaNames();
+        mFlagNames = mSettings.GetFlagNames();
+    }
+
+    void OnDisable()
+    {
+        if (target)
+            ((NMGenComponent)target).debugEnabledLocal = false;
+    }
+
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
@@ -59,6 +78,9 @@ public class OFMConnectionEditor
 
         targ.Radius = EditorGUILayout.FloatField("Radius", targ.Radius);
         targ.UserId = EditorGUILayout.IntField("User Id", targ.UserId);
+
+        targ.Flags = (ushort)EditorGUILayout.MaskField("Flags", targ.Flags, mFlagNames);
+
         targ.IsBidirectional = EditorGUILayout.Toggle("Bidirectional", targ.IsBidirectional);
 
         EditorGUILayout.Separator();
@@ -68,9 +90,15 @@ public class OFMConnectionEditor
         GUI.enabled = targ.OverrideArea;
 
         if (GUI.enabled)
-            targ.AreaInt = EditorGUILayout.IntField("Area", targ.Area);
+        {
+            int orig = mSettings.GetAreaNameIndex(targ.Area);
+            int curr = EditorGUILayout.Popup("Area", orig, mAreaNames);
+
+            if (curr != orig)
+                targ.Area = mSettings.GetArea(mAreaNames[curr]);
+        }
         else
-            EditorGUILayout.LabelField("Area", "Default");
+            EditorGUILayout.LabelField("Area", "Build Default");
 
         GUI.enabled = true;
 
@@ -116,7 +144,11 @@ public class OFMConnectionEditor
     static void CreateGameObject()
     {
         GameObject go = new GameObject("OffMeshConn");
+        go.transform.position = EditorUtil.GetCreatePosition();
+
         OFMConnection comp = go.AddComponent<OFMConnection>();
         comp.EndPoint = go.transform.position + Vector3.up + Vector3.right + Vector3.forward;
+
+        Selection.activeGameObject = go;
     }
 }

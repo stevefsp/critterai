@@ -26,7 +26,7 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// A processor that applies polygon flags to all polygons in a <see cref="PolyMesh"/>.
+    /// A processor that applies polygon flags to <see cref="PolyMesh"/> polygons.
     /// </summary>
     public sealed class ApplyPolygonFlags
         : NMGenProcessor
@@ -78,7 +78,7 @@ namespace org.critterai.nmbuild
             }
 
             context.PolyMesh.Load(data);
-            context.Log(string.Format("{0}: Applied flags to all polys. Flags: {1:X}"
+            context.Log(string.Format("{0}: Applied flags to all polys. Flags: 0x{1:X}"
                 , Name, mFlags)
                 , this);
 

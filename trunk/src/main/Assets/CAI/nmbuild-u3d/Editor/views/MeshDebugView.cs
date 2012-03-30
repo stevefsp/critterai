@@ -179,7 +179,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 Vector3 bmin;
                 Vector3 bmax;
 
-                tdef.GetTileBounds(tx, tz, out bmin, out bmax);
+                tdef.GetTileBounds(tx, tz, true, out bmin, out bmax);
 
                 Geom geom = new Geom();
 

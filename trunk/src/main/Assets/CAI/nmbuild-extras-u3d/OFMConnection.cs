@@ -46,6 +46,9 @@ public sealed class OFMConnection
     [SerializeField]
     private int mUserId;
 
+    [SerializeField]
+    private int mFlags = 1;
+
     /// <summary>
     /// The connection start point.
     /// </summary>
@@ -95,16 +98,16 @@ public sealed class OFMConnection
     public byte Area
     {
         get { return mArea; }
-        set { mArea =ClampArea(value); }
+        set { mArea = ClampArea(value); }
     }
 
     /// <summary>
-    /// The area to apply to the connection. (Integer version.)
+    /// The connection flags.
     /// </summary>
-    public int AreaInt
+    public ushort Flags
     {
-        get { return mArea; }
-        set { mArea = ClampArea(value); }
+        get { return (ushort)mFlags; }
+        set{ mFlags = value; }
     }
 
     /// <summary>

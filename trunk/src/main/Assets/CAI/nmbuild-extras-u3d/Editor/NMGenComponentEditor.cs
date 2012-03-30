@@ -29,11 +29,24 @@ public class NMGenComponentEditor
     : Editor
 {
     /// <summary>
+    /// The global navigation settings.
+    /// </summary>
+    protected CAINavSettings settings;
+
+    /// <summary>
+    /// The well known area names.
+    /// </summary>
+    protected string[] areaNames;
+
+    /// <summary>
     /// Run when the editor is enabled.
     /// </summary>
     protected virtual void OnEnable()
     {
         ((NMGenComponent)target).debugEnabledLocal = true;
+
+        settings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        areaNames = settings.GetAreaNames();
     }
 
     /// <summary>
@@ -41,7 +54,8 @@ public class NMGenComponentEditor
     /// </summary>
     protected virtual void OnDisable()
     {
-        ((NMGenComponent)target).debugEnabledLocal = false;
+        if (target)
+            ((NMGenComponent)target).debugEnabledLocal = false;
     }
 
     /// <summary>
