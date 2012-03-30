@@ -41,7 +41,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// The endpoints of the connection.
-        /// [Form: (ax, ay, az, bx, by, bz)].
+        /// [Form: (start, end)].
         /// </summary>
         /// <remarks>For a properly built navigation mesh, vertex A
         /// will always be within the bounds of the mesh.
@@ -79,9 +79,14 @@ namespace org.critterai.nav
         public byte side;
 
         /// <summary>
-        /// The id of the offmesh connection. (User assigned when the
-        /// navmesh is built.)
+        /// The id of the off-mesh connection. (User assigned when the navmesh is built.)
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This value has no meaning to the core navigation system.  It's purpose is entirely 
+        /// user defined.
+        /// </para>
+        /// </remarks>
         public uint userId;
 
         /// <summary>

@@ -223,12 +223,8 @@ namespace org.critterai.nav.u3d
             DebugDraw.Circle(v, goalScale * 0.25f, goalColor);
         }
 
-        private static Color GetStandardColor(uint polyRef
-            , int polyArea
-            , int colorId
-            , NavmeshQuery query
-            , uint[] markPolys
-            , int markPolyCount)
+        private static Color GetStandardColor(uint polyRef, int polyArea, int colorId
+            , NavmeshQuery query, uint[] markPolys, int markPolyCount)
         {
             Color result;
 
@@ -376,7 +372,10 @@ namespace org.critterai.nav.u3d
                 Color color = GetStandardColor(polyBase | (uint)i
                     , poly.Area, colorId
                     , query, markPolys, markPolyCount);
-                color.a = 0.75f;
+
+                // Note: Alpha of less than one doesn't look good because connections tend to
+                // overlay a lot of geometry, resulting is off color transitions.
+                color.a = 1;
 
                 GL.Color(color);
 

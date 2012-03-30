@@ -53,6 +53,10 @@ public class BoxAreaMarkerEditor
     static void CreateGameObject()
     {
         GameObject go = new GameObject("AreaMarker");
+        go.transform.position = EditorUtil.GetCreatePosition();
+
         go.AddComponent<BoxAreaMarker>();
+
+        Selection.activeGameObject = go;
     }
 }

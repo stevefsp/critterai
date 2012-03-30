@@ -80,7 +80,7 @@ public sealed class OFMConnectionCompiler
 
         int count = context.LoadFromScene<OFMConnection>();
 
-        context.Log(string.Format("{0}: Loaded {1} terrain.", name, count), this);
+        context.Log(string.Format("{0}: Loaded {1} off-mesh connections.", name, count), this);
     }
 
     private void Compile(InputBuildContext context)
@@ -106,13 +106,13 @@ public sealed class OFMConnectionCompiler
                     , conn.Radius
                     , conn.IsBidirectional
                     , area
-                    , 0  // Flags not supported.
+                    , conn.Flags
                     , (uint)conn.UserId);
 
                 count++;
             }
         }
 
-        context.Log(string.Format("{0}: Compiled Connections: {1}", name, count), this);
+        context.Log(string.Format("{0}: Compiled off-mesh connections: {1}", name, count), this);
     }
 }

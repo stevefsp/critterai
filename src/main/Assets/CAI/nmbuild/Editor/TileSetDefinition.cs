@@ -32,10 +32,10 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents the definition of a set of tiles that make up a tiled navigation mesh.
+    /// Represents the definition for a set of tiles that make up a tiled navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <para>This object is used to provides common configuration and input geometry for a tiled
+    /// <para>This object provides common configuration settings and input geometry for a tiled
     /// navigation mesh build.  For example, the <see cref="IncrementalBuilder"/> will create
     /// a builder from a tile set defintion.</para>
     /// <para>Objects of this type are thread-safe and immutable.</para>
@@ -66,25 +66,27 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// The width of the tile grid.  (Number of tiles along the x-axis.)
+        /// The number of tiles along the x-axis.
         /// </summary>
         public int Width { get { return mWidth; } }
 
         /// <summary>
-        /// The depth of the tile grid.  (Number of tiles along the z-axis.)
+        /// The number of tiles along the z-axis.
         /// </summary>
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The maximum AABB bounds of the set.
+        /// The minimum AABB bounds of the tile set.
         /// </summary>
         /// <remarks>
-        /// <para>This value will be the origin of the navigation mesh created from the tile set.
-        /// </para></remarks>
+        /// <para>
+        /// This value will be the origin of the navigation mesh created from the tile set.
+        /// </para>
+        /// </remarks>
         public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
-        /// The minimum AABB bounds of the set for build purposes.
+        /// The maximum AABB bounds of the tile set for build purposes.
         /// </summary>
         public Vector3 BoundsMax { get { return mBoundsMax; } }
 
@@ -114,10 +116,12 @@ namespace org.critterai.nmbuild
         /// [0 &lt;= value &lt; <see cref="Width"/>]</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (x, z) 
         /// [0 &lt;= value &lt; <see cref="Depth"/>]</param>
+        /// <param name="includeBorder">True if the bounds should be expanded by the
+        /// border size configuration setting.</param>
         /// <param name="boundsMin">The minimum AABB bounds of the tile.</param>
         /// <param name="boundsMax">The maximum AABB bounds of the tile.</param>
         /// <returns>True if the tile is valid, otherwise false.</returns>
-        public bool GetTileBounds(int tx, int tz
+        public bool GetTileBounds(int tx, int tz, bool includeBorder
             , out Vector3 boundsMin, out Vector3 boundsMax)
         {
             boundsMin = mBoundsMin;
@@ -130,8 +134,8 @@ namespace org.critterai.nmbuild
                 return false;
             }
 
-            float tcsFactor = mBaseConfig.TileSize * mBaseConfig.XZCellSize;
-            float borderOffset = mBaseConfig.BorderSize * mBaseConfig.XZCellSize;
+            float tcsFactor = mBaseConfig.TileSize * mBaseConfig.XZCellSize;  // World tile size.
+
 
             // Note: The minimum bounds of the base configuration is
             // considered to be the origin of the mesh set.
@@ -139,12 +143,23 @@ namespace org.critterai.nmbuild
             boundsMin = mBoundsMin;
             boundsMax = mBoundsMin;  // This is not an error.
 
-            boundsMin.x += tx * tcsFactor - borderOffset;
-            boundsMin.z += tz * tcsFactor - borderOffset;
+            boundsMin.x += tx * tcsFactor;
+            boundsMin.z += tz * tcsFactor;
 
-            boundsMax.x += (tx + 1) * tcsFactor + borderOffset;
+            boundsMax.x += (tx + 1) * tcsFactor;
             boundsMax.y = mBoundsMax.y;
-            boundsMax.z += (tz + 1) * tcsFactor + borderOffset;
+            boundsMax.z += (tz + 1) * tcsFactor;
+
+            if (includeBorder)
+            {
+                float borderOffset = mBaseConfig.BorderSize * mBaseConfig.XZCellSize;
+
+                boundsMin.x -=  borderOffset;
+                boundsMin.z -= borderOffset;
+
+                boundsMax.x += borderOffset;
+                boundsMax.z += borderOffset;
+            }
 
             return true;
         }
@@ -160,8 +175,7 @@ namespace org.critterai.nmbuild
         /// <param name="config">The shared NMGen configuration.</param>
         /// <param name="geom">The input geometry.</param>
         /// <returns>A new tile set, or null on error.</returns>
-        public static TileSetDefinition Create(Vector3 boundsMin
-            , Vector3 boundsMax
+        public static TileSetDefinition Create(Vector3 boundsMin, Vector3 boundsMax
             , NMGenParams config
             , InputGeometry geom)
         {

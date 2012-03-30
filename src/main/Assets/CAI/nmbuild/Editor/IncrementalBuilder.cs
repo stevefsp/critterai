@@ -269,11 +269,19 @@ namespace org.critterai.nmbuild
 
             //UnityEngine.Debug.Log("A");
 
-            NMGen.DeriveSizeOfCellGrid(mTileConfig.BoundsMin
-                , mTileConfig.BoundsMax
-                , mConfig.XZCellSize
-                , out width
-                , out depth);
+            //if (mConfig.TileSize == 0)
+            //{
+                NMGen.DeriveSizeOfCellGrid(mTileConfig.BoundsMin
+                    , mTileConfig.BoundsMax
+                    , mConfig.XZCellSize
+                    , out width
+                    , out depth);
+            //}
+            //else
+            //{
+            //    width = mConfig.TileSize + mConfig.borderSize * 2;
+            //    depth = width;
+            //}
 
             //UnityEngine.Debug.Log("B");
 
@@ -775,16 +783,13 @@ namespace org.critterai.nmbuild
             Vector3 bmax;
 
             // This next call checks for valid tx/tz.
-            if (!tdef.GetTileBounds(tx, tz, out bmin, out bmax))
+            if (!tdef.GetTileBounds(tx, tz, true, out bmin, out bmax))
                 return null;
 
             NMGenTileParams tileConfig = new NMGenTileParams(tx, tz, bmin, bmax);
 
-            return new IncrementalBuilder(tileConfig
-                , tdef.GetBaseConfig()
-                , resultOptions
-                , tdef.Geometry
-                , processors);
+            return new IncrementalBuilder(tileConfig, tdef.GetBaseConfig(), resultOptions
+                , tdef.Geometry, processors);
         }
 
         /// <summary>

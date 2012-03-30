@@ -34,6 +34,15 @@ using org.critterai.nmbuild.u3d.editor;
 public class MeshAreaDefEditor
     : Editor
 {
+    private CAINavSettings mSettings;
+    private string[] mAreaNames;
+
+    void OnEnable()
+    {
+        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mAreaNames = mSettings.GetAreaNames();
+    }
+
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
@@ -96,15 +105,21 @@ public class MeshAreaDefEditor
                     meshes[i] = mesh;
                 else
                 {
-                    Debug.LogWarning(targ.name + ": " 
+                    Debug.LogError(targ.name + ": " 
                         + mesh.name + " is already defined.  Change ignored.");
                 }
 
+                int orig = mSettings.GetAreaNameIndex(areas[i]);
 
-                areas[i] = NavUtil.ClampArea(
-                    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
+                int curr = EditorGUILayout.Popup(orig, mAreaNames);
 
-                if (GUILayout.Button("Remove"))
+                if (curr != orig)
+                    areas[i] = mSettings.GetArea(mAreaNames[curr]);
+
+                //areas[i] = NavUtil.ClampArea(
+                //    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
+
+                if (GUILayout.Button("X"))
                     delChoice = i;
 
                 EditorGUILayout.EndHorizontal();
