@@ -52,6 +52,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\nav-u3d-editor\cai-nav-u3d-editor.csproj">
+      <Project>{8093F287-EA45-46AB-AF58-710DA654392E}</Project>
+      <Name>cai-nav-u3d-editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj">
       <Project>{2706B2D3-0F06-4B9B-867C-3B2641B18EA8}</Project>
       <Name>cai-nmbuild-extras-u3d</Name>
