@@ -29,7 +29,7 @@ namespace org.critterai.nmbuild.u3d.editor
     {
         private InputBuildState mState;
         private readonly InputBuildContext mContext;
-        private readonly InputBuildProcessor[] mInputProcessors;
+        private readonly IInputBuildProcessor[] mInputProcessors;
 
         private InputAssets mAssets = new InputAssets();
 
@@ -64,12 +64,12 @@ namespace org.critterai.nmbuild.u3d.editor
             }
         }
 
-        private InputBuilder(InputBuildContext context, InputBuildProcessor[] processors)
+        private InputBuilder(InputBuildContext context, IInputBuildProcessor[] processors)
         {
             mContext = context;
             mInputProcessors = processors;
 
-            System.Array.Sort(mInputProcessors, new PriorityComparer<InputBuildProcessor>(true));
+            System.Array.Sort(mInputProcessors, new PriorityComparer<IInputBuildProcessor>(true));
 
             mState = InputBuildState.LoadComponents;
         }
@@ -116,12 +116,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private bool RunProcessors()
         {
-            foreach (InputBuildProcessor item in mInputProcessors)
+            foreach (IInputBuildProcessor item in mInputProcessors)
             {
                 if (!item.ProcessInput(mState, mContext))
                 {
                     FinalizeOnAbort(string.Format("Processor requested abort: {0} ({1})"
-                        , item.name, mState));
+                        , item.Name, mState));
                     return false;
                 }
             }
@@ -313,18 +313,18 @@ namespace org.critterai.nmbuild.u3d.editor
             mState = InputBuildState.Complete;
         }
 
-        public static InputBuilder Create(SceneQuery filter
-            , InputBuildProcessor[] processors
+        public static InputBuilder Create(ISceneQuery filter
+            , IInputBuildProcessor[] processors
             , InputBuildOption options)
         {
-            InputBuildProcessor[] lprocessors = ArrayUtil.Compress(processors);
+            IInputBuildProcessor[] lprocessors = ArrayUtil.Compress(processors);
 
             if (lprocessors == null || lprocessors.Length == 0)
                 return null;
 
             for (int i = lprocessors.Length - 1; i >= 0; i--)
             {
-                InputBuildProcessor processor = lprocessors[i];
+                IInputBuildProcessor processor = lprocessors[i];
 
                 if (processor.DuplicatesAllowed)
                     continue;
@@ -341,7 +341,7 @@ namespace org.critterai.nmbuild.u3d.editor
             }
 
             if (lprocessors == processors)
-                lprocessors = (InputBuildProcessor[])lprocessors.Clone();
+                lprocessors = (IInputBuildProcessor[])lprocessors.Clone();
 
             InputBuildContext context = new InputBuildContext(filter, options);
 

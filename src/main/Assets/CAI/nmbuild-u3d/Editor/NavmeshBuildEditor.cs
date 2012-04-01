@@ -35,7 +35,6 @@ using org.critterai.geom;
 public class NavmeshBuildEditor
     : Editor
 {
-
     private const string ShowInputKey = "org.critterai.nmbuild.ShowInputConfig";
     private const string ShowNMGenKey = "org.critterai.nmbuild.ShowNMGenConfig";
     private const string ShowNMGenPriKey = "org.critterai.nmbuild.ShowNMGenPri";
@@ -73,11 +72,7 @@ public class NavmeshBuildEditor
 
         EditorGUILayout.Separator();
 
-        targ.BuildTarget = (CAINavmeshData)EditorGUILayout.ObjectField(
-            "Bake Target"
-            , targ.BuildTarget
-            , typeof(CAINavmeshData)
-            , false);
+        targ.BuildTarget = NavEditorUtil.OnGUINavmeshDataField("Bake Target", targ.BuildTarget);
 
         EditorGUILayout.Separator();
 
@@ -131,48 +126,28 @@ public class NavmeshBuildEditor
 
             EditorGUILayout.Separator();
 
-            targ.SceneQuery = (SceneQuery)EditorGUILayout.ObjectField(
+            ScriptableObject so = (ScriptableObject)targ.SceneQuery;
+            ScriptableObject nso = (ScriptableObject)EditorGUILayout.ObjectField(
                 "Scene Query"
-                , targ.SceneQuery
-                , typeof(SceneQuery)
+                , so
+                , typeof(ScriptableObject)
                 , false);
+
+            if (nso != so)
+            {
+                if (nso is ISceneQuery)
+                    targ.SceneQuery = (ISceneQuery)nso;
+                else
+                {
+                    Debug.LogError(string.Format("{0} does not implement {1}."
+                        , nso.name, typeof(ISceneQuery).Name));
+                }
+            }
 
             EditorGUILayout.Separator();
 
-            List<InputBuildProcessor> processors = targ.inputProcessors;
-
-            if (EditorUtil.OnGUIManageObjectList("Processors", processors, false))
-            {
-                // The above method handles duplicate objects, but not duplicat typse.  
-                // So need to check it.
-                for (int i = processors.Count - 1; i >= 0; i--)
-                {
-                    InputBuildProcessor processor = processors[i];
-
-                    if (processor.DuplicatesAllowed)
-                        continue;
-
-                    System.Type ta = processor.GetType();
-
-                    for (int j = i - 1; j >= 0; j--)
-                    {
-                        System.Type tb = processors[j].GetType();
-
-                        if (ta.IsAssignableFrom(tb) || tb.IsAssignableFrom(ta))
-                        {
-                            Debug.LogWarning(string.Format("Disallowed dulicate processor type"
-                                + " detected. {0} and {1}. Purged {1}"
-                                , processors[j].name, processor.name));
-
-                            processors.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
-
+            if (OnGUIManageProcessorList(targ.inputProcessors))
                 targ.IsDirty = true;
-            }
-
 
             GUI.enabled = true;
         }
@@ -184,6 +159,107 @@ public class NavmeshBuildEditor
             EditorUtility.SetDirty(target);
             targ.IsDirty = false;
         }
+    }
+
+    private static bool OnGUIManageProcessorList(List<ScriptableObject> items)
+    {
+        bool origChanged = GUI.changed;
+        GUI.changed = false;
+
+        // Never allow nulls.  So get rid of them first.
+        for (int i = items.Count - 1; i >= 0; i--)
+        {
+            if (items[i] == null)
+            {
+                items.RemoveAt(i);
+                GUI.changed = true;
+            }
+        }
+
+        GUILayout.Label("Processors");
+
+        if (items.Count > 0)
+        {
+            int delChoice = -1;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                ScriptableObject currItem = (ScriptableObject)items[i];
+                ScriptableObject item = (ScriptableObject)
+                    EditorGUILayout.ObjectField(currItem, typeof(ScriptableObject), false);
+
+                if (item != currItem && OkToAdd(items, item))
+                    items[i] = item;
+
+                if (GUILayout.Button("X"))
+                    delChoice = i;
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            if (delChoice >= 0)
+            {
+                GUI.changed = true;
+                items.RemoveAt(delChoice);
+            }
+        }
+
+        EditorGUILayout.Separator();
+
+        ScriptableObject nitem = (ScriptableObject)
+            EditorGUILayout.ObjectField("Add", null, typeof(ScriptableObject), false);
+
+        if (nitem != null && OkToAdd(items, nitem))
+            items.Add(nitem);
+
+        bool result = GUI.changed;
+        GUI.changed = GUI.changed || origChanged;
+
+        return result;
+    }
+
+    private static bool OkToAdd(List<ScriptableObject> items, ScriptableObject item)
+    {
+        if (!(item is IInputBuildProcessor))
+        {
+            Debug.LogError(string.Format("{0} does not implement {1}."
+                , item.name, typeof(IInputBuildProcessor).Name));
+            return false;
+        }
+
+        if (items.Contains(item))
+        {
+            Debug.LogError(item.name + " already in the processor list.");
+            return false;
+        }
+
+        IInputBuildProcessor pa = (IInputBuildProcessor)item;
+
+        if (pa.DuplicatesAllowed)
+            return true;
+
+        foreach (ScriptableObject itemB in items)
+        {
+            IInputBuildProcessor pb = (IInputBuildProcessor)itemB;
+
+            if (pb.DuplicatesAllowed)
+                continue;
+
+            System.Type ta = pb.GetType();
+            System.Type tb = pa.GetType();
+
+            if (ta.IsAssignableFrom(tb) || tb.IsAssignableFrom(ta))
+            {
+                Debug.LogError(string.Format(
+                    "Disallowed dulicate detected. {0} and {1} are same type."
+                    , pa.Name, pb.Name));
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static void OnGUIAdvanced(NavmeshBuild build)
@@ -293,8 +369,8 @@ public class NavmeshBuildEditor
 
     private static void OnGUIState(NavmeshBuild build)
     {
-        CAINavmeshData btarget = build.BuildTarget;
-        NavmeshBuildInfo binfo = (btarget ? btarget.BuildInfo : null);
+        INavmeshData btarget = build.BuildTarget;
+        NavmeshBuildInfo binfo = (btarget == null ? null : btarget.BuildInfo);
 
         EditorGUILayout.Separator();
 
@@ -302,7 +378,7 @@ public class NavmeshBuildEditor
 
         if (build.BuildState == NavmeshBuildState.Invalid)
         {
-            if (!btarget)
+            if (btarget == null)
                 sb.AppendLine("No build target.");
             if (build.inputProcessors.Count == 0)
                 sb.AppendLine("No input processors.");
@@ -343,7 +419,7 @@ public class NavmeshBuildEditor
 
         EditorGUILayout.Separator();
 
-        GUI.enabled = btarget;
+        GUI.enabled = (btarget != null);
 
         NavmeshSceneDraw.Instance.OnGUI(build.BuildTarget, "Show Mesh", true, true);
 
@@ -363,13 +439,12 @@ public class NavmeshBuildEditor
     }
 
     [MenuItem(EditorUtil.NMGenAssetMenu + "Navmesh Build : Standard"
-        , false
-        , NMBEditorUtil.BuildGroup)]
+        , false, NMBEditorUtil.BuildGroup)]
     static void CreateLoadedAsset()
     {
         NavmeshBuild item = EditorUtil.CreateAsset<NavmeshBuild>(NMBEditorUtil.AssetLabel);
 
-        InputBuildProcessor child;
+        ScriptableObject child;
 
         child = EditorUtil.CreateAsset<MeshCompiler>(item, NMBEditorUtil.AssetLabel);
         item.inputProcessors.Add(child);

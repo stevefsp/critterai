@@ -29,7 +29,7 @@ using org.critterai.nav.u3d;
 /// </summary>
 [System.Serializable]
 public sealed class CAIBakedNavmesh
-    : CAINavmeshData
+    : ScriptableObject, INavmeshData
 {
     [SerializeField]
     private byte[] mDataPack = null;
@@ -52,13 +52,13 @@ public sealed class CAIBakedNavmesh
     /// Partial re-build features will not be available if this property is null.
     /// </para>
     /// </remarks>
-    public override NavmeshBuildInfo BuildInfo { get { return mBuildInfo.Clone(); } }
+    public NavmeshBuildInfo BuildInfo { get { return mBuildInfo.Clone(); } }
 
     /// <summary>
     /// True if the navigation mesh is available.
     /// </summary>
     /// <returns>True if the navigation mesh is available.</returns>
-    public override bool HasNavmesh
+    public bool HasNavmesh
     {
         get { return (mDataPack != null && mDataPack.Length > 0); }
     }
@@ -72,14 +72,14 @@ public sealed class CAIBakedNavmesh
     /// loaded.
     /// </para>
     /// </remarks>
-    public override int Version { get { return mVersion; } }
+    public int Version { get { return mVersion; } }
 
     /// <summary>
     /// Creates a new <see cref="Navmesh"/> object from the mesh data
     /// </summary>
     /// <returns>A new <see cref="Navmesh"/> object. Or null if the mesh is not available.
     /// </returns>
-    public override Navmesh GetNavmesh()
+    public Navmesh GetNavmesh()
     {
         if (!HasNavmesh)
             return null;
@@ -95,7 +95,7 @@ public sealed class CAIBakedNavmesh
     /// Generates a human readable report for the mesh data.
     /// </summary>
     /// <returns>A human readable report for the mesh data.</returns>
-    public override string GetMeshReport()
+    public string GetMeshReport()
     {
         if (!HasNavmesh)
             return "No mesh.";
@@ -149,7 +149,7 @@ public sealed class CAIBakedNavmesh
     /// <param name="buildData">The tile build data.</param>
     /// <param name="buildConfig">The build information. (Optional)</param>
     /// <returns>The <see cref="NavStatus"/> flags for the operation.</returns>
-    public override NavStatus Load(NavmeshTileBuildData buildData, NavmeshBuildInfo buildConfig)
+    public NavStatus Load(NavmeshTileBuildData buildData, NavmeshBuildInfo buildConfig)
     {
         if (buildData == null || buildData.IsDisposed)
             return NavStatus.Failure | NavStatus.InvalidParam;
@@ -179,7 +179,7 @@ public sealed class CAIBakedNavmesh
     /// <param name="tiles">The tiles to add to the mesh.</param>
     /// <param name="buildConfig">The build information. (Optional)</param>
     /// <returns>The <see cref="NavStatus"/> flags for the operation.</returns>
-    public override NavStatus Load(NavmeshParams config
+    public NavStatus Load(NavmeshParams config
         , NavmeshTileData[] tiles
         , NavmeshBuildInfo buildConfig)
     {
@@ -223,7 +223,7 @@ public sealed class CAIBakedNavmesh
     /// <param name="serializedMesh">The serialized mesh.</param>
     /// <param name="buildConfig">The build information. (Optional)</param>
     /// <returns>The <see cref="NavStatus"/> flags for the operation.</returns>
-    public override NavStatus Load(byte[] serializedMesh, NavmeshBuildInfo buildConfig)
+    public NavStatus Load(byte[] serializedMesh, NavmeshBuildInfo buildConfig)
     {
         if (serializedMesh == null)
             return NavStatus.Failure | NavStatus.InvalidParam;

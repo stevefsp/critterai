@@ -20,47 +20,49 @@
  * THE SOFTWARE.
  */
 using org.critterai;
-using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
-/// <summary>
-/// A processor used build input for an NMGen build.
-/// </summary>
-/// <remarks>
-/// <para>Processors are called during every step of the input build in an ascending order.</para>
-/// <para></para>
-/// </remarks>
-public abstract class InputBuildProcessor
-    : ScriptableObject, IPriorityItem
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Processes the context.
-    /// </summary>
-    /// <param name="state">The current state of the input build.</param>
-    /// <param name="context">The input context to process.</param>
-    /// <returns>False if the input build should abort.</returns>
-    public abstract bool ProcessInput(InputBuildState state, InputBuildContext context);
-
-    /// <summary>
-    /// The priority of the processor.
+    /// A ScriptableObject processor used to build input for a 
+    /// <see cref="org.critterai.nav.Navmesh"/> build.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Processors are called in ascending order.
+    /// Processors are called during each step of the input build, in ascending priority.
     /// </para>
-    /// </remarks>
-    public abstract int Priority { get; }
-
-    /// <summary>
-    /// True if the multiple processors of the same type can be included in a build.
-    /// </summary>
-    /// <remarks>
     /// <para>
-    /// If this property is false, the input builder will discard duplicate processors of the
-    /// same type.  Which duplicate is discarded is undefined.
+    /// This interface is only valid when implemented by a ScriptableObject.
     /// </para>
-    /// <para>This restricts same type processors only.  The input builder never accepts duplicate
-    /// objects.</para>
     /// </remarks>
-    public abstract bool DuplicatesAllowed { get; } 
+    public interface IInputBuildProcessor
+        : IPriorityItem
+    {
+        /// <summary>
+        /// The name of the processor.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// Processes the context.
+        /// </summary>
+        /// <param name="state">The current state of the input build.</param>
+        /// <param name="context">The input context to process.</param>
+        /// <returns>False if the input build should abort.</returns>
+        bool ProcessInput(InputBuildState state, InputBuildContext context);
+
+        /// <summary>
+        /// True if the multiple processors of the same type can be included in a build.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If this property is false, the input builder will discard duplicate processors of the
+        /// same type.  Which duplicate is discarded is undefined.
+        /// </para>
+        /// <para>This restricts same type processors only.  The input builder never accepts duplicate
+        /// objects.</para>
+        /// </remarks>
+        bool DuplicatesAllowed { get; }
+    }
 }

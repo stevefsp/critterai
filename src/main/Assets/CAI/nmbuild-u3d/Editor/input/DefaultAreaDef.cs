@@ -35,8 +35,8 @@ using UnityEngine;
 /// </para>
 /// </remarks>
 [System.Serializable]
-public class DefaultAreaDef
-    : InputBuildProcessor
+public sealed class DefaultAreaDef
+    : ScriptableObject, IInputBuildProcessor
 {
     [SerializeField]
     private byte mDefaultArea = NMGen.MaxArea;
@@ -53,12 +53,17 @@ public class DefaultAreaDef
     /// <summary>
     /// The priority of the processor.
     /// </summary>
-    public override int Priority { get { return NMBuild.MinPriority - 1; } }
+    public int Priority { get { return NMBuild.MinPriority - 1; } }
+
+    /// <summary>
+    /// The name of the processor
+    /// </summary>
+    public string Name { get { return name; } }
 
     /// <summary>
     /// Duplicates not allowed. (Always false.)
     /// </summary>
-    public override bool DuplicatesAllowed { get { return false; } }
+    public bool DuplicatesAllowed { get { return false; } }
 
     /// <summary>
     /// Processes the context.
@@ -71,7 +76,7 @@ public class DefaultAreaDef
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state == InputBuildState.ApplyAreaModifiers)
         {

@@ -28,8 +28,8 @@ using UnityEngine;
 /// Assigns areas to components based on tags.
 /// </summary>
 [System.Serializable]
-public class TagAreaDef 
-    : InputBuildProcessor
+public sealed class TagAreaDef 
+    : ScriptableObject, IInputBuildProcessor
 {
     /// <summary>
     /// True if components whose parents have one of the tags should be assigned the area.
@@ -52,7 +52,12 @@ public class TagAreaDef
     /// <summary>
     /// The priority of the processor.
     /// </summary>    
-    public override int Priority { get { return mPriority; } }
+    public int Priority { get { return mPriority; } }
+
+    /// <summary>
+    /// The name of the processor
+    /// </summary>
+    public string Name { get { return name; } }
 
     /// <summary>
     /// Sets the priority.
@@ -66,7 +71,7 @@ public class TagAreaDef
     /// <summary>
     /// Duplicates allowed. (Always true.)
     /// </summary>
-    public override bool DuplicatesAllowed { get { return true; } }
+    public bool DuplicatesAllowed { get { return true; } }
 
     /// <summary>
     /// Processes the context.
@@ -79,7 +84,7 @@ public class TagAreaDef
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state != InputBuildState.ApplyAreaModifiers || tags.Count == 0)
             return true;

@@ -204,12 +204,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if ((status & NavStatus.Failure) == 0)
             {
-                EditorUtility.SetDirty(build.BuildTarget);
+                EditorUtility.SetDirty((Object)build.BuildTarget);
                 // build.BuildData.SetAsBaked();
                 build.BuildData.Reset(0, 0);  // Don't need to keep the data.
             }
             else
-                Logger.PostError("Bake to target: Target reported failure.", build.BuildTarget);
+                Logger.PostError("Bake to target: Target reported failure.", (Object)build.BuildTarget);
         }
     }
 }

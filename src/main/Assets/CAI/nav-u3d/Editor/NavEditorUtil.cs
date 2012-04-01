@@ -22,6 +22,7 @@
 using org.critterai.nav.u3d;
 using org.critterai.u3d.editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace org.critterai.nav.u3d.editor
 {
@@ -64,6 +65,34 @@ namespace org.critterai.nav.u3d.editor
             string result = System.IO.Path.GetFileName(info.inputScene);
 
             return result.Substring(0, result.LastIndexOf("."));
+        }
+
+        /// <summary>
+        /// Displays an object field that will only accept ScriptableObjects that implement
+        /// the <see cref="INavmeshData"/> interface.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Handles error logging when an invalid object is selected.
+        /// </para>
+        /// </remarks>
+        /// <param name="label">The label for the object field.</param>
+        /// <param name="item">The ScriptableObject the field shows.</param>
+        /// <returns>The ScriptableObject selected by the user.</returns>
+        public static INavmeshData OnGUINavmeshDataField(string label, INavmeshData item)
+        {
+            ScriptableObject so = (ScriptableObject)item;
+
+            ScriptableObject nso = (ScriptableObject)EditorGUILayout.ObjectField(label
+                , so, typeof(ScriptableObject), false);
+
+            if (nso is INavmeshData)
+                return (INavmeshData)nso;
+
+            Debug.LogError(string.Format("{0} does not implement {1}."
+                , nso.name, typeof(INavmeshData).Name));
+
+            return item;
         }
     }
 }

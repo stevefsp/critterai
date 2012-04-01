@@ -21,30 +21,36 @@
  */
 using UnityEngine;
 
-/// <summary>
-/// An object used to query the scene for components.
-/// </summary>
-[System.Serializable]
-public abstract class SceneQuery
-    : ScriptableObject 
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Initializes the object before each use.
+    /// A ScriptableObject used to query the scene for components.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This method is called by the manager of the object before each use.  It allows the 
-    /// object to refresh its internal state.
+    /// This interface is only valid when implemented by a ScriptableObject.
     /// </para>
     /// </remarks>
-    public abstract void Initialize();
+    public interface ISceneQuery
+    {
+        /// <summary>
+        /// Initializes the object before each use.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is called by the manager of the object before each use.  It allows the 
+        /// object to refresh its internal state.
+        /// </para>
+        /// </remarks>
+        void Initialize();
 
-    /// <summary>
-    /// Gets all components of the specified type, based on the objects query restrictions.
-    /// </summary>
-    /// <typeparam name="T">The type of component to retrieve.</typeparam>
-    /// <returns>
-    /// All components of the specified type, or a zero length array if there are none.
-    /// </returns>
-    public abstract T[] GetComponents<T>() where T : Component;
+        /// <summary>
+        /// Gets all components of the specified type, based on the objects query restrictions.
+        /// </summary>
+        /// <typeparam name="T">The type of component to retrieve.</typeparam>
+        /// <returns>
+        /// All components of the specified type, or a zero length array if there are none.
+        /// </returns>
+        T[] GetComponents<T>() where T : Component;
+    }
 }

@@ -70,10 +70,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void Select(NavmeshBuild build)
         {
-            // Note: Can't set to null.
-
             Validate();
 
+            // Note: Can't set to null.
             if (!build || build == mSelected || !mBuilds.Contains(build))
                 return;
 

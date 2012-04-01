@@ -28,8 +28,8 @@ using UnityEngine;
 /// Filters out all components with the specified tag.
 /// </summary>
 [System.Serializable]
-public class TagInputFilter 
-    : InputBuildProcessor
+public sealed class TagInputFilter
+    : ScriptableObject, IInputBuildProcessor
 {
     /// <summary>
     /// True if the filter should apply to components with a tagged parent.
@@ -47,21 +47,21 @@ public class TagInputFilter
     /// <summary>
     /// The priority of the processor.
     /// </summary>
-    public override int Priority { get { return mPriority; } }
+    public int Priority 
+    { 
+        get { return mPriority; }
+        set { mPriority = NMBuild.ClampPriority(value); }
+    }
 
     /// <summary>
-    /// Sets the priority.
+    /// The name of the processor
     /// </summary>
-    /// <param name="value">The new priority.</param>
-    public void SetPriority(int value)
-    {
-        mPriority = NMBuild.ClampPriority(value);
-    }
+    public string Name { get { return name; } }
 
     /// <summary>
     /// Multiple processors of this type are allowed. (Always true.)
     /// </summary>
-    public override bool DuplicatesAllowed { get { return true; } }
+    public bool DuplicatesAllowed { get { return true; } }
 
     /// <summary>
     /// Processes the context.
@@ -74,7 +74,7 @@ public class TagInputFilter
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state != InputBuildState.FilterComponents)
             return true;

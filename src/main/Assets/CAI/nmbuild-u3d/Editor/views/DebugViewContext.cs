@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 using org.critterai.nav.u3d.editor;
+using org.critterai.nav.u3d;
 using UnityEngine;
 
 namespace org.critterai.nmbuild.u3d.editor
@@ -142,8 +143,8 @@ namespace org.critterai.nmbuild.u3d.editor
             NavmeshBuild build = mBuild;
             MeshDebugView meshView = mMeshView;
 
-            CAINavmeshData bnm = build.BuildTarget;
-           NavmeshSceneDraw sceneDraw = NavmeshSceneDraw.Instance;
+            INavmeshData bnm = build.BuildTarget;
+            NavmeshSceneDraw sceneDraw = NavmeshSceneDraw.Instance;
 
             bool showBaked = false;
 

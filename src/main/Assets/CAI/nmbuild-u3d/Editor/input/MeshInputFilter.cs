@@ -28,8 +28,8 @@ using UnityEngine;
 /// Filters out all MeshFilter components that reference a mesh in the list.
 /// </summary>
 [System.Serializable]
-public class MeshInputFilter 
-    : InputBuildProcessor
+public sealed class MeshInputFilter 
+    : ScriptableObject, IInputBuildProcessor
 {
     /// <summary>
     /// The list of meshes to filter out.
@@ -45,23 +45,23 @@ public class MeshInputFilter
     private int mPriority = NMBuild.DefaultPriority;
 
     /// <summary>
+    /// The name of the processor
+    /// </summary>
+    public string Name { get { return name; } }
+
+    /// <summary>
     /// The priority of the processor.
     /// </summary>
-    public override int Priority { get { return mPriority; } }
+    public int Priority 
+    { 
+        get { return mPriority; }
+        set { mPriority = NMBuild.ClampPriority(value); }
+    }
 
     /// <summary>
     /// Multiple processors of this type are allowed. (Always true.)
     /// </summary>
-    public override bool DuplicatesAllowed { get { return true; } }
-
-    /// <summary>
-    /// Sets the priority.
-    /// </summary>
-    /// <param name="value">The new priority.</param>
-    public void SetPriority(int value)
-    {
-        mPriority = NMBuild.ClampPriority(value);
-    }
+    public bool DuplicatesAllowed { get { return true; } }
 
     /// <summary>
     /// Processes the context.
@@ -74,7 +74,7 @@ public class MeshInputFilter
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state != InputBuildState.FilterComponents || context == null)
             return true;

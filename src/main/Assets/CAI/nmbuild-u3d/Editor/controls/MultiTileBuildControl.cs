@@ -383,11 +383,11 @@ namespace org.critterai.nmbuild.u3d.editor
             if ((status & NavStatus.Failure) == 0)
             {
                 build.BuildData.SetAsBaked();
-                EditorUtility.SetDirty(build.BuildTarget);
+                EditorUtility.SetDirty((Object)build.BuildTarget);
             }
             else
                 Logger.PostError("Bake to target: Target reported failure."
-                    , Context.Build.BuildTarget);
+                    , (Object)Context.Build.BuildTarget);
         }
 
         private void HandleClear()
