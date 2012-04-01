@@ -241,7 +241,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 return;
             }
 
-            CAINavmeshData target = build.BuildTarget;
+            INavmeshData target = build.BuildTarget;
 
             if (target != null && target.HasNavmesh && NavmeshSceneDraw.Instance.IsShown(target))
                 // Don't overdraw the target mesh's display.  It has priority.

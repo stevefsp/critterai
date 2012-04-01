@@ -21,6 +21,7 @@
  */
 using UnityEngine;
 using System.Collections.Generic;
+using org.critterai.nmbuild.u3d.editor;
 
 /// <summary>
 /// Queries the scene for components based on game object tag.
@@ -33,7 +34,7 @@ using System.Collections.Generic;
 /// </remarks>
 [System.Serializable]
 public class TagSceneQuery 
-    : SceneQuery 
+    : ScriptableObject, ISceneQuery 
 {
     /// <summary>
     /// One or more tags to base the query on.
@@ -69,7 +70,7 @@ public class TagSceneQuery
     /// object to refresh its internal state.
     /// </para>
     /// </remarks>
-    public override void  Initialize()
+    public void  Initialize()
     {
         if (tags == null || tags.Count == 0)
         {
@@ -103,7 +104,7 @@ public class TagSceneQuery
     /// <returns>
     /// All components of the specified type.
     /// </returns>
-    public override T[] GetComponents<T>()
+    public T[] GetComponents<T>() where T : Component
     {
         List<T> result = new List<T>();
         foreach (GameObject go in mObjects)

@@ -85,7 +85,7 @@ namespace org.critterai.nmbuild.u3d.editor
             options |= (build.AutoCleanGeometry ? InputBuildOption.AutoCleanGeometry : 0);
 
             mBuilder = InputBuilder.Create(build.SceneQuery
-                , build.inputProcessors.ToArray()
+                , build.GetInputProcessors()
                 , options);
 
             if (mBuilder == null)

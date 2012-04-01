@@ -30,7 +30,7 @@ namespace org.critterai.nmbuild.u3d.editor
     public class InputBuildContext
         : UnityBuildContext
     {
-        private readonly SceneQuery mSceneQuery;
+        private readonly ISceneQuery mSceneQuery;
 
         private readonly InputBuildOption mOptions;
 
@@ -82,11 +82,11 @@ namespace org.critterai.nmbuild.u3d.editor
         /// </remarks>
         /// <param name="sceneQuery">The scene query. (Optional)</param>
         /// <param name="options">Build options.</param>
-        public InputBuildContext(SceneQuery sceneQuery, InputBuildOption options)
+        public InputBuildContext(ISceneQuery sceneQuery, InputBuildOption options)
         {
             mOptions = options;
             mSceneQuery = sceneQuery;
-            if (sceneQuery)
+            if (sceneQuery != null)
                 mSceneQuery.Initialize();
         }
 
@@ -97,10 +97,10 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <returns>The components, or a zero length array if none are found.</returns>
         public T[] GetFromScene<T>() where T : Component
         {
-            if (mSceneQuery)
-                return mSceneQuery.GetComponents<T>();
-            else
+            if (mSceneQuery == null)
                 return (T[])Object.FindObjectsOfType(typeof(T));
+            else
+                return mSceneQuery.GetComponents<T>();
         }
 
         /// <summary>

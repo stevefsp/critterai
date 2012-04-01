@@ -49,7 +49,7 @@ public class TagInputFilterEditor
 
         EditorGUILayout.Separator();
 
-        targ.SetPriority(EditorGUILayout.IntField("Priority", targ.Priority));
+        targ.Priority = EditorGUILayout.IntField("Priority", targ.Priority);
 
         EditorGUILayout.Separator();
 

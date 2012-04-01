@@ -27,7 +27,7 @@ using org.critterai.nav;
 /// Global navigation related settings.
 /// </summary>
 [System.Serializable]
-public class CAINavSettings
+public sealed class CAINavSettings
     : ScriptableObject
 {
     private const string UnWalkable = "Not Walkable";

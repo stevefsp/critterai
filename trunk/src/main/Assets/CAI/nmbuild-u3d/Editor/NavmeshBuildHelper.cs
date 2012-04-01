@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 using org.critterai.nav;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 
 namespace org.critterai.nmbuild.u3d.editor
@@ -91,7 +93,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 if ((nstatus & NavStatus.Sucess) == 0)
                     mContext.PostError("Bake to target: Target reported failure.", mBuild);
                 else
-                    EditorUtility.SetDirty(mBuild.BuildTarget);
+                    EditorUtility.SetDirty((Object)mBuild.BuildTarget);
             }
             finally
             {
@@ -409,7 +411,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 (mBuild.AutoCleanGeometry ? InputBuildOption.AutoCleanGeometry : 0);
 
             InputBuilder builder = 
-                InputBuilder.Create(mBuild.SceneQuery, mBuild.inputProcessors.ToArray(), options);
+                InputBuilder.Create(mBuild.SceneQuery, mBuild.GetInputProcessors(), options);
 
             if (builder == null)
             {

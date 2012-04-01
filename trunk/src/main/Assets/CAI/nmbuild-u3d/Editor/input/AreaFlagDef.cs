@@ -27,17 +27,21 @@ using org.critterai.nmgen;
 using UnityEngine;
 
 /// <summary>
-/// Defines an association between areas and flags.
+/// Defines a mapping between areas and flags and applies the flags during the build process.
 /// </summary>
 /// <remarks>
 /// <para>
-/// The flags are applied to <see cref="PolyMesh"/> polygons during the NMGen build and to 
-/// connections during the input post-processing.
+/// Any polygon or off-mesh connection with a defined area will have the flags added.  E.g.
+/// The 'water' area gets the 'swim' flag.
+/// </para>
+/// <para>
+/// The flags are applied to <see cref="PolyMesh"/> polygons during the NMGen build, and to 
+/// off-mesh connections during the input post-processing.
 /// </para>
 /// </remarks>
 [System.Serializable]
-public class AreaFlagDef 
-    : InputBuildProcessor
+public sealed class AreaFlagDef
+    : ScriptableObject, IInputBuildProcessor
 {
     /// <summary>
     /// Flags to associate with areas.
@@ -55,7 +59,12 @@ public class AreaFlagDef
     /// <summary>
     /// The priority of the processor.
     /// </summary>    
-    public override int Priority { get { return mPriority; } }
+    public int Priority { get { return mPriority; } }
+
+    /// <summary>
+    /// The name of the processor
+    /// </summary>
+    public string Name { get { return name; } }
 
     /// <summary>
     /// Sets the priority.
@@ -69,7 +78,7 @@ public class AreaFlagDef
     /// <summary>
     /// Duplicates allowed. (Always true.)
     /// </summary>
-    public override bool DuplicatesAllowed { get { return true; } }
+    public bool DuplicatesAllowed { get { return true; } }
 
     /// <summary>
     /// Processes the context.
@@ -83,7 +92,7 @@ public class AreaFlagDef
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
         if (state == InputBuildState.CompileInput)
             return ProcessCompile(context);

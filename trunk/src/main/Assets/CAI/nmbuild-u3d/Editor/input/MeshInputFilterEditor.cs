@@ -42,8 +42,7 @@ public class MeshInputFilterEditor
         EditorGUILayout.Separator();
 
         // Clamp before sending to property.
-        int p = EditorGUILayout.IntField("Priority", targ.Priority);
-        targ.SetPriority(NMBuild.ClampPriority(p));
+        targ.Priority = EditorGUILayout.IntField("Priority", targ.Priority);
 
         targ.matchType = (MatchType)
             EditorGUILayout.EnumPopup("Match Type", targ.matchType);

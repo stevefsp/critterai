@@ -155,7 +155,7 @@ namespace org.critterai.u3d.editor
         }
 
         /// <summary>
-        /// Provides an editor GUI for adding/removing objects from a list.
+        /// Provides an editor GUI for adding/removing objects from a list based on object type.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="label">The GUI label. (Type description.)</param>

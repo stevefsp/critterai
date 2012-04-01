@@ -57,15 +57,16 @@ public sealed class NavmeshBuild
     #region Serialized Fields
 
     [SerializeField]
-    internal List<InputBuildProcessor> inputProcessors = new List<InputBuildProcessor>();
+    internal List<ScriptableObject> inputProcessors = new List<ScriptableObject>();
 
     [SerializeField]
     private NavmeshBuildType mBuildType = NavmeshBuildType.Standard;
 
     [SerializeField]
-    private SceneQuery mSceneQuery;
+    private ScriptableObject mSceneQuery;
+
     [SerializeField]
-    private CAINavmeshData mTarget;
+    private ScriptableObject mTarget;
 
     [SerializeField]
     private NMGenConfig mConfig = new NMGenConfig();
@@ -166,6 +167,19 @@ public sealed class NavmeshBuild
         get { return (mNMGenProcessors != null); }
     }
 
+    internal IInputBuildProcessor[] GetInputProcessors()
+    {
+        IInputBuildProcessor[] result = new IInputBuildProcessor[inputProcessors.Count];
+
+        // Assumption: The editor is properly controlling additions to the list.
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = (IInputBuildProcessor)inputProcessors[i];
+        }
+
+        return result;
+    }
+
     internal InputGeometry InputGeom { get { return mInputGeom; } }
 
     internal ProcessorSet NMGenProcessors { get { return mNMGenProcessors; } }
@@ -176,31 +190,39 @@ public sealed class NavmeshBuild
 
     internal bool TargetHasNavmesh
     {
-        get { return (mTarget == null) ? false : mTarget.HasNavmesh; }
+        get { return (mTarget == null) ? false : BuildTarget.HasNavmesh; }
     }
 
-    internal SceneQuery SceneQuery
+    internal ISceneQuery SceneQuery
     {
-        get { return mSceneQuery; }
+        get { return (ISceneQuery)mSceneQuery; }
         set
         {
-            if (mSceneQuery != value)
+            if (value is ScriptableObject)
             {
-                mSceneQuery = value;
-                mIsDirty = true;
+                ScriptableObject so = (ScriptableObject)value;
+                if (mSceneQuery != so)
+                {
+                    mSceneQuery = so;
+                    mIsDirty = true;
+                }
             }
         }
     }
 
-    internal CAINavmeshData BuildTarget
+    internal INavmeshData BuildTarget
     {
-        get { return mTarget; }
+        get { return (INavmeshData)mTarget; }
         set
         {
-            if (mTarget != value)
+            if (value is ScriptableObject)
             {
-                mTarget = value;
-                mIsDirty = true;
+                ScriptableObject so = (ScriptableObject)value;
+                if (mTarget != so)
+                {
+                    mTarget = so;
+                    mIsDirty = true;
+                }
             }
         }
     }
@@ -216,9 +238,9 @@ public sealed class NavmeshBuild
 
     internal TileSetDefinition TileSetDefinition { get { return mTileSet; } }
 
-    internal bool ContainsProcessor<T>() where T : InputBuildProcessor
+    internal bool ContainsProcessor<T>() where T : IInputBuildProcessor
     {
-        foreach (InputBuildProcessor processor in inputProcessors)
+        foreach (IInputBuildProcessor processor in inputProcessors)
         {
             if (processor is T)
                 return true;
@@ -255,7 +277,7 @@ public sealed class NavmeshBuild
         if (!CanLoadFromTarget(false, logger))
             return false;
 
-        Navmesh navmesh = mTarget.GetNavmesh();
+        Navmesh navmesh = BuildTarget.GetNavmesh();
 
         if (navmesh == null)
         {
@@ -271,7 +293,7 @@ public sealed class NavmeshBuild
 
     private void SetConfigFromTargetIntern(Navmesh navmesh)
     {
-        NavmeshBuildInfo targetConfig = mTarget.BuildInfo;
+        NavmeshBuildInfo targetConfig = BuildTarget.BuildInfo;
         NMGenParams currConfig = mConfig.GetConfig();
 
         // Note: Must ensure exact match with original configuration.
@@ -429,14 +451,16 @@ public sealed class NavmeshBuild
 
     internal bool CanLoadFromTarget(bool fullCheck, BuildContext logger)
     {
-        if (mTarget == null || !mTarget.HasNavmesh)
+        INavmeshData target = BuildTarget;
+
+        if (target == null || !target.HasNavmesh)
         {
             if (logger != null)
                 logger.LogError("Build target does not have an existing navigation mesh.", this);
             return false;
         }
 
-        NavmeshBuildInfo targetConfig = mTarget.BuildInfo;
+        NavmeshBuildInfo targetConfig = target.BuildInfo;
 
         // Note: The tile size is checked since the original builder 
         // may have supported a tile size not supported by the the standard build.
@@ -451,7 +475,7 @@ public sealed class NavmeshBuild
         if (!fullCheck)
             return true;
 
-        Navmesh nm = mTarget.GetNavmesh();
+        Navmesh nm = target.GetNavmesh();
 
         if (nm == null)
         {
@@ -526,7 +550,7 @@ public sealed class NavmeshBuild
             if (!CanLoadFromTarget(true, mLogger))
                 return false;
 
-            navmesh = mTarget.GetNavmesh();
+            navmesh = BuildTarget.GetNavmesh();
 
             SetConfigFromTargetIntern(navmesh);
         }
@@ -651,6 +675,11 @@ public sealed class NavmeshBuild
 
         if (mBuildType == NavmeshBuildType.Advanced)
             BuildSelector.Instance.Add(this);
+    }
+
+    void OnDisable()
+    {
+        BuildSelector.Instance.Remove(this);
     }
 
     internal void CleanBuild()

@@ -26,7 +26,7 @@ using org.critterai.nav.u3d;
 namespace org.critterai.nav.u3d.editor
 {
     /// <summary>
-    /// Controls the debug visualization of <see cref="CAINavmeshData"/> objects.
+    /// Controls the debug visualization of <see cref="INavmeshData"/> objects.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -40,7 +40,7 @@ namespace org.critterai.nav.u3d.editor
     {
         private static NavmeshSceneDraw mInstance;
 
-        private CAINavmeshData mNavmeshData;
+        private INavmeshData mNavmeshData;
         private Navmesh mNavmesh;
         private int mDataVersion;
         private SceneView.OnSceneFunc mDelegate;
@@ -76,9 +76,9 @@ namespace org.critterai.nav.u3d.editor
         /// </summary>
         /// <param name="data">The object to visualize.</param>
         /// <returns>True if the object is currently assigned for visualization.</returns>
-        public bool IsShown(CAINavmeshData data)
+        public bool IsShown(INavmeshData data)
         {
-            return (data && data == mNavmeshData);
+            return (data != null && data == mNavmeshData);
         }
 
         /// <summary>
@@ -87,18 +87,18 @@ namespace org.critterai.nav.u3d.editor
         /// <returns></returns>
         public bool IsShown()
         {
-            return mNavmeshData;
+            return mNavmeshData != null;
         }
 
         /// <summary>
         /// Show the visualization for the object.
         /// </summary>
         /// <param name="data">The object to visualize.</param>
-        public void Show(CAINavmeshData data)
+        public void Show(INavmeshData data)
         {
             Hide();
 
-            if (!data)
+            if (data == null)
                 return;
 
             mNavmeshData = data;
@@ -135,12 +135,12 @@ namespace org.critterai.nav.u3d.editor
         /// <param name="includeAreaOption">True if the option to color by area should be displayed.
         /// </param>
         /// <returns>True the display of the target has been toggled on.</returns>
-        public bool OnGUI(CAINavmeshData target
+        public bool OnGUI(INavmeshData target
             , string label
             , bool isInspector
             , bool includeAreaOption)
         {
-            if (!target)
+            if (target == null)
                 return false;
 
             bool guiEnabled = GUI.enabled;
@@ -188,7 +188,7 @@ namespace org.critterai.nav.u3d.editor
 
         private void OnSceneGUI(SceneView sceneView)
         {
-            if (!mNavmeshData)
+            if (mNavmeshData == null)
             {
                 Hide();
                 return;
