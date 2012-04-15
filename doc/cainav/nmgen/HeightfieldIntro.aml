@@ -3,18 +3,19 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
    
     <introduction>
-      <para>
-      In order to understand the process NMGen uses to generate data used for navigation meshes,
-      it is important to first understand heightfields.  There are two main types of heightfields.
-      <codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference> and 
-      <codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference>, are 
-      <externalLink>
-	    <linkText>voxel</linkText>
-	    <linkUri>http://en.wikipedia.org/wiki/Voxel</linkUri>
-	    <linkTarget>_blank</linkTarget>
-	  </externalLink> fields.
-      <codeEntityReference>T:org.critterai.nmgen.ContourSet</codeEntityReference> and 
-      <token>PolyMesh</token>, are vertex fields.
+			<para>
+				In order to use any of the advanced navigation mesh build features you will need to understand the core NMGen build process,
+				and in order to understand that process you'll need to understand heightfields.  There are two types of heightfields: 
+				<externalLink>
+					<linkText>voxel</linkText>
+					<linkUri>http://en.wikipedia.org/wiki/Voxel</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink>
+				fields, and vertex fields.  Voxel fields include
+				<codeEntityReference>T:org.critterai.nmgen.Heightfield</codeEntityReference> and 
+				<codeEntityReference>T:org.critterai.nmgen.CompactHeightfield</codeEntityReference> objects.
+				Vertext fields include <codeEntityReference>T:org.critterai.nmgen.ContourSet</codeEntityReference> and 
+				<token>PolyMesh</token> objects.
       </para>
     </introduction>
 

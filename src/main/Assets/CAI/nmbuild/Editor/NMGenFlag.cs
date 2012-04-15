@@ -23,17 +23,23 @@
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Flags used to specify optional build steps. 
+    /// Flags for common build options.
     /// </summary>
+    /// <remarks>
+    /// <para>Most builds have all flags set except 
+    /// <see cref="LedgeSpansNotWalkable"/>.</para>
+    /// </remarks>
+    /// <seealso cref="ProcessorSet.CreateStandard"/>
+    /// <seealso cref="ProcessorSet.GetStandard"/>
     [System.Flags]
-    public enum NMGenFlag
+    public enum NMGenBuildFlag
     {
         /*
          * Design notes:
          * 
          * Keep the base type of this enum an integer in order to remain 
          * compatible with Unity serialization.
-         *
+         * 
          */
 
         /// <summary>

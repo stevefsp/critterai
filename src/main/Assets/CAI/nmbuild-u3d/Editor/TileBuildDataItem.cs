@@ -22,7 +22,7 @@
 using org.critterai.nav;
 using org.critterai.nmgen;
 
-namespace org.critterai.nmbuild
+namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
     /// Undocumented class meant for internal use only.

@@ -355,21 +355,21 @@ namespace org.critterai.nmbuild.u3d.editor
 
             GUILayout.Space(MarginSize * 2);
 
-            NMGenFlag flags = config.BuildFlags;
+            NMGenBuildFlag flags = config.BuildFlags;
 
             HandleFlagGUI(ref flags
                 , NMGenConfig.LedgeSpansLabel
-                , NMGenFlag.LedgeSpansNotWalkable
+                , NMGenBuildFlag.LedgeSpansNotWalkable
                 , isInspector);
 
             HandleFlagGUI(ref flags
                 , NMGenConfig.LowHeightLabel
-                , NMGenFlag.LowHeightSpansNotWalkable
+                , NMGenBuildFlag.LowHeightSpansNotWalkable
                 , isInspector);
 
             HandleFlagGUI(ref flags
                 , NMGenConfig.LowObstacleLabel
-                , NMGenFlag.LowObstaclesWalkable
+                , NMGenBuildFlag.LowObstaclesWalkable
                 , isInspector);
 
             ContourBuildFlags cflags = config.ContourOptions;
@@ -399,7 +399,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             HandleFlagGUI(ref flags
                 , NMGenConfig.FlagPolysLabel
-                , NMGenFlag.ApplyPolyFlags
+                , NMGenBuildFlag.ApplyPolyFlags
                 , isInspector);
 
             bool includeDetail;
@@ -494,9 +494,9 @@ namespace org.critterai.nmbuild.u3d.editor
             }
         }
 
-        private static void HandleFlagGUI(ref NMGenFlag flags
+        private static void HandleFlagGUI(ref NMGenBuildFlag flags
             , string label
-            , NMGenFlag flag
+            , NMGenBuildFlag flag
             , bool isInspector)
         {
             if (isInspector)

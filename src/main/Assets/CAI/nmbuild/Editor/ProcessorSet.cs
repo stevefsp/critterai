@@ -38,6 +38,13 @@ namespace org.critterai.nmbuild
     /// <seealso cref="NMGenProcessor"/>
     public sealed class ProcessorSet
     {
+        /// <summary>
+        /// The build options that most builds will require.
+        /// </summary>
+        public const NMGenBuildFlag StandardOptions = NMGenBuildFlag.ApplyPolyFlags
+            | NMGenBuildFlag.LowHeightSpansNotWalkable
+            | NMGenBuildFlag.LowObstaclesWalkable;
+
         private readonly bool mIsThreadSafe;
         private readonly INMGenProcessor[] mProcessors;
         private readonly NMGenAssetFlag mPreserveAssets;
@@ -121,23 +128,23 @@ namespace org.critterai.nmbuild
         /// <param name="options">The processors to include.</param>
         /// <returns>The standard processors, or a zero length array if no processors selected.
         /// </returns>
-        public static INMGenProcessor[] GetStandard(NMGenFlag options)
+        public static INMGenProcessor[] GetStandard(NMGenBuildFlag options)
         {
             List<INMGenProcessor> ps = new List<INMGenProcessor>();
 
-            if ((options & NMGenFlag.ApplyPolyFlags) != 0)
+            if ((options & NMGenBuildFlag.ApplyPolyFlags) != 0)
             {
                 ps.Add(new ApplyPolygonFlags("ApplyDefaultPolyFlag"
                     , NMBuild.MinPriority, NMBuild.DefaultFlag));
             }
 
-            if ((options & NMGenFlag.LedgeSpansNotWalkable) != 0)
+            if ((options & NMGenBuildFlag.LedgeSpansNotWalkable) != 0)
                 ps.Add(FilterLedgeSpans.Instance);
 
-            if ((options & NMGenFlag.LowHeightSpansNotWalkable) != 0)
+            if ((options & NMGenBuildFlag.LowHeightSpansNotWalkable) != 0)
                 ps.Add(FilterLowHeightSpans.Instance);
 
-            if ((options & NMGenFlag.LowObstaclesWalkable) != 0)
+            if ((options & NMGenBuildFlag.LowObstaclesWalkable) != 0)
                 ps.Add(LowObstaclesWalkable.Instance);
 
             return ps.ToArray();
@@ -151,11 +158,10 @@ namespace org.critterai.nmbuild
         /// </para></remarks>
         /// <param name="options">The processors to include.</param>
         /// <returns>A processor set with the standard processors.</returns>
-        public static ProcessorSet CreateStandard(NMGenFlag options)
+        public static ProcessorSet CreateStandard(NMGenBuildFlag options)
         {
             return Create(GetStandard(options));
         }
-
         
         /// <summary>
         /// Creates a processor set loaded with the provided processors.

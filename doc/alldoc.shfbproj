@@ -18,37 +18,48 @@
     <HtmlHelpName>cai</HtmlHelpName>
     <Language>en-US</Language>
     <BuildLogFile>alldoc.log</BuildLogFile>
-    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <FrameworkVersion>3.5</FrameworkVersion>
     <HelpFileFormat>Website</HelpFileFormat>
-    <ProjectSummary>Aggregate API documentation for all CritterAI projects.
+    <ProjectSummary>Aggregate documentation for all CritterAI projects.
 
-&amp;lt%3bp&amp;gt%3bSome llibraries require &amp;lt%3ba href=&amp;quot%3bhttp://unity3d.com/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bUnity3D&amp;lt%3b/a&amp;gt%3b.&amp;lt%3b/p&amp;gt%3b
 
-&amp;lt%3bp&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3bbr /&amp;gt%3b 
-&amp;lt%3b/a&amp;gt%3b&amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Source&amp;lt%3b/a&amp;gt%3b&amp;lt%3bbr /&amp;gt%3b 
-&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
+
+&amp;lt%3bp&amp;gt%3bSome llibraries require &amp;lt%3ba href=&amp;quot%3bhttp://unity3d.com/&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bUnity&amp;lt%3b/a&amp;gt%3b.&amp;lt%3b/p&amp;gt%3b
+
+
+
+&amp;lt%3bp&amp;gt%3b
+&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home
+&amp;lt%3b/a&amp;gt%3b&amp;lt%3bbr /&amp;gt%3b
+&amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Source&amp;lt%3b/a&amp;gt%3b&amp;lt%3bbr /&amp;gt%3b 
+
+&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b
+&amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\build\vs\nav\cai-nav.csproj" />
-      <DocumentationSource sourceFile="..\build\vs\nav-u3d\cai-nav-u3d.csproj" />
-      <DocumentationSource sourceFile="..\build\vs\nmgen\cai-nmgen.csproj" />
-      <DocumentationSource sourceFile="..\build\vs\nmgen-u3d\cai-nmgen-u3d.csproj" />
-      <DocumentationSource sourceFile="..\build\vs\util\cai-util.csproj" />
-      <DocumentationSource sourceFile="..\build\vs\util-u3d\cai-util-u3d.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nav\cai-nav.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nav-u3d\cai-nav-u3d.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild\cai-nmbuild.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild-u3d-editor\cai-nmbuild-u3d-editor.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmgen\cai-nmgen.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\util\cai-util.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\util-u3d\cai-util-u3d.csproj" />
     </DocumentationSources>
-    <CopyrightText>Copyright %28c%29 2010-2011 Stephen A. Pratt</CopyrightText>
+    <CopyrightText>Copyright %28c%29 2010-2012 Stephen A. Pratt</CopyrightText>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
-    <HelpTitle>CritterAI API Documentation</HelpTitle>
+    <HelpTitle>CritterAI Documentation</HelpTitle>
     <VisibleItems>Protected, SealedProtected</VisibleItems>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="org.critterai" isDocumented="True">Contains classes that provide general functionality used by CritterAI projects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Contains classes that provide computational geometry related functionality used by CritterAI projects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Contains interfaces and classes that provide native interop functionality for CritterAI projects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Contains classes that provide pathfinding and local steering functionality.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Contains &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to NMQuery and CrowdManager.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Contains classes  used to create navigation mesh data.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nmgen.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions related to NMGen.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use components related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai" isDocumented="True">Provides general utility features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Provides computational geometry features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Provides native interop utility features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Provides core pathfinding and local steering features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Provides core features releated to building navigation mesh data. (From source geometry.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use elements related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
       <NamespaceSummaryItem name="org.critterai.u3d" isDocumented="True">Provides general &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmbuild" isDocumented="True">Provides ease-of-use features releated to building navigation meshes at design time.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmbuild.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use features releated to building navigation meshes at design time.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <NamingMethod>HashedMemberName</NamingMethod>
     <Preliminary>True</Preliminary>
@@ -103,6 +114,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
+    <None Include="cainav\nmgen\AdvancedTopics.aml" />
+    <None Include="cainav\nmgen\CreateNavmesh.aml" />
+    <None Include="cainav\nmgen\TiledMeshes.aml" />
+    <None Include="cainav\nmgen\CompileInput.aml" />
+    <None Include="cainav\nmgen\IncrementalBuilder.aml" />
     <None Include="cainav\CAINavOtherPlatforms.aml" />
     <None Include="cainav\nav\CrowdManager.aml" />
     <None Include="cainav\nav\PathCorridor.aml" />
@@ -276,6 +292,24 @@
     <Image Include="cainav\images\nav\NavManager-Structure.jpg">
       <ImageId>U3D-NavManagerStructure</ImageId>
       <AlternateText>U3D: NavSourceStructure</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nav\OffMeshConnection.jpg">
+      <ImageId>OffMeshConnection</ImageId>
+      <AlternateText>Off Mesh Connection</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\NavmeshBuild-Standard.png">
+      <ImageId>NavmeshBuild-Standard</ImageId>
+      <AlternateText>Standard Navmesh Build</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\NMGenBuildStandard.png">
+      <ImageId>NMGenBuildStandard</ImageId>
+      <AlternateText>Standard NMGen Build</AlternateText>
     </Image>
   </ItemGroup>
   <!-- Import the SHFB build targets -->

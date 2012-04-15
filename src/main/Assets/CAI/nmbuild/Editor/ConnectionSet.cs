@@ -33,6 +33,7 @@ namespace org.critterai.nmbuild
     /// <summary>
     /// Represents a set of off-mesh connections used during construction of a navigation mesh.
     /// </summary>
+    /// <seealso cref="ConnectionSetCompiler"/>
     public sealed class ConnectionSet
     {
         private readonly Vector3[] verts;
@@ -42,12 +43,8 @@ namespace org.critterai.nmbuild
         private readonly ushort[] flags;
         private readonly uint[] userIds;
 
-        private ConnectionSet(Vector3[] verts
-            , float[] radii
-            , byte[] dirs
-            , byte[] areas
-            , ushort[] flags
-            , uint[] userIds) 
+        private ConnectionSet(Vector3[] verts, float[] radii
+            , byte[] dirs, byte[] areas, ushort[] flags, uint[] userIds) 
         {
             this.verts = verts;
             this.radii = radii;
@@ -90,12 +87,8 @@ namespace org.critterai.nmbuild
         /// <param name="ruserIds">The connection user ids. [Length: connCount]</param>
         /// <returns>The number of connection returned.</returns>
         public int GetConnections(float xmin, float zmin, float xmax, float zmax
-            , out Vector3[] rverts
-            , out float[] rradii
-            , out byte[] rdirs
-            , out byte[] rareas
-            , out ushort[] rflags
-            , out uint[] ruserIds)
+            , out Vector3[] rverts, out float[] rradii
+            , out byte[] rdirs, out byte[] rareas, out ushort[] rflags, out uint[] ruserIds)
         {
             rverts = null;
             rradii = null;
@@ -170,12 +163,8 @@ namespace org.critterai.nmbuild
         /// <param name="flags">The connection flags. [Length: connCount]</param>
         /// <param name="userIds">The connection user ids. [Length: connCount]</param>
         /// <returns>The connection set.</returns>
-        public static ConnectionSet Create(Vector3[] verts
-            , float[] radii
-            , byte[] dirs
-            , byte[] areas
-            , ushort[] flags
-            , uint[] userIds)
+        public static ConnectionSet Create(Vector3[] verts, float[] radii
+            , byte[] dirs, byte[] areas, ushort[] flags, uint[] userIds)
         {
             if (IsValid(verts, radii, dirs, areas, flags, userIds))
             {
@@ -205,12 +194,8 @@ namespace org.critterai.nmbuild
         /// <param name="flags">The connection flags. [Length: connCount]</param>
         /// <param name="userIds">The connection user ids. [Length: connCount]</param>
         /// <returns>An unsafe connection set.</returns>
-        public static ConnectionSet UnsafeCreate(Vector3[] verts
-            , float[] radii
-            , byte[] dirs
-            , byte[] areas
-            , ushort[] flags
-            , uint[] userIds)
+        public static ConnectionSet UnsafeCreate(Vector3[] verts, float[] radii
+            , byte[] dirs, byte[] areas, ushort[] flags, uint[] userIds)
         {
             return new ConnectionSet(verts
                 , radii
@@ -233,13 +218,9 @@ namespace org.critterai.nmbuild
         /// <param name="areas">The connection areas. [Length: connCount]</param>
         /// <param name="flags">The connection flags. [Length: connCount]</param>
         /// <param name="userIds">The connection user ids. [Length: connCount]</param>
-        /// <returns></returns>
-        public static bool IsValid(Vector3[] verts
-            , float[] radii
-            , byte[] dirs
-            , byte[] areas
-            , ushort[] flags
-            , uint[] userIds)
+        /// <returns>True if the structure and content of the parameters is valid.</returns>
+        public static bool IsValid(Vector3[] verts, float[] radii
+            , byte[] dirs, byte[] areas, ushort[] flags, uint[] userIds)
         {
             // Will fail is there are zero connections.
 

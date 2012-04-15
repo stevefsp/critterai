@@ -124,7 +124,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <summary>
         /// Loads the components into the <see cref="components"/> list.
         /// </summary>
-        /// <param name="items"></param>
+        /// <param name="items">The components to load.</param>
         public void Load(Component[] items)
         {
             components.AddRange(items);
@@ -133,7 +133,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <summary>
         /// Loads a component into the <see cref="components"/> list.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The component to load.</param>
         public void Load(Component item)
         {
             components.Add(item);

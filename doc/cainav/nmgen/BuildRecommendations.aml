@@ -3,16 +3,18 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
     
-      <para>The polygon and detail mesh generation process is meant to work for a wide variety of 
-      source geometry types.
-      This means that it needs to support a wide variety of configuration settings. There is no 
-      "one size fits all" configuration. Instead, you will usually discover configurations that work well 
-      for categories of source geometry. E.g. A configuration for interior environments and another for 
-      outdoor environments.</para>
+      <para>The NMGen build process is meant to work for a wide variety of source geometry types and navigation mesh needs.
+			This topic covers various common tips and recommendations that will help you get started.</para>
       
       <para>This information will help you understand what the primary configuration parameters do, some good
       starting values, and the side effects parameters have on each other.</para>
       
+			
+      This means that it needs to support a wide variety of configuration settings. There is no 
+      "one size fits all" configuration. Instead, you will usually discover configurations that work well 
+      for categories of source geometry. E.g. A configuration for interior environments and another for 
+      outdoor environments.
+			
       <alert class="note">
       
         <para>You will need to understand 
@@ -305,7 +307,7 @@
     
 			<codeEntityReference>T:org.critterai.nmgen.NMGenParams</codeEntityReference>
 			<codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
-			<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
+			<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>
 			<codeEntityReference>T:org.critterai.nmgen.u3d.NMGenBuildParams</codeEntityReference>
 			<codeEntityReference>T:NMGenBuildConfig</codeEntityReference> <!-- In root namespace. -->
 			

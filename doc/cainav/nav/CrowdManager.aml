@@ -4,10 +4,12 @@
  
  		<introduction>
 		
-			<para>The crowd manager is the big beast of the navigation components.  It not only handles a lot of the path management for you, but also
-	 		local steering and dynamic avoidance between navigation clients. I.e. It can keep your agents from running into each other.</para>
+			<para>
+			The crowd manager is the big beast of the navigation components.  It not only handles a lot of the path management for you, but also
+	 		local steering and dynamic avoidance between navigation clients. I.e. It can keep your agents from running into each other.
+			</para>
 			
-			<para>Class: <token>CrowdManager</token></para>
+			<para>Core Class: <token>CrowdManager</token></para>
 			
 			<para>The <token>NavmeshQuery</token> and <token>PathCorridor</token> classes provide perfectly good, easy to use path planning features.  But in
 			the end they only give you points that your navigation client should be moving toward.  When it comes to deciding things like client velocity
@@ -48,7 +50,6 @@
 		<codeEntityReference>T:org.critterai.nav.CrowdAgent</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nav.CrowdAgentParams</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nav.CrowdAvoidanceParams</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>
 
 		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
 		<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->

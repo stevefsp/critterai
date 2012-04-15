@@ -4,155 +4,46 @@
 
     <introduction>
 
-      <para>The purpose of NMGen is to generate polygon and detail meshes representing the traversable 
-      surface of arbitrary source geometry. The mesh data is then used to create navigation mesh tiles.</para>
+      <para>
+			The purpose of <application>NMGen</application> is to generate navigation meshes from arbitrary source geometry. Features fall into two categories:
+			Core and 'standard build'.
+			</para>
+			
+			<para>
+			The core features are located in the <codeEntityReference>N:org.critterai.nmgen</codeEntityReference> namespace and involve creating
+			simplified polygon mesh data from detailed triangle-based source geometry.  You can code your own build process from scratch using these features, but it will 
+			require a significant amount of work and detailed knowlege all aspects of the process.
+			</para>
+			
+			<para>
+			The standard build process implements a flexible, extendable build process suitable for use at design time, and takes care of many of the mundane 
+			details for you.  It's features are implemented in the following namespaces:
+			</para>
       
-      <para>Core namespace: <codeEntityReference>N:org.critterai.nmgen</codeEntityReference></para>
+			<para>Common extentions: <codeEntityReference>N:org.critterai.nmbuild</codeEntityReference></para>
+			
+      <para>Unity extensions: <codeEntityReference>N:org.critterai.nmbuild.u3d.editor</codeEntityReference></para>
+			
+			<para>The standard build process has three main steps which will be covered in detail throughout the rest of this section.</para>
+			
+			<list class="ordered">
       
-      <para>Unity extensions namespace: 
-      <codeEntityReference>N:org.critterai.nmgen.u3d</codeEntityReference>
-      </para>
+        <listItem>Compile the input.</listItem>
+				<listItem>The NMGen Build. (Produces the core mesh.)</listItem>
+				<listItem>Create the navigation mesh.</listItem>
+				
+			</list>
      
     </introduction>
     
-    <section address="polyMesh">
+    <section address="highlevel">
     
-      <title>The Polygon Mesh</title>
+      <title>The Standard Build Process</title>
       
       <content>
       
-        <para>Implemented by <token>PolyMesh</token></para>
-        
-        <para>The polygon mesh is made up of convex polygons with between three and 
-		<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference>
-		vertices. Each polygon also includes edge link data, and user-defined area ids and polygon flags.</para>
-		
-		<para>Area Ids and Flags:</para>
-		
-		<para>The area ids will be used to determine traversal cost in the navigation mesh.  So they are normally
-		assigned based on surface type.  E.g. Difficult to move across versus easy to move across.</para>
-		
-		<para>The flags will be used to determine accessibility of the polygon, allowing polygons to be turned on
-		and off depending on a navigation filter.  (See <token>NavmeshQueryFilter</token>).</para>
-		
-		<para>Flags and area ids are normally defined in a generic fashion since their effect on navigation is
-		specific to the filter used by individual navigation clients, not a global filter.  So, for example, one
-		client can consider a flag to indicate the polygon is blocked, while another client can ignore the flag.
-		Also each client can use different costs for the same area id.</para>
-        
-        <para>For a polygon mesh created using the standard build process:</para>
-        
-		<list class="bullet">
-		
-		  <listItem>The mesh will contain polygons with a variety of vertex counts from three 
-		  to the maximum allowed.
-		  (<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference>)</listItem>
-		  
-		  <listItem>Polygons may overlap, with a minimum floor to ceiling height controlled by the value of 
-		  <codeEntityReference>P:org.critterai.nmgen.NMGenParams.WalkableHeight</codeEntityReference>.</listItem>
-		  
-		  <listItem>All polygons will have at least one flag set. 
-		  (<codeEntityReference>F:org.critterai.nmgen.NMGen.DefaultFlag</codeEntityReference>)</listItem>
-		  
-		  <listItem>All polygons will have a non-zero area id. 
-		  (<codeEntityReference>F:org.critterai.nmgen.NMGen.WalkableArea</codeEntityReference>)</listItem>
-		</list>
-
-        <mediaLink><image xlink:href="PolyMesh-Basic"/></mediaLink>
-        
-      </content>
-      
-    </section>
-    
-    <section address="detailMesh">
-    
-      <title>The Detail Mesh</title>
-      
-      <content>
-      
-        <para>Implemented by <token>DetailMesh</token></para>
-        
-        <para>Pathfinding cares mostly about polygon connectivity, accessibility, and traversal cost. 
-        It doesn't need a lot of height accuracy.  But some navigation use cases do require more 
-        accurate height data than provided by the polygon mesh. The detail mesh provides the extra 
-        height detail for these cases.</para>
-        
-        <para>The detail mesh structure consists of sub-meshes, one for each polygon in the polygon mesh. A sub-mesh is a 
-        triangle mesh that contains all the vertices of its associated polygon, plus additional edge and internal vertices 
-        for the extra height detail.</para>
-
-		<alert class="note">
-		<para>This isn't the best example of a detail mesh. Take a look at the stairway. There is some extra detail there.</para>
-		</alert>
-
-        <mediaLink><image xlink:href="PolyMeshDetail-Basic"/></mediaLink>
-        
-      </content>
-      
-    </section>
-
-    <section address="buildingMeshes">
-    
-      <title>Building Meshes</title>
-      
-      <content>
-      
-        <para>There are multiple ways to build the meshes.</para>
-        
-        <para>See <link xlink:href="fa09a9f3-7d31-4441-8f03-80adfddf8d48"/> for building meshes in 
-        the Unity Editor.</para>
-        
-        <para>To get started building meshes via code:</para>
-       
-		<list class="bullet">
-		
-		  <listItem>The 
-		  <codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
-		  utility method will create meshes in a single step.</listItem>
-		  
-		  <listItem>The <codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
-		  class can be used to provide feedback during the build.</listItem>
-		  
-		</list>
-
-        <para>If you want to implement your own custom build process, start with the  
-        <codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference> code. 
-        You'll also want to become familiar with <link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/>.
-        </para>
-        
-      </content>
-      
-    </section>
-    
-    <section address="triangles">
-    
-      <title>But...Where are my triangles?!</title>
-      
-      <content>
-      
-        <para>For users of the original NMGen who are asking: "But I used NMGen to build triangle meshes. 
-        That's all I want, triangle meshes. Where are they now?!"</para>
-        
-        <para>Actually, they are where they've always been; in the detail mesh. The original NMGen built
-        its navigation mesh data in the same way NMGen does now. It just converted the detail mesh into
-        a triangle mesh at the very end. So you just need to perform that final step yourself. 
-        And there is a utility method that will help you do it.</para>
-        
-		<code>
-		// Where detailMesh is a PolyMeshDetail object.
-        // E.g. PolyMeshDetail detailMesh = myBakedPolyMesh.GetDetailMesh();
-
-        float[] verts;
-        int[] tris;
-
-        if (NMGen.ExtractTriMesh(detailMesh, out verts, out tris))
-        {
-           // Do something with the triangles.
-        }
-		</code>
-
-        <para>That's all there is to it.</para>
-        
+        <mediaLink><image xlink:href="NavmeshBuild-Standard"/></mediaLink>
+				
       </content>
       
     </section>
@@ -162,7 +53,7 @@
 		<codeEntityReference>T:org.critterai.nmgen.NMGen</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>
 	
 		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
 		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->

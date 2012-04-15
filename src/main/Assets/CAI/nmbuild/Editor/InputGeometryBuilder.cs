@@ -136,7 +136,7 @@ namespace org.critterai.nmbuild
 
             byte[] lareas;
             if (areas == null)
-                lareas = NMGen.CreateWalkableAreaBuffer(mesh.triCount);
+                lareas = NMGen.CreateDefaultAreaBuffer(mesh.triCount);
             else
             {
                 lareas = new byte[mesh.triCount];

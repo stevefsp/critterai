@@ -122,7 +122,7 @@ namespace org.critterai.nmbuild
             }
 
             if (areas == null)
-                areas = NMGen.CreateWalkableAreaBuffer(triCount);
+                areas = NMGen.CreateDefaultAreaBuffer(triCount);
 
             int iVertOffset = mVerts.Count;
 
