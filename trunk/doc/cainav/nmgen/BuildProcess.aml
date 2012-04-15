@@ -4,24 +4,13 @@
 
     <introduction>
 
-      <para>This page describes the standard process used by NMGen to create navigation mesh data.</para>
-      <para>Implemented by:</para>
+      <para>This page describes the core process used by NMGen to create polygon data that will represent the navigation mesh surface.
+			There are many variations on the the navigation mesh generation process, but they all include these steps.
+			</para>
       
-      <list>
-        <listItem>
-          <codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
-        </listItem>
-        <listItem>
-          <codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>
-        </listItem>
-      </list>
+			<para>The <token>IncrementalBuilder</token> extension implements this process.</para>
       
-      <alert class="note">
-        <para>This is not the only process.  It is possible to implement your own custom process that adds 
-        and removes steps.</para>
-      </alert>
-     
-      <para>The general process is as follows:</para>
+      <para>The high level process is as follows:</para>
       
       <list class="ordered">
       
@@ -33,7 +22,7 @@
 	      </externalLink>: Create a solid heightfield from the source geometry representing obstructed space.
         </listItem>
         
-        <listItem>Generate Regions: Detect the top surface area of the solid heightfield and divide it up 
+        <listItem>Generate Regions: Detect the upper surface of the solid heightfield and divide it up 
         into regions of contiguous spans.</listItem>
         
         <listItem>
@@ -52,7 +41,7 @@
 	        <linkText>Triangulate</linkText>
 	        <linkUri>http://mathworld.wolfram.com/Triangulation.html</linkUri>
 	        <linkTarget>_blank</linkTarget>
-	      </externalLink> the polygon mesh and add height detail.
+	      </externalLink> the polygon mesh and add height detail. (Optional)
 	    </listItem>
         
       </list>
@@ -74,34 +63,12 @@
         <para>Each triangle in the source geometry is voxelized using conservative voxelization and 
         added to the field. Conservative voxelization is an algorithm that ensures the triangle surfaces 
         are completely encompassed by the the generated voxels.</para>
+				
+        <para>After voxelization, the solid heightfield contains spans that completely encompass the 
+        surface of all polygons in the source geometry.</para>				
         
         <mediaLink><image xlink:href="VoxelizedTriangle"/></mediaLink>
         
-        <para>After voxelization, the solid heightfield contains spans that completely encompass the 
-        surface of all polygons in the source geometry.</para>
-        
-        <para>As part of this step spans are marked as traversable if they pass the 
-        following tests:</para>
-        
-		<list class="bullet">
-		
-		  <listItem>The top of the span is at least a minimum distance from the bottom of the span above it. 
-		  (The tallest agent can stand on the span without colliding with an obstruction above.) 
-		  (WalkableHeight)</listItem>
-		  
-		  <listItem>The top voxel of the span represents geometry with a slope below a maximum allowed value. 
-		  (The slope is low enough to be traversable by agents.) (WalkableSlope)</listItem>
-		  
-		  <listItem>If ledge culling is enabled, the top of the span does not represent a ledge. 
-		  (Agents can legally "step down" from the span to all of its neighbors.)</listItem>
-		  
-		</list>
-
-        <alert class="note">
-          <para>Ledge culling is needed in certain cases because conservative voxelization can be too
-          conservative, forming false ledges that jut out from the source geometry.</para>
-        </alert>
-
       </content>
       
     </section>
@@ -270,8 +237,7 @@
     
 	<relatedTopics>
 	
-		<codeEntityReference>T:org.critterai.nmgen.IncrementalBuilder</codeEntityReference>	
-		<codeEntityReference>M:org.critterai.nmgen.NMGen.BuildPolyMesh(org.critterai.nmgen.NMGenParams,org.critterai.nmgen.BuildFlags,org.critterai.geom.TriangleMesh,org.critterai.nmgen.PolyMesh@,org.critterai.nmgen.PolyMeshDetail@,System.String[]@,System.Boolean)</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>	
 		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
 

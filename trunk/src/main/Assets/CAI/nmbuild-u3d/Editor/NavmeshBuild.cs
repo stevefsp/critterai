@@ -358,7 +358,7 @@ public sealed class NavmeshBuild
         if (processors != null)
             lprocessors.AddRange(processors);
 
-        NMGenFlag bflags = mConfig.BuildFlags;
+        NMGenBuildFlag bflags = mConfig.BuildFlags;
         bool threadCheckFail = false;
 
         // This section makes sure we don't get duplicate processors.
@@ -366,13 +366,13 @@ public sealed class NavmeshBuild
         foreach (INMGenProcessor p in lprocessors)
         {
             if (p is FilterLedgeSpans)
-                bflags &= ~NMGenFlag.LedgeSpansNotWalkable;
+                bflags &= ~NMGenBuildFlag.LedgeSpansNotWalkable;
 
             if (p is FilterLowHeightSpans)
-                bflags &= ~NMGenFlag.LowHeightSpansNotWalkable;
+                bflags &= ~NMGenBuildFlag.LowHeightSpansNotWalkable;
 
             if (p is LowObstaclesWalkable)
-                bflags &= ~NMGenFlag.LowObstaclesWalkable;
+                bflags &= ~NMGenBuildFlag.LowObstaclesWalkable;
 
             if (threadSafeOnly && !p.IsThreadSafe)
             {

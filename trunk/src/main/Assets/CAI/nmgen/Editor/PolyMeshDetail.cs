@@ -409,6 +409,7 @@ namespace org.critterai.nmgen
         /// will hold. [Limit: > 0]</param>
         /// <param name="maxMeshes">The maximum sub-meshes the mesh
         /// buffer will hold. [Limit: > 0]</param>
+        /// <returns>The new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Create(int maxVerts
             , int maxTris
             , int maxMeshes)
@@ -424,6 +425,7 @@ namespace org.critterai.nmgen
         /// the <see cref="GetSerializedData"/> method.
         /// </summary>
         /// <param name="serializedMesh">The source data.</param>
+        /// <returns>The new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Create(byte[] serializedMesh)
         {
             PolyMeshDetail result = new PolyMeshDetail(AllocType.External);

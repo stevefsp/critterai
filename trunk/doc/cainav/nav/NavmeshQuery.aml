@@ -4,15 +4,15 @@
 	
 		<introduction>
 	
-		  <para>The navigation mesh query is the most important class to understand since most navigation clients will interact with the query 
+		  <para>
+			The navigation mesh query is the most important class to understand since most navigation clients will interact with the query 
 			rather than the navigation mesh itself.  The mesh contains the data, but the query provides almost all of the features
-			necessary for pathfinding.</para>
+			necessary for pathfinding.
+			</para>
 			
 			<para>Core Class: <token>NavmeshQuery</token></para>
-			<para>Unity Extension: <codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>
-			</para>
 		 
-			<para>The query features fall into two general categories:  Pathfinding and local search.</para>
+			<para>Query features fall into two general categories:  Pathfinding and local search.</para>
 			
 			<para>Pathfinding involves standard A* and Dijkstra searches that find the best path(s) between two points.  Paths are made up of
 			a list polygon references that represent a polygon corridor from the start to the end position.  Path straightening is used to 
@@ -36,10 +36,6 @@
 			<content>
 			
 				<para>This section contains some simple examples of common query operations.</para>
-				
-				<alert class="note">
-					<para><token>Unity</token> extensions are used in most examples.  But the core .NET steps are similar.</para>
-				</alert>
 			
 				<section>
 				
@@ -51,34 +47,30 @@
 						So the first step is to find one.</para>
 						
 					  <para>
-						Core: <codeEntityReference>
-						M:org.critterai.nav.NavmeshQuery.GetNearestPoly(System.Single[],System.Single[],org.critterai.nav.NavmeshQueryFilter,System.UInt32@,System.Single[])
-						</codeEntityReference></para>
-						
-						<para>Unity Extension: <codeEntityReference>
-						M:org.critterai.nav.u3d.U3DNavmeshQuery.GetNearestPoly(UnityEngine.Vector3,System.Single[],org.critterai.nav.NavmeshQueryFilter,org.critterai.nav.u3d.NavmeshPoint@)
+						<codeEntityReference>
+						M:org.critterai.nav.NavmeshQuery.GetNearestPoly(UnityEngine.Vector3,UnityEngine.Vector3,org.critterai.nav.NavmeshQueryFilter,org.critterai.nav.NavmeshPoint@)
 						</codeEntityReference>
 						</para>
 					  
 						<code>
 						
-						// Where 'query' is a U3DNavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
+						// Where 'query' is a NavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
+						// 'position' is a Vector3 indicating the world position of the client.
 						
 						NavmeshPoint result;
-						float[] extents = new float[3] { 1, 1, 1 };  // Keep this to the minimum extents practical.
+						Vector3 extents = new Vector3(1, 1, 1);  // Keep this to the minimum extents practical.
 						
-						NavStatus status = query.GetNearestPoly(point
-								, extents, filter
+						NavStatus status = query.GetNearestPoly(position, extents, filter
 								, out result);
 						
-						if (result.polyRef == 0)
+						if (result.polyRef == Navmesh.NullPoly)
 						{
 								// Handle error.  Could not find a result.
 								// The status can be checked to see if there was an error.  If not, then
 								// the cause is that the search extents did not overlap any polygons.
 						}
 						
-						// Use the result point, which includes a vector position and the reference id of 
+						// Use the result point, which includes a vector point and the reference id of 
 						// the polygon that contains the point. 
 							
 						</code>
@@ -95,16 +87,12 @@
 					
 						<para>Even if you are planning to use <token>PathCorridor</token> or <token>CrowdManager</token>,
 						you'll always need to do long distance planning using the basic <token>NavmeshQuery</token> features.  
-						First, get a path, then straighten it.</para>
-						
-						<alert class="note">
-							<para>If you are using <token>PathCorridor</token>, it will handle path straightening for you.</para>
-						</alert>
-					
+						First, get a path, then optionally straighten it.</para>
+
 						<code>
 						
-						// Where 'query' is a U3DNavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
-						// and 'start' and 'end' are NavmeshPoint's on the navigation mesh.
+						// Where 'query' is a NavmeshQuery object and 'filter' is a NavmeshQueryFilter object.
+						// 'start' and 'end' are NavmeshPoints known to be on the navigation mesh.
 						
 						int pathCount;
 						// The path will be a list of polygon references.
@@ -115,18 +103,14 @@
 						{
 								// No need to do any planning.
 								pathCount = 1;
-								path.path[0] = start.polyRef;
+								path[0] = start.polyRef;
 						}
 						else
 						{
-								status = query.FindPath(start
-										, end
-										, filter
-										, path
+								status = query.FindPath(start, end, filter, path
 										, out pathCount);
 						
-								if (NavUtil.Failed(status)
-										|| path.pathCount == 0)
+								if (NavUtil.Failed(status) || path.pathCount == 0)
 								{
 										// Handle pathfinding failure.
 								}
@@ -146,14 +130,15 @@
 						const int MaxStraightPath = 4;  // Just getting the first 4 waypoints.
 						int wpCount;
 						
-						// The waypoints. (x, y, z) * wpCount;
-						float[] wpPoints = new float[MaxStraightPath * 3];
+						// The waypoints.
+						Vector3[] wpPoints = new Vecotr3[MaxStraightPath];
 						
-						WaypointFlag[] wpFlags = new WaypointFlag[MaxStraightPath];
-						
-						// A list of polygon references.  (The polygon being entered at the waypoint.)
+						// A list of polygon references.  (The polygon being entered at each waypoint.)
 						uint[] wpPath = new uint[MaxStraightPath];
 						
+						// The type of each waypoint. (Start, end, off-mesh connection.)
+						WaypointFlag[] wpFlags = new WaypointFlag[MaxStraightPath];
+
 						status = query.GetStraightPath(start.point
 								, goal.point
 								, path
@@ -166,8 +151,8 @@
 						
 						if (NavUtil.Failed(status) || wpCount == 0)
 						{
-								// Handle the failure.  There should always be at least one waypoint, 
-								// the goal point, for a valid point/path combination,
+								// Handle the failure.  There should always be at least one waypoint 
+								// (the goal) for a valid point/path combination,
 						}
 						
 						// Use the path and waypoints.
@@ -187,7 +172,6 @@
 		<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>
 		<codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>
 	
 		<link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/> <!-- Nav Intro -->
 		<link xlink:href="6cf1c77d-725a-4f3e-bcbf-62e7fc5e2bc6"/> <!-- Navmesh -->

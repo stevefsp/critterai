@@ -45,10 +45,10 @@ namespace org.critterai.nmbuild.u3d.editor
          * or other values. SetConfig() must effectively clone the configuration.
          */
 
-        public const NMGenFlag DefaultBuildFlags = 
-            NMGenFlag.LowHeightSpansNotWalkable
-            | NMGenFlag.LowObstaclesWalkable
-            | NMGenFlag.ApplyPolyFlags;
+        public const NMGenBuildFlag DefaultBuildFlags = 
+            NMGenBuildFlag.LowHeightSpansNotWalkable
+            | NMGenBuildFlag.LowObstaclesWalkable
+            | NMGenBuildFlag.ApplyPolyFlags;
 
         #region Standard Param Labels
 
@@ -175,7 +175,7 @@ namespace org.critterai.nmbuild.u3d.editor
         private float mWalkableStep;
 
         [SerializeField]
-        private NMGenFlag mBuildFlags;
+        private NMGenBuildFlag mBuildFlags;
 
         [SerializeField]
         private NMGenAssetFlag mResultOptions = NMGenAssetFlag.DetailMesh | NMGenAssetFlag.PolyMesh;
@@ -389,7 +389,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <summary>
         /// Flags used to control optional build steps. 
         /// </summary>
-        public NMGenFlag BuildFlags
+        public NMGenBuildFlag BuildFlags
         {
             get { return mBuildFlags; }
             set { mBuildFlags = value; }

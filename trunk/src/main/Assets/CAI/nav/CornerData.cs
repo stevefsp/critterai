@@ -142,8 +142,8 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>Data will be lost if the destination buffers are too small
         /// to hold the corners contained by the source.</remarks>
-        /// <param name="source"></param>
-        /// <param name="desitation"></param>
+        /// <param name="source">The object to copy from.</param>
+        /// <param name="desitation">The object to copy to.</param>
         public static void Copy(CornerData source, CornerData desitation)
         {
             int size = Math.Min(source.MaxCorners, desitation.MaxCorners);

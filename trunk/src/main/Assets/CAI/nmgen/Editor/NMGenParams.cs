@@ -205,7 +205,7 @@ namespace org.critterai.nmgen
         /// </para>
         /// </remarks>
         /// <param name="config">The configuration to derive the border size from.</param>
-        /// <returns></returns>
+        /// <returns>The recommended border size.</returns>
         public static int DeriveBorderSize(NMGenParams config)
         {
             if (config.TileSize > 0)

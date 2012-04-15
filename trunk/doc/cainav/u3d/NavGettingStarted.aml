@@ -4,8 +4,10 @@
 
     <introduction>
 
-      <para>This page provides information on adding navigation components to a scene using the
-      Unity Editor.</para>
+      <para>
+			This page provides information on adding navigation components to a scene using the
+      Unity Editor.
+			</para>
       
       <alert class="note">
       <para>See <link xlink:href="e81146c4-0143-4cde-ad55-fe1fd1049cbc#upAndRunning">
@@ -29,7 +31,7 @@
       for use by your scripts.</para>
       
       <list class="bullet">
-        <listItem><codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference></listItem>
+        <listItem><codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference></listItem>
         <listItem><codeEntityReference>T:org.critterai.nav.NavmeshQueryFilter</codeEntityReference></listItem>
         <listItem><codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference></listItem>
         <listItem><codeEntityReference>T:org.critterai.nav.CrowdManager</codeEntityReference> (Optional)</listItem>
@@ -75,7 +77,7 @@
       
         <para>While the Unity components help get you started, you'll still need scripting to implement use of
         the navigation features.  To do this you'll need to become familiar with
-        <codeEntityReference>T:org.critterai.nav.u3d.U3DNavmeshQuery</codeEntityReference>.</para>
+        <codeEntityReference>T:org.critterai.nav.NavmeshQuery</codeEntityReference>.</para>
         
         <para>A good place to start is to download and play around with the <token>CAINavExplorerDownload</token> demos.
         You can also get an overview at <link xlink:href="1b3cfec9-7cd3-444c-b83d-dfc551454822"/>.</para>

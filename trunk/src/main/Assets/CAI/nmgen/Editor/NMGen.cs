@@ -142,7 +142,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="size">The length of the buffer.</param>
         /// <returns>An buffer with all values set to <see cref="MaxArea"/>.</returns>
-        public static byte[] CreateWalkableAreaBuffer(int size)
+        public static byte[] CreateDefaultAreaBuffer(int size)
         {
             return CreateAreaBuffer(size, MaxArea);
         }
@@ -167,15 +167,15 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Validates the content of an area buffer.
+        /// Validates the content of an area buffer. (All areas are valid.)
         /// </summary>
         /// <remarks>
         /// <para>The validation checks for an undersized buffer. It doesn't care about an
         /// oversized buffer.</para>
         /// </remarks>
-        /// <param name="areas"></param>
-        /// <param name="areaCount"></param>
-        /// <returns></returns>
+        /// <param name="areas">The area buffer. [Length: &lt;= areaCount]</param>
+        /// <param name="areaCount">The number of areas defined in the buffer.</param>
+        /// <returns>True if the structure and content of the buffer is valid.</returns>
         public static bool IsValidAreaBuffer(byte[] areas, int areaCount)
         {
             if (areas.Length < areaCount)

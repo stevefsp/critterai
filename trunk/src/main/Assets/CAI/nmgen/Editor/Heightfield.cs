@@ -166,12 +166,13 @@ namespace org.critterai.nmgen
         /// </param>
         /// <param name="boundsMax">The maximum bounds of the field's AABB. [Units: World]
         /// </param>
-        /// <param name="xzCellSize">The xz-plane cell size.
-        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// <param name="xzCellSize">
+        /// The xz-plane cell size. [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
         /// </param>
-        /// <param name="yCellSize">The y-axis span increments. 
-        /// [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
+        /// <param name="yCellSize">
+        /// The y-axis span increments. [Limit:>= <see cref="NMGen.MinCellSize"/>] [Units: World]
         /// </param>
+        /// <returns>The heightfield, or null on error.</returns>
         public static Heightfield Create(int width, int depth
             , Vector3 boundsMin, Vector3 boundsMax
             , float xzCellSize, float yCellSize)
@@ -304,7 +305,7 @@ namespace org.critterai.nmgen
         /// Marks spans that are ledges as not-walkable.
         /// </summary>
         /// <remarks>
-        /// <para>A ledge is a span with neighbor whose maximum further away than
+        /// <para>A ledge is a span with a neighbor whose maximum further away than
         /// walkableStep.  Example: 
         /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) > walkableStep</c>
         /// </para>

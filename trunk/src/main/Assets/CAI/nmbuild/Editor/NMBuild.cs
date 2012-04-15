@@ -38,7 +38,7 @@ namespace org.critterai.nmbuild
 	{
         /// <summary>
         /// The default flag applied to polygons during the build process if the 
-        /// <see cref="NMGenFlag.ApplyPolyFlags"/> is set.
+        /// <see cref="NMGenBuildFlag.ApplyPolyFlags"/> is set.
         /// </summary>
         public const ushort DefaultFlag = 0x01;
 
@@ -86,8 +86,7 @@ namespace org.critterai.nmbuild
         /// <param name="context">The build context.</param>
         /// <returns>The tile build data, or null on error.</returns>
         public static NavmeshTileBuildData GetBuildData(int tx, int tz
-            , PolyMeshData polyMesh
-            , PolyMeshDetailData detailMesh
+            , PolyMeshData polyMesh, PolyMeshDetailData detailMesh
             , ConnectionSet connections
             , BuildContext context)
         {

@@ -35,7 +35,7 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>The corridor is loaded with a path, usually obtained
-    /// from a <see cref="NavmeshQuery"/> <c>FindPath</c> call.  The corridor
+    /// from a <see cref="NavmeshQuery">NavmeshQuery</see> <c>FindPath</c> call.  The corridor
     /// is then used to plan local movement, with the corridor automatically
     /// updating as needed to deal with inaccurate client locomotion.</para>
     /// <para>Example of a common use case:</para>

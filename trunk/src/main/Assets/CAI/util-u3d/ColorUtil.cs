@@ -28,10 +28,7 @@ namespace org.critterai.u3d
     /// </summary>
     public static class ColorUtil
     {
-        /// <summary>
-        /// Returns 1 if the bit at position b in value a is 1
-        /// Otherwise returns 0.
-        /// </summary>
+        // Returns 1 if the bit at position b in value a is 1. Otherwise returns 0.
         private static int bit(int a, int b)
         {
             return (a & (1 << b)) >> b;

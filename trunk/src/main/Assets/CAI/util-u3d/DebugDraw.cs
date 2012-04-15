@@ -31,10 +31,9 @@ namespace org.critterai.u3d
     /// Append methods require the caller to handle all GL setup and teardown. Unless otherwise
     /// noted they expect GL to be in GL.Lines mode.
     /// </para>
-    /// <para>
-    /// Example of using append methods:
-    /// </para>
     /// <code>
+    /// // Example: Using append methods:
+    /// 
     /// Vector3 startPos = new Vector3(1, 0, 0);
     /// Vector3 endPos = new Vector3(10, 15, 20);
     /// float scale = 1;
@@ -808,9 +807,9 @@ namespace org.critterai.u3d
         /// <param name="pointA">Endpoint A.</param>
         /// <param name="pointB">Endpoint B.</param>
         /// <param name="height">The relative height of the arc.</param>
-        /// <param name="headScaleA">The scale endpoint A arrow head. (Or zero for no head.)
+        /// <param name="headScaleA">The scale of the arrow head for point A. (Or zero for no head.)
         /// </param>
-        /// <param name="headScaleB">The scale of endpoint B arrow head.(Or zero for no head.)
+        /// <param name="headScaleB">The scale of the arrow head for point B.(Or zero for no head.)
         /// </param>
         public static void AppendArc(Vector3 pointA, Vector3 pointB, float height
             , float headScaleA, float headScaleB)

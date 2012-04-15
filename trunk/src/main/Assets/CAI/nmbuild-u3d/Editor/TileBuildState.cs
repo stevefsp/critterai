@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-namespace org.critterai.nmbuild
+namespace org.critterai.nmbuild.u3d.editor
 {
     internal enum TileBuildState
     {
