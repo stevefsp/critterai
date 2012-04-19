@@ -8,6 +8,9 @@
     <ddue:linkText>Sample Pack</ddue:linkText>
     <ddue:linkUri>http://code.google.com/p/critterai/downloads/list</ddue:linkUri>
 </ddue:externalLink></item>
+  <item id="CompactField"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.CompactHeightfield
+</ddue:codeEntityReference></item>
   <item id="ConnectionSet"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nmbuild.ConnectionSet
 </ddue:codeEntityReference></item>
@@ -15,7 +18,8 @@ T:org.critterai.nmbuild.ConnectionSet
 T:org.critterai.nav.CrowdManager
 </ddue:codeEntityReference></item>
   <item id="DetailMesh"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-T:org.critterai.nmgen.PolyMeshDetail</ddue:codeEntityReference></item>
+T:org.critterai.nmgen.PolyMeshDetail
+</ddue:codeEntityReference></item>
   <item id="IncrementalBuilder"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nmbuild.IncrementalBuilder
 </ddue:codeEntityReference></item>
@@ -45,5 +49,8 @@ T:org.critterai.nmbuild.ProcessorSet
 </ddue:codeEntityReference></item>
   <item id="TileSetDefinition"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 T:org.critterai.nmbuild.TileSetDefinition
+</ddue:codeEntityReference></item>
+  <item id="NMGenParams"><ddue:codeEntityReference xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+T:org.critterai.nmgen.NMGenParams
 </ddue:codeEntityReference></item>
 </content>

@@ -198,7 +198,7 @@ public sealed class NavmeshBuild
         get { return (ISceneQuery)mSceneQuery; }
         set
         {
-            if (value is ScriptableObject)
+            if (value == null || value is ScriptableObject)
             {
                 ScriptableObject so = (ScriptableObject)value;
                 if (mSceneQuery != so)
@@ -215,7 +215,7 @@ public sealed class NavmeshBuild
         get { return (INavmeshData)mTarget; }
         set
         {
-            if (value is ScriptableObject)
+            if (value is ScriptableObject || value == null)
             {
                 ScriptableObject so = (ScriptableObject)value;
                 if (mTarget != so)

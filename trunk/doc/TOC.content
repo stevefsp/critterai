@@ -13,15 +13,18 @@
     <Topic id="FCD34CAE-02FA-48fd-891E-FB82EE360F49" visible="True" title="The Incremental Builder" />
     <Topic id="ad1c623a-56b7-4aa6-921e-f2d67b39622a" visible="True" title="Creating the Navigation Mesh" />
     <Topic id="e76dda55-5f91-4c2a-bf8d-fa34de59e82b" visible="True" title="Building Multi-Tile Meshes" tocTitle="Multi-Tile Meshes" linkText="Building Multi-Tile Meshes" />
-    <Topic id="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6" visible="True" title="Tips &amp; Recommendations" />
   </Topic>
   <Topic id="637f8561-f678-4f62-b90f-ff6a38333793" visible="True" title="Advanced NMGen Topics">
     <Topic id="6fb3041b-e9be-4f03-868b-dcac944df19b" visible="True" title="Introduction to Heightfields" />
     <Topic id="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af" visible="True" title="The Core Build Process" />
+    <Topic id="21046960-3dc1-4369-a092-5f5bba4f752c" visible="True" title="Areas and the Build" />
   </Topic>
   <Topic id="e81146c4-0143-4cde-ad55-fe1fd1049cbc" visible="True" title="Getting Started with Unity">
-    <Topic id="fa09a9f3-7d31-4441-8f03-80adfddf8d48" visible="True" title="The NMGen Unity Extensions" tocTitle="NMGen Extensions" linkText="The NMGen Unity Extensions" />
-    <Topic id="f2198e94-b490-4919-ad15-e4c9b82ae1e9" visible="True" title="The Navigation Unity Extensions" tocTitle="Navigation Extensions" linkText="The Navigation Unity Extensions" />
+    <Topic id="61341701-6cb3-408b-9b1e-d60e3fb817e1" visible="True" title="Building Navigation Meshes">
+      <Topic id="fb2ca7fa-3b03-41c6-88d8-731c44fb7879" visible="True" title="The Input Build" />
+      <Topic id="80abba67-1b0e-4ada-9be1-e12b386978d3" visible="True" title="Build Configuration" />
+      <Topic id="b2097a0c-c41b-4d23-8861-2faccfc574f1" visible="True" title="The Advanced Build Type" />
+    </Topic>
   </Topic>
   <Topic id="bb02b5c5-1ea9-4ae4-bc1f-ff0e446fb703" visible="True" title="CAINav on Non-Windows Platforms" tocTitle="Tips: Non-Windows Platforms" linkText="CAINav on Non-Windows Platforms" />
 </Topics>

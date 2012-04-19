@@ -30,7 +30,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Represents common per tile configuration parameters.
+    /// Tile configuration parameters.
     /// </summary>
     /// <remarks>
     /// <para>These values are derived during the build process.</para>
@@ -43,22 +43,22 @@ namespace org.critterai.nmgen
     public sealed class NMGenTileParams
     {
         /// <summary>
-        /// The X position of the tile.
+        /// The x-index of the tile.
         /// </summary>
         public int tileX;
 
         /// <summary>
-        /// The Z position of the tile.
+        /// The z-index of the tile.
         /// </summary>
         public int tileZ;
 
         /// <summary>
-        /// Minimum bounds.
+        /// The minimum bounds of the tile.
         /// </summary>
         public Vector3 boundsMin;
 
         /// <summary>
-        /// Maximum bounds.
+        /// The maximum bounds of the tile.
         /// </summary>
         public Vector3 boundsMax;
 
@@ -66,8 +66,13 @@ namespace org.critterai.nmgen
         /// The z-index of the tile within the tile grid. [Limit: >= 0]
         /// </summary>
         /// <remarks>
-        /// <para>This value is a zero based tile index representing the position of the
-        /// tile along the depth of the tile grid..</para>
+        /// <para>
+        /// This value is a zero based tile index representing the position of the
+        /// tile along the depth of the tile grid.
+        /// </para>
+        /// <para>
+        /// The value is auto-clamped to a valid value.
+        /// </para>
         /// </remarks>
         public int TileZ
         {
@@ -79,8 +84,13 @@ namespace org.critterai.nmgen
         /// The x-index of the tile within the tile grid. [Limit: >= 0]
         /// </summary>
         /// <remarks>
-        /// <para>This value is a zero based tile index representing the position of the
-        /// tile along the width of the tile grid..</para>
+        /// <para>
+        /// This value is a zero based tile index representing the position of the
+        /// tile along the width of the tile grid.
+        /// </para>
+        /// <para>
+        /// The value is auto-clamped to a valid value.
+        /// </para>
         /// </remarks>
         public int TileX
         {
@@ -109,12 +119,13 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="tx">The x-index of the tile within the tile grid.</param>
-        /// <param name="tz">The z-index of the tile within the tile grid.</param>
+        /// <param name="tx">The x-index of the tile within the tile grid. [Limit: >= 0]</param>
+        /// <param name="tz">The z-index of the tile within the tile grid. [Limit: >= 0]</param>
         /// <param name="boundsMin">The minimum bounds of the tile.</param>
         /// <param name="boundsMax">The maximum bounds of the tile.</param>
         public NMGenTileParams(int tx, int tz, Vector3 boundsMin, Vector3 boundsMax) 
         {
+            // Note: Use properties for auto-clamping.
             TileX = tx;
             TileZ = tz;
             BoundsMin = boundsMin;
