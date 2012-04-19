@@ -29,7 +29,7 @@
 			<list class="ordered">
       
         <listItem>Compile the input.</listItem>
-				<listItem>The NMGen Build. (Produces the core mesh.)</listItem>
+				<listItem>The NMGen Build. (Produces the core meshes.)</listItem>
 				<listItem>Create the navigation mesh.</listItem>
 				
 			</list>

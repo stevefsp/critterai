@@ -4,25 +4,15 @@
     
     <introduction>
 
-      <para><application>CAINav</application> provides various extensions and components that can make 
-      life easier in Unity. It takes one menu selection and less than 30 seconds to add all required 
-      navigation components to a scene. 5 to 10 minutes later and you are ready to query the 
-      navigation mesh.</para>
+      <para>
+			<application>CAINav</application> provides various extensions that make life easier in Unity. This section covers topcis 
+			that will help you get going.
+			</para>
       
-      <para>The basic steps are as follows:</para>
-      
-	  <list class="ordered">
-	  
-		<listItem>Add, configure, and build your polygon and detail meshes using 
-		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7">NMGen</link>.</listItem>
-
-		<listItem>Use the polygon and detail meshes to create a navigation mesh.</listItem>
-		
-		<listItem>Create navigation mesh query and filter objects for the navigation mesh.</listItem>
-		
-		<listItem>Query the navigation mesh.</listItem>
-		
-	  </list>
+      <para>
+			The NMGen extensions provide designer friendly features that can be used by non-coders to create complex navigation meshes.
+			There are various extension points that allow coders to easily extend the build process even further.
+			</para>
       
     </introduction>
 
@@ -32,46 +22,48 @@
       
       <content>
         
-        <para>Of course, first you have to get the <application>CAINav</application> package 
-        into your project:</para>
+        <para>
+				To get started you first need to get the <application>CAINav</application> package into your project:
+				</para>
         
-	    <list class="ordered">
-	  
-		  <listItem>
-		    <externalLink>
-		    <linkText>Download</linkText>
-		    <linkUri>http://code.google.com/p/critterai/downloads/list</linkUri>
-		    <linkTarget>_blank</linkTarget>
-		    </externalLink> and extract the contents of the CAINav distribution.
-		  </listItem>
-		  
-		  <listItem>Locate the Unity Pro package: cai-nav-pro-x.x.x.unitypackage. 
-		  (Where x.x.x is the version number.)</listItem>
-		
-		  <listItem>Import the package into your project. 
-		  (<ui>Assets->Import Package...</ui> from the menu bar.)</listItem>
-		
-	    </list>
+				<list class="ordered">
+			
+					<listItem>
+						<externalLink>
+						<linkText>Download</linkText>
+						<linkUri>http://code.google.com/p/critterai/downloads/list</linkUri>
+						<linkTarget>_blank</linkTarget>
+						</externalLink> and extract the contents of the CAINav distribution.
+					</listItem>
+					
+					<listItem>
+					Locate the Unity Pro package: cai-nav-pro-x.x.x.unitypackage. (Where x.x.x is the version number.)
+					</listItem>
+				
+					<listItem>
+					Import the package into your project. (<ui>Assets->Import Package...</ui> from the menu bar.)
+					</listItem>
+			
+				</list>
         
-        <para>The package will add the following files:</para>
+        <para>The package will add the following files to your project:</para>
         
-		<list class="bullet">
-		
-		  <listItem>The core plug-in files to the project's <codeInline>plugin</codeInline> 
-		  folder.</listItem>
-		  
-		  <listItem>The core files to the CAI folder. These give you script level
-		  access to the core <application>CAINav</application> features.</listItem>
-		  
-		  <listItem>The Unity extension files to the CAI and CAI/Editor folders. These provide 
-		  all the optional Unity features.</listItem>
-		  
-		</list>
+				<list class="bullet">
+				
+					<listItem>The core plug-in libraries to the project's <codeInline>plugin</codeInline> 
+					folder.</listItem>
+					
+					<listItem>The core libraries to the CAI folder. These give you script level
+					access to the core <application>CAINav</application> features.</listItem>
+					
+					<listItem>The Unity extension libraries to the CAI and CAI/Editor folders. These provide 
+					all the Unity extensions.</listItem>
+					
+				</list>
 
-        <para>The package also adds two new sub-menus: <ui>GameObject->Create CAI</ui> 
-        and <ui>Component->CAI</ui>.</para>
-        
-        <para>The next step: <link xlink:href="fa09a9f3-7d31-4441-8f03-80adfddf8d48"/></para>
+        <para>
+				The package also adds a <ui>CritterAI</ui> menu from which many of the features can be accessed. 
+				</para>
         
       </content>
     

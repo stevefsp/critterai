@@ -8,10 +8,10 @@
 			The navigation side of <application>CAINav</application> consists of features
 			used to create and use navigation meshes for pathfinding and local steering.</para>
 			
-			<para>Core namespace: <codeEntityReference>N:org.critterai.nav</codeEntityReference></para>
+			<para>Core: <codeEntityReference>N:org.critterai.nav</codeEntityReference></para>
 			
 			<para>
-			Unity extensions namespace: 
+			Unity extensions: 
 			<codeEntityReference>N:org.critterai.nav.u3d</codeEntityReference>
 			</para>
 			 

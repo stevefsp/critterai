@@ -114,6 +114,13 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
+    <None Include="cainav\u3d\AdvanceBuildType.aml" />
+    <None Include="cainav\u3d\UnityBuildConfig.aml" />
+    <None Include="cainav\u3d\InputBuild.aml" />
+    <None Include="cainav\u3d\InputCompile.aml" />
+    <None Include="cainav\u3d\UnityNMGen.aml" />
+    <None Include="cainav\nmgen\UnityNMGen.aml" />
+    <None Include="cainav\nmgen\AreasAndBuild.aml" />
     <None Include="cainav\nmgen\AdvancedTopics.aml" />
     <None Include="cainav\nmgen\CreateNavmesh.aml" />
     <None Include="cainav\nmgen\TiledMeshes.aml" />
@@ -125,9 +132,7 @@
     <None Include="cainav\nav\NavmeshQuery.aml" />
     <None Include="cainav\nav\Nav.aml" />
     <None Include="cainav\nav\Navmesh.aml" />
-    <None Include="cainav\u3d\NavGettingStarted.aml" />
     <None Include="cainav\u3d\U3DGettingStarted.aml" />
-    <None Include="cainav\u3d\NMGenGettingStarted.aml" />
     <None Include="cainav\nmgen\NMGen.aml" />
     <None Include="cainav\nmgen\BuildProcess.aml" />
     <None Include="cainav\nmgen\BuildRecommendations.aml" />
@@ -233,17 +238,9 @@
       <ImageId>Example-FinalMesh</ImageId>
       <AlternateText>Example: Final Mesh</AlternateText>
     </Image>
-    <Image Include="cainav\images\nmgen\PolyMesh-Options.jpg">
-      <ImageId>U3D-PolyMeshOptions</ImageId>
-      <AlternateText>U3D: PolyMesh Options</AlternateText>
-    </Image>
     <Image Include="cainav\images\nmgen\PolyMeshDetail-Basic.jpg">
       <ImageId>PolyMeshDetail-Basic</ImageId>
       <AlternateText>Poly Mesh Detail-Basic</AlternateText>
-    </Image>
-    <Image Include="cainav\images\nmgen\PolyMesh-Components.jpg">
-      <ImageId>U3D-BakedPolyMeshSetup</ImageId>
-      <AlternateText>U3D: BakedPolyMesh Setup</AlternateText>
     </Image>
     <Image Include="cainav\images\nmgen\PolyMesh-Basic.jpg">
       <ImageId>PolyMesh-Basic</ImageId>
@@ -310,6 +307,18 @@
     <Image Include="cainav\images\nmgen\NMGenBuildStandard.png">
       <ImageId>NMGenBuildStandard</ImageId>
       <AlternateText>Standard NMGen Build</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\NavmeshBuild-UnityMainAssets.png">
+      <ImageId>UnityNMGenMainAssets</ImageId>
+      <AlternateText>Navmesh Build-Unity Main Assets</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\UnityInputBuildProcess.png">
+      <ImageId>UnityInputBuildProcess</ImageId>
+      <AlternateText>Unity Input Build Process</AlternateText>
     </Image>
   </ItemGroup>
   <!-- Import the SHFB build targets -->

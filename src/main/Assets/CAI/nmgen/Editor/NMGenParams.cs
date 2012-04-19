@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2011 Stephen A. Pratt
+ * Copyright (c) 2011-2012 Stephen A. Pratt
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,40 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Specifies a configuration to use when building navigation mesh data.
+    /// Common configuration parameters used during the NMGen build process.
     /// </summary>
     /// <remarks>
-    /// <para>This class represents an aggregation of settings used at different stages in the 
-    /// build process.  Not all parameters are used in all build processes.</para>
-    /// <para>There is no such thing as a 'zero' configuration.  So the default constructor 
-    /// initializes all values to basic valid values.</para>
-    /// <para>All properties and methods will auto-clamp fields to valid values. For example, 
-    /// if the <see cref="TileSize"/> property is set to -1, the property will clamp the value
-    /// to 0.</para>
-    /// <para>Field members are minimally documented.  See the  property member documentation 
-    /// for details.</para>
-    /// <para>Implemented as a class with public fields in order to support Unity serialization.  
-    /// Care must be taken not to set the fields to invalid values.</para>
+    /// <para>
+    /// This class represents an aggregation of parameters used at different stages in the 
+    /// build process.  Not all parameters are used in all builds.
+    /// </para>
+    /// <para>
+    /// There is no such thing as a 'one size fits all' configuration.  The default constructor 
+    /// initializes all values for a normal human sized agent. You will usually discover 
+    /// configurations that work well for categories of source geometry. E.g. A configuration 
+    /// for interior environments and another for outdoor environments.
+    /// </para>
+    /// <para>In general, derive and set parameter values as follows:</para>
+    /// <ol>
+    /// <li>Determine the agent values in world units. (Agent height, step, radius.)</li>
+    /// <li>
+    /// Derive <see cref="XZCellSize"/> and <see cref="YCellSize"/> from the agent values.
+    /// </li>
+    /// <li>Derive and set the agent based parameters in cell units.</li>
+    /// <li>Derive and set the <see cref="TileSize"/> and <see cref="BorderSize"/> parameters.</li>
+    /// <li>Set the rest of the parameters.</li>
+    /// </ol>
+    /// <para>
+    /// All properties and methods will auto-clamp fields to valid values. For example, 
+    /// if the <see cref="TileSize"/> property is set to -1, the value will be clamped to 0.
+    /// </para>
+    /// <para>
+    /// Fields are minimally documented.  See the property documentation for details.
+    /// </para>
+    /// <para>
+    /// Implemented as a class with public fields in order to support Unity serialization.  
+    /// Care must be taken not to set the fields to invalid values.
+    /// </para>
     /// </remarks>
     /// <seealso cref="NMGenTileParams"/>
     [StructLayout(LayoutKind.Sequential)]
@@ -123,7 +143,6 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Options to use when building the contour set.
         /// </summary>
-        /// <seealso cref="ContourSet"/>
         public ContourBuildFlags contourOptions = 
             ContourBuildFlags.TessellateAreaEdges | ContourBuildFlags.TessellateWallEdges;
 
@@ -138,7 +157,28 @@ namespace org.critterai.nmgen
         /// [Units: World]
         /// </summary>
         /// <remarks>
-        /// <para>Also known as the 'grid size' and 'voxel size'.</para>
+        /// <para>
+        /// Also known as the 'grid size' and 'voxel size'.
+        /// </para>
+        ///<para>
+        /// This parameter effects how accurately the final navigation mesh can conform to the 
+        /// source geometry on the xz-plane. E.g. How close it can follow the edges of 
+        /// obstructions.  It has side effects on most parameters that apply to the xz-plane. 
+        /// </para>
+        /// <para>
+        /// The primary governing factor for choosing this value is the value of the agent radius.
+        /// Start with <c>(maxAgentRadius / 2)</c> for outdoor environments.  For indoor 
+        /// environments or when more accuracy is needed, start with <c>(maxAgentRadius / 3)</c>.
+        /// </para>
+        /// <para>
+        /// This parameter has a large impact on memmory useage.  The smaller the value, the higher
+        /// the memory cost during the build.  So there are special considerations when the source 
+        /// geometry covers a large area.  The best solution is use multiple polygon meshes built 
+        /// for use in a tiled navigation mesh.  Otherwise it may be necessary to lower resolution.  
+        /// In this case set the cell size based on the source geometry's longest xz-axis.  Start with 
+        /// a value of <c>(longestAxis / 1000)</c>, then reduce the value as performance and memory
+        /// allows.
+        /// </para>
         /// </remarks>
         public float XZCellSize
         {
@@ -151,7 +191,24 @@ namespace org.critterai.nmgen
         /// [Limit >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         /// <remarks>
-        /// <para>Also known at the the 'voxel size' for the y-axis.</para>
+        /// <para>
+        /// Also known at the the 'voxel size' for the y-axis.
+        /// </para>
+        /// <para>
+        /// Effects how accurately the height of the final navigation mesh can conform to the 
+        /// source geometry. It has side effects on most parameters that apply to the y-axis.
+        /// </para>
+        /// <para>
+        /// This parameter is based primarily on how far up/down the agent can step. 
+        /// Start with <c>(maxAgentStep / 2.5)</c> and decrease as needed.  Note that
+        /// 'game world' geometry is usually designed for a maximum agent step that is larger than
+        /// in the real world.  Maximum agent step can sometimes be as high as 
+        /// <c>(maxAgentHeight / 2)</c>
+        /// </para>
+        /// <para>
+        /// Smaller values can result in a moderate increase in build times. The effect 
+        /// on memory is minimal.
+        /// </para>
         /// </remarks>
         public float YCellSize
         {
@@ -165,8 +222,15 @@ namespace org.critterai.nmgen
         /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>A value of zero indicates no-tiles.  Small values are not of much use.  
-        /// In general, non-zero values should be between 100 and 1000.</para>
+        /// <para>A value of zero indicates non-tiled.</para>
+        /// <para>
+        /// The tile size should usually be between 500 and 1000. A tile size that is too small 
+        /// can result in extra, unnecessary polygons and less than optimal pathfinding. A value 
+        /// that is too large can be result in memory and performance issues during the build 
+        /// process. In general, pick the largest size that also results in a good tile layout 
+        /// along the x and z axes. (You want to avoid creation of thin tiles along the upper bounds 
+        /// of the navigation mesh.)
+        /// </para>
         /// </remarks>
         public int TileSize
         {
@@ -188,7 +252,15 @@ namespace org.critterai.nmgen
         /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>The border size exists primarily to support tiled meshes.</para>
+        /// <para>
+        /// The border size exists primarily to support tiled meshes and is usually set to
+        /// zero for non-tiled meshes.
+        /// </para>
+        /// <para>
+        /// Determining the exact value to use for tiled meshes can be tricky.  It is best to 
+        /// set all the other parameters, then use <see cref="DeriveBorderSize"/> to get an 
+        /// initial value.
+        /// </para>
         /// </remarks>
         public int BorderSize
         {
@@ -201,7 +273,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The tile size and agent settings should be set before deriving the border size.
+        /// The tile size and agent parameters should be set before deriving the border size.
         /// </para>
         /// </remarks>
         /// <param name="config">The configuration to derive the border size from.</param>
@@ -220,6 +292,14 @@ namespace org.critterai.nmgen
         /// [Limits: 0 &lt;= value &lt;= <see cref="NMGen.MaxAllowedSlope"/>]
         /// [Units: Degrees]
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This parameter is used early in the build process to filter out source triangles that 
+        /// have a high slope. The choice of the value is entirely dependant 
+        /// on the maximum slope the agent's locomotion can handle. A good value to start with is 
+        /// slightly over 45 degrees.
+        /// </para>
+        /// </remarks>
         public float WalkableSlope
         {
             get { return walkableSlope; }
@@ -231,15 +311,25 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Minimum floor to 'ceiling' height that will still allow the  floor area to be 
+        /// Minimum floor to 'ceiling' height that will still allow the floor area to be 
         /// considered walkable. 
         /// [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
         /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Permits detection of overhangs in the source geometry that make the geometry 
-        /// below un-walkable.</para>
-        /// <para>Usually the maximum client height.</para></remarks>
+        /// <para>
+        /// Permits detection of overhangs in the source geometry that make the geometry 
+        /// below un-walkable.
+        /// </para>
+        /// <para>
+        /// Usually set to the maximum agent height.
+        /// </para>
+        /// <para>
+        /// Example: Consider a table located on a floor. With this parameter set correctly, 
+        /// the floor area under the table will not be considered walkable.
+        /// </para>
+        /// <img alt="Value: Walkable Height" src="../media/Value-WalkableHeight.jpg" />
+        /// </remarks>
         public int WalkableHeight
         {
             get { return walkableHeight; }
@@ -258,7 +348,7 @@ namespace org.critterai.nmgen
         /// Derives <see cref="WalkableHeight"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="YCellSize"/> must be set before using this method.</para>
         /// </remarks>
         /// <param name="worldHeight">The walkable height in world units.</param>
@@ -268,14 +358,22 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Maximum ledge height that is considered to still be traversable.
+        /// Maximum ledge height that is considered to be traversable.
         /// [Limit: >=0] 
         /// [Units: YCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Allows the mesh to flow over low lying obstructions such as curbs and up/down 
-        /// stairways.</para>
-        /// <para>Usually set to how far up/down an agent can step.</para>
+        /// <para>
+        /// Determines when a ledge in the source geometry can be traversed, rather than acting as 
+        /// an obstruction. Allows the mesh to flow over low lying obstructions such as curbs and 
+        /// up/down stairways. 
+        /// </para>
+        /// <para>
+        /// This parameter is normally based on how far up/down the agent can step, though often 
+        /// it needs to be set higher because of the way the source geometry is designed. Start 
+        /// with <c>ceil(maxAgentStep / <see cref="YCellSize"/>)</c> and adjust from there.
+        /// </para>
+        /// <img alt="Value: Waklable Step" src="../media/Value-WaklableStep.jpg" />
         /// </remarks>
         public int WalkableStep
         {
@@ -295,10 +393,10 @@ namespace org.critterai.nmgen
         /// Derives the <see cref="WalkableStep"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="YCellSize"/> must be set before using this method.</para>
         /// </remarks>
-        /// <param name="worldStep">The walkable radius in world units.</param>
+        /// <param name="worldStep">The walkable step in world units.</param>
         public void SetWalkableStep(float worldStep)
         {
             WalkableStep = (int)Math.Floor(worldStep / yCellSize);
@@ -311,7 +409,15 @@ namespace org.critterai.nmgen
         /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        ///  Usually the client radius.
+        /// <para>
+        /// Effects the size of the border around obstacles. Many path planners (including CAINav) 
+        /// treat agents as a point on the navigation mesh. So the navigation mesh needs to be 
+        /// eroded by the agent's radius so the planner won't plan a path that comes too close 
+        /// to obstructions, or passes through areas that are too thin for the agent to fit. 
+        /// </para>
+        /// <para>
+        /// Start with a value of <c>ceil(maxAgentRadius / <see cref="XZCellSize"/>)</c>
+        /// </para>
         /// </remarks>
         public int WalkableRadius
         {
@@ -331,7 +437,7 @@ namespace org.critterai.nmgen
         /// Derives the <see cref="WalkableRadius"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
         /// </remarks>
         /// <param name="worldRadius">The walkable radius in world units.</param>
@@ -341,9 +447,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// If true, use monotone region generation.
+        /// If true, use monotone region generation.  Otherwise use watershed partitioning.
         /// </summary>
         /// <seealso cref="CompactHeightfield.BuildRegionsMonotone"/>
+        /// <seealso cref="CompactHeightfield.BuildRegions"/>
         public bool UseMonotone
         {
             get { return useMonotone; }
@@ -357,6 +464,15 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>Prevents the formation of meshes that are too small to be of use.</para>
+        /// <para>
+        /// If you really don't want or expect any island regions, then set this parameter to a 
+        /// high value. Otherwise the value will depend entirely on your needs.
+        /// </para>
+        /// <para>
+        ///  In the example below, the value has been set too low, allowing the formation of 
+        ///  small meshes on the top of obstructions.
+        /// </para>
+        /// <img alt="Value: MinRegionArea" src="../media/Value-MinRegionArea.jpg" />
         /// </remarks>
         public int MinRegionArea
         {
@@ -376,7 +492,7 @@ namespace org.critterai.nmgen
         /// Derives the <see cref="MinRegionArea"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
         /// </remarks>
         /// <param name="worldArea">The minimum region area in world units.</param>
@@ -409,7 +525,7 @@ namespace org.critterai.nmgen
         /// Derives the <see cref="MergeRegionArea"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
         /// </remarks>
         /// <param name="worldArea">The merge region area in world units.</param>
@@ -424,8 +540,15 @@ namespace org.critterai.nmgen
         /// [Units: XZCellSize]
         /// </summary>
         /// <remarks>
-        /// <para>Extra vertices will be inserted if needed.</para>
-        /// <para>A value of zero disabled this feature.</para>
+        /// <para>
+        /// Sometimes the build process can result in long thin triangles along the the mesh border. 
+        /// This parameters is used during the contour build process to add extra border vertices
+        /// to prevent this from happening.
+        /// </para>
+        /// <para>
+        /// Start with a maximum edge length of zero (disabled). If you see a problem, then start 
+        /// with <c>(<see cref="WalkableRadius"/> * 8)</c> and adjust from there.
+        /// </para>
         /// </remarks>
         public int MaxEdgeLength
         {
@@ -445,7 +568,7 @@ namespace org.critterai.nmgen
         /// Derives the <see cref="WalkableStep"/> from a world units value.
         /// </summary>
         /// <remarks>
-        /// <para>Snapping to the base unit type will occur.</para>
+        /// <para>The value will be snapped to the base unit type. (Cell size.)</para>
         /// <para>The <see cref="XZCellSize"/> must be set before using this method.</para>
         /// </remarks>
         /// <param name="worldLength">The walkable radius in world units.</param>
@@ -460,6 +583,16 @@ namespace org.critterai.nmgen
         /// [Units: World]
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// The 
+        /// <a href="http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm" target="_blank">
+        /// Douglas–Peucker</a> algorithm is used when simplifying the borders of the mesh.
+        /// This parameter effects how much simplification occurs. A higher number will result in 
+        /// more lost detail, but also fewer unnecessary polygons around the border. A good place 
+        /// to start is between 1.1 and 1.5. Low values, especially zero (no simplification), are 
+        /// not recommended since they can result in a large number of small triangles around the 
+        /// border.
+        /// </para>
         /// <para>Applies only to the xz-plane.</para>
         /// </remarks>
         public float EdgeMaxDeviation
@@ -479,11 +612,35 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Sets the sampling distance to use when matching the mesh surface to the source 
-        /// geometry. (For height detail only.)
+        /// Sets the sample distance to use when matching the detail mesh surface to the source 
+        /// geometry. (Height detail only.)
         /// [Limits: 0 or >= 0.9] 
         /// [Units: World]
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This parameter is used in conjunction with <see cref="DetailMaxDeviation"/>
+        /// to control how much extra height detail a <see cref="PolyMeshDetail"/> object will 
+        /// contain.
+        /// </para>
+        /// <para>
+        /// The sample distance is used to lay out sample points along the edges and across the
+        /// surface of the source <see cref="PolyMesh"/> object's polygons. The height distance 
+        /// from the polygon edge/surface is tested. If the maximum deviation is exceeded, then the 
+        /// sample point is added as a vertex to the detail mesh.
+        /// </para>
+        /// <para>
+        /// The sample distance and deviation should be set as high as possible while still 
+        /// getting the desired height detail. Setting the sample distance to less than 0.9 will 
+        /// effectively disable sampling. Setting the maximum deviation to zero is not recommended 
+        /// since it will result in a large number of detail triangles.
+        /// </para>
+        /// <para>
+        /// Start with a sample distance of <c>(longestXZAxis / 100)</c>, where 'longestXZAxis' is 
+        /// based on the bounds of the source geometry.  Start with a maximum deviation of
+        /// <c>(<see cref="YCellSize"/> * 20)</c>.
+        /// </para>
+        /// </remarks>
         public float DetailSampleDistance
         {
             get { return detailSampleDistance; }
@@ -496,6 +653,9 @@ namespace org.critterai.nmgen
         /// [Limit: >=0] 
         /// [Units: World]
         /// </summary>
+        /// <remarks>
+        /// <para>See <see cref="DetailSampleDistance"/> for information on this parameter.</para>
+        /// </remarks>
         public float DetailMaxDeviation
         {
             get { return detailMaxDeviation; }
@@ -567,7 +727,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Forces all field values to within the mandatory limits.
+        /// Clamps all parameters to the mandatory limits.
         /// </summary>
         public void Clean()
         {
