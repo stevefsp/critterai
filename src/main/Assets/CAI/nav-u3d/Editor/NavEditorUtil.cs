@@ -86,7 +86,7 @@ namespace org.critterai.nav.u3d.editor
             ScriptableObject nso = (ScriptableObject)EditorGUILayout.ObjectField(label
                 , so, typeof(ScriptableObject), false);
 
-            if (nso is INavmeshData)
+            if (nso is INavmeshData || !nso)  // Null OK.
                 return (INavmeshData)nso;
 
             Debug.LogError(string.Format("{0} does not implement {1}."
