@@ -135,7 +135,7 @@ public class NavmeshBuildEditor
 
             if (nso != so)
             {
-                if (nso is ISceneQuery)
+                if (!nso || nso is ISceneQuery)
                     targ.SceneQuery = (ISceneQuery)nso;
                 else
                 {
@@ -190,11 +190,10 @@ public class NavmeshBuildEditor
                 ScriptableObject item = (ScriptableObject)
                     EditorGUILayout.ObjectField(currItem, typeof(ScriptableObject), false);
 
-                if (item != currItem && OkToAdd(items, item))
-                    items[i] = item;
-
-                if (GUILayout.Button("X"))
+                if (!item || GUILayout.Button("X"))
                     delChoice = i;
+                else if (item != currItem && OkToAdd(items, item))
+                    items[i] = item;
 
                 EditorGUILayout.EndHorizontal();
             }
@@ -211,7 +210,7 @@ public class NavmeshBuildEditor
         ScriptableObject nitem = (ScriptableObject)
             EditorGUILayout.ObjectField("Add", null, typeof(ScriptableObject), false);
 
-        if (nitem != null && OkToAdd(items, nitem))
+        if (nitem && OkToAdd(items, nitem))
             items.Add(nitem);
 
         bool result = GUI.changed;
@@ -222,6 +221,12 @@ public class NavmeshBuildEditor
 
     private static bool OkToAdd(List<ScriptableObject> items, ScriptableObject item)
     {
+        if (!item)
+        {
+            Debug.LogError("Can't set item to none.");
+            return false;
+        }
+
         if (!(item is IInputBuildProcessor))
         {
             Debug.LogError(string.Format("{0} does not implement {1}."
