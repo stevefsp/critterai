@@ -321,6 +321,46 @@
       <AlternateText>Unity Input Build Process</AlternateText>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\examples\OverlappingAreaMarkers.jpg">
+      <ImageId>OverlappingAreaMarkers</ImageId>
+      <AlternateText>Overlapping Area Markers</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\examples\NavmeshBuildInspector.jpg">
+      <ImageId>NavmeshBuildInspector</ImageId>
+      <AlternateText>Navmesh Build Inspector</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\examples\NavmeshBuildUpper.jpg">
+      <ImageId>NavmeshBuildUpper</ImageId>
+      <AlternateText>Navmesh Build Upper</AlternateText>
+    </Image>
+    <Image Include="cainav\images\nmgen\examples\NavmeshBuildInput.jpg">
+      <ImageId>NavmeshBuildInput</ImageId>
+      <AlternateText>Navmesh Build Input</AlternateText>
+    </Image>
+    <Image Include="cainav\images\nmgen\examples\NavmeshBuildConfig.jpg">
+      <ImageId>NavmeshBuildConfig</ImageId>
+      <AlternateText>Navmesh Build Config</AlternateText>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cainav\images\nmgen\examples\AdvancedBuild-Input.jpg">
+      <ImageId>AdvancedBuild-Input</ImageId>
+      <AlternateText>Advanced Build-Input</AlternateText>
+    </Image>
+    <Image Include="cainav\images\nmgen\examples\AdvancedBuild-Config.jpg">
+      <ImageId>AdvancedBuild-Config</ImageId>
+      <AlternateText>Advanced Build-Config</AlternateText>
+    </Image>
+    <Image Include="cainav\images\nmgen\examples\AdvancedBuild-Builder.jpg">
+      <ImageId>AdvancedBuild-Builder</ImageId>
+      <AlternateText>Advanced Build-Builder</AlternateText>
+    </Image>
+  </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
 </Project>

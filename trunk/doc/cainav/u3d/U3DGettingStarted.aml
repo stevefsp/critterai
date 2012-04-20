@@ -53,11 +53,11 @@
 					<listItem>The core plug-in libraries to the project's <codeInline>plugin</codeInline> 
 					folder.</listItem>
 					
-					<listItem>The core libraries to the CAI folder. These give you script level
+					<listItem>The core libraries to the <codeInline>CAI</codeInline> folder. These give you script level
 					access to the core <application>CAINav</application> features.</listItem>
 					
-					<listItem>The Unity extension libraries to the CAI and CAI/Editor folders. These provide 
-					all the Unity extensions.</listItem>
+					<listItem>The Unity extension libraries to the <codeInline>CAI</codeInline> and 
+					<codeInline>CAI/Editor</codeInline> folders. These provide all the Unity extensions.</listItem>
 					
 				</list>
 

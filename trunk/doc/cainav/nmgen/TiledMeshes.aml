@@ -24,7 +24,7 @@
 			The process for building multi-tile navigation meshes is very similar to building a single-tile mesh.  The main difference is that you need to
 			repeat the <token>IncrementalBuilder</token> and tile build steps for each tile, then combine the result into the final navigation mesh.  You also have a new
 			input data class: <token>TileSetDefinition</token>.  This class combines the <token>InputGeometry</token> and some configuration settings to define
-			tile set.
+			the tile set.
 			</para>
 			
 			<code>
@@ -82,7 +82,7 @@
 												continue;
 								}
 
-								// Completed with a result.  So build the tile data.
+								// Completed with a result.  Build the tile data.
 
 								NMGenAssets assets = builder.Result;
 
@@ -156,7 +156,7 @@
 				</para>
 			
 				<para>
-				You can use a single <token>ConnectionSet</token> for the entire build.  The build process will only add the appropriate
+				You can use a single <token>ConnectionSet</token> for the entire build.  The build process will add the appropriate
 				connections to each tile.
 				</para>
 				

@@ -6,7 +6,7 @@
 
 			<para>
 			The <token>IncrementalBuilder</token> implements a flexible build process that can be used at
-			design time to create <token>PolyMesh</token> and <token>DetailMesh</token> data. <token>INMGenProcessor</token>'s
+			design time to create <token>PolyMesh</token> and <token>DetailMesh</token> objects. <token>INMGenProcessor</token>'s
 			are used to customize the process for almost any need.
 			</para>
 			
@@ -26,8 +26,8 @@
 			</alert>
 			
 			<para> 
-			Only one builder is needed if the navigation mesh will contain only a single tile.  Multi-tile meshes may require
-			scores of builders, one for each tile.
+			Only one builder is needed if the navigation mesh will contain only a single tile.  Multi-tile meshes require
+			one builder for each tile.  (Builders are single use.)
 			</para>
 			
 			<code>
@@ -69,7 +69,7 @@
 						case NMGenState.NoResult:
 
 								// No result was produced.  
-								// Unexpected for single tile builds.  Not uncommon for tiled builds.
+								// Unexpected for single-tile builds.  Not uncommon for multi-tile builds.
 								// Check builder messages for details.
 				}
 				
@@ -84,7 +84,7 @@
 			<content>
 			
 				<para>
-				The incremental builder follows the process described by <link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> advanced topic.
+				The incremental builder follows the process described by <link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> topic.
 				</para>
 				
 				<mediaLink><image xlink:href="NMGenBuildStandard"/></mediaLink>       
@@ -103,7 +103,7 @@
 			The <token>IncrementalBuilder</token>'s main output is a <token>PolyMesh</token> object.
 			The polygon mesh is made up of convex polygons with between three and 
 			<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxAllowedVertsPerPoly</codeEntityReference>
-			vertices. Each polygon includes edge link data and user-defined area ids and polygon flags.
+			vertices. Each polygon includes edge link, area, flag data.
 			</para>
 			
 			<para>
@@ -159,7 +159,7 @@
 			Without any processors, only a very simple polygon mesh can be created.</para>
 			
 			<para>Processors are called during the post-processor step of each stage, in ascending priority. A processor may perform processing 
-			only during a single stage, or multiple stages.
+			during a single stage or multiple stages.
 			</para>
 			
 			<para>
@@ -184,12 +184,13 @@
 					
 					<para>
 					Because processors are prioritized, area markers can overwrite each other in useful ways.  For example, lets say you have a swamp area with 
-					a dry island contained within it.  The swamp area needs one area id while the island needs to be a different area id.  If you mark the swamp, the island will
-					be included.  This can't be helped since all markers are convex.  But by marking the island with a higher priority marker, it will get the proper id.
+					a dry island contained within it.  The swamp area needs to be assigned one area while the island needs to be a assigned a different area.
+					If you mark the swamp, the island will be included.  This can't be helped since all markers are convex.  But by marking the island with a higher 
+					priority marker, it will be assigned the proper area.
 					</para>
 
 					<para>
-					Another powerful use of area markers is applying the <codeEntityReference>F:org.critterai.nmgen.NMGen.NullArea</codeEntityReference> id.
+					Another powerful use of area markers is applying <codeEntityReference>F:org.critterai.nmgen.NMGen.NullArea</codeEntityReference>.
 					Sometimes the build process will create polygons in areas you don't like.  For example, there may be clutter on the ground that can technically
 					be walked across, but looks bad when it is.  If you mark the area with <codeEntityReference>F:org.critterai.nmgen.NMGen.NullArea</codeEntityReference>,
 					then the area will be excluded from the final polygon mesh.
@@ -211,7 +212,7 @@
 				</para>
 				
 				<para>
-				The <codeEntityReference>T:org.critterai.nmbuild.ApplyPolygonFlags</codeEntityReference> processor can be used to add a set of flags to all polygons.
+				The <codeEntityReference>T:org.critterai.nmbuild.ApplyPolygonFlags</codeEntityReference> processor can be used to add flags to all polygons.
 				</para>
 				
 				<para>

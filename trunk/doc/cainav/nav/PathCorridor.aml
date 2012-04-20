@@ -4,9 +4,13 @@
 
 	<introduction>
 	
-		<para>The path corridor provides a way of moving along a navigation path without worrying about the minutiae of managing the path.</para>
+		<para>
+		The path corridor provides a way of moving along a navigation path without worrying about the minutiae of managing the path.
+		</para>
 		
-		<para>Core Class: <token>PathCorridor</token></para>
+		<para>
+		Core Class: <token>PathCorridor</token>
+		</para>
 		
 		<para>
 		In the simplest scenario, a path is a list of waypoints from a starting point to an end point.  The waypoints form a connected 
@@ -28,10 +32,10 @@
 		</para>
 		
 		<para>
-		The <token>PathCorridor</token> API is well documented.  So the only thing repeated here is a warning:  You can't just initialize a
+		The <token>PathCorridor</token> API is well documented.  The only thing worth repeating here is a warning:  You can't just initialize a
 		corridor with a path and forget long distance path planning.  Since the path corridor class uses local searches to maintain the corridor,
-		attempting to apply large delta movement to the corridor position or target can result in a malformed corridor.  (Details are in the API 
-		documentation.)
+		attempting to apply large delta movement to the corridor's position or target can result in a malformed corridor.  Details are in the API 
+		documentation.
 		</para>
 	 
 	</introduction>

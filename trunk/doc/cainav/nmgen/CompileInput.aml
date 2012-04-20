@@ -24,7 +24,7 @@
      
     </introduction>
 		
-		<section address="inputgeometry">
+		<section>
 		
 			<title>Input Geometry</title>
 			
@@ -42,12 +42,11 @@
 				</para>
 				
 				<para>
-				Each triangle in the input geometry is assigned an area id based on surface type. Usually, triangles are assigned a default area,
+				Each triangle in the input geometry is assigned an area based on surface type. Usually, triangles are assigned a default area,
 				such as <codeEntityReference>F:org.critterai.nmgen.NMGen.MaxArea</codeEntityReference>, then special triangles
-				are assigned special areas as needed.  For example, 'meadow' and 'sidewalk' triangles may get the default area, while
-				'water' and 'swamp' triangles get assigned other area ids.  Assigning area ids during the build process ensures that
-				polygons are properly formed for each type of surface.  The areas can then be used to assign custom traversal costs or
-				polygon flags.
+				are assigned special areas as needed.  For example, 'meadow' and 'sidewalk' triangles may be the default area, while
+				'water' and 'swamp' triangles are assigned to other areas.  Assigning areas during the build process ensures that
+				polygons are properly formed for each type of surface.
 				</para>
 		
 				<code>
@@ -72,22 +71,22 @@
 				</code>
 				
 				<para>
-				The <codeEntityReference>T:org.critterai.nmbuild.InputGeometryBuilder</codeEntityReference> class can be used to 
-				combine multiple triangle meshes into a single triangle mesh, with area assignment.
+				The <codeEntityReference>T:org.critterai.nmbuild.InputGeometryCompiler</codeEntityReference> class can be used to 
+				combine multiple triangle meshes into a single triangle mesh, including area assignment.
 				</para>
 		
 			</content>
 		
 		</section>
 	
-		<section address="processorset">
+		<section>
 		
 			<title>ProcessorSet</title>
 			
 			<content>
 		
 				<para>
-				The <token>ProcessorSet</token> contains the <token>INMGenProcessor</token> objects used to add special behavior to the
+				The <token>ProcessorSet</token> contains <token>INMGenProcessor</token> objects used to add special behavior to the
 				main build step. A processor may do something simple, such as applying default flags
 				to all polygons (<codeEntityReference>T:org.critterai.nmbuild.ApplyPolygonFlags</codeEntityReference>), or something
 				complex such as evaluating heightfield intermediates in order to auto-generate off-mesh connections.
@@ -115,7 +114,7 @@
 		
 		</section>
 		
-		<section address="connectionset">
+		<section>
 		
 			<title>ConnectionSet</title>
 			

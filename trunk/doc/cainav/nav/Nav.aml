@@ -29,8 +29,8 @@
 			</para>
 			
 			<para>
-			The <token>NavmeshQueryFilter</token> is a seemingly minor class, but is has a large impact on navigation.  Filters are used to define the costs of
-			traversing the mesh and flags that control which parts of the navigation mesh is included in operations.  Multiple filters can be used to customize the 
+			The <token>NavmeshQueryFilter</token> is a seemingly minor class, but it has a large impact on navigation.  Filters are used to define the costs of
+			traversing the mesh and flags that control which parts of the navigation mesh are included in operations.  Multiple filters can be used to customize the 
 			navigation behavior on a per client basis.
 			</para>
 			

@@ -6,13 +6,13 @@
 		
       <para>
 			Areas in <application>CAINav</application> are represented by a byte value between zero and 63.  In the navigation mesh they are assigned to polygons
-			and used to specify traversal cost.  For example, all polygons assigned an area of 24 may be assigned a cost of 1.5 while polygons
+			and used to assign traversal cost.  For example, all polygons assigned an area of 24 may be assigned a cost of 1.5 while polygons
 			assigned an area of 63 may be assigned a cost of 1.0.  The meaning and cost associated with each area is defined by the end user.  The only 
 			exception is 0, which is always considered to mean 'unwalkable'.
 			</para>
 			
 			<para>
-			Areas are also used in the <application>NMGen</application> build process.  But while their purpose and use in the navigation mesh is fairly straight forward,
+			Areas are also used in the NMGen build process.  But while their purpose and use in the navigation mesh is fairly straight forward,
 			things can get complicated in the build process.  This topic covers various ways of using areas during the build process to get the navigation mesh you want.
 			</para>
 			
@@ -35,7 +35,7 @@
 			<content>
 			
 				<para>
-				If you assign everything to only a single area during the <application>NMGen</application> build process then polygons will form based solely 
+				If you assign everything to only a single area during the NMGen build process then polygons will form based solely 
 				on the structure of the source geometry.  Polygon edges will form along the borders of obstructions, in structural portals such as doorways, etc.
 				The surface type of the source geometry is unknown and can't be taken into account. So, for example, a single polygon may cover both 
 				meadow and swamp surfaces, even though the cost of traversing the surfaces is different.
@@ -60,6 +60,15 @@
 				</para>
 				
 				<para>
+				In the below example, cylinder and convex areas are marked into the mesh.  The convex marker was given a higher priority so that it overwrites part 
+				of the cyclinder area.
+				</para>
+				
+				<mediaLink>
+					<image xlink:href="OverlappingAreaMarkers"/>
+				</mediaLink>
+				
+				<para>
 				As you can see, areas provide a powerful method of ensuring the final mesh structure is what you need it to be.
 				</para>
 			
@@ -74,7 +83,7 @@
 			<content>
 			
 				<para>
-				The zero area is called the 'NullArea' and has a special meaning to the <application>NMGen</application> build process.  Any surface marked as NullArea
+				The zero area is called the 'NullArea' and has a special meaning to the NMGen build process.  Any surface marked as NullArea
 				is unwalkable and no polygons will form.  All NullArea surfaces are considered obstacles.
 				</para>
 				
@@ -113,15 +122,15 @@
 				
 				<list class="bullet">
 					<listItem>To the source geometry triangles when compiling the input.</listItem>
-					<listItem>To convex areas in the <token>CompactField</token>.</listItem>
-					<listItem>To polygons in the <token>PolyMesh</token>.</listItem>
+					<listItem>To convex areas in the <token>CompactField</token> object.</listItem>
+					<listItem>To polygons in the <token>PolyMesh</token> object.</listItem>
 				</list>
 			
 				<para></para>
 			  <alert class="note">
 			
 					<para>
-					Technically, you can't perform a <application>NMGen</application> build without assigning areas.  At some point in the build it will detect
+					Technically, you can't perform a NMGen build without assigning areas.  At some point in the build it will detect
 					that you haven't assigned areas and will assign all surfaces to a default area.  
 					</para>
 				
@@ -190,8 +199,8 @@
 					<content>
 					
 						<para>
-						Each polygon in the <token>PolyMesh</token> has an area assignment that is inherited from the build process.  This is the value that
-						will be assigned to the polygon once it gets to the navigation mesh.  At this point the polygons are pretty much fixed, so it isn't particularly
+						Each polygon in the <token>PolyMesh</token> has an area assignment that is inherited from the earlier in the build process.  This is the value
+						that will be assigned to the polygon once it is added to the navigation mesh.  At this point the polygons are pretty much fixed, so it isn't particularly
 						useful to assign the NullArea.  But sometimes it is useful to perform some final area adjustements.  For example, if you assigned an area only
 						to ensure proper polygon formation, and the area isn't needed for adjusting traversal cost in the navigation mesh, you can re-assign the area to
 						a default area. (I.e. Clean things up.)
