@@ -1,48 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c7241703-3cf0-49c9-ad94-4b00d6c75741" revisionNumber="1">
-  <developerConceptualDocument 
-    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" 
-    xmlns:xlink="http://www.w3.org/1999/xlink">
+	<developerConceptualDocument 
+		xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+		xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
+		<introduction>
 		
-      <para>
+			<para>
 			<application>CAINav</application> is a navigation system for use with .NET and <token>UnityPro</token> on Windows. 
-			It provides navigation mesh generation,  pathfinding, and local steering functionality.
+			It provides navigation mesh generation, pathfinding, and local steering functionality.
 			</para>
 			
 			<para>
-			At the core of <application>CAINav</application> is  the well regarded <token>RecastNavigation</token> code by 
+			At the core of <application>CAINav</application> is the well regarded <token>RecastNavigation</token> by 
 			<token>Mikko</token>. This library is mostly about adapting Recast Navigation for use with .NET and Unity. 
-			So most of the low-level functionality is courtesy of Mikko's work.
+			So most of the core features are courtesy of Mikko's work.
 			</para>
 		
+			<para></para>
 			<alert class="warning">
 				
 				<para>This is an alpha release meant for use by early adopters.</para>
 				
 				<para>
 				Not all features have undergone rigorous testing. Some features have little documentation. 
-				Expect frequent changes to the API and potentially breaking changes to Unity components. 
+				Expect frequent changes to the API and potentially breaking to Unity components. 
 				E.g. Unity components may need to be deleted and re-created when migrating to a new release.
 				</para>
 				
-				<para>Any feedback provided through the <token>DiscussionGroup</token> will be much appreciated.</para>
+				<para>Feedback provided through the <token>DiscussionGroup</token> will be much appreciated.</para>
 				
 			</alert>
 		
-	  <para>
+		<para>
 		<token>CAINavDownload</token> (Zip)
-	  </para>
-	  
-    </introduction>
+		</para>
 		
-    <section address="NMGen">
+		</introduction>
+		
+		<section address="NMGen">
 	
-      <title>Navigation Mesh Generation</title>
-	  
-      <content>
-      
+			<title>Navigation Mesh Generation</title>
+		
+			<content>
+			
 				<list class="bullet">
 					<listItem>
 					Generates polygon meshes representing the traversable surface of arbitrary source geometry.
@@ -58,15 +59,15 @@
 					</listItem>
 				</list>
 		
-      </content>
-    
-    </section>
+			</content>
+		
+		</section>
 	
-    <section address="NMQuery">
+		<section address="NMQuery">
 	
-      <title>Pathfinding</title>
-	  
-      <content>
+			<title>Pathfinding</title>
+		
+			<content>
 			
 				<list class="bullet">
 					<listItem>A* and Dijsktra searches.</listItem>
@@ -81,15 +82,15 @@
 					<listItem>Tiling of meshes to efficiently deal with large areas.</listItem>
 				</list>
 				
-      </content>
-    
-    </section>
+			</content>
+		
+		</section>
 	
-    <section address="CrowdManager">
+		<section address="CrowdManager">
 	
-      <title>Local Steering</title>
-	  
-      <content>
+			<title>Local Steering</title>
+		
+			<content>
 			
 				<list class="bullet">
 					<listItem>Local steering/collision avoidance for up to 20 agents.</listItem>
@@ -97,15 +98,15 @@
 					<listItem>Following behavior and moving as a group.</listItem>
 				</list>
 				
-      </content>
-    
-    </section>
+			</content>
+		
+		</section>
 	
-    <section address="Miscellany">
+		<section address="Miscellany">
 	
-      <title>Miscellany</title>
-	  
-      <content>
+			<title>Miscellany</title>
+		
+			<content>
 			
 				<list class="bullet">
 					<listItem>Core features available for use with Unity Pro and .NET-only implemenations.</listItem>
@@ -120,30 +121,30 @@
 					due to the lack of non-Windows systems for builds and testing.
 					</listItem>
 					<listItem>
-					The navigation mesh does not support insertion of temporary obstacles, though there are some options of mimicking that
-					type of behavior.
+					Does not support temporary obstacles.
 					</listItem>
 				</list>
 				
-      </content>
-    
-    </section>
+			</content>
+		
+		</section>
 	
-    <section address="featureExplorer">
+		<section address="featureExplorer">
 	
-      <title>Sample Pack</title>
-	  
-      <content>
-	  
+			<title>Sample Pack</title>
+		
+			<content>
+		
 				<para>
 				The <application>Sample Pack</application> contains demos that will let you play around with various 
 				the navigation features. Simply extract the contents and run the demos. They provides a lot of nice visualizations.
 				</para>
 				
+				<para></para>
 				<alert class="note">
 				<para>
 				Kaspersky Internet Security may report a <externalLink><linkText>PDM.Keylogger security warning</linkText>
-			  <linkUri>http://forum.unity3d.com/threads/36180-PDM.Keylogger-problem</linkUri></externalLink>
+				<linkUri>http://forum.unity3d.com/threads/36180-PDM.Keylogger-problem</linkUri></externalLink>
 				when <application>Feature Explorer</application> is run. Kaspersky must not like the way 
 				Unity detects keyboard input, because I certainly haven't included any viruses. Honest...really...
 				</para>
@@ -158,9 +159,9 @@
 		<para/>
 		<token>CAINavExplorerDownload</token> (Download/Zip)
 		<para/>
-      </content>
-    
-    </section>
+			</content>
+		
+		</section>
 	
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

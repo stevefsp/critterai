@@ -28,7 +28,8 @@
 		  
 		  <content>
 		  
-				<para>At the core of the navigation mesh is the tile. Tiles hold the vast majority of structural
+				<para>
+				At the core of the navigation mesh is the tile. Tiles hold the vast majority of structural
 				and state information.  In fact, the <token>Navmesh</token> class is little more than a tile manager.
 				It may consist of a single tile, or many tiles laid out in a grid that can be swapped in and out
 				at runtime.
@@ -82,12 +83,12 @@
 		
 				<para>
 				Tiles also contain state data.  This data is associated with individual polygons and off-mesh connections.  State
-				includes area ids and flags.
+				data includes area and flags.
 				</para>
 				
 				<para>
-				Area ids are used to associate traversal cost to structural elements.  This effects pathfinding.  For example,
-				the area id representing swampland can have a higher cost than the area id representing smooth surfaces such as meadowland.
+				Areas are used to associate traversal cost to structural elements.  This effects pathfinding.  For example,
+				the area representing swampland can have a higher cost than the area representing smooth surfaces such as meadowland.
 				</para>
 				
 				<para>
@@ -97,10 +98,10 @@
 				</para>
 				
 				<para>
-				It is important to note that area ids and flags have no meaning within the navigation mesh
-				itself.  The interpretation of the values is dependant on the particular <token>NavmeshQueryFilter</token>
+				It is important to note that areas and flags have no meaning within the navigation mesh
+				itself.  The interpretation of the values is dependant on the <token>NavmeshQueryFilter</token>
 				used by each navigation client.  For example: One filter may define a cost of 10 for area id 5, while another may define 
-				a cost of 2 for the same id. One flag may be set when a door is closed with one filter checking for the flag during 
+				a cost of 2 for the same area. One flag may be set when a door is closed with one filter checking for the flag during 
 				pathfinding, while another filter, used by a ghost, ignores the flag completely.
 				</para>
 		
@@ -135,7 +136,7 @@
 		
 		<section address="referenceids">
 		
-		  <title>Tile and Polygon Reference Ids</title>
+		  <title>Tile and Polygon References</title>
 		  
 		  <content>
 
@@ -148,7 +149,7 @@
 				
 				<para>
 				Essentially, tile and polygon references are unsigned integer 'handles' to structural elements within a navigation mesh. Tile references
-				are rarely used by navigation clients.  But polygon references are all over the place.  Polygon references are unique for the navigation mesh, 
+				are rarely used by navigation clients, while polygon references are all over the place.  Polygon references are unique for the navigation mesh, 
 				so they are useful for easily identifying a polygon without needing to know which tile it belongs to. 
 				Despite the name, polygon references can refer to a either a polygon or an off-mesh connection.
 				</para>
@@ -164,7 +165,7 @@
 				</para>
 				
 				<para>
-				References are preserved during tile state changes such as updating flags and area ids, during normal 
+				References are preserved during tile state changes such as changes flags and areas.  They are also preserved during normal 
 				runtime loading and unloading of tiles, and during normal serialization/de-serialization of a navigation mesh.
 				</para>
 
@@ -183,12 +184,14 @@
 		<content>
 
 			<para>
-			There are various pipelines for creating a navigation mesh.  If you are using Unity, the 
-			<link xlink:href="f2198e94-b490-4919-ad15-e4c9b82ae1e9">Unity extensions</link> make it easier.  Otherwise, 
+			There are various pipelines for creating a navigation mesh.  If you are using <token>Unity</token>, the 
+			<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1">Unity extensions</link> make it easier.  Otherwise, 
 			the basic steps are as follows:
 			</para>
 			
-			<para><b>Generate packed tile data:</b></para>
+			<para>
+			<b>Generate packed tile data:</b>
+			</para>
 			
 			<list class="ordered">
 				<listItem>Generate <token>PolyMesh</token> and <token>DetailMesh</token> data using NMGen.</listItem>
@@ -202,6 +205,7 @@
 			a navigation mesh.
 			</para>
 			
+			<para></para>
 			<alert class="note">
 				<para>
 				Using the <codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference> class
@@ -246,7 +250,7 @@
 			</para>
 		
 			<para>
-			It is possible to serialize state data separately from structure on a tile-by-tile basis.  Get the tile
+			It is possible to serialize state separately from structure on a tile-by-tile basis.  Get the tile
 			from the mesh using the <codeEntityReference>M:org.critterai.nav.Navmesh.GetTile(System.Int32)</codeEntityReference> method, then use the
 			<codeEntityReference>M:org.critterai.nav.NavmeshTile.GetState(System.Byte[])</codeEntityReference> and
 			<codeEntityReference>M:org.critterai.nav.NavmeshTile.SetState(System.Byte[])</codeEntityReference> methods.

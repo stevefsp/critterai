@@ -11,7 +11,7 @@
 			
 			<para>
 			All NMGen assets and support code are 'editor only'.  So they have zero impact on scene size and are not included in the Unity project build.  
-			(No data or code bloat.)  The only impact on the scene will be if you need to create custom scene annotations for things like off-mesh connections 
+			(No data or code bloat.)  The only impact on the scene will be if you need to create custom scene for things like off-mesh connections 
 			and area markers.
 			</para>
 
@@ -32,8 +32,8 @@
 			
 				<para>
 				As noted above, the NMGen build process and all associated assets are implemented as project assets, not scene components.  The only time you will need 
-				NMGen specific components in a scene is if you need to manually annotate something special that you want to include in the NMGen build. (E.g. Off-mesh connections.)
-				The below diagram shows the main assets and how they are related from an input/output perspective.
+				NMGen specific components in a scene is if you need to manually annotate something special that you want to include in the build. 
+				(E.g. Off-mesh connections.) The below diagram shows the main assets and how they are related from an input/output perspective.
 				</para>
 			
 				<mediaLink>
@@ -41,12 +41,12 @@
         </mediaLink>
 			
 				<para>
-				The main asset is the <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.  It defines the build configuration and holds all intermediate 
+				The central asset is the <codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.  It defines the build configuration and holds all intermediate 
 				build data created during the build.
 				</para>
 				
 				<para>
-				The build uses a scene query asset to determine which components in the scene will be included in the build.  Any ScritableObject that
+				The build uses a scene query asset to determine which scene components will be included in the build.  Any ScritableObject that
 				implements the <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.ISceneQuery</codeEntityReference> interface can be used.  For example, 
 				if you want the build to gather scene components based on tags, then you'll use the <codeEntityReference>T:TagSceneQuery</codeEntityReference> asset.
 				</para>
@@ -79,10 +79,12 @@
 				the following inspector.
 				</para>
 			
-				<para>...</para>
+				<mediaLink>
+          <image xlink:href="NavmeshBuildInspector"/>
+        </mediaLink>
 				
 				<para>
-				The upper section of the inspector contains the primary build controls and build target assignment.  Since it is possible to reassign the target,
+				The upper section of the inspector contains the primary build controls and build target assignment.  Since it is possible to reassign the target
 				you can use a single configuration to build any number of navigation meshes.  Just reassign the target, open the target's input scene, and build.
 				</para>
 				

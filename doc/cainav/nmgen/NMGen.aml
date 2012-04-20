@@ -5,19 +5,19 @@
     <introduction>
 
       <para>
-			The purpose of <application>NMGen</application> is to generate navigation meshes from arbitrary source geometry. Features fall into two categories:
+			The purpose of NMGen is to generate navigation meshes from arbitrary source geometry. Features fall into two categories:
 			Core and 'standard build'.
 			</para>
 			
 			<para>
 			The core features are located in the <codeEntityReference>N:org.critterai.nmgen</codeEntityReference> namespace and involve creating
 			simplified polygon mesh data from detailed triangle-based source geometry.  You can code your own build process from scratch using these features, but it will 
-			require a significant amount of work and detailed knowlege all aspects of the process.
+			require a significant amount of work and detailed knowlege of all aspects of the process.
 			</para>
 			
 			<para>
-			The standard build process implements a flexible, extendable build process suitable for use at design time, and takes care of many of the mundane 
-			details for you.  It's features are implemented in the following namespaces:
+			The standard build process implements a flexible, extendable build process suitable for use at design time.  It takes care of many of the mundane 
+			details for you.  Its features are implemented in the following namespaces:
 			</para>
       
 			<para>Common extentions: <codeEntityReference>N:org.critterai.nmbuild</codeEntityReference></para>
@@ -29,7 +29,7 @@
 			<list class="ordered">
       
         <listItem>Compile the input.</listItem>
-				<listItem>The NMGen Build. (Produces the core meshes.)</listItem>
+				<listItem>The NMGen Build. (Produces the polygon meshes.)</listItem>
 				<listItem>Create the navigation mesh.</listItem>
 				
 			</list>

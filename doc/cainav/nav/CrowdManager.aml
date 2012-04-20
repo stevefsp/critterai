@@ -9,36 +9,52 @@
 	 		local steering and dynamic avoidance between navigation clients. I.e. It can keep your agents from running into each other.
 			</para>
 			
-			<para>Core Class: <token>CrowdManager</token></para>
+			<para>
+			Core Class: <token>CrowdManager</token>
+			</para>
 			
-			<para>The <token>NavmeshQuery</token> and <token>PathCorridor</token> classes provide perfectly good, easy to use path planning features.  But in
+			<para>
+			The <token>NavmeshQuery</token> and <token>PathCorridor</token> classes provide perfectly good, easy to use path planning features.  But in
 			the end they only give you points that your navigation client should be moving toward.  When it comes to deciding things like client velocity
-			and steering to avoid other clients, that is up to you to implement.  Unless, of course, you decide to use the crowd manager.</para>
+			and steering to avoid other clients, that is up to you to implement.  Unless, of course, you decide to use the crowd manager.
+			</para>
 			
-			<para>Basically, you add an navigation client (agent) to the crowd manager, providing various configuration settings such as 
+			<para>
+			Basically, you add an navigation client (agent) to the crowd manager, providing various configuration settings such as 
 			maximum speed and acceleration.  You also provide a local target to more toward.  The crowd manager then provides, with every update, the new 
 			agent position and velocity for the frame. The movement will be constrained to the navigation mesh, and steering will be applied to ensure 
-			agents managed by the crowd manager do not collide with each other.</para>
+			agents managed by the crowd manager do not collide with each other.
+			</para>
 			
-			<para>This is very powerful feature set.  But it comes with limitations.</para>
+			<para>
+			This is very powerful feature set.  But it comes with limitations.
+			</para>
 			
-			<para>The biggest limitation is that you must give control of the agent's position completely over to the crowd manager.  You can update things like
-			maximum speed and acceleration.  But in order for the crowd manager to do its thing, it can't allow you to constantly be giving it overrides to
-			position and velocity.  So you give up direct control of the agent's movement.  It belongs to the crowd manager.</para>
+			<para>
+			The biggest limitation is that you must give control of the agent's position and velocity completely over to the crowd manager.  You can 
+			update things like maximum speed and acceleration.  But in order for the crowd manager to do its thing, it can't allow you to constantly be 
+			giving it overrides to position and velocity.  So you give up direct control of the agent's movement.  It belongs to the crowd manager.
+			</para>
 			
-			<para>The second biggest limitation revolves around the fact that the crowd manager deals with local planning.  So the agent's target should never
+			<para>
+			The second biggest limitation revolves around the fact that the crowd manager deals with local planning.  The agent's target should never
 			be more than 256 polygons aways from its current position.  If it is, you risk your agent failing to reach its target.  So you may
-			still need to do long distance planning and provide the crowd manager with intermediate targets.</para>
+			still need to do long distance planning and provide the crowd manager with intermediate targets.
+			</para>
 			
-			<para>Other significant limitations:</para>
+			<para>
+			Other significant limitations:
+			</para>
 			
 			<list class="bullet">
-				<listItem>All agents using the crowd manager will use the same <token>NavmeshQueryFilter</token>.</listItem>
+				<listItem>All agents using the crowd manager use the same <token>NavmeshQueryFilter</token>.</listItem>
 				<listItem>Crowd management is relatively expensive.  The maximum agents under crowd management at any one time is 
 				around 20.</listItem>
 			</list>
 			
-			<para>The <token>CAINavExplorerDownload</token> includes a Crowd Manager Demo that lets you see the manager in action.</para>
+			<para>
+			The <token>CAINavExplorerDownload</token> includes a Crowd Manager Demo that lets you see the manager in action.
+			</para>
 			
 		</introduction>
  

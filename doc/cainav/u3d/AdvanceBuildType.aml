@@ -70,7 +70,7 @@
 				</para>
 				
 				<para>
-				Certain configuration settings are locked in once you reach the build stage.  If you want to change these settings after you've started the build you'll need to
+				Certain configuration settings are locked in once you reach the builder stage.  If you want to change these settings after you've started the build you'll need to
 				re-initialize the builder, throwing away any unbaked results.
 				</para>
 				
@@ -113,6 +113,10 @@
 				The first step in the advanced build is the input compile.  Once you run the compile you'll get useful debug information along with visualization options.
 				</para>
 				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Input"/>
+        </mediaLink>
+				
 				<para>
 				You can come back and re-compile the input at any point in the build process.  This is especially helpful if you are tweaking the scene and partially
 				rebuilding a multi-tile navigation mesh.
@@ -129,8 +133,12 @@
 			<content>
 			
 				<para>
-				During this step you set the NMGen configuration that same as you would during a standard build.
+				During the configuration step you set the NMGen configuration that same as you would during a standard build.
 				</para>
+				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Config"/>
+        </mediaLink>
 				
 				<para>
 				Once the configuration is set, you can start a new build from scratch using the <ui>From Scratch</ui> button.  If the target contains a
@@ -144,7 +152,7 @@
 		
 		<section>
 		
-			<title>Builder</title>
+			<title>The Builder</title>
 			
 			<content>
 			
@@ -159,9 +167,13 @@
 				</alert>
 				
 				<para>
-				The builder allowers you to build, tweak, and rebuild your navigation mesh as needed.  Once satisfied you can bake the result to the build target.
+				The builder allows you to build, tweak, and rebuild your navigation mesh as needed.  Once satisfied you can bake the result to the build target.
 				Various debug visualizations are available to help you see what is going on with the build.  Some visualizations are only available in zone mode.
 				</para>
+				
+				<mediaLink>
+          <image xlink:href="AdvancedBuild-Builder"/>
+        </mediaLink>
 				
 				<para></para>
 				<alert class="warning">

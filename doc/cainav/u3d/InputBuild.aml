@@ -11,10 +11,8 @@
 			</para>
 			
 			<para>
-			The input compile process is controlled by the scene query and input processors assigned to the <codeEntityReference>T:NavmeshBuild</codeEntityReference>
-			asset. The process is highly extensible since any ScritableObject that implements the <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.ISceneQuery</codeEntityReference>
-			or <codeEntityReference>T:org.critterai.nmbuild.u3d.editor.IInputBuildProcessor</codeEntityReference> interface can be used.  
-			Just create your own query and/or processors to suit your needs. 
+			The input compile process is manged by an input builder that is modified by the scene query and input processors assigned to the 
+			<codeEntityReference>T:NavmeshBuild</codeEntityReference> asset.
 			</para>
 			
     </introduction>
@@ -26,7 +24,7 @@
 			<content>
 			
 				<para>
-				The input compile process is controlled by the input builder.  The the only thing the builder does is manage
+				The input compile process is managed by the input builder.  The the only thing the builder does is manage
 				the input processors.  At each step it makes sure all the necessary build assets are ready for use and calls the
 				processors in ascending priority.  A processor can be active during one step or multiple steps.  For example,
 				the <codeEntityReference>T:MeshCompiler</codeEntityReference> loads MeshFilter components from the scene during the 
@@ -84,11 +82,21 @@
 					<content>
 					
 						<para>
-						At this point all components that will be compiled have been gathered.  During this step input processors can assign custom area ids to each component.  The
-						assignments will be used during the compile step.  For example, the <codeEntityReference>T:MeshAreaDef</codeEntityReference> can assign the
-						area 21 to all MeshFilters that reference swamp and marsh meshes.  During the compile step the 
+						At this point all components that will be compiled have been gathered.  During this step input processors can assign custom areas to each 
+						component.  The assignments will be used during the compile step.  For example, the <codeEntityReference>T:MeshAreaDef</codeEntityReference> 
+						can assign the area 21 to all MeshFilters that reference swamp and marsh meshes.  During the compile step the 
 						<codeEntityReference>T:MeshCompiler</codeEntityReference> will then assign 21 to all triangles generated from the meshes.
 						</para>
+						
+						<para></para>
+						<alert class="note">
+						
+							<para>
+							<codeEntityReference>F:org.critterai.nmgen.NMGen.MaxArea</codeEntityReference> will be assigned by default.  You can use the
+							<codeEntityReference>T:DefaultAreaDef</codeEntityReference> asset to assign a different area as the default.
+							</para>
+			
+						</alert>
 						
 					</content>
 				
