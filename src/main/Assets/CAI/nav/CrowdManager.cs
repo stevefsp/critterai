@@ -37,7 +37,7 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>This is the core class for all crowd features.</para>
-    /// <para>The common method for setting up the crowd is as follows:</para>
+    /// <para>The standard method for setting up the crowd is as follows:</para>
     /// <ol>
     /// <li>Construct the crowd object.</li>
     /// <li>Set the avoidance configurations using 
@@ -45,7 +45,7 @@ namespace org.critterai.nav
     /// <li>Add agents using <see cref="AddAgent"/> and make an initial 
     /// movement request using <see cref="CrowdAgent.RequestMoveTarget"/>.</li>
     /// </ol>
-    /// <para>A common process for managing the crowd is as follows:</para>
+    /// <para>The standard process for managing the crowd is as follows:</para>
     /// <ol>
     /// <li>Call <see cref="Update"/> to allow the crowd to manage its agents.
     /// </li>
@@ -58,16 +58,15 @@ namespace org.critterai.nav
     /// </ol>
     /// <para>Some agent configuration settings can be updated using 
     /// <see cref="CrowdAgent.SetConfig"/>.  But the crowd owns the
-    /// agent position.  So it is not possible to update an active agent's 
-    /// position.  If agent position must be fed back into the crowd, the agent 
-    /// must be removed and re-added.</para>
+    /// agent position and velocity.  If agent position must be fed back into 
+    /// the crowd, the agent must be removed and re-added.</para>
     /// <para>Notes:</para>
     /// <ul>
     /// <li>Path related information is available for newly added agents only 
     /// after an <see cref="Update"/> has been performed.</li>
     /// <li>This class is meant to provide 'local' movement. There is a limit 
-    /// of 256 polygons in the path corridor. So it is not meant to provide 
-    /// automatic pathfinding services over long distances.</li>
+    /// of 256 polygons in the path corridor. So the crowd can't provide 
+    /// pathfinding services over long distances.</li>
     /// </ul>
     /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
@@ -122,8 +121,8 @@ namespace org.critterai.nav
         /// The query filter used by the manager.
         /// </summary>
         /// <remarks>
-        /// Updating the state of this filter will alter the steering 
-        /// behaviors of the agents.
+        /// Updating the state of this filter will alter the steering behaviors of all agents.
+        /// All agents share the same filter.
         /// </remarks>
         public NavmeshQueryFilter QueryFilter { get { return mFilter; } }
 
@@ -152,45 +151,20 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The agent buffer entry.
+        /// The agent from the agent buffer.
         /// </summary>
         /// <param name="index">The buffer index. 
         /// [Limit: 0 &lt;= value &lt; <see cref="MaxAgents"/>]
         /// </param>
-        /// <returns>The agent buffer entry. (Null if no agent at the index.)
-        /// </returns>
+        /// <returns>The agent from the buffer, or null no agent at the index.</returns>
         public CrowdAgent this[int index]
         {
             get { return (IsDisposed ? null : mAgents[index]); }
         }
 
-        /// <summary>
-        /// Creates a new crowd manager.
-        /// </summary>
-        /// <param name="maxAgents">The maximum number of agents that can
-        /// be added to the manager.</param>
-        /// <param name="maxAgentRadius">The maximum allowed agent radius.
-        /// </param>
-        /// <param name="navmesh">The navigation mesh to use for steering
-        /// related queries.</param>
-        public CrowdManager(int maxAgents
-            , float maxAgentRadius
-            , Navmesh navmesh)
+        private CrowdManager(IntPtr crowd, Navmesh navmesh, int maxAgents, float maxAgentRadius)
             : base(AllocType.External)
         {
-            if (navmesh.IsDisposed)
-                return;
-
-            maxAgents = Math.Max(1, maxAgents);
-            maxAgentRadius = Math.Max(0, maxAgentRadius);
-
-            root = CrowdManagerEx.dtcDetourCrowdAlloc(maxAgents
-                , maxAgentRadius
-                , navmesh.root);
-
-            if (root == IntPtr.Zero)
-                return;
-
             mMaxAgentRadius = maxAgentRadius;
             mNavmesh = navmesh;
 
@@ -213,6 +187,33 @@ namespace org.critterai.nav
         ~CrowdManager()
         {
             RequestDisposal();
+        }
+
+        /// <summary>
+        /// Creates a new crowd manager.
+        /// </summary>
+        /// <param name="maxAgents">The maximum number of agents that can
+        /// be added to the manager.</param>
+        /// <param name="maxAgentRadius">The maximum allowed agent radius.
+        /// </param>
+        /// <param name="navmesh">The navigation mesh to use for path planning and steering
+        /// related queries.</param>
+        /// <returns>A new crowd manager, or null on error.</returns>
+        public static CrowdManager Create(int maxAgents, float maxAgentRadius, Navmesh navmesh)
+        {
+            if (navmesh == null || navmesh.IsDisposed)
+                return null;
+
+            maxAgents = Math.Max(1, maxAgents);
+            maxAgentRadius = Math.Max(0, maxAgentRadius);
+
+            IntPtr root =
+                CrowdManagerEx.dtcDetourCrowdAlloc(maxAgents, maxAgentRadius, navmesh.root);
+
+            if (root == IntPtr.Zero)
+                return null;
+
+            return new CrowdManager(root, navmesh, maxAgents, maxAgentRadius);
         }
 
         /// <summary>
@@ -304,7 +305,7 @@ namespace org.critterai.nav
         /// </param>
         /// <param name="agentParams">The agent configuration.</param>
         /// <returns>A reference to the agent object created by the manager,
-        /// or NULL on error.</returns>
+        /// or null on error.</returns>
         public CrowdAgent AddAgent(Vector3 position
             , CrowdAgentParams agentParams)
         {
@@ -365,15 +366,14 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The extents used by the manager when it performs queries against
-        /// the navigation mesh. (xAxis, yAxis, zAxis)
+        /// The extents used by the manager when it performs queries against the navigation mesh.
         /// </summary>
         /// <remarks>
         /// <para>All agents and targets should remain within these
         /// distances of the navigation mesh surface.  For example, if
-        /// the yAxis extent is 0.5, then the agent should remain between
-        /// 0.5 above and 0.5 below the surface of the mesh.</para>
-        /// <para>The extents remains constant over the life of the object.</para>
+        /// the y-axis extent is 1.0, then the agent should remain between
+        /// 1.0 above and 1.0 below the surface of the mesh.</para>
+        /// <para>The extents remains constant over the life of the crowd manager.</para>
         /// </remarks>
         /// <returns>The extents.</returns>
         public Vector3 GetQueryExtents()
