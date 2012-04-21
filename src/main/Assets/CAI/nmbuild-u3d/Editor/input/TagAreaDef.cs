@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Assigns areas to components based on tags.
+/// Assigns areas to components based on tags. (Editor Only)
 /// </summary>
 [System.Serializable]
 public sealed class TagAreaDef 

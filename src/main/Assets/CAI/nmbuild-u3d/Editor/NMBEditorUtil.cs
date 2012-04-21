@@ -27,7 +27,7 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Provides various navmesh build utility constants.
+    /// Provides various navmesh build utility constants. (Editor Only)
     /// </summary>
     public static class NMBEditorUtil
     {

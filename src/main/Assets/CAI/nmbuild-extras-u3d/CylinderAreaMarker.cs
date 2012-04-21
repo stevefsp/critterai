@@ -23,14 +23,15 @@ using UnityEngine;
 using org.critterai.u3d;
 
 /// <summary>
-/// Provides spacial data useful for marking an area using a cylinder shape.
+/// Provides data useful for marking an area using a cylinder shape.
 /// </summary>
 /// <remarks>
 /// <para>
-/// The data is in a format compatible with the CompactHeightfield cylinder marker method.
+/// The data is in a format compatible with the CompactHeightfield.MarkCylinderArea() method 
+/// method.
 /// </para>
 /// <para>
-/// The y- and x-scale is used to size the cylinder.  The z-scale is ignored.
+/// The y- and x-scales are used to size the cylinder.  The z-scale is ignored.
 /// </para>
 /// <para>
 /// Rotation is ignored.

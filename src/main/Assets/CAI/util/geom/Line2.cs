@@ -179,13 +179,13 @@ namespace org.critterai.geom
         /// <remarks>
         /// <para>The direction of the vector will be to the right when viewed 
         /// from point A to point B along the line.</para>
-        /// <para>Special Case: A zero length vector will be returned if points 
-        /// A and B do not form a line.</para>
+        /// <para>Special Case: A zero length vector will be returned if the points 
+        /// are collocated.</para>
         /// </remarks>
         /// <param name="a">Point A on line AB.</param>
         /// <param name="b">Point B on line AB.</param>
         /// <returns>The normalized vector that is perpendicular to line AB, 
-        /// or a zero length vector if points A and B do not form a line.
+        /// or a zero length vector if the points are collocated.
         /// </returns>
         public static Vector2 GetNormalAB(Vector2 a, Vector2 b)
         {

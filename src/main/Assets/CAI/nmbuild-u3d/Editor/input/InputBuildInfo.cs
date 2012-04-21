@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Information related to an input build.
+    /// Information related to an input build. (Editor Only)
     /// </summary>
     /// <remarks>
     /// <para>

@@ -35,8 +35,7 @@ namespace org.critterai.nav
     public struct NavmeshPoint
     {
         /// <summary>
-        /// The reference id of the polygon the point belongs to. (Or zero
-        /// if not known.)
+        /// The reference of the polygon the contains the point. (Or zero if not known.)
         /// </summary>
         public uint polyRef;
 
@@ -48,8 +47,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="polyRef">The reference id of the polygon the point
-        /// belongs to. (Or zero if not known.)</param>
+        /// <param name="polyRef">
+        /// The reference of the polygon that contains the point. (Or zero if not known.)
+        /// </param>
         /// <param name="point">The location of the point.</param>
         public NavmeshPoint(uint polyRef, Vector3 point)
         {

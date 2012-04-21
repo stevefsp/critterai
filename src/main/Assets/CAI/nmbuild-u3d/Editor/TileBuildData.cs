@@ -27,7 +27,7 @@ using UnityEngine;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Undocumented class meant for internal use only.
+    /// Undocumented class meant for internal use only. (Editor Only)
     /// </summary>
     [System.Serializable]
     public sealed class TileBuildData

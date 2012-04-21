@@ -32,11 +32,15 @@ namespace org.critterai.nav
     /// <remarks>
     /// <para>Objects of this type can only be obtained from a 
     /// <see cref="CrowdManager"/> object.</para>
-    /// <para><b>Example of iterating the proximity data:</b></para>
-    /// <para><code>
+    /// <code>
+    /// // Example: Iterating the proximity data.
+    /// 
+    /// // Where 'grid' is a CrowdProximityGrid object.
+    /// 
     /// int[] bounds = new int[4];
     /// grid.GetBounds(bounds);
 	///	float cs = grid.GetCellSize();
+    ///	
 	///	for (int y = bounds[1]; y &lt;= bounds[3]; ++y)
 	///	{
     ///	    // y-bounds of the cell in world units.
@@ -50,7 +54,7 @@ namespace org.critterai.nav
     ///			float maxX = x * cs + cs;
 	///		}
 	///	}
-    /// </code></para>
+    /// </code>
     /// <para>Behavior is undefined if used after disposal.</para>
     /// </remarks>
     public sealed class CrowdProximityGrid
@@ -115,7 +119,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the bounds of the grid. [Form: (minX, minY, maxX, maxY)]
+        /// Gets the bounds of the grid. [(minX, minY, maxX, maxY)]
         /// </summary>
         /// <remarks>
         /// To convert from grid units to world units, multipy by the grid's

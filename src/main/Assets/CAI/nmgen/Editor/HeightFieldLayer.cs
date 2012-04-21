@@ -77,14 +77,14 @@ namespace org.critterai.nmgen
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The minimum bounds of the layer in world space. [Form: (x, y, z)]
+        /// The minimum bounds of the layer in world space.
         /// </summary>
         /// <returns>The minimum bounds of the layer.
         /// </returns>
         public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
-        /// The maximum bounds of the layer in world space. [Form: (x, y, z)]
+        /// The maximum bounds of the layer in world space.
         /// </summary>
         /// <returns>The maximum bounds of the layer.
         /// </returns>

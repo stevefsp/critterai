@@ -39,8 +39,7 @@ namespace org.critterai.geom
         /// Returns true if the point is contained by the triangle.
         /// </summary>
         /// <remarks>
-        /// <para>The test is inclusive.  So points on the vertices or edges of the triangle 
-        /// are considered to be contained by the triangle.</para>
+        /// <para>The test is inclusive of the triangle edges.</para>
         /// </remarks>
         /// <param name="p">The point to test.</param>
         /// <param name="a">Vertex A of triangle ABC.</param>

@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Filters out all components that are not marked as static.
+/// Filters out all components that are not marked as static. (Editor Only)
 /// </summary>
 public sealed class StaticFilter
     : ScriptableObject, IInputBuildProcessor

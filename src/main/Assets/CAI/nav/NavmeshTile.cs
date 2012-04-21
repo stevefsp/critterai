@@ -35,12 +35,14 @@ namespace org.critterai.nav
     /// A tile within a <see cref="Navmesh"/>
     /// </summary>
     /// <remarks>
-    /// <para>Tiles always exist within the context of a <see cref="Navmesh"/>
-    /// object.</para>
-    /// <para>Tiles returned by a <see cref="Navmesh"/> are not guarenteed to
-    /// be populated. (The tile at a location may have been removed.)
-    /// To determine if a tile is active, check the polygon count in the 
-    /// <see cref="NavmeshTileHeader"/>.</para>
+    /// <para>
+    /// Tiles always exist within the context of a <see cref="Navmesh"/> object.
+    /// </para>
+    /// <para>
+    /// Tiles returned by a <see cref="Navmesh"/> are not guarenteed to be populated. (The tile at 
+    /// a location may have been removed.) Check the polygon count in the 
+    /// <see cref="NavmeshTileHeader"/> to determine if a tile is active.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTile
@@ -52,8 +54,10 @@ namespace org.critterai.nav
         /// True if the object has been disposed and should no longer be used.
         /// </summary>
         /// <remarks>
-        /// <para>Just because a tile has no polygons does not mean it is
-        /// disposed.</para></remarks>
+        /// <para>
+        /// Just because a tile has no polygons does not mean it is disposed.
+        /// </para>
+        /// </remarks>
         public bool IsDisposed { get { return mOwner.IsDisposed; } }
 
         internal NavmeshTile(Navmesh owner, IntPtr tile) 
@@ -63,7 +67,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The reference id of the tile.
+        /// The reference of the tile.
         /// </summary>
         /// <returns>The refernce id of the tile.</returns>
         public uint GetTileRef() 
@@ -74,7 +78,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the reference id of the base polygon in the tile.
+        /// Gets the reference of the base polygon in the tile.
         /// </summary>
         /// <returns>The reference of the base polygon.</returns>
         public uint GetBasePolyRef()
@@ -85,8 +89,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the size of the buffer required by the
-        /// <see cref="GetState"/> method.
+        /// Gets the size of the buffer required by the <see cref="GetState"/> method.
         /// </summary>
         /// <returns>The size of the state data.</returns>
         public int GetStateSize()
@@ -97,16 +100,17 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the non-structural state of the tile. (Flags, area ids, etc.)
+        /// Gets the non-structural state of the tile. (Flags, areas, etc.)
         /// </summary>
         /// <remarks>
-        /// <para>The state data is only valid until the tile reference changes.
+        /// <para>
+        /// The state data is only valid until the tile reference changes.
         /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the state into.
-        /// [Size: >= <see cref="GetStateSize"/>]</param>
-        /// <returns>The <see cref="NavStatus" /> flags for the operation.
-        /// </returns>
+        /// <param name="buffer">
+        /// The buffer to load the state into. [Length: >= <see cref="GetStateSize"/>]
+        /// </param>
+        /// <returns>The <see cref="NavStatus" /> flags for the operation.</returns>
         public NavStatus GetState(byte[] buffer)
         {
             if (mOwner.IsDisposed || buffer == null)
@@ -123,8 +127,7 @@ namespace org.critterai.nav
         /// (Obtained from the <see cref="GetState"/> method.)
         /// </summary>
         /// <param name="stateData">The state data to apply.</param>
-        /// <returns>The <see cref="NavStatus" /> flags for the operation.
-        /// </returns>
+        /// <returns>The <see cref="NavStatus" /> flags for the operation.</returns>
         public NavStatus SetState(byte[] stateData)
         {
             if (mOwner.IsDisposed || stateData == null)
@@ -161,8 +164,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the polygon buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.polyCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. 
+        /// [Length: >= <see cref="NavmeshTileHeader.polyCount"/>]
+        /// </param>
         /// <returns>The number of polygons returned.</returns>
         public int GetPolys(NavmeshPoly[] buffer)
         {
@@ -177,8 +182,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the vertex buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.vertCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.vertCount"/>]
+        /// </param>
         /// <returns>The number of vertices returned.</returns>
         public int GetVerts(Vector3[] buffer)
         {
@@ -193,8 +200,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the detailed vertex buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.detailVertCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.detailVertCount"/>]
+        /// </param>
         /// <returns>The number of vertices returned.</returns>
         public int GetDetailVerts(Vector3[] buffer)
         {
@@ -209,8 +218,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the detail triangle buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.detailTriCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.detailTriCount"/>]
+        /// </param>
         /// <returns>The number of triangles returned.</returns>
         public int GetDetailTris(byte[] buffer)
         {
@@ -225,8 +236,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the detail mesh buffer buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.detailMeshCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.detailMeshCount"/>]
+        /// </param>
         /// <returns>The number of meshes returned.</returns>
         public int GetDetailMeshes(NavmeshDetailMesh[] buffer)
         {
@@ -241,8 +254,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the link buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.maxLinkCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.maxLinkCount"/>]
+        /// </param>
         /// <returns>The number of links returned.</returns>
         public int GetLinks(NavmeshLink[] buffer)
         {
@@ -257,8 +272,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the <see cref="NavmeshBVNode"/> tree.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.bvNodeCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.bvNodeCount"/>]
+        /// </param>
         /// <returns>The number of nodes returned.</returns>
         public int GetBVTree(NavmeshBVNode[] buffer)
         {
@@ -273,8 +290,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Gets a copy of the off-mesh connection buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="NavmeshTileHeader.connCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="NavmeshTileHeader.connCount"/>]
+        /// </param>
         /// <returns>The number of connections returned.</returns>
         public int GetConnections(NavmeshConnection[] buffer)
         {
@@ -287,13 +306,13 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the reference id of the polygon based on its polygon 
-        /// index within a tile.
+        /// Gets the reference of the polygon based on its polygon index within a tile.
         /// </summary>
-        /// <param name="basePolyRef">The reference id of the tile's base 
-        /// poygon. (<see cref="GetBasePolyRef"/>)</param>
+        /// <param name="basePolyRef">
+        /// The reference of the tile's base poygon. (<see cref="GetBasePolyRef"/>)
+        /// </param>
         /// <param name="polyIndex">The polygon's index within the tile.</param>
-        /// <returns>The reference id of the polygon.</returns>
+        /// <returns>The reference of the polygon.</returns>
         public static uint GetPolyRef(uint basePolyRef, int polyIndex)
         {
             return (basePolyRef | (uint)polyIndex);

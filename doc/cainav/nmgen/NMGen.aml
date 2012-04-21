@@ -50,15 +50,12 @@
 
 	<relatedTopics>
 	
-		<codeEntityReference>T:org.critterai.nmgen.NMGen</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nmgen.PolyMesh</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nmgen.PolyMeshDetail</codeEntityReference>
-		<codeEntityReference>T:org.critterai.nmbuild.IncrementalBuilder</codeEntityReference>
-	
-		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- HeightfieldIntro -->
-		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- NMGenBuildProcess -->
-		<link xlink:href="d6a98454-7e5d-4e85-9e9d-29d4c517f6a6"/> <!-- NMGenBuildRecommendations -->
-		<link xlink:href="fa09a9f3-7d31-4441-8f03-80adfddf8d48"/> <!-- NMGenUnity -->
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="FCD34CAE-02FA-48fd-891E-FB82EE360F49"/> <!-- Incremental Builder -->	
+		<link xlink:href="ad1c623a-56b7-4aa6-921e-f2d67b39622a"/> <!-- Creating Navmesh -->	
+		<link xlink:href="e76dda55-5f91-4c2a-bf8d-fa34de59e82b"/> <!-- Multi-Tile -->	
+		<link xlink:href="6fb3041b-e9be-4f03-868b-dcac944df19b"/> <!-- Advanced: Heightfield Intro -->
+		<link xlink:href="e72bd1ee-04b0-4bbb-a21d-d8d7ecaa11af"/> <!-- Advanced: Core Build Process -->
 	
 	</relatedTopics>
 

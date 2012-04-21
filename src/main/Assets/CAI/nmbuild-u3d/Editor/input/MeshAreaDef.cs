@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Assigns areas to MeshFilter components based on the component's mesh.
+/// Assigns areas to MeshFilter components based on the component's mesh. (Editor Only)
 /// </summary>
 public sealed class MeshAreaDef 
     : ScriptableObject, IInputBuildProcessor

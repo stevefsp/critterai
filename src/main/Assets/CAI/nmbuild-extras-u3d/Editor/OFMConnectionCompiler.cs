@@ -26,7 +26,7 @@ using UnityEngine;
 
 /// <summary>
 /// Loads and compiles all <see cref="OFMConnection"/> components in the scene, based on the
-/// standard scene query behavior.
+/// standard scene query behavior. (Editor Only)
 /// </summary>
 public sealed class OFMConnectionCompiler
     : ScriptableObject, IInputBuildProcessor

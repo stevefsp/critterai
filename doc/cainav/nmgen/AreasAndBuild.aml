@@ -94,7 +94,7 @@
 				</para>
 				
 				<para>
-				But sometimes you may want to manually block off an area.  For example, let's say you have an surface covered by burning rubbish.  The structure
+				But sometimes you may want to manually block off an area.  For example, let's say you have a surface covered by burning rubbish.  The structure
 				of the surface may be walkable, but you never want it to be walkable.  In cases such as this you can manually mark the surface as a NullArea and
 				the build process will treat it as an obstacle.
 				</para>
@@ -151,7 +151,7 @@
 						<para>
 						Both the <codeEntityReference>T:org.critterai.nmbuild.InputGeometryCompiler</codeEntityReference> and
 						<token>InputGeometry</token> classes provide ways to assign areas to triangles.  The <token>Unity</token> build process
-						includes the ability to assign area by tag assignment or mesh type.
+						includes the ability to assign area by tag assignment or mesh.
 						</para>
 					
 					</content>
@@ -194,7 +194,7 @@
 				
 				<section>
 				
-					<title>Area Assignment of the PolyMesh</title>
+					<title>Area Assignment in the PolyMesh</title>
 					
 					<content>
 					
@@ -213,6 +213,12 @@
 			</content>
 		
 		</section>
+ 
+	<relatedTopics>
+	
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+
+	</relatedTopics>
  
   </developerConceptualDocument>
 </topic>

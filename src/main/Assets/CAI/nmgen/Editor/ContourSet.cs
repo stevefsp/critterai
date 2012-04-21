@@ -86,7 +86,7 @@ namespace org.critterai.nmgen
         public int Count { get { return root.contourCount; } }
 
         /// <summary>
-        /// The minimum bounds of the set in world space. [Form: (x, y, z)]
+        /// The minimum bounds of the set in world space.
         /// </summary>
         /// <remarks>
         /// <para>See <see cref="Contour"/> for information on how the bounds and  
@@ -97,7 +97,7 @@ namespace org.critterai.nmgen
         public Vector3 BoundsMin { get { return root.boundsMin; } }
 
         /// <summary>
-        /// The maximum bounds of the set in world space. [Form: (x, y, z)]
+        /// The maximum bounds of the set in world space.
         /// </summary>
         /// <returns>The maximum bounds of the set.
         /// </returns>
@@ -155,7 +155,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="index">The contour index. 
         /// [Limits: 0 &lt; value &lt; <see cref="Count"/>]</param>
-        /// <returns>The contour, or NULL on failure.</returns>
+        /// <returns>The contour, or null on failure.</returns>
         public Contour GetContour(int index)
         {
             if (IsDisposed || index < 0 || index >= root.contourCount)
@@ -197,7 +197,7 @@ namespace org.critterai.nmgen
         /// <param name="maxEdgeLength">The maximum allowed length of a 
         /// simplified edge. [Limit: >= 0]</param>
         /// <param name="flags">The build flags.</param>
-        /// <returns>The contour set, or NULL on failure.</returns>
+        /// <returns>The contour set, or null on failure.</returns>
         public static ContourSet Build(BuildContext context, CompactHeightfield field
             , float edgeMaxDeviation, int maxEdgeLength, ContourBuildFlags flags)
         {

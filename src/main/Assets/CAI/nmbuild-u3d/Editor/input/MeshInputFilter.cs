@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Filters out all MeshFilter components that reference a mesh in the list.
+/// Filters out all MeshFilter components that reference a mesh in the list. (Editor Only)
 /// </summary>
 [System.Serializable]
 public sealed class MeshInputFilter 

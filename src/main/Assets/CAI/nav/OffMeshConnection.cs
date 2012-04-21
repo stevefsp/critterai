@@ -65,7 +65,7 @@ namespace org.critterai.nav
         public byte direction;
 
         /// <summary>
-        /// The area id of the connection. [Limit: &lt;= <see cref="Navmesh.MaxArea"/>].
+        /// The area of the connection. [Limit: &lt;= <see cref="Navmesh.MaxArea"/>].
         /// </summary>
         public byte area;
 
@@ -92,7 +92,7 @@ namespace org.critterai.nav
         /// <param name="end">The end point.</param>
         /// <param name="radius">The radius of the start and end points. [Limit: >0]</param>
         /// <param name="isBidDrectional">True if the connection is bi-directional.</param>
-        /// <param name="area">The area id. [Limit: &lt;= <see cref="Navmesh.MaxArea"/>].</param>
+        /// <param name="area">The area. [Limit: &lt;= <see cref="Navmesh.MaxArea"/>].</param>
         /// <param name="flags">The connection flags.</param>
         /// <param name="userId">The id of the off-mesh connection. (User defined.)</param>
         public OffMeshConnection(Vector3 start, Vector3 end

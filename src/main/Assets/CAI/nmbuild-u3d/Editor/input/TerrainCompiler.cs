@@ -27,7 +27,7 @@ using org.critterai.nmgen;
 using UnityEngine;
 
 /// <summary>
-/// Loads and compiles a terrain component.
+/// Loads and compiles a terrain component. (Editor Only)
 /// </summary>
 /// <remarks>
 /// <para>
@@ -41,7 +41,7 @@ public sealed class TerrainCompiler
     : ScriptableObject, IInputBuildProcessor
 {
     /// <summary>
-    /// The assset to use for the compile.
+    /// The asset to use for the compile.
     /// </summary>
     public TerrainData terrainData;
 

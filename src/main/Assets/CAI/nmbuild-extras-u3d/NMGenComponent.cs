@@ -23,7 +23,7 @@ using UnityEngine;
 using Math = System.Math;
 
 /// <summary>
-/// A general scene component used during an NMGen build.
+/// A scene component used during an NMGen build.
 /// </summary>
 public abstract class NMGenComponent
     : MonoBehaviour

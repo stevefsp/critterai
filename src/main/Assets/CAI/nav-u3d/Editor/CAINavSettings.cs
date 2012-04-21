@@ -58,7 +58,7 @@ public sealed class CAINavSettings
         areas.Clear();
 
         areaNames.Add(UnWalkable);
-        areas.Add(Navmesh.UnwalkableArea);
+        areas.Add(Navmesh.NullArea);
 
         areaNames.Add(Default);
         areas.Add(Navmesh.MaxArea);

@@ -368,7 +368,7 @@ namespace org.critterai.nmgen
         /// to use when sampling the surface height of the polygon mesh.</param>
         /// <param name="detailMaxDeviation">The maximum the surface of the
         /// detail mesh should deviate from the heightfield data.</param>
-        /// <returns>A new detail mesh, or NULL on error.</returns>
+        /// <returns>A new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Build(BuildContext context
             , PolyMesh polyMesh
             , CompactHeightfield field

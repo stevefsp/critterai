@@ -30,13 +30,13 @@ namespace org.critterai.nav
     public struct NavmeshBVNode
     {
         /// <summary>
-        /// Minimimum bounds of the node's AABB. [Form: (x, y, z)]
+        /// Minimimum bounds of the node's AABB. [(x, y, z)]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] boundsMin;
 
         /// <summary>
-        /// Maximum bounds of the node's AABB. [Form: (x, y, z)]
+        /// Maximum bounds of the node's AABB. [(x, y, z)]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] boundsMax;		                    

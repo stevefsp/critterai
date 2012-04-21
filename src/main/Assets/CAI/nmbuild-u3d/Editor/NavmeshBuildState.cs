@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// The state of a <see cref="NavmeshBuild"/> asset.
+    /// The state of a <see cref="NavmeshBuild"/> asset. (Editor Only)
     /// </summary>
     public enum NavmeshBuildState
     {

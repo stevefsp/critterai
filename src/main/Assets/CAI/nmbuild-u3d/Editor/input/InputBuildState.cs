@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// The state of the input build.
+    /// The state of the input build. (Editor Only)
     /// </summary>
     public enum InputBuildState
     {

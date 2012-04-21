@@ -25,7 +25,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Handles setting configuration values related to the Navmesh build.
+/// Handles setting configuration values related to the Navmesh build. (Editor Only)
 /// </summary>
 public sealed class NMBuildSettings
     : EditorWindow

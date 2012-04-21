@@ -53,7 +53,7 @@ namespace org.critterai
         public const int MSToTicks = 10000;
 
         /// <summary>
-        /// Gets the number of milliseconds since the start <see cref="DateTime"/> tick to now.
+        /// Gets the number of milliseconds from the start <see cref="DateTime"/> tick to now.
         /// </summary>
         /// <param name="start">The start time in <see cref="DateTime"/> ticks.</param>
         /// <returns>The number of milliseconds since the start tick.</returns>
@@ -63,7 +63,7 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Gets the number of seconds since the start tick to now.
+        /// Gets the number of seconds from the start <see cref="DateTime"/> tick to now.
         /// </summary>
         /// <param name="start">The start time in <see cref="DateTime"/> ticks.</param>
         /// <returns>The number of seconds since the start tick.</returns>

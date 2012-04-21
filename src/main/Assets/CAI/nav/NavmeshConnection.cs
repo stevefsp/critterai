@@ -41,11 +41,13 @@ namespace org.critterai.nav
 
         /// <summary>
         /// The endpoints of the connection.
-        /// [Form: (start, end)].
+        /// [(start, end)].
         /// </summary>
-        /// <remarks>For a properly built navigation mesh, vertex A
-        /// will always be within the bounds of the mesh.
-        /// Vertex B is not required to be within the bounds of the mesh.
+        /// <remarks>
+        /// <para>
+        /// For a properly built navigation mesh, the start vertex will always be within the 
+        /// bounds of a navigation mesh polygon.
+        /// </para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
 	    public Vector3[] endpoints;
@@ -56,20 +58,23 @@ namespace org.critterai.nav
         public float radius;
 
         /// <summary>
-        /// The polygon reference id of the connection.
+        /// The polygon reference of the connection.
         /// </summary>
         /// <remarks>
-        /// <para>All connections are stored as 2-vertex polygons within
-        /// the navigation mesh.</para></remarks>
+        /// <para>
+        /// All connections are stored as 2-vertex polygons within the navigation mesh.
+        /// </para>
+        /// </remarks>
         public ushort polyRef;
         
         /// <summary>
         /// Link flags.
         /// </summary>
         /// <remarks>
-        /// <para>These are not the user flags.  Those are assigned to the 
-        /// connection's polygon.  These are link flags used for internal 
-        /// purposes.</para>
+        /// <para>
+        /// These are not the user flags.  Those are assigned to the connection's polygon.  These 
+        /// are link flags used for internal purposes.
+        /// </para>
         /// </remarks>
         public byte flags;
 
@@ -90,9 +95,8 @@ namespace org.critterai.nav
         public uint userId;
 
         /// <summary>
-        /// True if the traversal of the connection can start from either 
-        /// endpoint.  FALSE if the connection can only be travered from
-        /// vertex A to vertex B.
+        /// True if the traversal of the connection can start from either endpoint.  False if the 
+        /// connection can only be travered from the start to the end point.
         /// </summary>
         public bool IsBiDirectional
         {

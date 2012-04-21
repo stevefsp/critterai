@@ -105,7 +105,6 @@ namespace org.critterai.nmbuild
         /// <param name="priority">The processor priority.</param>
         /// <param name="area">The area to apply.</param>
         /// <param name="centerBase">The center of the base of the cylinder.
-        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>

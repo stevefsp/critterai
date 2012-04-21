@@ -26,7 +26,7 @@ using org.critterai.u3d;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Provides debug utilities related to navigation mesh generation.
+    /// Provides debug utilities related to navigation mesh generation. (Editor Only)
     /// </summary>
     public static class NMGenDebug
     {

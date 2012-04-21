@@ -84,7 +84,6 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum bounds of the heightfield in world space. 
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
@@ -92,7 +91,6 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The maximum bounds of the heightfield in world space. 
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
         public Vector3 BoundsMax { get { return mBoundsMax; } }
@@ -365,7 +363,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="verts">The triangle vertices.
-        /// [Form: (ax, ay, ax, bx, by, bz, cx, cy, cz)]</param>
+        /// [(vertA, vertB, vertC)]</param>
         /// <param name="area">The id of the area the triangle belongs to.
         /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>]</param>
         /// <param name="flagMergeThreshold">The distance where the
@@ -470,11 +468,10 @@ namespace org.critterai.nmgen
         /// use the method that takes a <see cref="TriangleMesh"/> object.</para>
         /// </remarks>
         /// <param name="context">The context to use for the operation</param>
-        /// <param name="verts">The vertices. [Form: (x, y, z) * vertCount]
+        /// <param name="verts">The vertices. [Length: >= vertCount]
         /// (No buffering allowed.)</param>
         /// <param name="tris">The triangles. 
-        /// [Form: vertAIndex, vertBIndex, vertCIndex) * triCount] 
-        /// (No buffering allowed.)</param>
+        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
         /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>] [Size: >= triCount]
         /// </param>
@@ -506,7 +503,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use for the operation</param>
         /// <param name="verts">The triangles.
-        /// [Form: (vertA, vertB, vertC) * triCount]</param>
+        /// [(vertA, vertB, vertC) * triCount]</param>
         /// <param name="areas">The ids of the areas the triangles belong to.
         /// [Limit: &lt;= <see cref="NMGen.MaxArea"/>] [Size: >= triCount]</param>
         /// <param name="triCount">The number of triangles in the vertex

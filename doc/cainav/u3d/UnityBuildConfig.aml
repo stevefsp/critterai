@@ -185,6 +185,14 @@
 		
 		</section>
 
-
+	<relatedTopics>
+	
+		<link xlink:href="61341701-6cb3-408b-9b1e-d60e3fb817e1"/> <!-- Building Navmeshes -->
+		<link xlink:href="fb2ca7fa-3b03-41c6-88d8-731c44fb7879"/> <!-- Input Build -->
+		<link xlink:href="b2097a0c-c41b-4d23-8861-2faccfc574f1"/> <!-- Advanced Build -->
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- Intro to NMGen -->
+	
+	</relatedTopics>
+	
   </developerConceptualDocument>
 </topic>

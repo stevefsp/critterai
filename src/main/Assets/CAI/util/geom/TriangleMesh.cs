@@ -42,7 +42,7 @@ namespace org.critterai.geom
 
         /// <summary>
         /// Triangles [(vertAIndex, vertBIndex, vertCIndex) * <see cref="triCount"/>]
-        /// [Length: >= <see cref="triCount"/>
+        /// [Length: >= (<see cref="triCount"/> * 3)]
         /// </summary>
         public int[] tris;
 
@@ -79,14 +79,17 @@ namespace org.critterai.geom
         /// Constructor.
         /// </summary>
         /// <remarks>
-        /// <para>This constructor assigns the provided references to the object.  (No copying.)
+        /// <para>This constructor assigns the provided arrays to the object.  (No copying.)
         /// </para>
         /// </remarks>
         /// <param name="verts">The vertices. [Length: >= <typeparamref name="vertCount"/>]
         /// </param>
         /// <param name="vertCount">The number of vertices.</param>
-        /// <param name="tris">The triangles. [(vertAIndex, vertBIndex, vertCIndex) * triCount]
-        /// [Length: >= <typeparamref name="triCount"/>.</param>
+        /// <param name="tris">
+        /// The triangles. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// [Length: >= (<typeparamref name="triCount"/>) * 3]
+        /// </param>
         /// <param name="triCount">The number of triangles.</param>
         public TriangleMesh(Vector3[] verts, int vertCount, int[] tris, int triCount)
         {

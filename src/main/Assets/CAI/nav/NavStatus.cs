@@ -64,8 +64,7 @@ namespace org.critterai.nav
         InvalidParam = 1 << 3,
 
         /// <summary>
-        /// Result buffer for the operation was too small to store all the
-        /// results.
+        /// Result buffer for the operation was too small to store the entire result.
         /// </summary>
         BufferTooSmall = 1 << 4,
 

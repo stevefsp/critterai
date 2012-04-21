@@ -26,7 +26,7 @@ namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
     /// A ScriptableObject processor used to build input for a 
-    /// <see cref="org.critterai.nav.Navmesh"/> build.
+    /// <see cref="org.critterai.nav.Navmesh"/> build. (Editor Only)
     /// </summary>
     /// <remarks>
     /// <para>

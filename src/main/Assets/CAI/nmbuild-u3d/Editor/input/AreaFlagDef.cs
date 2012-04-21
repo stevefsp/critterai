@@ -27,16 +27,17 @@ using org.critterai.nmgen;
 using UnityEngine;
 
 /// <summary>
-/// Defines a mapping between areas and flags and applies the flags during the build process.
+/// Defines a mapping between areas and flags and applies the flags during the NMGen build process.
+/// (Editor Only)
 /// </summary>
 /// <remarks>
 /// <para>
-/// Any polygon or off-mesh connection with a defined area will have the flags added.  E.g.
-/// The 'water' area gets the 'swim' flag.
+/// Any polygon or off-mesh connection assigned to one of the defined areas will have the 
+/// associated flags added.  E.g. The 'water' area gets the 'swim' flag.
 /// </para>
 /// <para>
 /// The flags are applied to <see cref="PolyMesh"/> polygons during the NMGen build, and to 
-/// off-mesh connections during the input post-processing.
+/// off-mesh connections during input post-processing.
 /// </para>
 /// </remarks>
 [System.Serializable]

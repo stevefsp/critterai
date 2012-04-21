@@ -22,7 +22,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Match behavior type.
+    /// Match behavior type. (Editor Only)
     /// </summary>
     public enum MatchType
 	{

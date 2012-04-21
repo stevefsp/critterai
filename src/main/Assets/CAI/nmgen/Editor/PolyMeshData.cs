@@ -109,7 +109,7 @@ namespace org.critterai.nmgen
     {
         /// <summary>
         /// Mesh vertices.
-        /// [Form: (x, y, z) * vertCount]
+        /// [(x, y, z) * vertCount]
         /// </summary>
         /// <remarks>
         /// <para>Minimum bounds and cell size is used to convert vertex 
@@ -191,13 +191,11 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum bounds of the mesh's AABB.
-        /// [Form: (x, y, z)]
         /// </summary>
         public Vector3 boundsMin;
 
         /// <summary>
         /// The maximum bounds of the mesh's AABB.
-        /// [Form: (x, y, z)]
         /// </summary>
         public Vector3 boundsMax;
 

@@ -24,11 +24,13 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// The height detail mesh for a polygon in a <see cref="NavmeshTile"/>.
+    /// The header data for a polygon's detail mesh in a <see cref="NavmeshTile"/>.
     /// </summary>
     /// <remarks>
-    /// <para>All indices refer to the vertex and triangle data in the
-    /// associated <see cref="NavmeshTile"/>.</para>
+    /// <para>
+    /// All indices refer to the vertex and triangle data in the associated 
+    /// <see cref="NavmeshTile"/>.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshDetailMesh

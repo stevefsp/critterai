@@ -55,33 +55,33 @@ namespace org.critterai.nav
          * 
          * Implemented as a class to permit use as a buffer.
          * 
-         * The layout allows for efficent marshalling on the native side
+         * The layout is designed for efficent marshalling on the native side
          * of interop.  That's why the Vector and poly refs are separated
          * rather than using NavmeshPoint;
          * 
          */
 
         /// <summary>
-        /// The required maximum number of corners required to use with interop method calls.
+        /// The the buffer size required for the object used for interop method calls.
         /// </summary>
         public const int MarshalBufferSize = 4;
 
         /// <summary>
-        /// The corner vertices. [Length: <see cref="cornerCount"/>]
+        /// The corner vertices. [Length: <see cref="MaxCorners"/>]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
         public Vector3[] verts;
 
         /// <summary>
         /// The <see cref="WaypointFlag"/>'s for each corner.
-        /// [Form: (flag) * <see cref="cornerCount"/>]
+        /// [Length: <see cref="MaxCorners"/>]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
         public WaypointFlag[] flags;
 
         /// <summary>
-        /// The navigation mesh polygon references for each corner.
-        /// [Form: (polyRef) * <see cref="cornerCount"/>]
+        /// The polygon references for each corner.
+        /// [Length: <see cref="MaxCorners"/>]
         /// </summary>
         /// <remarks>
         /// The reference is for the polygon being entered at the corner.
@@ -96,9 +96,9 @@ namespace org.critterai.nav
         public int cornerCount = 0;
 
         /// <summary>
-        /// The corner point for the specified index.
+        /// The corner for the specified index.
         /// </summary>
-        /// <param name="index">The corner index. [Limit: &lt;= <see cref="MaxCorners"/></param>
+        /// <param name="index">The corner index. [Limit: &lt;= <see cref="cornerCount"/></param>
         /// <returns>The corner point.</returns>
         public NavmeshPoint this[int index]
         {
@@ -109,13 +109,13 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The maximum number of corners the buffer can hold.
+        /// The maximum number of corners the buffers can hold.
         /// </summary>
         public int MaxCorners { get { return polyRefs.Length; } }
 
         /// <summary>
         /// Creates an object with buffers sized for use with interop method 
-        /// calls. (Maximum Corners = <see cref="MarshalBufferSize"/>)
+        /// calls. (<see cref="MaxCorners"/> = <see cref="MarshalBufferSize"/>)
         /// </summary>
         public CornerData()
         {
