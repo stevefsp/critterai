@@ -139,7 +139,6 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The minimum bounds of the heightfield in world space. 
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the heighfield.
         /// </returns>
@@ -147,7 +146,6 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The maximum bounds of the heightfield in world space. 
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the heightfield.</returns>
         public Vector3 BoundsMax { get { return mBoundsMax; } }
@@ -402,10 +400,8 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="boundsMin">The minimum bounds of the AABB. 
-        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="boundsMax">The maximum bounds of the AABB. 
-        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="area">The area id to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
@@ -467,7 +463,6 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="centerBase">The center of the base of the cylinder.
-        /// [Form: (x, y, z)]
         /// </param>
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>

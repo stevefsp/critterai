@@ -26,7 +26,7 @@ using UnityEngine;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// A navigation mesh build context.
+    /// A navigation mesh build context. (Editor Only)
     /// </summary>
     public class UnityBuildContext
         : BuildContext

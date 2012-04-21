@@ -23,14 +23,14 @@ using UnityEngine;
 using org.critterai.u3d;
 
 /// <summary>
-/// Provides spacial data useful for marking an area using a box shaped convex polygon.
+/// Provides data useful for marking an area using a box shaped convex polygon.
 /// </summary>
 /// <remarks>
 /// <para>
-/// The data is in a format compatible with the CompactHeightfield convex polygon marker method.
+/// The data is in a format compatible with the CompactHeightfield.MarkConvexPolyArea() method.
 /// </para>
 /// <para>
-/// The box is projected onto the xz-plane.  y-axis rotation will behave as expected. 
+/// The box is projected onto the xz-plane.  Y-axis rotation will behave as expected. 
 /// Compining non-zero x- and z-rotations will skew the box into a parallelogram shape.
 /// </para>
 /// </remarks>

@@ -228,7 +228,7 @@ namespace org.critterai.interop
         /// Returns an array filled from an unmanaged memory buffer.
         /// </summary>
         /// <param name="source">The pointer to an allocated unmanaged memory buffer.</param>
-        /// <param name="length">The number of elements to copy intothe return array.</param>
+        /// <param name="length">The number of elements to copy into the return array.</param>
         /// <returns>A byte array filled from the unmanaged memory buffer.</returns>
         public static byte[] ExtractArrayByte(IntPtr source, int length)
         {

@@ -92,9 +92,9 @@ public sealed class CAIBakedNavmesh
     }
 
     /// <summary>
-    /// Generates a human readable report for the mesh data.
+    /// Generates a human readable report of the mesh data.
     /// </summary>
-    /// <returns>A human readable report for the mesh data.</returns>
+    /// <returns>A human readable report of the mesh data.</returns>
     public string GetMeshReport()
     {
         if (!HasNavmesh)

@@ -24,7 +24,7 @@ using UnityEngine;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// A ScriptableObject used to query the scene for components.
+    /// A ScriptableObject used to query the scene for components. (Editor Only)
     /// </summary>
     /// <remarks>
     /// <para>

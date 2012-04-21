@@ -25,7 +25,7 @@ using UnityEngine;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// The context for an input build.
+    /// The context for an input build. (Editor Only)
     /// </summary>
     public class InputBuildContext
         : UnityBuildContext

@@ -29,8 +29,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Represents the solid navigation mesh polygon segments in the vicinity 
-    /// of a reference point.
+    /// Represents the solid (wall) polygon segments in the vicinity of a reference point.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -60,14 +59,13 @@ namespace org.critterai.nav
 
         /// <summary>
         /// The reference point for which the boundary data was compiled. 
-        /// [Form: (x, y, z)]
         /// </summary>
         public Vector3 center;
 
         /// <summary>
         /// The solid navigation mesh polygon segments in the
         /// vicinity of <see cref="center"/>.
-        /// [Form: (ax, ay, az, bx, by, bz) * <see cref="segmentCount"/>]
+        /// [(vertA, vertB) * <see cref="segmentCount"/>]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxSegments * 2)]
         public Vector3[] segments = new Vector3[MaxSegments * 2];

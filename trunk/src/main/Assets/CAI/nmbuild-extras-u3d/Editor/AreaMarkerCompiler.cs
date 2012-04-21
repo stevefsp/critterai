@@ -26,7 +26,7 @@ using UnityEngine;
 
 /// <summary>
 /// Loads and compiles all <see cref="CylinderAreaMarker"/> and <see cref="BoxAreaMarker"/>
-/// components in the scene, based on the standard scene query behavior.
+/// components in the scene, based on the standard scene query behavior. (Editor Only)
 /// </summary>
 public sealed class AreaMarkerCompiler
     : ScriptableObject, IInputBuildProcessor

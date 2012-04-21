@@ -36,7 +36,8 @@ namespace org.critterai.nav
     /// <remarks>
     /// <para>Objects of this type can only be obtained from a 
     /// <see cref="CrowdManager"/> object.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>Behavior is undefined if used after disposal.  Disposal is controled by 
+    /// the <see cref="CrowdManager"/> that owns the agent.</para>
     /// </remarks>
     /// <seealso cref="CrowdManager"/>
     public sealed class CrowdAgent
@@ -80,7 +81,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The desired agent speed. (Derived) [Form: (x, y, z)]
+        /// The desired agent speed. (Derived)
         /// </summary>
         public float DesiredSpeed 
         { 
@@ -88,7 +89,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The current position of the agent. [Form: (x, y, z)]
+        /// The position of the agent.
         /// </summary>
         public Vector3 Position 
         { 
@@ -96,7 +97,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The reference id of the polygon where the position resides.
+        /// The reference of the polygon containing the agent position.
         /// </summary>
         public uint PositionPoly
         {
@@ -104,16 +105,20 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The current target of the agent. [Form: (x, y, z)]
+        /// The agent's target. (Location the agent is moving toward.)
         /// </summary>
-        /// <remarks>This is the path corridor target.</remarks>
+        /// <remarks>
+        /// <para>
+        /// The same as the path corridor target.
+        /// </para>
+        /// </remarks>
         public Vector3 Target
         {
             get { return mManager.agentStates[managerIndex].target; }
         }
 
         /// <summary>
-        /// The reference id of the polygon where the target resides.
+        /// The reference of the polygon containing the target.
         /// </summary>
         public uint TargetPoly
         {
@@ -121,21 +126,26 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The next corner in the path corridor. [Form: (x, y, z)]
+        /// The next corner in the path corridor.
         /// </summary>
-        /// <remarks>This is the path corridor target.</remarks>
+        /// <remarks>
+        /// <para>
+        /// The same as the next corner in the agent's path corridor.
+        /// </para>
+        /// </remarks>
         public Vector3 NextCorner
         {
             get { return mManager.agentStates[managerIndex].nextCorner; }
         }
 
         /// <summary>
-        /// The reference id of the polygon where the next corner resides.
+        /// The reference of the polygon containing the next corner.
         /// </summary>
         /// <remarks>
-        /// <para>This is the polygon being entered at the corner, or zero
-        /// if the next corner is the target.</para>
-        /// <para></para>
+        /// <para>
+        /// This is the polygon being entered at the corner, or zero
+        /// if the next corner is the target.
+        /// </para>
         /// </remarks>
         public uint NextCornerPoly
         {
@@ -143,7 +153,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The desired agent velocity. (Derived) [Form: (x, y, z)]
+        /// The desired agent velocity. (Derived)
         /// </summary>
         public Vector3 DesiredVelocity 
         { 
@@ -151,7 +161,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The actual agent velocity. [Form: (x, y, z)]
+        /// The actual agent velocity.
         /// </summary>
         public Vector3 Velocity 
         { 
@@ -180,9 +190,9 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the current agent configuration.
+        /// Gets the agent configuration.
         /// </summary>
-        /// <returns>The current agent configuration.</returns>
+        /// <returns>The agent configuration.</returns>
         public CrowdAgentParams GetConfig()
         {
             CrowdAgentParams config = new CrowdAgentParams();
@@ -229,16 +239,16 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Adjusts the position of an agent's current move target.
+        /// Adjusts the position of an agent's target.
         /// </summary>
         /// <remarks>
-        /// <para>This method is used when to make small local adjustments to 
-        /// the current target. (Such as happens when following a moving 
-        /// target.) Use <see cref="RequestMoveTarget"/> when a new target is 
+        /// <para>This method is used to make small local adjustments to 
+        /// the target. (Such as happens when following a moving target.) 
+        /// Use <see cref="RequestMoveTarget"/> when a new target is 
         /// needed.</para>
         /// </remarks>
-        /// <param name="position">The adjusted target position.</param>
-        /// <returns>True if the adjustment was successfully applied.</returns>
+        /// <param name="position">The new target position.</param>
+        /// <returns>True if the adjustment was successful.</returns>
         public bool AdjustMoveTarget(NavmeshPoint position)
         {
             if (IsDisposed)
@@ -260,10 +270,10 @@ namespace org.critterai.nav
         /// <see cref="PathCorridorData.MarshalBufferSize"/>!</para>
         /// </remarks>
         /// <param name="buffer">
-        /// The buffer to load with the corridor data.
-        /// [Size: Maximum Path Size = 
-        /// <see cref="PathCorridorData.MarshalBufferSize"/>] [Out]</param>
-        /// <returns>False if there are parameter errors.</returns>
+        /// A buffer to load with the corridor data. (Out)
+        /// [Length: Maximum Path Size = 
+        /// <see cref="PathCorridorData.MarshalBufferSize"/>] </param>
+        /// <returns>True if the data was sucessfully retrieved.</returns>
         public bool GetCorridor(PathCorridorData buffer)
         {
             // Only a partial validation.
@@ -284,10 +294,10 @@ namespace org.critterai.nav
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
         /// <para>This data is not updated every frame.  So 
-        /// the boundary center will not always equal the current position of
+        /// the boundary center will not always equal the position of
         /// the agent.</para>
         /// </remarks>
-        /// <param name="buffer">The buffer to hold the boundary
+        /// <param name="buffer">A buffer to load with the boundary
         /// data. (Out)</param>
         /// <seealso cref="LocalBoundaryData"/>
         public void GetBoundary(LocalBoundaryData buffer)
@@ -297,15 +307,15 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets data related to the current agent neighbors.
+        /// Gets data related to the neighbors in the vicinity of the agent.
         /// </summary>
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
         /// update.</para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load. 
-        /// [Size: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]</param>
-        /// <returns>The number of neighbors in the buffer.</returns>
+        /// <param name="buffer">A buffer to load with the neighbor data.
+        /// [Length: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]</param>
+        /// <returns>The number of neighbors in the buffer, or -1 on error.</returns>
         public int GetNeighbors(CrowdNeighbor[] buffer)
         {
             if (IsDisposed
@@ -326,7 +336,7 @@ namespace org.critterai.nav
         /// Gets the agent associated with the specified neighbor.
         /// </summary>
         /// <param name="neighbor">The agent neighbor data.</param>
-        /// <returns>The agent associated with the neighbor data.</returns>
+        /// <returns>The agent associated with the neighbor data, or null on error.</returns>
         public CrowdAgent GetNeighbor(CrowdNeighbor neighbor)
         {
             if (IsDisposed || neighbor.index >= mManager.MaxAgents)
@@ -335,7 +345,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Gets the local path corridor corner data for the agent.
+        /// Gets the local corner data for the agent.
         /// </summary>
         /// <remarks>
         /// <para>Only available after after a <see cref="CrowdManager"/>
@@ -345,11 +355,11 @@ namespace org.critterai.nav
         /// <para>
         /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load with corner data. 
-        /// [Size: Maximum Corners = <see cref="CornerData.MarshalBufferSize"/>]
-        /// [Out]
+        /// <param name="buffer">The buffer to load with corner data. (Out)
+        /// [Required:
+        /// <see cref="CornerData.MaxCorners"/> = <see cref="CornerData.MarshalBufferSize"/>]
         /// </param>
-        /// <returns>False if there are parameter errors.</returns>
+        /// <returns>True if the data was sucessfully retrieved.</returns>
         public bool GetCornerData(CornerData buffer)
         {
             // This is only a partial argument validation.

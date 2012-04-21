@@ -34,11 +34,14 @@ namespace org.critterai.nav
     /// Represents the data used to build a <see cref="NavmeshTile"/>.
     /// </summary>
     /// <remarks>
-    /// <para>This class marshals data between the navigation mesh generation
-    /// pipeline and the navigation system.  The NMGen PolyMesh and
-    /// PolyMeshDetail classes provide details on data stucture and limits.
+    /// <para>
+    /// This class marshals data between the navigation mesh generation pipeline and the 
+    /// navigation system.  The NMGen PolyMesh and PolyMeshDetail classes provide details on 
+    /// data stucture and limits.
     /// </para>
-    /// <para>The standard load process is as follows:</para>
+    /// <para>
+    /// The standard load process is as follows:
+    /// </para>
     /// <ol>
     /// <li>Construct the object.</li>
     /// <li><see cref="LoadBase"/></li>
@@ -46,12 +49,15 @@ namespace org.critterai.nav
     /// <li><see cref="LoadDetail"/> (Optional)</li>
     /// <li><see cref="LoadConns"/> (Optional)</li>
     /// </ol>
-    /// <para>The design permits re-use of the data buffers for multiple tile
-    /// builds.  Just set the buffer sizes to the maximum size required then
-    /// use the load methods to reload the data as needed.  The only restriction
-    /// is that all polygon data must be have the same maximum vertices
-    /// per polygon.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// The design permits re-use of the data buffers for multiple tile builds.  Just set the 
+    /// buffer sizes to the maximum size required then use the load methods to reload the data 
+    /// as needed.  The only restriction is that all polygon data must have the same 
+    /// maximum vertices per polygon.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class NavmeshTileBuildData
@@ -251,12 +257,12 @@ namespace org.critterai.nav
         public uint TileUserId { get { return mTileUserId; } }
 
         /// <summary>
-        /// The tile's grid x-location.
+        /// The tile grid x-location.
         /// </summary>
         public int TileX { get { return mTileX; } }
 
         /// <summary>
-        /// The tile's grid z-location.
+        /// The tile grid z-location.
         /// </summary>
         public int TileZ { get { return mTileY; } }
 
@@ -649,13 +655,13 @@ namespace org.critterai.nav
         /// <summary>
         /// Load the base configuration.
         /// </summary>
-        /// <param name="tileX">The grid x-location.</param>
-        /// <param name="tileZ">The grid y-location.</param>
-        /// <param name="tileLayer">The layer.</param>
+        /// <param name="tileX">The tile grid x-location.</param>
+        /// <param name="tileZ">The tile grid y-location.</param>
+        /// <param name="tileLayer">The tile layer.</param>
         /// <param name="tileUserId">The tile's user assigned id.</param>
-        /// <param name="boundsMin">The minumum bounds. [Form: (x, y, z)]
+        /// <param name="boundsMin">The minumum bounds.
         /// </param>
-        /// <param name="boundsMax">The maximum bounds. [Form: (x, y, z)]
+        /// <param name="boundsMax">The maximum bounds.
         /// </param>
         /// <param name="xzCellSize">The xz-plane cell size.</param>
         /// <param name="yCellSize">The y-axis cell size.</param>
@@ -816,7 +822,7 @@ namespace org.critterai.nav
         /// <param name="connVerts">The connection vertices</param>
         /// <param name="connRadii">Connection radii.</param>
         /// <param name="connDirs">Connection direction data.</param>
-        /// <param name="connAreas">Connection area ids.</param>
+        /// <param name="connAreas">Connection areas.</param>
         /// <param name="connFlags">Connection flags.</param>
         /// <param name="connUserIds">Connection user ids.</param>
         /// <param name="connCount">The number of connections.</param>
@@ -874,7 +880,7 @@ namespace org.critterai.nav
         /// Returns a copy of the vertex information for each polygon.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyVertCount"/> * 3]</param>
+        /// [Length: >= <see cref="PolyVertCount"/> * 3]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetPolyVerts(ushort[] buffer)
         {
@@ -892,7 +898,7 @@ namespace org.critterai.nav
         /// Returns a copy of polygon and neighbor information. 
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount"/>  * 2 * <see cref="MaxVertsPerPoly"/>]</param>
+        /// [Length: >= <see cref="PolyCount"/>  * 2 * <see cref="MaxVertsPerPoly"/>]</param>
         /// <returns>The number of polygons returned, or -1 on error.</returns>
         public int GetPolys(ushort[] buffer)
         {
@@ -907,10 +913,10 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Returns a copy of the area id for each polygon.
+        /// Returns a copy of the area for each polygon.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount"/>]</param>
+        /// [Length: >= <see cref="PolyCount"/>]</param>
         /// <returns>The number of areas returned, or -1 on error.</returns>
         public int GetPolyAreas(byte[] buffer)
         {
@@ -928,7 +934,7 @@ namespace org.critterai.nav
         /// Returns a copy of the user-defined flags for each polygon.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount"/>]</param>
+        /// [Length: >= <see cref="PolyCount"/>]</param>
         /// <returns>The number of flags returned, or -1 on error.</returns>
         public int GetPolyFlags(ushort[] buffer)
         {
@@ -946,7 +952,7 @@ namespace org.critterai.nav
         /// Returns a copy of the sub-mesh data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="PolyCount"/>] * 4</param>
+        /// [Length: >= <see cref="PolyCount"/>] * 4</param>
         /// <returns>The number of sub-meshes returned, or -1 on error.
         /// </returns>
         public int GetDetailMeshes(uint[] buffer)
@@ -965,7 +971,7 @@ namespace org.critterai.nav
         /// Returns a copy of the triangle/flag data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="DetailTriCount"/> * 4]</param>
+        /// [Length: >= <see cref="DetailTriCount"/> * 4]</param>
         /// <returns>The number of triangles returned, or -1 on error.</returns>
         public int GetDetailTris(byte[] buffer)
         {
@@ -983,7 +989,7 @@ namespace org.critterai.nav
         /// Returns a copy of the vertex data for the detail mesh.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="DetailVertCount"/> * 3]</param>
+        /// [Length: >= <see cref="DetailVertCount"/> * 3]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetDetailVerts(Vector3[] buffer)
         {
@@ -1003,7 +1009,7 @@ namespace org.critterai.nav
         /// Returns a copy of the off-mesh connection vertices.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount"/> * 6]</param>
+        /// [Length: >= <see cref="ConnCount"/> * 6]</param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetConnVerts(Vector3[] buffer)
         {
@@ -1023,7 +1029,7 @@ namespace org.critterai.nav
         /// Returns a copy of the radii for off-mesh connections.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount"/>]</param>
+        /// [Length: >= <see cref="ConnCount"/>]</param>
         /// <returns>The number of radii returned, or -1 on error.</returns>
         public int GetConnRadii(float[] buffer)
         {
@@ -1041,7 +1047,7 @@ namespace org.critterai.nav
         /// Returns a copy of the user-defined flags for off-mesh connections.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount"/>]</param>
+        /// [Length: >= <see cref="ConnCount"/>]</param>
         /// <returns>The number of flags returned, or -1 on error.</returns>
         public int GetConnFlags(ushort[] buffer)
         {
@@ -1056,11 +1062,11 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Returns a copy of the area ids for off-mesh connections.
+        /// Returns a copy of the areas for off-mesh connections.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into. 
-        /// [Size: >= <see cref="ConnCount"/>]</param>
-        /// <returns>The number of area ids returned, or -1 on error.</returns>
+        /// [Length: >= <see cref="ConnCount"/>]</param>
+        /// <returns>The number of areas returned, or -1 on error.</returns>
         public int GetConnAreas(byte[] buffer)
         {
             if (mConnAreas == IntPtr.Zero 
@@ -1077,7 +1083,7 @@ namespace org.critterai.nav
         /// Returns a copy of the direction flags for off-mesh connections.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount"/>]</param>
+        /// [Length: >= <see cref="ConnCount"/>]</param>
         /// <returns>The number of direction flags returned, or -1 on error.
         /// </returns>
         public int GetConnDirs(byte[] buffer)
@@ -1096,7 +1102,7 @@ namespace org.critterai.nav
         /// The user-defined ids for off-mesh connections.
         /// </summary>
         /// <param name="buffer">The buffer to load the results into.
-        /// [Size: >= <see cref="ConnCount"/>]</param>
+        /// [Length: >= <see cref="ConnCount"/>]</param>
         /// <returns>The number of user ids returned, or -1 on error.</returns>
         public int GetConnUserIds(uint[] buffer)
         {

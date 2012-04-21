@@ -51,12 +51,12 @@ namespace org.critterai.nav
         public const int MarshalBufferSize = 256;
 
         /// <summary>
-        /// The current position within the path corridor. [Form: (x, y, z)]
+        /// The current position within the path corridor.
         /// </summary>
         public Vector3 position;
 
         /// <summary>
-        /// The target position within the path corridor. [Form: (x, y, z)]
+        /// The target position within the path corridor.
         /// </summary>
         public Vector3 target;
 
@@ -64,7 +64,7 @@ namespace org.critterai.nav
         /// An ordered list of polygon references representing the corridor.
         /// </summary>
         /// <remarks>
-        /// <para>[Form: (polyRef) * <see cref="pathCount"/></para>
+        /// <para>[polyRef * <see cref="pathCount"/></para>
         /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
         public uint[] path;

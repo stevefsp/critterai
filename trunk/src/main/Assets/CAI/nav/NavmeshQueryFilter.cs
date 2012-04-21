@@ -78,10 +78,10 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// The traversal cost for each area, indexed by area id.
+        /// The traversal cost for each area, indexed by area.
         /// [Default: <see cref="DefaultAreaCost"/>]
         /// </summary>
-        /// <param name="index">The area id.</param>
+        /// <param name="index">The area.</param>
         /// <returns>The traversal cost of the area.</returns>
         public float this[int index]
         {
@@ -95,7 +95,7 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>A navigation mesh polygon must have at least one of these flags
-        /// set in order to be considered included by a query.
+        /// set in order to be included in a query.
         /// All polygons will be excluded if this value is set to zero.</para>
         /// </remarks>
         public ushort IncludeFlags

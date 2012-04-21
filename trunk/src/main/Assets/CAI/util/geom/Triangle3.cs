@@ -55,7 +55,7 @@ namespace org.critterai.geom
         
         /// <summary>
         /// Returns a value suitable for comparing the relative area of two triangles. (E.g. 
-        /// Is triangleA larger than triangleB.)
+        /// Is triangle A larger than triangle B.)
         /// </summary>
         /// <remarks>
         /// <para>The value returned by this method can be converted to an area as 

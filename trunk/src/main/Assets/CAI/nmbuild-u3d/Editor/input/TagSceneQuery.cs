@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using org.critterai.nmbuild.u3d.editor;
 
 /// <summary>
-/// Queries the scene for components based on game object tag.
+/// Queries the scene for components based on game object tag. (Editor Only)
 /// </summary>
 /// <remarks>
 /// <para>
@@ -98,7 +98,7 @@ public class TagSceneQuery
     }
 
     /// <summary>
-    /// Gets all components of the specified type, based the component, or parent tags.
+    /// Gets all components of the specified type based the component or parent tags.
     /// </summary>
     /// <typeparam name="T">The type of component to retrieve.</typeparam>
     /// <returns>

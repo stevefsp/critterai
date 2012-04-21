@@ -50,8 +50,8 @@ namespace org.critterai.nmgen
     {
         /// <summary>
         /// The sub-mesh data.
-        /// [Form: (baseVertIndex, vertCount, baseTriIndex, triCount) 
-        /// * meshCount] [Size: >= 4 * meshCount]
+        /// [(baseVertIndex, vertCount, baseTriIndex, triCount) * meshCount] 
+        /// [Size: >= 4 * meshCount]
         /// </summary>
         /// <remarks>
         /// <para>Maximum number of vertices per sub-mesh: 127<br/>
@@ -85,8 +85,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The mesh vertices. 
-        /// [Form: (x, y, z) * vertCount] 
-        /// [Size: >= 3 * vertCount]
+        /// [Length: >= vertCount]
         /// </summary>
         /// <remarks>
         /// <para>The vertices are grouped by sub-mesh and will contain duplicates
@@ -102,7 +101,7 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The mesh triangles.
-        /// [Form: (vertIndexA, vertIndexB, vertIndexC, flag) * triCount]
+        /// [vertIndexA, vertIndexB, vertIndexC, flag) * triCount]
         /// [Size: >= 4 * triCount]
         /// </summary>
         /// <remarks>

@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Loads and creates geometry from mesh filter components.
+/// Loads and creates geometry from mesh filter components. (Editor Only)
 /// </summary>
 /// <remarks>
 /// <para>

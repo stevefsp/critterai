@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Input build options.
+    /// Input build options. (Editor Only)
     /// </summary>
     [System.Flags]
     public enum InputBuildOption

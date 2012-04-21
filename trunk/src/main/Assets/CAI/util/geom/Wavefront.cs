@@ -60,7 +60,7 @@ namespace org.critterai.geom
         /// Creates a Wavefront format string from a triangle mesh.
         /// </summary>
         /// <param name="mesh">A valid triangle mesh.</param>
-        /// <param name="reverseWrap">Revers the wrap direction of the triangles.</param>
+        /// <param name="reverseWrap">Reverse the wrap direction of the triangles.</param>
         /// <param name="invertXAxis">Invert the x-axis values.</param>
         /// <returns>A string representing the mesh in Wavefront format.</returns>
         public static string TranslateTo(TriangleMesh mesh , bool reverseWrap , bool invertXAxis)

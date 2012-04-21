@@ -265,7 +265,7 @@ namespace org.critterai.nmgen
         /// <param name="source">The detail mesh to extract the triangle mesh from.</param>
         /// <param name="verts">The result vertices.</param>
         /// <param name="tris">The result triangles. 
-        /// [Form: (vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
+        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
             , out Vector3[] verts

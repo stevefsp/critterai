@@ -26,7 +26,7 @@ using org.critterai.nmgen;
 using UnityEngine;
 
 /// <summary>
-/// Applies a default area to all components in an input build.
+/// Applies a default area to all components in an input build. (Editor Only)
 /// </summary>
 /// <remarks>
 /// <para>

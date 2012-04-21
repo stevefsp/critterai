@@ -36,7 +36,7 @@ public class CAINavSettingsEditor
     private static bool mShowFlags = true;
 
     private static string mNewName = "";
-    private static byte mNewArea = Navmesh.UnwalkableArea;
+    private static byte mNewArea = Navmesh.NullArea;
 
     /// <summary>
     /// Controls behavior of the inspector.
@@ -86,14 +86,14 @@ public class CAINavSettingsEditor
             {
                 EditorGUILayout.BeginHorizontal();
 
-                GUI.enabled = (areas[i] != Navmesh.UnwalkableArea);
+                GUI.enabled = (areas[i] != Navmesh.NullArea);
 
                 string areaName = EditorGUILayout.TextField(areaNames[i]);
 
                 if (areaName == areaNames[i] || !areaNames.Contains(areaName))
                     areaNames[i] = areaName;
 
-                GUI.enabled = !(areas[i] == Navmesh.UnwalkableArea || areas[i] == Navmesh.MaxArea);
+                GUI.enabled = !(areas[i] == Navmesh.NullArea || areas[i] == Navmesh.MaxArea);
 
                 byte area =
                     NavUtil.ClampArea(EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
@@ -142,7 +142,7 @@ public class CAINavSettingsEditor
                 areaNames.Add(mNewName);
                 areas.Add(mNewArea);
                 mNewName = "";
-                mNewArea = Navmesh.UnwalkableArea;
+                mNewArea = Navmesh.NullArea;
                 GUI.changed = true;
             }
         }

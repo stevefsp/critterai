@@ -45,7 +45,7 @@ namespace org.critterai
         /// Determines whether the values are within the specified tolerance
         /// of each other.
         /// </summary>
-        /// <param name="a">The a-value to compare the b-value against.
+        /// <param name="a">The a-value to compare against the b-value.
         /// </param>
         /// <param name="b">The b-value to compare against the a-value.
         /// </param>

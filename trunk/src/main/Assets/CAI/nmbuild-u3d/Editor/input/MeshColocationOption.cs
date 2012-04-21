@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Mesh colocation options.
+    /// Mesh colocation options. (Editor Only)
     /// </summary>
     public enum MeshColocationOption
     {

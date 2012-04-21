@@ -92,14 +92,12 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The world space minimum bounds of the mesh's AABB. 
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The minimum bounds of the mesh.</returns>
         public Vector3 BoundsMin { get { return root.boundsMin; } }
 
         /// <summary>
         /// The world space maximum bounds of the mesh's AABB.
-        /// [Form: (x, y, z)]
         /// </summary>
         /// <returns>The maximum bounds of the mesh.</returns>
         public Vector3 BoundsMax { get { return root.boundsMax; } }
@@ -337,7 +335,7 @@ namespace org.critterai.nmgen
         /// Loads the data from the mesh buffers into the data object.
         /// </summary>
         /// <remarks>
-        /// <para>A new buffer will be returned if the buffer argument is NULL.</para>
+        /// <para>A new buffer will be returned if the buffer argument is null.</para>
         /// <para>The buffer will be automatically resized if it is too small
         /// to hold the result.</para>
         /// <para>Only the used portions of the mesh buffers are copied.</para>
@@ -475,7 +473,7 @@ namespace org.critterai.nmgen
         /// [Units: XZCellSize]</param>
         /// <param name="walkableStep">The walkable step used to build
         /// the contour data. [Limit: >= 0] [Units: YCellSize]</param>
-        /// <returns>The generated polygon mesh, or NULL if there were errors.
+        /// <returns>The generated polygon mesh, or null if there were errors.
         /// </returns>
         public static PolyMesh Build(BuildContext context
             , ContourSet contours

@@ -69,7 +69,7 @@ namespace org.critterai.nav
         /// (0 &lt;= value &lt;= <see cref="Navmesh.MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>A valid area id.</returns>
+        /// <returns>A valid area.</returns>
         public static byte ClampArea(byte value)
         {
             return Math.Min(Navmesh.MaxArea, value);
@@ -80,7 +80,7 @@ namespace org.critterai.nav
         /// (0 &lt;= value &lt;= <see cref="Navmesh.MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>A valid area id.</returns>
+        /// <returns>A valid area.</returns>
         public static byte ClampArea(int value)
         {
             return (byte)Math.Min(Navmesh.MaxArea, Math.Max(0, value));
@@ -109,19 +109,19 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Tests that vector interop functions correctly for vectors.
+        /// Tests that vector interop behaves as expected.
         /// </summary>
         /// <remarks>
         /// <para>
         /// If the test is successful the input and return vectors will be equal in value.
         /// </para>
         /// <para>
-        /// This method is used to validate that builds with custom vectors functions correctly
+        /// This method is used to validate that builds using custom vectors behaves correctly
         /// with interop.  (I.e. The custom vector is data compatible.)
         /// </para>
         /// </remarks>
         /// <param name="v">The input vector.</param>
-        /// <returns>A vector equal to the input vector if interop is functioning correctly.
+        /// <returns>A vector equal to the input vector if interop is functioning as expected.
         /// </returns>
         public static Vector3 TestVector(Vector3 v)
         {
@@ -131,7 +131,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Tests that vector interop functions correctly for vector arrays.
+        /// Tests that vector interop behaves as expected for vector arrays.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -139,7 +139,7 @@ namespace org.critterai.nav
         /// element values.  (E.g. vectors[i] == result[i])
         /// </para>
         /// <para>
-        /// This method is used to validate that builds with custom vectors functions correctly
+        /// This method is used to validate that builds using custom vectors behaves correctly
         /// with interop.  (I.e. The custom vector is data compatible.)
         /// </para>
         /// </remarks>

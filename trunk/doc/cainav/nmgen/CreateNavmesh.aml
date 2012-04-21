@@ -148,5 +148,21 @@
 		
 		</section>
 
+	<relatedTopics>
+	
+		<codeEntityReference>T:org.critterai.nav.Navmesh</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshParams</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nav.NavmeshTileData</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildTask</codeEntityReference>
+		<codeEntityReference>T:org.critterai.nmbuild.TileBuildAssets</codeEntityReference>
+
+		<link xlink:href="0b06b934-9f2b-43a3-a96b-6fd9dc8483c7"/> <!-- NMGen Intro -->
+		<link xlink:href="3D048EB4-7BD1-407a-9442-9DE60C82266E"/> <!-- Compiling Input -->
+		<link xlink:href="FCD34CAE-02FA-48fd-891E-FB82EE360F49"/> <!-- Incremental Builder -->	
+		<link xlink:href="e76dda55-5f91-4c2a-bf8d-fa34de59e82b"/> <!-- Multi-Tile -->	
+	
+	</relatedTopics>
+
   </developerConceptualDocument>
 </topic>

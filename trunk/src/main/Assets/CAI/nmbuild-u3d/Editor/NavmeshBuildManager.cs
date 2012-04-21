@@ -25,7 +25,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Handles advanced build features for <see cref="NavmeshBuild"/> assets.
+/// Handles advanced build features for <see cref="NavmeshBuild"/> assets. (Editor Only)
 /// </summary>
 public sealed class NavmeshBuildManager
     : EditorWindow

@@ -26,7 +26,7 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild.u3d.editor
 {
     /// <summary>
-    /// Represents a configuration for a navigation mesh build in Unity.
+    /// Represents a configuration for a navigation mesh build in Unity. (Editor Only)
     /// </summary>
     /// <remarks>
     /// <para>See <see cref="NMGenParams"/> for details on the various 

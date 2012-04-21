@@ -28,8 +28,13 @@ using org.critterai.nmgen;
 using UnityEngine;
 
 /// <summary>
-/// A navigation mesh build.
+/// A navigation mesh build. (Editor Only)
 /// </summary>
+/// <remarks>
+/// <para>
+/// This class is only meant for use with Unity editors.  Its public interface is very limited.
+/// </para>
+/// </remarks>
 [System.Serializable]
 public sealed class NavmeshBuild
     : ScriptableObject

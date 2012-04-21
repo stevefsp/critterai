@@ -54,18 +54,18 @@ namespace org.critterai.nav
 	    public CrowdAgentState state;
 
         /// <summary>
-        /// The reference id of the polygon where the position resides.
+        /// The reference of the polygon that contains the position.
         /// </summary>
         public uint positionPoly;
 
         /// <summary>
-        /// The reference id of the polygon where the target resides.
+        /// The reference of the polygon that contains the target.
         /// </summary>
         public uint targetPoly;
 
         /// <summary>
-        /// The reference id of the polygon where the next corner resides.
-        /// (Or zero if the next corner is the target.
+        /// The reference of the polygon the contains the next corner.
+        /// (Or zero if the next corner is the target.)
         /// </summary>
         public uint nextCornerPoly;
 

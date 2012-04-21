@@ -165,7 +165,7 @@ namespace org.critterai
         /// </summary>
         /// <remarks>
         /// <para>Essentially, one point defines the centroid of the cylinder and the other is 
-        /// tested for inclusion.</para>
+        /// tested for inclusion.  The height test is <c>(Math.Abs(deltaY) &lt; height)</c></para>
         /// </remarks>
         /// <param name="a">Point A.</param>
         /// <param name="b">Point B.</param>
@@ -184,13 +184,15 @@ namespace org.critterai
         /// </summary>
         /// <remarks>
         /// <para>Examples:</para>
-        /// <para>If the factor is 0.0, then the result will equal A.<br/>
+        /// <para>
+        /// If the factor is 0.0, then the result will equal A.<br/>
         /// If the factor is 0.5, then the result will be the midpoint between A and B.<br/>
-        /// If the factor is 1.0, then the result will equal B.<br/></para>
+        /// If the factor is 1.0, then the result will equal B.<br/>
+        /// </para>
         /// </remarks>
         /// <param name="a">Point A.</param>
         /// <param name="b">Point B.</param>
-        /// <param name="factor">The factor which governs the distance the point is translated 
+        /// <param name="factor">The factor that governs the distance the point is translated 
         /// from A toward B.</param>
         /// <returns>The point translated toward point B from point A.</returns>
         public static Vector3 TranslateToward(Vector3 a, Vector3 b, float factor)
@@ -274,10 +276,10 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Gets the minimum and maximum bounds of the AABB which contains the array of vectors.
+        /// Gets the minimum and maximum bounds of the AABB which contains the array of points.
         /// </summary>
-        /// <param name="vectors">An array of vectors.</param>
-        /// <param name="count">The number of vectors.</param>
+        /// <param name="vectors">An array of points.</param>
+        /// <param name="count">The number of points in the array.</param>
         /// <param name="boundsMin">The mimimum bounds of the AABB.</param>
         /// <param name="boundsMax">The maximum bounds of the AABB.</param>
         public static void GetBounds(Vector3[] vectors
