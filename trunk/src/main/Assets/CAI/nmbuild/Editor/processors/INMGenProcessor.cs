@@ -35,7 +35,7 @@ namespace org.critterai.nmbuild
         string Name { get; }
 
         /// <summary>
-        /// True if the processor is safe to use for threaded builds.
+        /// True if the processor is safe to use across multiple threads at the same time.
         /// </summary>
         bool IsThreadSafe { get; }
 
@@ -43,13 +43,17 @@ namespace org.critterai.nmbuild
         /// The build assets that should be preserved past their normal disposal point.
         /// </summary>
         /// <remarks>
-        /// <para>Most processors will return zero. Use judiciously since it can result in large 
-        /// increases in memory consumption during a build.</para>
-        /// <para>Builders usually dispose of assets as soon as the asset is no longer needed for 
+        /// <para>
+        /// Most processors will return zero. Use judiciously since it can result in large 
+        /// increases in memory consumption during a build.
+        /// </para>
+        /// <para>
+        /// Builders usually dispose of assets as soon as the asset is no longer needed for 
         /// a 'normal' build.  For example, the <see cref="Heightfield"/> is usually disposed as 
         /// soon as the <see cref="CompactHeightfield"/> is created.  So if a processor needs
         /// the heightfield for processing after heightfield post-processing, it should indicate 
-        /// so through this field.</para>
+        /// so through this field.
+        /// </para>
         /// </remarks>
         NMGenAssetFlag PreserveAssets { get; }
 
@@ -57,11 +61,15 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>The processor will never return the context in an invalid state.  If it processor
+        /// <para>
+        /// The processor will never return the context in an invalid state.  If it
         /// wants the build to abort it will return false rather than resetting or nulling 
-        /// values in the context.</para>
-        /// <para>The processor will always log a message to the context when it returns false.  
-        /// It may also log summary messages for use in debugging.</para>
+        /// values in the context.
+        /// </para>
+        /// <para>
+        /// The processor will always log a message to the context when it returns false.  
+        /// It may also log summary messages for use in debugging.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>

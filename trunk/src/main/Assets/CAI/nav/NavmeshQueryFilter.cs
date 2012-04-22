@@ -29,19 +29,24 @@ namespace org.critterai.nav
     /// Defines area traversal cost and flag restrictions for navigation querys.
     /// </summary>
     /// <remarks>
-    /// <para>The way filtering works, a navigation mesh polygon must have
-    /// at least one flag set to ever be considered by a query.  So setting
-    /// the include flags to 0 will always result in all polygons being
-    /// excluded.</para>
-    /// <para>The array form is used to access area cost. 
-    /// E.g. <c>myFilter[5] = 2.5f</c></para>
-    /// <para>Warning: Behavior is undefined if an area
-    /// index is out of range.  The error may result in a runtime error, or
-    /// it may operate as if there is no problem whatsoever.  E.g. Setting
-    /// and getting <c>myFilter[myFilter.AreaCount]</c> may get and set the 
-    /// value normally.  Do not write code that depends on this behavior since 
-    /// it may change in future releases.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// The way filtering works, a navigation mesh polygon must have at least one flag set to ever 
+    /// be considered by a query.  So setting the include flags to 0 will always result in all 
+    /// polygons being excluded.
+    /// </para>
+    /// <para>
+    /// The array form is used to access area cost. E.g. <c>myFilter[5] = 2.5f</c>
+    /// </para>
+    /// <para>
+    /// <b>Warning:</b> Behavior is undefined if an area index is out of range.  The error may 
+    /// result in a runtime error, or it may operate as if there is no problem whatsoever.  
+    /// E.g. Setting and getting <c>myFilter[myFilter.AreaCount]</c> may get and set the value 
+    /// normally.  Do not write code that depends on this behavior since it may change in future 
+    /// releases.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     public sealed class NavmeshQueryFilter
         : ManagedObject
@@ -94,9 +99,10 @@ namespace org.critterai.nav
         /// [Default: <see cref="DefaultIncludeFlags"/>]
         /// </summary>
         /// <remarks>
-        /// <para>A navigation mesh polygon must have at least one of these flags
-        /// set in order to be included in a query.
-        /// All polygons will be excluded if this value is set to zero.</para>
+        /// <para>
+        /// A navigation mesh polygon must have at least one of these flags set in order to be 
+        /// included in a query. All polygons will be excluded if this value is set to zero.
+        /// </para>
         /// </remarks>
         public ushort IncludeFlags
         {
@@ -108,8 +114,11 @@ namespace org.critterai.nav
         /// The flags for polygons that should be excluded from the query.
         /// [Default: <see cref="DefaultExcludeFlags"/>]
         /// </summary>
-        /// <remarks>If a polygon has any of these flags set it will be
-        /// excluded by a query.</remarks>
+        /// <remarks>
+        /// <para>
+        /// If a polygon has any of these flags set it will be excluded by a query.
+        /// </para>
+        /// </remarks>
         public ushort ExcludeFlags
         {
             get { return NavmeshQueryFilterEx.dtqfGetExcludeFlags(root); }
@@ -166,8 +175,10 @@ namespace org.critterai.nav
         /// immediately freed and the object marked as disposed.
         /// </summary>
         /// <remarks>
-        /// If the object was created using a public constructor the
-        /// resources will be freed immediately.
+        /// <para>
+        /// If the object was created using a public constructor the resources will be freed 
+        /// immediately.
+        /// </para>
         /// </remarks>
         public override void RequestDisposal()
         {

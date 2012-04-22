@@ -24,12 +24,13 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Applies flags to the polygons in a <see cref="PolyMesh"/> based on area id.
+    /// Applies flags to the polygons in a <see cref="PolyMesh"/> based on area assignment.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This process will add the flags to all polygons with the associated area id.
-    /// Existing flags are not overwritten.</para>
+    /// This process will add the flags to all polygons assigned to the associated area.
+    /// Existing flags are not altered.
+    /// </para>
     /// </remarks>
 	public sealed class AreaFlagMapper
         : NMGenProcessor
@@ -53,8 +54,10 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>The flags will be applied during the <see cref="NMGenState.PolyMeshBuild"/>
-        /// state.</para>
+        /// <para>
+        /// The flags will be applied during the <see cref="NMGenState.PolyMeshBuild"/>
+        /// state.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>
@@ -112,8 +115,10 @@ namespace org.critterai.nmbuild
         /// Creates a new mapper.
         /// </summary>
         /// <remarks>
-        /// <para>Will return null if parameters are invalid. Must have at least one valid
-        /// area/flag map.</para>
+        /// <para>
+        /// Will return null if parameters are invalid. Must have at least one valid
+        /// area/flag map.
+        /// </para>
         /// </remarks>
         /// <param name="name">The processor name.</param>
         /// <param name="priority">The processor priority.</param>

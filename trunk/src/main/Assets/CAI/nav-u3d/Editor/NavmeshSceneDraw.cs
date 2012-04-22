@@ -132,7 +132,8 @@ namespace org.critterai.nav.u3d.editor
         /// <param name="target">The object being managed by the GUI.</param>
         /// <param name="label">The label of the 'show' toggle.</param>
         /// <param name="isInspector">True if the inspector format should be used.</param>
-        /// <param name="includeAreaOption">True if the option to color by area should be displayed.
+        /// <param name="includeAreaOption">
+        /// True if the option to color by area should be displayed.
         /// </param>
         /// <returns>True the display of the target has been toggled on.</returns>
         public bool OnGUI(INavmeshData target

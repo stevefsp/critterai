@@ -33,11 +33,12 @@ namespace org.critterai.nav
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Instances of this class are required by 
-    /// <see cref="CrowdAgent.GetBoundary"/>.
+    /// Instances of this class are required by <see cref="CrowdAgent.GetBoundary"/>.
     /// </para>
-    /// <para>This class is used as an interop buffer.  Behavior is undefined
-    /// if the size of the array fields are changed after construction.</para>
+    /// <para>
+    /// This class is used as an interop buffer.  Behavior is undefined if the size of the array 
+    /// fields are changed after construction.
+    /// </para>
     /// </remarks>
     /// <seealso cref="CrowdAgent.GetBoundary"/>
     /// <seealso cref="CrowdAgent"/>
@@ -63,8 +64,7 @@ namespace org.critterai.nav
         public Vector3 center;
 
         /// <summary>
-        /// The solid navigation mesh polygon segments in the
-        /// vicinity of <see cref="center"/>.
+        /// The solid navigation mesh polygon segments in the vicinity of <see cref="center"/>.
         /// [(vertA, vertB) * <see cref="segmentCount"/>]
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxSegments * 2)]

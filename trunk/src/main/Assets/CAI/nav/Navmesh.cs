@@ -54,7 +54,7 @@ namespace org.critterai.nav
     /// methods will always contain either a success or failure flag.
     /// </para>
     /// <para>
-    /// WARNING: The serializable attribute and interface will be removed in v0.5. 
+    /// <b>Warning:</b> The serializable attribute and interface will be removed in v0.5. 
     /// Use <see cref="GetSerializedMesh"/> instead.
     /// </para>
     /// <para>

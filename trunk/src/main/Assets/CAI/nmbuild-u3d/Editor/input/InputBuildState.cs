@@ -53,12 +53,12 @@ namespace org.critterai.nmbuild.u3d.editor
         PostProcess,
 
         /// <summary>
-        /// The input build aborted.
+        /// The input build aborted. (A finished state.)
         /// </summary>
         Aborted,
 
         /// <summary>
-        /// The input build is complete.
+        /// The input build is complete. (A finished state.)
         /// </summary>
         Complete
     }

@@ -25,8 +25,7 @@ using org.critterai.nav;
 namespace org.critterai.nav.u3d
 {
     /// <summary>
-    /// A ScritableObject that represents navigation data baked at design time and creates a 
-    /// <see cref="Navmesh"/> object at run-time.
+    /// A ScritableObject that represents navigation data that baked at design time.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -58,7 +57,8 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Creates a new <see cref="Navmesh"/> object from the mesh data
         /// </summary>
-        /// <returns>A new <see cref="Navmesh"/> object. Or null if the mesh is not available.
+        /// <returns>
+        /// A new <see cref="Navmesh"/> object. Or null if the mesh is not available.
         /// </returns>
         Navmesh GetNavmesh();
 

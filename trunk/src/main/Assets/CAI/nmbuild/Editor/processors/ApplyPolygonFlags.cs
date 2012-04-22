@@ -26,8 +26,13 @@ using org.critterai.nmgen;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// A processor that applies polygon flags to <see cref="PolyMesh"/> polygons.
+    /// A processor that applies polygon flags to all polygons in a <see cref="PolyMesh"/>.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The flags are additive. (I.e. <c>poly.flags |= flags</c>)
+    /// </para>
+    /// </remarks>
     public sealed class ApplyPolygonFlags
         : NMGenProcessor
     {
@@ -59,8 +64,9 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>The flags will be applied during the <see cref="NMGenState.PolyMeshBuild"/>
-        /// state.</para>
+        /// <para>
+        /// The flags will be applied during the <see cref="NMGenState.PolyMeshBuild"/> state.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>

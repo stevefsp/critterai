@@ -73,7 +73,9 @@ namespace org.critterai.nmbuild
         /// Gets the connections whose start vertex is within the specified bounds.
         /// </summary>
         /// <remarks>
-        /// <para>The out parameters will be null if the return result is zero.</para>
+        /// <para>
+        /// The out parameters will be null if the return result is zero.
+        /// </para>
         /// </remarks>
         /// <param name="xmin">The minimum x-axis bounds.</param>
         /// <param name="zmin">The minimum z-axis bounds.</param>
@@ -149,9 +151,12 @@ namespace org.critterai.nmbuild
         /// Creates a connection set guarenteed to be thread-safe, immutable, and content valid.
         /// </summary>
         /// <remarks>
-        /// <para>This method performs a full validation of the structure and content of the 
-        /// connection data.</para>
-        /// <para>This method cannot be used to create an empty set.  Attempting to do so will 
+        /// <para>
+        /// This method performs a full validation of the structure and content of the 
+        /// connection data.
+        /// </para>
+        /// <para>
+        /// This method cannot be used to create an empty set.  Attempting to do so will 
         /// return null. Use <see cref="CreateEmpty"/> instead.
         /// </para>
         /// </remarks>
@@ -182,10 +187,14 @@ namespace org.critterai.nmbuild
         /// Creates a connection set.
         /// </summary>
         /// <remarks>
-        /// <para>Connection sets created using this method are not guarenteed to be valid or
-        /// safe for threaded builds.</para>
-        /// <para>The generated connection set will directly reference the construction
-        /// parameters.</para>
+        /// <para>
+        /// Connection sets created using this method are not guarenteed to be valid or
+        /// safe for threaded builds.
+        /// </para>
+        /// <para>
+        /// The generated connection set will directly reference the construction
+        /// parameters.
+        /// </para>
         /// </remarks>
         /// <param name="verts">The connection vertices. [(start, end) * connCount]</param>
         /// <param name="radii">The connection radii. [Length: connCount]</param>
@@ -209,8 +218,12 @@ namespace org.critterai.nmbuild
         /// Validates the structure and content of the connection data.
         /// </summary>
         /// <remarks>
-        /// <para>This is the same validation performed by the safe creation method.</para>
-        /// <para>Structural checks include null array and length checks.</para>
+        /// <para>
+        /// This is the same validation performed by the safe creation method.
+        /// </para>
+        /// <para>
+        /// Structural checks include null array and length checks.
+        /// </para>
         /// </remarks>
         /// <param name="verts">The connection vertices. [(start, end) * connCount]</param>
         /// <param name="radii">The connection radii. [Length: connCount]</param>

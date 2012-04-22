@@ -62,8 +62,10 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
-        /// state.</para>
+        /// <para>
+        /// The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
+        /// state.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>

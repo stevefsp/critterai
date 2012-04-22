@@ -71,36 +71,44 @@ namespace org.critterai.nav
         public float maxSpeed;
 
         /// <summary>
-        /// Defines how close a collision element must be before it is considered
-        /// in steering behaviors. [Limit: > 0]
+        /// Defines how close a collision element must be before it is considered in steering 
+        /// behaviors. [Limit: > 0]
         /// </summary>
         /// <remarks>
-        /// <para>Collision elements include other agents and navigation mesh 
-        /// boundaries.</para>
-        /// <para>The value is often based on the agent radius and/or
-        /// and maximum speed.  E.g. radius * 8</para></remarks>
+        /// <para>
+        /// Collision elements include other agents and navigation mesh boundaries.
+        /// </para>
+        /// <para>
+        /// The value is often based on the agent radius and/or and maximum speed.  
+        /// E.g. <c>(radius * 8)</c>
+        /// </para>
+        /// </remarks>
         public float collisionQueryRange;
 
         /// <summary>
         /// The path optimization range.
         /// </summary>
         /// <remarks>
-        /// <para>Only applicable if <see cref="updateFlags"/> includes the 
-        /// <see cref="CrowdUpdateFlags.OptimizeVis"/> flag.</para>
-        /// <para>This value is often based on the agent radius. E.g. radius * 30
+        /// <para>
+        /// Only applicable if <see cref="updateFlags"/> includes the 
+        /// <see cref="CrowdUpdateFlags.OptimizeVis"/> flag.
+        /// </para>
+        /// <para>
+        /// This value is often based on the agent radius. E.g. <c>(radius * 30)</c>
         /// </para>
         /// </remarks>
         /// <seealso cref="PathCorridor.OptimizePathVisibility"/>
         public float pathOptimizationRange;
 
         /// <summary>
-        /// How aggresive the agent manager should be at avoiding
-        /// collisions with this agent.
+        /// How aggresive the agent manager should be at avoiding collisions with this agent.
         /// </summary>
         /// <remarks>
-        /// <para>A higher value will result in agents trying to stay farther away 
-        /// from each other at the cost of more difficult steering in tight
-        /// spaces.</para></remarks>
+        /// <para>
+        /// A higher value will result in agents trying to stay farther away from each other at 
+        /// the cost of more difficult steering in tight spaces.
+        /// </para>
+        /// </remarks>
         public float separationWeight;
 
         /// <summary>
@@ -112,10 +120,11 @@ namespace org.critterai.nav
         /// The index of the avoidance parameters to use for the agent.
         /// </summary>
         /// <remarks>
-        /// <para>The <see cref="CrowdManager"/> permits agents to use different
-        /// avoidance configurations.  (See 
-        /// <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This value
-        /// is the index of the configuration to use.</para>
+        /// <para>
+        /// The <see cref="CrowdManager"/> permits agents to use different avoidance configurations.
+        /// (See <see cref="CrowdManager.SetAvoidanceConfig"/>.)  This value is the index of the 
+        /// configuration to use.
+        /// </para>
         /// </remarks>
         /// <seealso cref="CrowdAvoidanceParams"/>
         public byte avoidanceType;

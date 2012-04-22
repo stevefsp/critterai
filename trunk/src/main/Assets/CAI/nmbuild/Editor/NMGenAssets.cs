@@ -28,8 +28,10 @@ namespace org.critterai.nmbuild
     /// Represents the result of a NMGen build.
     /// </summary>
     /// <remarks>
-    /// <para>All assets will be null if there is no result.  Otherwise the only asset guarenteed 
-    /// to be present is the <see cref="PolyMesh"/> object.</para>
+    /// <para>
+    /// All assets will be null if there is no result.  Otherwise the only asset guarenteed 
+    /// to be present is the <see cref="PolyMesh"/> object.
+    /// </para>
     /// </remarks>
     public struct NMGenAssets
     {
@@ -47,8 +49,10 @@ namespace org.critterai.nmbuild
         /// Constructor
         /// </summary>
         /// <remarks>
-        /// <para>A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
-        /// is null or has a polygon count of zero.</para>
+        /// <para>
+        /// A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
+        /// is null or has a polygon count of zero.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
@@ -89,8 +93,10 @@ namespace org.critterai.nmbuild
         /// Constructor
         /// </summary>
         /// <remarks>
-        /// <para>A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
-        /// is null or has a polygon count of zero.</para>
+        /// <para>
+        /// A 'no result' object will be created if the <paramref name="polyMesh"/> parameter 
+        /// is null or has a polygon count of zero.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>
@@ -156,7 +162,9 @@ namespace org.critterai.nmbuild
         /// The assets are emtpy.  (The build did not produce any results.)
         /// </summary>
         /// <remarks>
-        /// <para>If true, all assets will be null.</para>
+        /// <para>
+        /// If true, all assets will be null.
+        /// </para>
         /// </remarks>
         public bool NoResult { get { return (mPolyMesh == null); } }
     }

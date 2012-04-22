@@ -34,10 +34,13 @@ namespace org.critterai.nav
     /// Represents an agent managed by a <see cref="CrowdManager"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>Objects of this type can only be obtained from a 
-    /// <see cref="CrowdManager"/> object.</para>
-    /// <para>Behavior is undefined if used after disposal.  Disposal is controled by 
-    /// the <see cref="CrowdManager"/> that owns the agent.</para>
+    /// <para>
+    /// Objects of this type can only be obtained from a <see cref="CrowdManager"/> object.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.  Disposal is controled by the 
+    /// <see cref="CrowdManager"/> that owns the agent.
+    /// </para>
     /// </remarks>
     /// <seealso cref="CrowdManager"/>
     public sealed class CrowdAgent
@@ -143,8 +146,8 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This is the polygon being entered at the corner, or zero
-        /// if the next corner is the target.
+        /// This is the polygon being entered at the corner, or zero if the next corner is the 
+        /// target.
         /// </para>
         /// </remarks>
         public uint NextCornerPoly
@@ -217,11 +220,14 @@ namespace org.critterai.nav
         /// Submits a new move request for the agent.
         /// </summary>
         /// <remarks>
-        /// <para>This method is used when a new target is set.  Use 
-        /// <see cref="AdjustMoveTarget"/> when only small local adjustments are 
-        /// needed. (Such as happens when following a moving target.)</para>
-        /// <para>The position will be constrained to the surface of the 
-        /// navigation mesh.</para>
+        /// <para>
+        /// This method is used when a new target is set.  Use <see cref="AdjustMoveTarget"/> when 
+        /// only small local adjustments are needed. (Such as happens when following a moving 
+        /// target.)
+        /// </para>
+        /// <para>
+        /// The position will be constrained to the surface of the navigation mesh.
+        /// </para>
         /// <para>
         /// The request will be processed during the next <see cref="CrowdManager.Update"/>.
         /// </para>
@@ -242,10 +248,11 @@ namespace org.critterai.nav
         /// Adjusts the position of an agent's target.
         /// </summary>
         /// <remarks>
-        /// <para>This method is used to make small local adjustments to 
-        /// the target. (Such as happens when following a moving target.) 
-        /// Use <see cref="RequestMoveTarget"/> when a new target is 
-        /// needed.</para>
+        /// <para>
+        /// This method is used to make small local adjustments to the target. (Such as happens 
+        /// when following a moving target.)  Use <see cref="RequestMoveTarget"/> when a new 
+        /// target is needed.
+        /// </para>
         /// </remarks>
         /// <param name="position">The new target position.</param>
         /// <returns>True if the adjustment was successful.</returns>
@@ -263,16 +270,19 @@ namespace org.critterai.nav
         /// Gets the corridor data related to the agent.
         /// </summary>
         /// <remarks>
-        /// <para>Only available after after a <see cref="CrowdManager"/>
-        /// update.</para>
-        /// <para>Warning: The buffer object must be sized to
-        /// a maximum path size equal to 
-        /// <see cref="PathCorridorData.MarshalBufferSize"/>!</para>
+        /// <para>
+        /// Only available after after a <see cref="CrowdManager"/> update.
+        /// </para>
+        /// <para>
+        /// <b>Warning:</b> The buffer object must be sized to a maximum path size equal to 
+        /// <see cref="PathCorridorData.MarshalBufferSize"/>!
+        /// </para>
         /// </remarks>
         /// <param name="buffer">
         /// A buffer to load with the corridor data. (Out)
         /// [Length: Maximum Path Size = 
-        /// <see cref="PathCorridorData.MarshalBufferSize"/>] </param>
+        /// <see cref="PathCorridorData.MarshalBufferSize"/>]
+        /// </param>
         /// <returns>True if the data was sucessfully retrieved.</returns>
         public bool GetCorridor(PathCorridorData buffer)
         {
@@ -291,14 +301,15 @@ namespace org.critterai.nav
         /// Gets the local boundary data for the agent.
         /// </summary>
         /// <remarks>
-        /// <para>Only available after after a <see cref="CrowdManager"/>
-        /// update.</para>
-        /// <para>This data is not updated every frame.  So 
-        /// the boundary center will not always equal the position of
-        /// the agent.</para>
+        /// <para>
+        /// Only available after after a <see cref="CrowdManager"/> update.
+        /// </para>
+        /// <para>
+        /// This data is not updated every frame.  So the boundary center will not always 
+        /// equal the position of the agent.
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">A buffer to load with the boundary
-        /// data. (Out)</param>
+        /// <param name="buffer">A buffer to load with the boundary data. (Out)</param>
         /// <seealso cref="LocalBoundaryData"/>
         public void GetBoundary(LocalBoundaryData buffer)
         {
@@ -310,11 +321,14 @@ namespace org.critterai.nav
         /// Gets data related to the neighbors in the vicinity of the agent.
         /// </summary>
         /// <remarks>
-        /// <para>Only available after after a <see cref="CrowdManager"/>
-        /// update.</para>
+        /// <para>
+        /// Only available after after a <see cref="CrowdManager"/> update.
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">A buffer to load with the neighbor data.
-        /// [Length: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]</param>
+        /// <param name="buffer">
+        /// A buffer to load with the neighbor data. 
+        /// [Length: >= <see cref="CrowdNeighbor.MaxNeighbors"/>]
+        /// </param>
         /// <returns>The number of neighbors in the buffer, or -1 on error.</returns>
         public int GetNeighbors(CrowdNeighbor[] buffer)
         {
@@ -348,15 +362,15 @@ namespace org.critterai.nav
         /// Gets the local corner data for the agent.
         /// </summary>
         /// <remarks>
-        /// <para>Only available after after a <see cref="CrowdManager"/>
-        /// update.</para>
-        /// <para>Warning: The buffer object must be sized to
-        /// <see cref="CornerData.MarshalBufferSize"/>!</para>
         /// <para>
+        /// Only available after after a <see cref="CrowdManager"/> update.
+        /// </para>
+        /// <para>
+        /// <b>Warning:</b> The buffer object must be sized to <see cref="CornerData.MarshalBufferSize"/>!
         /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load with corner data. (Out)
-        /// [Required:
+        /// <param name="buffer">
+        /// The buffer to load with corner data. (Out) [Required:
         /// <see cref="CornerData.MaxCorners"/> = <see cref="CornerData.MarshalBufferSize"/>]
         /// </param>
         /// <returns>True if the data was sucessfully retrieved.</returns>

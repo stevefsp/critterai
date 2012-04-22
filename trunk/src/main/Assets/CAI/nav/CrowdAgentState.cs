@@ -38,10 +38,10 @@ namespace org.critterai.nav
         /// The agent is not in a valid state.
         /// </summary>
         /// <remarks>
-        /// <para>An agent will enter this state if its navigation mesh position
-        /// cannot be determined.  If the cause is a temporary modification
-        /// to the navigation mesh, then the problem may auto-resolve itself.
-        /// Otherwise, error handling will be needed.
+        /// <para>
+        /// An agent will enter this state if its navigation mesh position cannot be determined.  
+        /// If the cause is a temporary modification to the navigation mesh, then the problem may 
+        /// auto-resolve itself. Otherwise, error handling will be needed.
         /// </para>
         /// </remarks>
         Invalid,

@@ -45,14 +45,12 @@ namespace org.critterai.nav
         CrowdSeparation = 0x04,
 
         /// <summary>
-        /// Optimize visibility using 
-        /// <see cref="PathCorridor.OptimizePathVisibility"/> .
+        /// Optimize visibility using <see cref="PathCorridor.OptimizePathVisibility"/> .
         /// </summary>
         OptimizeVis = 0x08,
 
         /// <summary>
-        /// Optimize topology using 
-        /// <see cref="PathCorridor.OptimizePathTopology"/>.
+        /// Optimize topology using <see cref="PathCorridor.OptimizePathTopology"/>.
         /// </summary>
         OptimizeTopo = 0x10
     }

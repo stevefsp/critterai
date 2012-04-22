@@ -100,7 +100,7 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</para>
+        /// <c>(XZCellSize width * XZCellSize depth * YCellSize height)</c>.</para>
         /// <para>A width or depth value within the field can be converted
         /// to world units as follows:</para>
         /// <code>
@@ -115,9 +115,10 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize height</c>.</para>
+        /// <c>(XZCellSize width * XZCellSize depth * YCellSize height)</c>.</para>
         /// <para>A height within the field is converted to world units
-        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></para>
+        /// as follows:</para> 
+        /// <code>boundsMin[1] + (height * YCellSize)</code>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -303,7 +304,7 @@ namespace org.critterai.nmgen
         /// Marks spans that are ledges as not-walkable.
         /// </summary>
         /// <remarks>
-        /// <para>A ledge is a span with a neighbor whose maximum further away than
+        /// <para>A ledge is a span with a neighbor whose maximum is farther away than
         /// walkableStep.  Example: 
         /// <c>Math.Abs(currentSpan.Max - neighborSpan.Max) > walkableStep</c>
         /// </para>

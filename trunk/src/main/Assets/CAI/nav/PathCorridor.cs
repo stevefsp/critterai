@@ -34,57 +34,54 @@ namespace org.critterai.nav
     /// Represents a dynamic polygon corridor used to plan client movement.
     /// </summary>
     /// <remarks>
-    /// <para>The corridor is loaded with a path, usually obtained
-    /// from a <see cref="NavmeshQuery">NavmeshQuery</see> <c> FindPath</c> call.  The corridor
-    /// is then used to plan local movement, with the corridor automatically
-    /// updating as needed to deal with inaccurate client locomotion.</para>
-    /// <para>Example of a common use case:</para>
+    /// <para>
+    /// The corridor is loaded with a path, usually obtained from a 
+    /// <see cref="NavmeshQuery">NavmeshQuery</see> <c> FindPath</c> call.  The corridor
+    /// is then used to plan local movement, with the corridor automatically updating as needed to 
+    /// deal with inaccurate client locomotion.
+    /// </para>
+    /// <para>
+    /// Example of a common use case:</para>
     /// <ol>
     /// <li>Construct the corridor object using the <see cref="NavmeshQuery"/> 
-    /// and <see cref="NavmeshQueryFilter"/> objects in use by the
-    /// navigation client.</li>
+    /// and <see cref="NavmeshQueryFilter"/> objects in use by the navigation client.</li>
     /// <li>Obtain a path from a <see cref="NavmeshQuery"/> object.</li>
-    /// <li>Use <see cref="Reset"/> to load the client's current position. (At 
-    /// the beginning of the path.)</li>
+    /// <li>Use <see cref="Reset"/> to load the client's current position. 
+    /// (At the beginning of the path.)</li>
     /// <li>Use <see cref="SetCorridor"/> to load the path and target.</li>
-    /// <li>Use <see cref="Corners"/> to plan movement. (This is the
-    /// straightend path.)</li>
-    /// <li>Use the <see cref="MovePosition"/> to feed client movement back into
-    /// the corridor. (Or <see cref="Move"/> if the target is dynamic.) The 
-    /// corridor will automatically adjust as needed.</li>
+    /// <li>Use <see cref="Corners"/> to plan movement. (This is the straightend path.)</li>
+    /// <li>Use the <see cref="MovePosition"/> to feed client movement back into the corridor. 
+    /// (Or <see cref="Move"/> if the target is dynamic.) The corridor will automatically adjust 
+    /// as needed.</li>
     /// <li>Repeat the previous 2 steps to continue to move the client.</li>
     /// </ol>
-    /// <para>The corridor position and target are always constrained to 
-    /// the navigation mesh.</para>
     /// <para>
-    /// One of the difficulties in maintaining a path is that floating point
-    /// errors, locomotion inaccuracies, and/or local steering can result in 
-    /// the client crossing the boundary of the path corridor, temporarily 
-    /// invalidating the path.  This class uses local mesh queries to detect 
-    /// and update the corridor as needed to handle these types of issues.
+    /// The corridor position and target are always constrained to  the navigation mesh.
     /// </para>
     /// <para>
-    /// The fact that local mesh queries are used to move the position and
-    /// target locations results in two beahviors that need to be considered:
+    /// One of the difficulties in maintaining a path is that floating point errors, locomotion 
+    /// inaccuracies, and/or local steering can result in  the client crossing the boundary of the 
+    /// path corridor, temporarily invalidating the path.  This class uses local mesh queries 
+    /// to detect and update the corridor as needed to handle these types of issues.
     /// </para>
     /// <para>
-    /// Every time a move method is used there is a chance that the path will 
-    /// become non-optimial. Basically, the further 
-    /// the target is moved from its original location, and the further the 
-    /// position is moved outside the original corridor, the more likely the 
-    /// path will become non-optimal. This issue can be addressed by 
-    /// periodically running the <see cref="OptimizePathTopology"/> and 
-    /// <see cref="OptimizePathVisibility"/> methods.
+    /// The fact that local mesh queries are used to move the position and target locations 
+    /// results in two beahviors that need to be considered:
     /// </para>
     /// <para>
-    /// All local mesh queries have distance limitations.  (Review the
-    /// <see cref="NavmeshQuery"/> methods for details.)
-    /// So the most accurate use case is to move the position and target in 
-    /// small increments.  If a large increment is used, then the corridor may 
-    /// not be able to accurately find the new location.  Because of this 
-    /// limiation, if a position is moved in a large increment, then compare 
-    /// the desired and resulting polygon references. If the two do not match, 
-    /// then path replanning may be needed.  E.g. If you move the target, check 
+    /// Every time a move method is used there is a chance that the path will become non-optimial. 
+    /// Basically, the further the target is moved from its original location, and the further the 
+    /// position is moved outside the original corridor, the more likely the path will become 
+    /// non-optimal. This issue can be addressed by periodically running the 
+    /// <see cref="OptimizePathTopology"/> and <see cref="OptimizePathVisibility"/> methods.
+    /// </para>
+    /// <para>
+    /// All local mesh queries have distance limitations. (Review the <see cref="NavmeshQuery"/> 
+    /// methods for details.) So the most accurate use case is to move the position and target in 
+    /// small increments.  If a large increment is used, then the corridor may not be able to 
+    /// accurately find the new location.  Because of this limiation, if a position is moved in a 
+    /// large increment, then compare the desired and resulting polygon references. If the two do 
+    /// not match, then path replanning may be needed.  E.g. If you move the target, check 
     /// the polygon reference of <see cref="Target"/> to see if it is as expected.
     /// </para>
     /// </remarks>
@@ -138,7 +135,9 @@ namespace org.critterai.nav
         /// The query object used by the corridor.
         /// </summary>
         /// <remarks>
-        /// <para>This property can't be used to set the query to null.</para>
+        /// <para>
+        /// This property can't be used to set the query to null.
+        /// </para>
         /// </remarks>
         public NavmeshQuery Query
         {
@@ -154,7 +153,9 @@ namespace org.critterai.nav
         /// The query filter used by the corridor.
         /// </summary>
         /// <remarks>
-        /// <para>This property can't be used to set the filter to null.</para>
+        /// <para>
+        /// This property can't be used to set the filter to null.
+        /// </para>
         /// </remarks>
         public NavmeshQueryFilter Filter
         {
@@ -188,20 +189,21 @@ namespace org.critterai.nav
 
 
         /// <summary>
-        /// The straight path corners for the corridor. (The string-pulled
-        /// path.)
+        /// The straight path corners for the corridor. (The string-pulled path.)
         /// </summary>
         /// <remarks>
-        /// <para>Due to internal optimizations, the maximum 
-        /// number of detectable corners returned will be 
-        /// <c>(Corners.MaxCorners - 1)</c>
-        /// For example: If the corner buffers are sized to hold 10 corners,
-        /// there will never be more than 9 corners available.
+        /// <para>
+        /// Due to internal optimizations, the maximum number of detectable corners returned will 
+        /// be <c>(Corners.MaxCorners - 1)</c> For example: If the corner buffers are sized to 
+        /// hold 10 corners, there will never be more than 9 corners available.
         /// </para>
-        /// <para>If the target is within range, it will be the last corner
-        /// and have a polygon reference of zero.</para>
-        /// <para>This is a reference, not a copy, of the internal data buffer.
-        /// It should be treated with care. (I.e. Not mutated.)</para>
+        /// <para>
+        /// If the target is within range, it will be the last corner and have a polygon reference of zero.
+        /// </para>
+        /// <para>
+        /// This is a reference, not a copy, of the internal data buffer. It should be treated with
+        /// care. (I.e. Not mutated.)
+        /// </para>
         /// </remarks>
         public CornerData Corners { get { return mCorners; } }
 
@@ -210,8 +212,8 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>
-        /// IMPORTANT: The <see cref="Reset"/> method must be called before the corridor can be 
-        /// used. (That is how the position is set.)
+        /// <b>Important:</b> The <see cref="Reset"/> method must be called before the corridor 
+        /// can be used. (That is how the position is set.)
         /// </para>
         /// <para>
         /// Due to internal optimizations, the maximum number of detectable corners will be 
@@ -275,14 +277,18 @@ namespace org.critterai.nav
         /// Resizes the corner buffers.
         /// </summary>
         /// <remarks>
-        /// <para>Due to internal optimizations, the maximum number of 
-        /// detectable corners will be (<paramref name="maxCorners"/> - 1).
+        /// <para>
+        /// Due to internal optimizations, the maximum number of detectable corners will be 
+        /// <c>(<paramref name="maxCorners"/> - 1)</c>.
         /// </para>
-        /// <para>All possible corner buffer state will be preserved.
-        /// (Some state may be lost if the buffer is reduced in size.)</para>
+        /// <para>
+        /// All possible corner buffer state will be preserved. (Some state may be lost if the 
+        /// buffer is reduced in size.)
+        /// </para>
         /// </remarks>
-        /// <param name="maxCorners">The maximum number of corners the
-        /// corner buffer can hold. [Limit: >= 2]</param>
+        /// <param name="maxCorners">
+        /// The maximum number of corners the corner buffer can hold. [Limit: >= 2]
+        /// </param>
         public void ResizeCornerBuffer(int maxCorners)
         {
             CornerData nc = new CornerData(Math.Max(2, maxCorners));
@@ -294,11 +300,13 @@ namespace org.critterai.nav
         /// Resets the corridor to the specified position.
         /// </summary>
         /// <remarks>
-        /// <para>This method sets the position and target to the specified 
-        /// location, and reduces the corridor to the location's polygon. 
-        /// (Path size = 1)</para>
-        /// <para>This method does not perform any validation of the input
-        /// data.</para>
+        /// <para>
+        /// This method sets the position and target to the specified location, and reduces the 
+        /// corridor to the location's polygon. (Path size = 1)
+        /// </para>
+        /// <para>
+        /// This method does not perform any validation of the input data.
+        /// </para>
         /// </remarks>
         /// <param name="position">The position of the client.</param>
         public void Reset(NavmeshPoint position)
@@ -315,26 +323,32 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Finds the corners in the corridor from the position toward the 
-        /// target. (The straightened path.)
+        /// Finds the corners in the corridor from the position toward the target. 
+        /// (The straightened path.)
         /// </summary>
         /// <remarks>
-        /// <para>This method can be used to do corner searches that exceed
-        /// the capacity of the corridor's normal corner buffers.</para>
+        /// <para>
+        /// This method can be used to do corner searches that exceed the capacity of the 
+        /// corridor's normal corner buffers.
+        /// </para>
         /// <para>
         /// This method performs essentially the same function as 
         /// <see cref="NavmeshQuery.GetStraightPath"/>.
         /// </para>
-        /// <para>Due to internal optimizations, the actual maximum 
-        /// number of corners returned will be <c>(buffer.MaxCorners - 1)</c>
+        /// <para>
+        /// Due to internal optimizations, the actual maximum number of corners returned 
+        /// will be <c>(buffer.MaxCorners - 1)</c>
         /// </para>
-        /// <para>If the target is within range, it will be the last corner
-        /// and have a polygon reference of zero.</para>
-        /// <para>Behavior is undefined if the buffer structure is malformed. 
-        /// E.g. The flag and polygon buffers are different sizes.</para>
+        /// <para>
+        /// If the target is within range, it will be the last corner and have a polygon 
+        /// reference of zero.
+        /// </para>
+        /// <para>
+        /// Behavior is undefined if the buffer structure is malformed. E.g. The flag and polygon 
+        /// buffers are different sizes.
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= 2]</param>
+        /// <param name="buffer">The buffer to load the results into. [Length: >= 2]</param>
         /// <returns>The number of corners returned in the buffers.</returns>
         public int FindCorners(CornerData buffer)
         {
@@ -412,22 +426,27 @@ namespace org.critterai.nav
         /// (Partial replanning.)
         /// </summary>
         /// <remarks>
-        /// <para>The only time <paramref name="updateCorners"/> should be 
-        /// set to false is if a move or another optimization method is to
-        /// be called next. Otherwise the corner data may become invalid.</para>
-        /// <para>Inaccurate locomotion or dynamic obstacle avoidance can force
-        /// the client position significantly outside the original corridor.
-        /// Over time this can result in the formation of a non-optimal 
-        /// corridor.  This method will use a local area path search 
-        /// to try to re-optimize the corridor.</para>
-        /// <para>The more inaccurate the client movement, the more 
-        /// beneficial this method becomes.  Simply adjust the frequency of
-        /// the call to match the needs to the client.</para>
-        /// <para>This is a local optimization and will not necessarily effect 
-        /// the entire corridor through to the goal.  So it should normally be 
-        /// called based on a time increment rather than movement events.
-        /// I.e. Optimize once a second.</para>
-        /// </remark>
+        /// <para>
+        /// The only time <paramref name="updateCorners"/> should be set to false is if a move or 
+        /// another optimization method is to be called next. Otherwise the corner data may 
+        /// become invalid.
+        /// </para>
+        /// <para>
+        /// Inaccurate locomotion or dynamic obstacle avoidance can force the client position 
+        /// significantly outside the original corridor. Over time this can result in the 
+        /// formation of a non-optimal corridor.  This method will use a local area path search 
+        /// to try to re-optimize the corridor.
+        /// </para>
+        /// <para>
+        /// The more inaccurate the client movement, the more beneficial this method becomes.  
+        /// Simply adjust the frequency of the call to match the needs to the client.
+        /// </para>
+        /// <para>
+        /// This is a local optimization and will not necessarily effect the entire corridor 
+        /// through to the goal.  So it should normally be called based on a time increment rather 
+        /// than movement events. I.e. Optimize once a second.
+        /// </para>
+        /// </remarks>
         /// <param name="updateCorners">True if the corners data should be refreshed.</param>
         public void OptimizePathTopology(bool updateCorners)
         {
@@ -450,12 +469,12 @@ namespace org.critterai.nav
         /// Moves over an off-mesh connection.
         /// </summary>
         /// <remarks>
-        /// <para>This method is minimally tested and documented.</para>
+        /// <para>
+        /// This method is minimally tested and documented.
+        /// </para>
         /// </remarks>
-        /// <param name="connectionRef">The connection polygon reference.
-        /// </param>
-        /// <param name="endpointRefs">Polygon endpoint references.
-        /// [Length: 2]</param>
+        /// <param name="connectionRef">The connection polygon reference.</param>
+        /// <param name="endpointRefs">Polygon endpoint references. [Length: 2]</param>
         /// <param name="startPosition">The start position.</param>
         /// <param name="endPosition">The end position.</param>
         /// <returns>True if the operation succeeded.</returns>
@@ -474,26 +493,27 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Moves the position from its current location to the desired
-        /// location, adjusting the corridor as needed to reflect the
-        /// new position.
+        /// Moves the position from its current location to the desired location, adjusting the 
+        /// corridor as needed to reflect the new position.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior:</para>
+        /// <para>
+        /// Behavior:
+        /// </para>
         /// <ul>
-        /// <li>The movement is constrained to the surface of the navigation 
-        /// mesh.</li>
-        /// <li>The corridor is automatically adjusted (shorted or lengthened)
-        /// and <see cref="Corners"/> updated in order to remain valid. </li>
-        /// <li>The new position will be located in the adjusted corridor's 
-        /// first polygon.</li>
+        /// <li>The movement is constrained to the surface of the navigation mesh.</li>
+        /// <li>The corridor is automatically adjusted (shorted or lengthened) and 
+        /// <see cref="Corners"/> updated in order to remain valid.</li>
+        /// <li>The new position will be located in the adjusted corridor's first polygon.</li>
         /// </ul>
-        /// <para>The expected use case: The desired position will be 'near' 
-        /// the corridor. What is considered 'near' depends on local 
-        /// polygon density, query search extents, etc.</para>
-        /// <para>The resulting position will differ from the desired position 
-        /// if the desired position is not on the navigation mesh, or it can't
-        /// be reached using a local search.</para>
+        /// <para>
+        /// The expected use case: The desired position will be 'near' the corridor. What is 
+        /// considered 'near' depends on local polygon density, query search extents, etc.
+        /// </para>
+        /// <para>
+        /// The resulting position will differ from the desired position if the desired position 
+        /// is not on the navigation mesh, or it can't be reached using a local search.
+        /// </para>
         /// </remarks>
         /// <param name="desiredPosition">The desired position.</param>
         public void MovePosition(Vector3 desiredPosition)
@@ -510,26 +530,27 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Moves the target from its curent location to the desired
-        /// location, adjusting the corridor as needed to reflect the
-        /// change.
+        /// Moves the target from its curent location to the desired location, adjusting the 
+        /// corridor as needed to reflect the change.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior:</para>
+        /// <para>
+        /// Behavior:
+        /// </para>
         /// <ul>
-        /// <li>The movement is constrained to the surface of the navigation 
-        /// mesh.</li>
-        /// <li>The corridor is automatically adjusted (shorted or lengthened)
-        /// and <see cref="Corners"/> updated in order to remain valid. </li>
-        /// <li>The new position will be located in the adjusted corridor's 
-        /// last polygon.</li>
+        /// <li>The movement is constrained to the surface of the navigation mesh.</li>
+        /// <li>The corridor is automatically adjusted (shorted or lengthened) and 
+        /// <see cref="Corners"/> updated in order to remain valid.</li>
+        /// <li>The new position will be located in the adjusted corridor's last polygon.</li>
         /// </ul>
-        /// <para>The expected use case: The desired target will be 'near' 
-        /// the corridor. What is considered 'near' depends on local 
-        /// polygon density, query search extents, etc.</para>
-        /// <para>The resulting target will differ from the desired target if
-        /// the desired target is not on the navigation mesh, or it can't
-        /// be reached using a local search.</para>
+        /// <para>
+        /// The expected use case: The desired target will be 'near' the corridor. What is 
+        /// considered 'near' depends on local polygon density, query search extents, etc.
+        /// </para>
+        /// <para>
+        /// The resulting target will differ from the desired target if the desired target is 
+        /// not on the navigation mesh, or it can't be reached using a local search.
+        /// </para>
         /// </remarks>
         /// <param name="desiredTarget">The desired target.</param>
         public void MoveTarget(Vector3 desiredTarget)
@@ -619,12 +640,13 @@ namespace org.critterai.nav
         /// <summary>
         /// Obtains a copy of the corridor path.
         /// </summary>
-        /// <remarks><para>
+        /// <remarks>
+        /// <para>
         /// The buffer should be sized to hold the entire path.
         /// (See: <see cref="GetPathCount"/> and <see cref="MaxPathSize"/>.)
-        /// </para></remarks>
-        /// <param name="buffer">The buffer to load with the result.
-        /// [(polyRef) * pathCount]</param>
+        /// </para>
+        /// </remarks>
+        /// <param name="buffer">The buffer to load with the result. [(polyRef) * pathCount]</param>
         /// <returns>The number of polygons in the path.</returns>
         public int GetPath(uint[] buffer)
         {
@@ -642,19 +664,19 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Checks the corridor path to see if its polygon references
-        /// remain valid.
+        /// Checks the corridor path to see if its polygon references remain valid.
         /// </summary>
         /// <remarks>
-        /// <para>The path can be invalidated if there are structural
-        /// changes to the underlying navigation mesh, or the state of
-        /// a polygon within the path changes resulting in it being filtered 
-        /// out. (E.g. An exclusion or inclusion flag changes.)</para>
+        /// <para>
+        /// The path can be invalidated if there are structural changes to the underlying 
+        /// navigation mesh, or the state of a polygon within the path changes resulting in it 
+        /// being filtered out. (E.g. An exclusion or inclusion flag changes.)
+        /// </para>
         /// </remarks>
-        /// <param name="maxLookAhead">The number of polygons from the
-        /// beginning of the corridor to search.</param>
-        /// <returns>True if the seached portion of the path is still
-        /// valid.</returns>
+        /// <param name="maxLookAhead">
+        /// The number of polygons from the beginning of the corridor to search.
+        /// </param>
+        /// <returns>True if the seached portion of the path is still valid.</returns>
         public bool IsValid(int maxLookAhead)
         {
             return PathCorridorEx.dtpcIsValid(mRoot
@@ -664,16 +686,18 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Loads the corridor data into the provided 
-        /// <see cref="PathCorridorData"/> buffer.
+        /// Loads the corridor data into the provided <see cref="PathCorridorData"/> buffer.
         /// </summary>
         /// <remarks>
-        /// <para>Make sure the buffer is sized to hold the entire result.
+        /// <para>
+        /// Make sure the buffer is sized to hold the entire result.
         /// (See: <see cref="GetPathCount"/> and <see cref="MaxPathSize"/>.)
         /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Length: Maximum Path Size >= <see cref="GetPathCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the data into. 
+        /// [Length: Maximum Path Size >= <see cref="GetPathCount"/>]
+        /// </param>
         /// <returns>False if the operation failed.</returns>
         public bool GetData(PathCorridorData buffer)
         {
@@ -700,9 +724,9 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>
-        /// WARNING: The corridor will not be in a useable state after this operation.  Using the 
-        /// corridor without successfully calling <see cref="LoadLocals"/> will result in undefined
-        /// behavior.
+        /// <b>Warning:</b> The corridor will not be in a useable state after this operation.  
+        /// Using the corridor without successfully calling <see cref="LoadLocals"/> will result in 
+        /// undefined behavior.
         /// </para>
         /// <para>
         /// This method is useful when pooling path corridors for use by mulitple clients.
@@ -719,14 +743,19 @@ namespace org.critterai.nav
         /// Sets the specified resources and resets the corridor.
         /// </summary>
         /// <remarks>
-        /// <para>This method is useful when pooling path corridors for
-        /// use by mulitple clients.</para>
-        /// <para>See <see cref="Reset"/> for information on the effect of
-        /// the reset.</para>
-        /// <para>Existing references will be replaced by the new references.
+        /// <para>
+        /// This method is useful when pooling path corridors for use by mulitple clients.
         /// </para>
-        /// <para>This method cannot be used to set references to null.
-        /// Attempting to do so will result in a failure.</para>
+        /// <para>
+        /// See <see cref="Reset"/> for information on the effect of the reset.
+        /// </para>
+        /// <para>
+        /// Existing references will be replaced by the new references.
+        /// </para>
+        /// <para>
+        /// This method cannot be used to set references to null. Attempting to do so will result 
+        /// in a failure.
+        /// </para>
         /// </remarks>
         /// <param name="corridor">The corridor to update.</param>
         /// <param name="position">The position to reset to corridor to.</param>

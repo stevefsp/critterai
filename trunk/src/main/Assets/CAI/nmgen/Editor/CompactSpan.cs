@@ -29,7 +29,7 @@ namespace org.critterai.nmgen
     /// <remarks>
     /// <para>The span represents open, unobstructed space within a heightfield
     /// column.</para>
-    /// <para>See the <see cref="CompactHeightfield"/> class' documentation for 
+    /// <para>See the <see cref="CompactHeightfield"/> documentation for 
     /// a discussion of iterating spans and searching span connections.</para>
     /// <para>Useful instances of this type can only by obtained from a
     /// <see cref="CompactHeightfield"/> object.</para>
@@ -114,10 +114,10 @@ namespace org.critterai.nmgen
         /// span's floor.)
         /// </summary>
         /// <remarks>
-        /// <para>The span's height in world units can be derived as follows:
-        /// <br/>
-        /// <c>fieldBoundsMin[1] + ((Floor + Height) * fieldYCellSize)
-        /// </c></para>
+        /// <para>The span's height in world units can be derived as follows:</para>
+        /// <code>
+        /// fieldBoundsMin[1] + ((Floor + Height) * fieldYCellSize)
+        /// </code>
         /// </remarks>
         public byte Height { get { return (byte)(mPacked >> 24); } }
 

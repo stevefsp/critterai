@@ -35,12 +35,12 @@ namespace org.critterai.nmbuild.u3d.editor
         private readonly InputBuildOption mOptions;
 
         /// <summary>
-        /// Components included in the input build.
+        /// The components included in the input build.
         /// </summary>
         public readonly List<Component> components = new List<Component>();
 
         /// <summary>
-        /// The area of each component in <see cref="components"/>.
+        /// The area associated with each component in <see cref="components"/>.
         /// </summary>
         public readonly List<byte> areas = new List<byte>();
 

@@ -28,11 +28,14 @@ namespace org.critterai.nmbuild
     /// A set of <see cref="INMGenProcessor"/> objects used in an NMGen build.
     /// </summary>
     /// <remarks>
-    /// <para>The processor set groups a set of processors for use in an NMGen build.  If all
+    /// <para>
+    /// The processor set groups a set of processors for use in an NMGen build.  If all
     /// contained processors are thread-safe, then the process set can be used in a threaded build.
     /// </para>
-    /// <para>To create an empty processor set, call <see cref="CreateStandard"/> with no
-    /// options set.</para>
+    /// <para>
+    /// To create an empty processor set, call <see cref="CreateStandard"/> with no
+    /// options set.
+    /// </para>
     /// </remarks>
     /// <seealso cref="INMGenProcessor"/>
     /// <seealso cref="NMGenProcessor"/>
@@ -73,8 +76,10 @@ namespace org.critterai.nmbuild
         /// The build assets that should be preserved past their normal disposal point.
         /// </summary>
         /// <remarks>
-        /// <para>This is an aggregate of the <see cref="INMGenProcessor.PreserveAssets"/> for
-        /// all contained processors.</para>
+        /// <para>
+        /// This is an aggregate of the <see cref="INMGenProcessor.PreserveAssets"/> for
+        /// all contained processors.
+        /// </para>
         /// </remarks>
         public NMGenAssetFlag PreserveAssets { get { return mPreserveAssets; } }
 
@@ -89,10 +94,12 @@ namespace org.critterai.nmbuild
         public int Count { get { return mProcessors.Length; } }
 
         /// <summary>
-        /// Runs all the processors in order of priority.  (Assending)
+        /// Runs all the processors in order of priority.  (Ascending)
         /// </summary>
         /// <remarks>
-        /// <para>A return value of false indicates the build should be aborted.</para>
+        /// <para>
+        /// A return value of false indicates the build should be aborted.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current state of the build.</param>
         /// <param name="context">The build context.</param>
@@ -126,7 +133,8 @@ namespace org.critterai.nmbuild
         /// Gets standard processors based on the provided options.
         /// </summary>
         /// <param name="options">The processors to include.</param>
-        /// <returns>The standard processors, or a zero length array if no processors selected.
+        /// <returns>
+        /// The standard processors, or a zero length array if no processors selected.
         /// </returns>
         public static INMGenProcessor[] GetStandard(NMGenBuildFlag options)
         {
@@ -154,8 +162,10 @@ namespace org.critterai.nmbuild
         /// Creates a processor set based on the provided options.
         /// </summary>
         /// <remarks>
-        /// <para>An empty processor set will be created if <paramref name="options"/> is zero.
-        /// </para></remarks>
+        /// <para>
+        /// An empty processor set will be created if <paramref name="options"/> is zero.
+        /// </para>
+        /// </remarks>
         /// <param name="options">The processors to include.</param>
         /// <returns>A processor set with the standard processors.</returns>
         public static ProcessorSet CreateStandard(NMGenBuildFlag options)
@@ -167,7 +177,8 @@ namespace org.critterai.nmbuild
         /// Creates a processor set loaded with the provided processors.
         /// </summary>
         /// <remarks>
-        /// <para>An empty processor set will be created if <paramref name="processors"/> is null
+        /// <para>
+        /// An empty processor set will be created if <paramref name="processors"/> is null
         /// or contains no processors.
         /// </para>
         /// </remarks>

@@ -37,7 +37,7 @@ namespace org.critterai.nmgen
     public static class NMGen
     {
         /// <summary>
-        /// The maximum allowed area id.
+        /// The maximum allowed area.
         /// </summary>
         public const byte MaxArea = 63;
 
@@ -47,7 +47,7 @@ namespace org.critterai.nmgen
         /// <remarks>
         /// <para>When a data element is given this value it is considered to no longer be 
         /// assigned to a usable area. (It usually becomes an obstruction.)</para>
-        /// <para>This is also the minimum value that can be used as an area id.</para>
+        /// <para>This is also the minimum value that can be used as an area.</para>
         /// </remarks>
         public const byte NullArea = 0;
 
@@ -190,13 +190,13 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Set the area id of all triangles with a slope below the specified value to 
+        /// Set the area of all triangles with a slope below the specified value to 
         /// <see cref="MaxArea"/>.
         /// </summary>
         /// <param name="context">The context to use duing the operation.</param>
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
-        /// <param name="areas">The area ids associated with each triangle. 
+        /// <param name="areas">The areas associated with each triangle. 
         /// [Length: >= mesh.triCount].</param>
         /// <returns>True if the operation was successful.</returns>
         public static bool MarkWalkableTriangles(BuildContext context
@@ -223,14 +223,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Set the area id of all triangles with a slope above the specified value to 
+        /// Set the area of all triangles with a slope above the specified value to 
         /// <see cref="NullArea"/>.
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
-        /// <param name="areas">The area ids associated with each triangle.
+        /// <param name="areas">The areas associated with each triangle.
         /// [Length: >= mesh.triCount].</param>
         /// <returns>True if the operation was successful.</returns>
         public static bool ClearUnwalkableTriangles(BuildContext context
@@ -309,7 +309,7 @@ namespace org.critterai.nmgen
         /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>A valid area id.</returns>
+        /// <returns>A valid area.</returns>
         public static byte ClampArea(byte value)
         {
             return Math.Min(MaxArea, value);
@@ -320,7 +320,7 @@ namespace org.critterai.nmgen
         /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>A valid area id.</returns>
+        /// <returns>A valid area.</returns>
         public static byte ClampArea(int value)
         {
             return (byte)Math.Min(NMGen.MaxArea, Math.Max(0, value));

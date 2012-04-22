@@ -39,13 +39,13 @@ namespace org.critterai.nmgen
     /// <remarks>
     /// <para>Objects of this type are created using the <see cref="ChunkyTriMeshBuilder"/> class.
     /// </para>
-    /// <para>Storage is optimized for use by the build process across muliple threads. It is not
-    /// efficient for other uses.
+    /// <para>Storage is optimized for use by the NMGen build process across muliple threads. 
+    /// It is not efficient for other uses.
     /// </para>
     /// <para>The content of a node can be inspected as follows:</para>
     /// <para><code>
-    /// // Where lmesh is a <see cref="TriangleMesh"/> object and lareas is a byte array obtained
-    /// // from <see cref="ChunkyTriMesh.ExtractMesh"/>.
+    /// // Where lmesh is a TriangleMesh object and lareas is a byte array obtained
+    /// // from ChunkyTriMesh.ExtractMesh.
     /// for (int j = 0; j &lt; node.count; j++, i++)
     /// {
     ///     int pTri = (node.i + j) * 3;

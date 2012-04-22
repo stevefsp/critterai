@@ -85,7 +85,7 @@ namespace org.critterai.nmgen
         public ushort Region { get { return mRegion; } }
 
         /// <summary>
-        /// The area id associated with the contour.
+        /// The area associated with the contour.
         /// </summary>
         public byte Area { get { return mArea; } }
 

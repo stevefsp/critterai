@@ -25,12 +25,14 @@ using org.critterai.nav;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// A task used manage the build of an <see cref="IncrementalBuilder"/> object.
+    /// A task used to manage the build of an <see cref="IncrementalBuilder"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>The primary purpose of this class run the builder on a background thread.
+    /// <para>
+    /// The primary purpose of this class is to run the builder on a background thread.
     /// It handles aborts and exception handling, which are not possible if the
-    /// builder is run directly on a thread.</para>
+    /// builder is run directly on a thread.
+    /// </para>
     /// </remarks>
     public sealed class NMGenTask
         : BuildTask<NMGenAssets>
@@ -47,7 +49,10 @@ namespace org.critterai.nmbuild
         /// If true, the task is safe to run on its own thread.
         /// </summary>
         /// <remarks>
-        /// <para>Will be true if the root builder is thread-safe.</para></remarks>
+        /// <para>
+        /// Will be true if the root builder is thread-safe.
+        /// </para>
+        /// </remarks>
         public override bool IsThreadSafe { get { return mBuilder.IsThreadSafe; } }
 
         /// <summary>
@@ -88,8 +93,10 @@ namespace org.critterai.nmbuild
         /// Gets the result of the completed task.
         /// </summary>
         /// <param name="result">The result of the completed task.</param>
-        /// <returns>True if the result is available, false if the task should abort with no
-        /// result. (I.e. An internal abort.)</returns>
+        /// <returns>
+        /// True if the result is available, false if the task should abort with no result. 
+        /// (I.e. An internal abort.)
+        /// </returns>
         protected override bool GetResult(out NMGenAssets result)
         {
             AddMessages(mBuilder.GetMessages());

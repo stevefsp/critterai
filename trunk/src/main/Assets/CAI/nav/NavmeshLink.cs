@@ -26,9 +26,6 @@ using System.Runtime.InteropServices;
 
 namespace org.critterai.nav
 {
-
-    // TODO: DOC
-
     /// <summary>
     /// Navigation mesh links. (Undocumented.)
     /// </summary>

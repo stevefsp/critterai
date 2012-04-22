@@ -31,8 +31,8 @@ namespace org.critterai.nav
     public enum NavmeshPolyType
     {
         /// <summary>
-        /// The polygon is a standard convex polygon that is part of the
-        /// surface of the navigation mesh.
+        /// The polygon is a standard convex polygon that is part of the surface of the navigation 
+        /// mesh.
         /// </summary>
         Standard = 0,
 

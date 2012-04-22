@@ -27,7 +27,7 @@ namespace org.critterai.nmbuild.u3d.editor
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This information is used for GUI presentation and debug output.
+    /// This information is used for GUI presentation and debug purposes.
     /// </para>
     /// </remarks>
     public struct InputBuildInfo

@@ -45,7 +45,7 @@ namespace org.critterai.nmbuild.u3d.editor
         void Initialize();
 
         /// <summary>
-        /// Gets all components of the specified type, based on the objects query restrictions.
+        /// Gets all components of the specified type, based on the object's query restrictions.
         /// </summary>
         /// <typeparam name="T">The type of component to retrieve.</typeparam>
         /// <returns>

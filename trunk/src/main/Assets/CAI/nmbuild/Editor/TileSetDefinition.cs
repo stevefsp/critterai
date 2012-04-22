@@ -35,10 +35,14 @@ namespace org.critterai.nmbuild
     /// Represents the definition for a set of tiles that make up a tiled navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <para>This object provides common configuration settings and input geometry for a tiled
+    /// <para>
+    /// This object provides common configuration settings and input geometry for a tiled
     /// navigation mesh build.  For example, the <see cref="IncrementalBuilder"/> will create
-    /// a builder from a tile set defintion.</para>
-    /// <para>Objects of this type are thread-safe and immutable.</para>
+    /// a builder from a tile set defintion.
+    /// </para>
+    /// <para>
+    /// Objects of this type are thread-safe and immutable.
+    /// </para>
     /// </remarks>
     public sealed class TileSetDefinition
     {
@@ -76,7 +80,7 @@ namespace org.critterai.nmbuild
         public int Depth { get { return mDepth; } }
 
         /// <summary>
-        /// The minimum AABB bounds of the tile set.
+        /// The minimum AABB bounds of the tile set for build purposes.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -91,7 +95,7 @@ namespace org.critterai.nmbuild
         public Vector3 BoundsMax { get { return mBoundsMax; } }
 
         /// <summary>
-        /// The common input geometry used to build tiles in the set.
+        /// The shared input geometry used to build tiles in the set.
         /// </summary>
         public InputGeometry Geometry { get { return mGeometry; } }
  
@@ -112,12 +116,17 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// Gets the bounds of the specified tile.
         /// </summary>
-        /// <param name="tx">The x-index of the tile within the tile grid. (x, z) 
-        /// [0 &lt;= value &lt; <see cref="Width"/>]</param>
-        /// <param name="tz">The z-index of the tile within the tile grid. (x, z) 
-        /// [0 &lt;= value &lt; <see cref="Depth"/>]</param>
-        /// <param name="includeBorder">True if the bounds should be expanded by the
-        /// border size configuration setting.</param>
+        /// <param name="tx">
+        /// The x-index of the tile within the tile grid. (x, z) 
+        /// [0 &lt;= value &lt; <see cref="Width"/>]
+        /// </param>
+        /// <param name="tz">
+        /// The z-index of the tile within the tile grid. (x, z) 
+        /// [0 &lt;= value &lt; <see cref="Depth"/>]
+        /// </param>
+        /// <param name="includeBorder">
+        /// True if the bounds should be expanded by the border size configuration setting.
+        /// </param>
         /// <param name="boundsMin">The minimum AABB bounds of the tile.</param>
         /// <param name="boundsMax">The maximum AABB bounds of the tile.</param>
         /// <returns>True if the tile is valid, otherwise false.</returns>
@@ -135,7 +144,6 @@ namespace org.critterai.nmbuild
             }
 
             float tcsFactor = mBaseConfig.TileSize * mBaseConfig.XZCellSize;  // World tile size.
-
 
             // Note: The minimum bounds of the base configuration is
             // considered to be the origin of the mesh set.
@@ -168,8 +176,11 @@ namespace org.critterai.nmbuild
         /// Creates a new tile set.
         /// </summary>
         /// <remarks>
-        /// <para>The bounds is normally based on the desired origin of the navigation mesh
-        /// and the maximum bounds of the input geometry.</para></remarks>
+        /// <para>
+        /// The bounds is normally based on the desired origin of the navigation mesh
+        /// and the maximum bounds of the input geometry.
+        /// </para>
+        /// </remarks>
         /// <param name="boundsMin">The minimum AABB bounds of the set.</param>
         /// <param name="boundsMax">The maximum AABB counds of the set.</param>
         /// <param name="config">The shared NMGen configuration.</param>

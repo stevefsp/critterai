@@ -30,7 +30,7 @@ namespace org.critterai.nmbuild
     public enum NMGenAssetFlag
     {
         /// <summary>
-        /// The <see cref="Heightfield"/> intermediate asset.
+        /// The <see cref="org.critterai.nmgen.Heightfield"/> intermediate asset.
         /// </summary>
         Heightfield  = 0x01,
 
@@ -40,12 +40,12 @@ namespace org.critterai.nmbuild
         CompactField = 0x02,
 
         /// <summary>
-        /// The <see cref="ContourSet"/> intermediate asset.
+        /// The <see cref="org.critterai.nmgen.ContourSet"/> intermediate asset.
         /// </summary>
         ContourSet   = 0x04,
 
         /// <summary>
-        /// The <see cref="PolyMesh"/> final asset.
+        /// The <see cref="org.critterai.nmgen.PolyMesh"/> final asset.
         /// </summary>
         PolyMesh     = 0x08,
 

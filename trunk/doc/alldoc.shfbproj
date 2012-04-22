@@ -37,30 +37,30 @@
 &amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\build\unity\nav\cai-nav.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nav-u3d\cai-nav-u3d.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nmbuild\cai-nmbuild.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d-editor\cai-nmbuild-extras-u3d-editor.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nmbuild-u3d-editor\cai-nmbuild-u3d-editor.csproj" />
-<DocumentationSource sourceFile="..\build\unity\nmgen\cai-nmgen.csproj" />
-<DocumentationSource sourceFile="..\build\unity\util\cai-util.csproj" />
-<DocumentationSource sourceFile="..\build\unity\util-u3d\cai-util-u3d.csproj" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\build\unity\nav-u3d\cai-nav-u3d.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild\cai-nmbuild.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d-editor\cai-nmbuild-extras-u3d-editor.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmbuild-u3d-editor\cai-nmbuild-u3d-editor.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\nmgen\cai-nmgen.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\util\cai-util.csproj" />
+      <DocumentationSource sourceFile="..\build\unity\util-u3d\cai-util-u3d.csproj" />
+    </DocumentationSources>
     <CopyrightText>Copyright %28c%29 2010-2012 Stephen A. Pratt</CopyrightText>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
     <HelpTitle>CritterAI Documentation</HelpTitle>
     <VisibleItems>Protected, SealedProtected</VisibleItems>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="org.critterai" isDocumented="True">Provides general utility features.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Provides computational geometry features.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Provides native interop utility features.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Provides core pathfinding and local steering features.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Provides core features releated to building navigation mesh data. (From source geometry.)</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use elements related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.u3d" isDocumented="True">Provides general &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nmbuild" isDocumented="True">Provides ease-of-use features releated to building navigation meshes at design time.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="org.critterai.nmbuild.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use features releated to building navigation meshes at design time.</NamespaceSummaryItem>
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Provides computational geometry features.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Provides native interop utility features.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Provides core pathfinding and local steering features.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Provides core features related to building navigation mesh data. (From source geometry.)</NamespaceSummaryItem>
+<NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use elements related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.u3d" isDocumented="True">Provides general &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.nmbuild" isDocumented="True">Provides ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="org.critterai.nmbuild.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem></NamespaceSummaries>
     <NamingMethod>HashedMemberName</NamingMethod>
     <Preliminary>True</Preliminary>
     <PresentationStyle>hana</PresentationStyle>
@@ -165,6 +165,7 @@
     <Image Include="cainav\images\nmgen\Value-MinRegionArea.jpg">
       <ImageId>Value-MinRegionArea</ImageId>
       <AlternateText>Value: MinRegionArea</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
     </Image>
     <Image Include="cainav\images\nmgen\Heightfield-BasicBox.jpg">
       <ImageId>Heightfield-AABB</ImageId>
@@ -249,14 +250,17 @@
     <Image Include="cainav\images\nmgen\Value-WalkableRadius.jpg">
       <ImageId>Value-WalkableRadius</ImageId>
       <AlternateText>Value: WalkableRadius</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
     </Image>
     <Image Include="cainav\images\nmgen\Value-WalkableHeight.jpg">
       <ImageId>Value-WalkableHeight</ImageId>
       <AlternateText>Value: Walkable Height</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
     </Image>
     <Image Include="cainav\images\nmgen\Value-WaklableStep.jpg">
       <ImageId>Value-WaklableStep</ImageId>
       <AlternateText>Value: Waklable Step</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
     </Image>
     <Image Include="cainav\images\WrapDirection.png">
       <ImageId>WrapDirection</ImageId>
