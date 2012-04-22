@@ -174,10 +174,10 @@ namespace org.critterai.nmgen
         /// This parameter has a large impact on memmory useage.  The smaller the value, the higher
         /// the memory cost during the build.  So there are special considerations when the source 
         /// geometry covers a large area.  The best solution is use multiple polygon meshes built 
-        /// for use in a tiled navigation mesh.  Otherwise it may be necessary to lower resolution.  
-        /// In this case set the cell size based on the source geometry's longest xz-axis.  Start with 
-        /// a value of <c>(longestAxis / 1000)</c>, then reduce the value as performance and memory
-        /// allows.
+        /// for use in a multi-tile navigation mesh.  Otherwise it may be necessary to lower 
+        /// the resolution.  If this is the case, set the cell size based on the source geometry's 
+        /// longest xz-axis.  Start with a value of <c>(longestAxis / 1000)</c>, then reduce the 
+        /// value as performance and memory allows.
         /// </para>
         /// </remarks>
         public float XZCellSize
@@ -253,11 +253,11 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The border size exists primarily to support tiled meshes and is usually set to
-        /// zero for non-tiled meshes.
+        /// The border size exists primarily to support multi-tile meshes and is usually set to
+        /// zero for single-tile meshes.
         /// </para>
         /// <para>
-        /// Determining the exact value to use for tiled meshes can be tricky.  It is best to 
+        /// Determining the exact value to use for multi-tile meshes can be tricky.  It is best to 
         /// set all the other parameters, then use <see cref="DeriveBorderSize"/> to get an 
         /// initial value.
         /// </para>
@@ -416,8 +416,10 @@ namespace org.critterai.nmgen
         /// to obstructions, or passes through areas that are too thin for the agent to fit. 
         /// </para>
         /// <para>
-        /// Start with a value of <c>ceil(maxAgentRadius / <see cref="XZCellSize"/>)</c>
+        /// Start with a value of <c>ceil(maxAgentRadius / <see cref="XZCellSize"/>)</c>. 
+        /// A value of zero is not recommended.
         /// </para>
+        /// <img alt="Value: Waklable Radius" src="../media/Value-WalkableRadius.jpg" />
         /// </remarks>
         public int WalkableRadius
         {

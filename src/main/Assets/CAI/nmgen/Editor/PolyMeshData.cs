@@ -32,7 +32,7 @@ namespace org.critterai.nmgen
     /// Represents the mesh data for a <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>Warning: The serializable attributewill be removed 
+    /// <para><b>Warning:</b> The serializable attributewill be removed 
     /// in v0.5. Use <see cref="PolyMesh.GetSerializedData"/> instead of
     /// serializing this object.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 
@@ -162,7 +162,7 @@ namespace org.critterai.nmgen
         public ushort[] flags;
 
         /// <summary>
-        /// The area id assigned to each polygon.
+        /// The area assigned to each polygon.
         /// [Length: >= polyCount]
         /// </summary>
         /// <remarks>

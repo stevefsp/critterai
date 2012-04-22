@@ -36,39 +36,45 @@ namespace org.critterai.nav
     /// Provides local steering behaviors for a group of agents.
     /// </summary>
     /// <remarks>
-    /// <para>This is the core class for all crowd features.</para>
-    /// <para>The standard method for setting up the crowd is as follows:</para>
+    /// <para>
+    /// This is the core class for all crowd features.
+    /// </para>
+    /// <para>
+    /// The standard method for setting up the crowd is as follows:
+    /// </para>
     /// <ol>
     /// <li>Construct the crowd object.</li>
-    /// <li>Set the avoidance configurations using 
-    /// <see cref="SetAvoidanceConfig"/>.</li>
-    /// <li>Add agents using <see cref="AddAgent"/> and make an initial 
-    /// movement request using <see cref="CrowdAgent.RequestMoveTarget"/>.</li>
+    /// <li>Set the avoidance configurations using <see cref="SetAvoidanceConfig"/>.</li>
+    /// <li>Add agents using <see cref="AddAgent"/> and make an initial movement request using 
+    /// <see cref="CrowdAgent.RequestMoveTarget"/>.</li>
     /// </ol>
-    /// <para>The standard process for managing the crowd is as follows:</para>
+    /// <para>
+    /// The standard process for managing the crowd is as follows:
+    /// </para>
     /// <ol>
-    /// <li>Call <see cref="Update"/> to allow the crowd to manage its agents.
-    /// </li>
-    /// <li>Use the <see cref="CrowdAgent"/> objects to retreive state, such 
-    /// as position.</li>
-    /// <li>Make movement requests using 
-    /// <see cref="CrowdAgent.RequestMoveTarget"/> and 
+    /// <li>Call <see cref="Update"/> to allow the crowd to manage its agents.</li>
+    /// <li>Use the <see cref="CrowdAgent"/> objects to retreive state, such as position.</li>
+    /// <li>Make movement requests using  <see cref="CrowdAgent.RequestMoveTarget"/> and 
     /// <see cref="CrowdAgent.AdjustMoveTarget"/>.</li>
     /// <li>Repeat every frame.</li>
     /// </ol>
-    /// <para>Some agent configuration settings can be updated using 
-    /// <see cref="CrowdAgent.SetConfig"/>.  But the crowd owns the
-    /// agent position and velocity.  If agent position must be fed back into 
-    /// the crowd, the agent must be removed and re-added.</para>
-    /// <para>Notes:</para>
+    /// <para>
+    /// Some agent configuration settings can be updated using <see cref="CrowdAgent.SetConfig"/>.  
+    /// But the crowd owns the agent position and velocity.  If agent position must be fed back 
+    /// into the crowd, the agent must be removed and re-added.
+    /// </para>
+    /// <para>
+    /// Notes:
+    /// </para>
     /// <ul>
-    /// <li>Path related information is available for newly added agents only 
-    /// after an <see cref="Update"/> has been performed.</li>
-    /// <li>This class is meant to provide 'local' movement. There is a limit 
-    /// of 256 polygons in the path corridor. So the crowd can't provide 
-    /// pathfinding services over long distances.</li>
+    /// <li>Path related information is available for newly added agents only after an 
+    /// <see cref="Update"/> has been performed.</li>
+    /// <li>This class is meant to provide 'local' movement. There is a limit of 256 polygons in 
+    /// the path corridor. So the crowd can't provide pathfinding services over long distances.</li>
     /// </ul>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     public sealed class CrowdManager
         : ManagedObject
@@ -80,8 +86,7 @@ namespace org.critterai.nav
          */
 
         /// <summary>
-        /// The maximum number of avoidance configurations that can be
-        /// associated with the manager.
+        /// The maximum number of avoidance configurations that can be associated with the manager.
         /// </summary>
         public const int MaxAvoidanceParams = 8;
 
@@ -121,8 +126,10 @@ namespace org.critterai.nav
         /// The query filter used by the manager.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Updating the state of this filter will alter the steering behaviors of all agents.
         /// All agents share the same filter.
+        /// </para>
         /// </remarks>
         public NavmeshQueryFilter QueryFilter { get { return mFilter; } }
 
@@ -153,8 +160,8 @@ namespace org.critterai.nav
         /// <summary>
         /// The agent from the agent buffer.
         /// </summary>
-        /// <param name="index">The buffer index. 
-        /// [Limit: 0 &lt;= value &lt; <see cref="MaxAgents"/>]
+        /// <param name="index">
+        /// The buffer index. [Limit: 0 &lt;= value &lt; <see cref="MaxAgents"/>]
         /// </param>
         /// <returns>The agent from the buffer, or null no agent at the index.</returns>
         public CrowdAgent this[int index]
@@ -192,12 +199,13 @@ namespace org.critterai.nav
         /// <summary>
         /// Creates a new crowd manager.
         /// </summary>
-        /// <param name="maxAgents">The maximum number of agents that can
-        /// be added to the manager.</param>
-        /// <param name="maxAgentRadius">The maximum allowed agent radius.
+        /// <param name="maxAgents">
+        /// The maximum number of agents that can be added to the manager.
         /// </param>
-        /// <param name="navmesh">The navigation mesh to use for path planning and steering
-        /// related queries.</param>
+        /// <param name="maxAgentRadius">The maximum allowed agent radius.</param>
+        /// <param name="navmesh">
+        /// The navigation mesh to use for path planning and steering related queries.
+        /// </param>
         /// <returns>A new crowd manager, or null on error.</returns>
         public static CrowdManager Create(int maxAgents, float maxAgentRadius, Navmesh navmesh)
         {
@@ -217,8 +225,7 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Immediately frees all unmanaged resources allocated by the
-        /// object.
+        /// Immediately frees all unmanaged resources allocated by the object.
         /// </summary>
         public override void RequestDisposal()
         {
@@ -252,12 +259,13 @@ namespace org.critterai.nav
         /// Sets the shared avoidance configuration for a specified index.
         /// </summary>
         /// <remarks>
-        /// Multiple avoidance configurations can be set for the manager with
-        /// agents assigned to different avoidance behaviors via the
-        /// <see cref="CrowdAgentParams"/> object.
+        /// <para>
+        /// Multiple avoidance configurations can be set for the manager with agents assigned to 
+        /// different avoidance behaviors via the <see cref="CrowdAgentParams"/> object.
+        /// </para>
         /// </remarks>
-        /// <param name="index">The index. 
-        /// [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
+        /// <param name="index">
+        /// The index. [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
         /// </param>
         /// <param name="config">The avoidance configuration.</param>
         /// <returns>True if the configuration is successfully set.</returns>
@@ -276,11 +284,13 @@ namespace org.critterai.nav
         /// Gets the shared avoidance configuration for a specified index.
         /// </summary>
         /// <remarks>
-        /// Getting a configuration for an index that has not been set will
-        /// return a configuration in an undefined state.
+        /// <para>
+        /// Getting a configuration for an index that has not been set will return a configuration 
+        /// in an undefined state.
+        /// </para>
         /// </remarks>
-        /// <param name="index">The index 
-        /// [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>].
+        /// <param name="index">
+        /// The index. [Limits: 0 &lt;= value &lt; <see cref="MaxAvoidanceParams"/>]
         /// </param>
         /// <returns>An avoidance configuration.</returns>
         public CrowdAvoidanceParams GetAvoidanceConfig(int index)
@@ -300,12 +310,13 @@ namespace org.critterai.nav
         /// <summary>
         /// Adds an agent to the manager.
         /// </summary>
-        /// <param name="position">The current position of the agent within the
-        /// navigation mesh.
+        /// <param name="position">
+        /// The current position of the agent within the navigation mesh.
         /// </param>
         /// <param name="agentParams">The agent configuration.</param>
-        /// <returns>A reference to the agent object created by the manager,
-        /// or null on error.</returns>
+        /// <returns>
+        /// A reference to the agent object created by the manager, or null on error.
+        /// </returns>
         public CrowdAgent AddAgent(Vector3 position
             , CrowdAgentParams agentParams)
         {
@@ -334,8 +345,10 @@ namespace org.critterai.nav
         /// Removes an agent from the manager.
         /// </summary>
         /// <remarks>
-        /// The <see cref="CrowdAgent"/> object will be immediately disposed.
-        /// Continued use will result in undefined behavior.
+        /// <para>
+        /// The <see cref="CrowdAgent"/> object will be immediately disposed. Continued use will 
+        /// result in undefined behavior.
+        /// </para>
         /// </remarks>
         /// <param name="agent">The agent to remove.</param>
         public void RemoveAgent(CrowdAgent agent)
@@ -355,8 +368,7 @@ namespace org.critterai.nav
         /// <summary>
         /// Updates the steering and positions for all agents.
         /// </summary>
-        /// <param name="deltaTime">The time in seconds to update the
-        /// simulation.</param>
+        /// <param name="deltaTime">The time in seconds to update the simulation.</param>
         public void Update(float deltaTime)
         {
             if (IsDisposed)
@@ -369,11 +381,14 @@ namespace org.critterai.nav
         /// The extents used by the manager when it performs queries against the navigation mesh.
         /// </summary>
         /// <remarks>
-        /// <para>All agents and targets should remain within these
-        /// distances of the navigation mesh surface.  For example, if
-        /// the y-axis extent is 1.0, then the agent should remain between
-        /// 1.0 above and 1.0 below the surface of the mesh.</para>
-        /// <para>The extents remains constant over the life of the crowd manager.</para>
+        /// <para>
+        /// All agents and targets should remain within these distances of the navigation mesh 
+        /// surface.  For example, if the y-axis extent is 1.0, then the agent should remain 
+        /// between 1.0 above and 1.0 below the surface of the mesh.
+        /// </para>
+        /// <para>
+        /// The extents remains constant over the life of the crowd manager.
+        /// </para>
         /// </remarks>
         /// <returns>The extents.</returns>
         public Vector3 GetQueryExtents()
@@ -404,10 +419,11 @@ namespace org.critterai.nav
         /// The navmesh query used by the manager.
         /// </summary>
         /// <remarks>
-        /// <para>The configuration of this query makes it useful only for
-        /// local pathfinding queries. (Its search size is limited.) Also,
-        /// it is marked as <see cref="NavmeshQuery.IsRestricted">
-        /// restricted.</see></para>
+        /// <para>
+        /// The configuration of this query makes it useful only for local pathfinding queries. 
+        /// (Its search size is limited.) Also, it is marked as 
+        /// <see cref="NavmeshQuery.IsRestricted"> restricted</see>.
+        /// </para>
         /// </remarks>
         public NavmeshQuery Query { get { return mQuery; } }
     }

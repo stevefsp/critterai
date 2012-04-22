@@ -29,8 +29,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Provides high level information related to a <see cref="NavmeshTile"/>
-    /// object.
+    /// Provides high level information related to a <see cref="NavmeshTile"/> object.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct NavmeshTileHeader
@@ -89,8 +88,7 @@ namespace org.critterai.nav
         public int detailMeshCount;
 
         /// <summary>
-        /// The number of unique vertices in the detail mesh.  
-        /// (In addition to the polygon vertices.)
+        /// The number of unique vertices in the detail mesh. (In addition to the polygon vertices.)
         /// </summary>
         public int detailVertCount;
 
@@ -100,8 +98,7 @@ namespace org.critterai.nav
         public int detailTriCount;
 
         /// <summary>
-        /// The number of bounding volume nodes. (Zero if bounding volumes
-        /// are disabled.)
+        /// The number of bounding volume nodes. (Zero if bounding volumes are disabled.)
         /// </summary>
         public int bvNodeCount;
 
@@ -116,8 +113,8 @@ namespace org.critterai.nav
         public int connBase;
 
         /// <summary>
-        /// The minimum floor to 'ceiling' height that will still 
-        /// allow the floor area to be considered traversable.
+        /// The minimum floor to 'ceiling' height that will still  \allow the floor area to be 
+        /// considered traversable.
         /// </summary>
         public float walkableHeight;
 
@@ -144,8 +141,8 @@ namespace org.critterai.nav
         public Vector3 boundsMax;
 
         /// <summary>
-        /// The bounding volumn quantization factor. (For converting from world
-        /// to bounding volumn coordinates.)
+        /// The bounding volumn quantization factor. (For converting from world to bounding volumn 
+        /// coordinates.)
         /// </summary>
         public float bvQuantFactor;
 

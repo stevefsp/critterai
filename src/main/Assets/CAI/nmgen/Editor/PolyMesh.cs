@@ -36,7 +36,7 @@ namespace org.critterai.nmgen
     /// Represents a polygon mesh suitable for use in building a  a navigation mesh.
     /// </summary>
     /// <remarks>
-    /// <para>Warning: The serializable attribute and interface will be removed 
+    /// <para><b>Warning:</b> The serializable attribute and interface will be removed 
     /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>Represents a mesh of potentially overlapping convex polygons of 
     ///  between three and <see cref="MaxVertsPerPoly"/> vertices. The mesh 

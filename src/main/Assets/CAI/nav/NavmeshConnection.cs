@@ -40,8 +40,7 @@ namespace org.critterai.nav
         public const uint BiDirectionalFlag = 0x01;
 
         /// <summary>
-        /// The endpoints of the connection.
-        /// [(start, end)].
+        /// The endpoints of the connection. [(start, end)].
         /// </summary>
         /// <remarks>
         /// <para>

@@ -24,8 +24,7 @@ using org.critterai.nav;
 using org.critterai.nav.u3d;
 
 /// <summary>
-/// Navigation mesh data that is baked at design time and creates a <see cref="Navmesh"/> object 
-/// at run-time.
+/// Navigation mesh data that is baked at design time.
 /// </summary>
 [System.Serializable]
 public sealed class CAIBakedNavmesh
@@ -77,8 +76,7 @@ public sealed class CAIBakedNavmesh
     /// <summary>
     /// Creates a new <see cref="Navmesh"/> object from the mesh data
     /// </summary>
-    /// <returns>A new <see cref="Navmesh"/> object. Or null if the mesh is not available.
-    /// </returns>
+    /// <returns>A new <see cref="Navmesh"/> object. Or null if the mesh is not available.</returns>
     public Navmesh GetNavmesh()
     {
         if (!HasNavmesh)

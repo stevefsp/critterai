@@ -36,13 +36,13 @@ namespace org.critterai.nmgen
     /// <remarks>
     /// <para>The standard use case is as follows:</para>
     /// <ol>
-    /// <li>Create the builder using <see cref="Build"/></li>
+    /// <li>Create the builder using <see cref="Create"/></li>
     /// <li>Call <see cref="Build"/> until it returns true.</li>
     /// <li>Get the result from <see cref="Result"/>.</li>
     /// </ol>
-    /// <para>A builder object cannot be re-used.</para>
-    /// <para>The build is safe to run on a separate thread as long as the
-    /// objects used to create the builder are not changed while the build is in-progress.</para>
+    /// <para>A builder object cannot be re-used. (Single use.)</para>
+    /// <para>The builder is safe to run on a separate thread as long as the
+    /// objects used to create the builder are not mutated while the build is in-progress.</para>
     /// </remarks>
     public sealed class ChunkyTriMeshBuilder
     {
@@ -496,14 +496,14 @@ namespace org.critterai.nmgen
         /// Creates a single use builder.
         /// </summary>
         /// <remarks>
-        /// <para>Will return null on parameter errors, a mesh with no triangles,
+        /// <para>Will return null on parameter errors, an input mesh with zero triangles,
         /// and structural issues in the mesh object or area array.  Does not perform a validation 
         /// of the mesh or area content.  (E.g. Does not check for invalid mesh indices.)</para>
         /// </remarks>
         /// <param name="mesh">The triangle mesh to chunk.</param>
         /// <param name="areas">The areas for each triangle in the mesh. (Null not allowed.)</param>
         /// <param name="trisPerChunk">The maximum number of triangles per chunk.
-        /// [>= <see cref="MinAllowedTrisPerChunk"/></param>
+        /// [>= <see cref="MinAllowedTrisPerChunk"/>]</param>
         /// <returns>A builder, or null on error.</returns>
         public static ChunkyTriMeshBuilder Create(TriangleMesh mesh
             , byte[] areas

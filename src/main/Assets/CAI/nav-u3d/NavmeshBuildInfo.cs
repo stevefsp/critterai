@@ -23,8 +23,7 @@
 namespace org.critterai.nav.u3d
 {
     /// <summary>
-    /// Represents the core configuration values used during the build of a
-    /// <see cref="Navmesh"/> object.
+    /// Represents the core configuration values used during the build of a <see cref="Navmesh"/> object.
     /// </summary>
     /// <remarks>
     /// <para>

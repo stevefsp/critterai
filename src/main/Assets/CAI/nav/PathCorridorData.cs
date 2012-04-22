@@ -33,12 +33,13 @@ namespace org.critterai.nav
     /// Path corridor data.
     /// </summary>
     /// <remarks>
-    /// <para>Used as a marshalling buffer for corridor data.
+    /// <para>
+    /// Used as a marshalling buffer for corridor data.
     /// </para>
     /// <para>
-    /// Certain methods that take objects of this type require a fixed buffer 
-    /// size equal to <see cref="MarshalBufferSize"/>.  So be careful when 
-    /// initializing and using objects of this type.
+    /// Certain methods that take objects of this type require a fixed buffer size equal to 
+    /// <see cref="MarshalBufferSize"/>.  So be careful when initializing and using objects of 
+    /// this type.
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
@@ -62,10 +63,8 @@ namespace org.critterai.nav
 
         /// <summary>
         /// An ordered list of polygon references representing the corridor.
+        /// [(polyRef) * <see cref="pathCount"/>]
         /// </summary>
-        /// <remarks>
-        /// <para>[polyRef * <see cref="pathCount"/></para>
-        /// </remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MarshalBufferSize)]
         public uint[] path;
 
@@ -75,8 +74,8 @@ namespace org.critterai.nav
         public int pathCount;
 
         /// <summary>
-        /// Creates an object with buffers sized for use with interop method 
-        /// calls. (Maximum Path Size = <see cref="MarshalBufferSize"/>)
+        /// Creates an object with buffers sized for use with interop method calls. 
+        /// (Maximum Path Size = <see cref="MarshalBufferSize"/>)
         /// </summary>
         public PathCorridorData() 
         {
@@ -86,8 +85,7 @@ namespace org.critterai.nav
         /// <summary>
         /// Creates an object with a non-standard buffer size.
         /// </summary>
-        /// <param name="maxPathSize">The maximum path size the buffer
-        /// can hold.</param>
+        /// <param name="maxPathSize">The maximum path size the buffer can hold.</param>
         public PathCorridorData(int maxPathSize)
         {
             path = new uint[maxPathSize];

@@ -26,8 +26,9 @@ namespace org.critterai.nmbuild
     /// Flags for common build options.
     /// </summary>
     /// <remarks>
-    /// <para>Most builds have all flags set except 
-    /// <see cref="LedgeSpansNotWalkable"/>.</para>
+    /// <para>
+    /// Most builds have all flags set except <see cref="LedgeSpansNotWalkable"/>.
+    /// </para>
     /// </remarks>
     /// <seealso cref="ProcessorSet.CreateStandard"/>
     /// <seealso cref="ProcessorSet.GetStandard"/>

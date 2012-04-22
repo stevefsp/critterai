@@ -27,14 +27,17 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Configuration parameters that define steering behaviors for agents
-    /// managed by a crowd manager.
+    /// Configuration parameters that define steering behaviors for agents managed by a crowd 
+    /// manager.
     /// </summary>
     /// <remarks>
-    /// <para>Minimal available documentation.</para>
-    /// <para>Implemented as a class with public fields in order to support Unity
-    /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</para>
+    /// <para>
+    /// Minimal available documentation.
+    /// </para>
+    /// <para>
+    /// Implemented as a class with public fields in order to support Unity serialization.  Care 
+    /// must be taken not to set the fields to invalid values.
+    /// </para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -113,8 +116,7 @@ namespace org.critterai.nav
         public CrowdAvoidanceParams() { }
 
         /// <summary>
-        /// Clones the current object. (Usually more appropriate than sharing
-        /// references.)
+        /// Clones the current object. (Usually more appropriate than sharing references.)
         /// </summary>
         /// <returns>A clone of the object.</returns>
         public CrowdAvoidanceParams Clone()

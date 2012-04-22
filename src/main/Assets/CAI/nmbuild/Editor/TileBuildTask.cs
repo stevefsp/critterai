@@ -25,10 +25,11 @@ using org.critterai.nav;
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// A task used manage the build of an a tile from NMGen and connection data.
+    /// A task used to manage the build of an a tile from NMGen and connection data.
     /// </summary>
     /// <remarks>
-    /// <para>This task performs the tile build step in the navigation mesh build pipeline.
+    /// <para>
+    /// This task performs the tile build step in the navigation mesh build pipeline.
     /// </para>
     /// </remarks>
     public sealed class TileBuildTask
@@ -76,10 +77,14 @@ namespace org.critterai.nmbuild
         /// Creates a new task.
         /// </summary>
         /// <remarks>
-        /// <para>The task should only be marked as thread-safe if the data parameters are treated 
-        /// as immutable while the task is running.</para>
-        /// <para>Creation will fail on null parameters, invalid tile indices, and an empty
-        /// polygon mesh.</para>
+        /// <para>
+        /// The task should only be marked as thread-safe if the data parameters are treated 
+        /// as immutable while the task is running.
+        /// </para>
+        /// <para>
+        /// Creation will fail on null parameters, invalid tile indices, and an empty
+        /// polygon mesh.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile within the tile grid. (x, z)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (x, z)</param>

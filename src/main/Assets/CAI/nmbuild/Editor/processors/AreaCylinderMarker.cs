@@ -73,8 +73,10 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
-        /// state.</para>
+        /// <para>
+        /// The area will be applied during the <see cref="NMGenState.CompactFieldBuild"/>
+        /// state.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>
@@ -104,10 +106,9 @@ namespace org.critterai.nmbuild
         /// <param name="name">The processor name.</param>
         /// <param name="priority">The processor priority.</param>
         /// <param name="area">The area to apply.</param>
-        /// <param name="centerBase">The center of the base of the cylinder.
-        /// </param>
+        /// <param name="centerBase">The center of the base of the cylinder.</param>
         /// <param name="radius">The radius of the cylinder.</param>
-        /// <param name="height">The height of the cylinder.</param>
+        /// <param name="height">The height of the cylinder. (From the base.)</param>
         /// <returns>A new area marker, or null on error.</returns>
         public static AreaCylinderMarker Create(string name, int priority, byte area
             , Vector3 centerBase, float radius, float height)

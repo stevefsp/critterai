@@ -29,14 +29,17 @@ namespace org.critterai.nav.u3d
     /// Provides methods useful for debugging navigation.
     /// </summary>
     /// <remarks>
-    /// <para>All draw methods use GL.  So they should generally 
-    /// be called from within the OnRenderObject() method.</para></remarks>
+    /// <para>
+    /// All draw methods use GL, so they should generally be called from within the 
+    /// OnRenderObject() method.
+    /// </para>
+    /// </remarks>
     public static class NavDebug
     {
         #region Static Config
 
         /// <summary>
-        /// The alpha to use for the surface fill.
+        /// The alpha to use for surface fill.
         /// </summary>
         public static float surfaceAlpha = 0.25f;
 
@@ -69,7 +72,7 @@ namespace org.critterai.nav.u3d
             new Color(Color.green.r, Color.green.g, Color.green.b, 0.5f);
 
         /// <summary>
-        /// The scale to use for goal marks.
+        /// The scale to use for goal markers.
         /// </summary>
         public static float goalScale = 0.8f;
 
@@ -87,8 +90,9 @@ namespace org.critterai.nav.u3d
         /// Draws a debug visualization of the navigation mesh.
         /// </summary>
         /// <param name="mesh">The mesh to draw.</param>
-        /// <param name="colorByArea">If true, the mesh will be colored 
-        /// by polygon area id.  If false, will be colored by tile index.</param>
+        /// <param name="colorByArea">
+        /// If true, will be colored by polygon area. If false, will be colored by tile index.
+        /// </param>
         public static void Draw(Navmesh mesh, bool colorByArea)
         {
             int count = mesh.GetMaxTiles();
@@ -101,13 +105,18 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Draws a debug visualization of the specified navigation mesh tile.
         /// </summary>
-        /// <remarks>This method is safe to call on empty tile locations.</remarks>
+        /// <remarks>
+        /// <para>
+        /// This method is safe to call on empty tile locations.
+        /// </para>
+        /// </remarks>
         /// <param name="mesh">The mesh.</param>
         /// <param name="tx">The tile grid x-location.</param>
         /// <param name="tz">The tile grid z-location.</param>
         /// <param name="layer">The tile layer.</param>
-        /// <param name="colorByArea">If true, will be colored  by polygon area id.  
-        /// If false, will be colored by tile index.</param>
+        /// <param name="colorByArea">
+        /// If true, will be colored by polygon area. If false, will be colored by tile index.
+        /// </param>
         public static void Draw(Navmesh mesh, int tx, int tz, int layer, bool colorByArea)
         {
             NavmeshTile tile = mesh.GetTile(tx, tz, layer);
@@ -139,10 +148,12 @@ namespace org.critterai.nav.u3d
         /// highlighted.
         /// </summary>
         /// <param name="mesh">The mesh to draw.</param>
-        /// <param name="markPolys">The reference ids of the polygons that should be highlighted.
+        /// <param name="markPolys">
+        /// The references of the polygons that should be highlighted.
         /// </param>
-        /// <param name="polyCount">The number of polygons in the <paramref name="markPolys"/> 
-        /// array.</param>
+        /// <param name="polyCount">
+        /// The number of polygons in the <paramref name="markPolys"/> array.
+        /// </param>
         public static void Draw(Navmesh mesh, uint[] markPolys, int polyCount)
         {
             int count = mesh.GetMaxTiles();
@@ -159,8 +170,7 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Draws a debug visualization of a corridor.
         /// </summary>
-        /// <param name="mesh">The navigation mesh associated with the corridor.
-        /// </param>
+        /// <param name="mesh">The navigation mesh associated with the corridor.</param>
         /// <param name="corridor">The corridor to draw.</param>
         public static void Draw(Navmesh mesh, PathCorridorData corridor)
         {
@@ -253,8 +263,11 @@ namespace org.critterai.nav.u3d
         /// Draws a debug visualization of an individual navmesh tile.
         /// </summary>
         /// <remarks>
-        /// <para>The tile will be checked to see if it is in use before it is
-        /// drawn.  So there is no need for caller to do so.</para></remarks>
+        /// <para>
+        /// The tile will be checked to see if it is in use before it is drawn.  So there is no 
+        /// need for caller to do so.
+        /// </para>
+        /// </remarks>
         private static void Draw(NavmeshTile tile
             , NavmeshQuery query, uint[] markPolys, int markPolyCount
             , int colorId)
@@ -567,18 +580,19 @@ namespace org.critterai.nav.u3d
         /// Returns the 3D centroids of the provided navigation mesh polygons.
         /// </summary>
         /// <remarks>
-        /// <para>If a polygon does not exist within the mesh, its associated centroid will not 
+        /// <para>
+        /// If a polygon does not exist within the mesh, its associated centroid will not 
         /// be altered.  So some centroid data will be invalid if  <paramref name="polyCount"/> 
-        /// is not equal to the result count.</para>
+        /// is not equal to the result count.
+        /// </para>
         /// </remarks>
-        /// <param name="mesh">The navigation mesh containing the polygons.
-        /// </param>
-        /// <param name="polyRefs">The reference id's of the polygons.</param>
+        /// <param name="mesh">The navigation mesh containing the polygons.</param>
+        /// <param name="polyRefs">The references of the polygons.</param>
         /// <param name="polyCount">The number of polygons.</param>
-        /// <param name="centroids">The centroids for the polygons.
-        /// [Length: >= polyCount] (Out)</param>
-        /// <returns>The actual number of polygons found within the mesh.
-        /// </returns>
+        /// <param name="centroids">
+        /// The centroids for the polygons. [Length: >= polyCount] (Out)
+        /// </param>
+        /// <returns>The actual number of polygons found within the mesh. </returns>
         public static int GetCentroids(Navmesh mesh
             , uint[] polyRefs
             , int polyCount

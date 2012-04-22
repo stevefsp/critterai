@@ -35,11 +35,17 @@ namespace org.critterai.nmbuild
     /// Represents triangle mesh and area data used as input to the NMGen build process.
     /// </summary>
     /// <remarks>
-    /// <para>Objects of this type are created using the <see cref="InputGeometryBuilder"/>.</para>
-    /// <para>Objects of this type arguarenteed to be thread-safe, immutable, and contain at least 
-    /// one triangle. There is no empty state.</para>
-    /// <para>The data storage is optimized for the NMGen build process. So this is not a general 
-    /// use class.</para>
+    /// <para>
+    /// Objects of this type are created using the <see cref="InputGeometryBuilder"/> class.
+    /// </para>
+    /// <para>
+    /// Objects of this type are guarenteed to be thread-safe, immutable, and contain at least 
+    /// one triangle. There is no empty state.
+    /// </para>
+    /// <para>
+    /// The data storage is optimized for the NMGen build process, so this is not a general 
+    /// use class.
+    /// </para>
     /// </remarks>
     /// <seealso cref="InputGeometryCompiler"/>
     /// <seealso cref="InputGeometryBuilder"/>
@@ -78,7 +84,9 @@ namespace org.critterai.nmbuild
         /// Extracts all input geometry for inspection.
         /// </summary>
         /// <remarks>
-        /// <para>This method exists to permit debugging.</para>
+        /// <para>
+        /// This method exists to permit debugging.
+        /// </para>
         /// </remarks>
         /// <param name="areas">The triangle areas.</param>
         /// <returns>The triangle mesh.</returns>
@@ -91,9 +99,13 @@ namespace org.critterai.nmbuild
         /// Extracts all input geometry for a particular bounds.
         /// </summary>
         /// <remarks>
-        /// <para>This method exists to permit debugging.</para>
-        /// <para>The returned result is only guarenteed to be the result 'seen' by the NMGen build
-        /// process.</para>
+        /// <para>
+        /// This method exists to permit debugging.
+        /// </para>
+        /// <para>
+        /// The returned result is only guarenteed to be the result 'seen' by the NMGen build
+        /// process.
+        /// </para>
         /// </remarks>
         /// <param name="xmin">The minimum x-axis bounds.</param>
         /// <param name="zmin">The minimum z-axis bounds.</param>

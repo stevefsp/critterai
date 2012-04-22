@@ -49,7 +49,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// The area id assigned to the span.
+        /// The area assigned to the span.
         /// </summary>
         public byte Area { get { return (byte)(mPacked >> 26); } }
     }

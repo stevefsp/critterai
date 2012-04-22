@@ -403,17 +403,12 @@ namespace org.critterai.nav
         /// will not be usable. (Buffers won't be initialized, all maximum
         /// size values set to zero.)</para>
         /// </remarks>
-        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
-        /// </param>
+        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.</param>
         /// <param name="maxPolys">The maximum allowed polygons.</param>
-        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.
-        /// </param>
-        /// <param name="maxDetailVerts">The maximum allowed detail vertices.
-        /// </param>
-        /// <param name="maxDetailTris">The maximum allowed detail vetices.
-        /// </param>
-        /// <param name="maxConns">The maximum allowed off-mesh connections.
-        /// </param>
+        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.</param>
+        /// <param name="maxDetailVerts">The maximum allowed detail vertices.</param>
+        /// <param name="maxDetailTris">The maximum allowed detail vetices.</param>
+        /// <param name="maxConns">The maximum allowed off-mesh connections.</param>
         public NavmeshTileBuildData(int maxPolyVerts
                 , int maxPolys
                 , int maxVertsPerPoly
@@ -449,15 +444,11 @@ namespace org.critterai.nav
         /// will not be usable. (Buffers won't be initialized, all maximum
         /// size values set to zero.)</para>
         /// </remarks>
-        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
-        /// </param>
+        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.</param>
         /// <param name="maxPolys">The maximum allowed polygons.</param>
-        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.
-        /// </param>
-        /// <param name="maxDetailVerts">The maximum allowed detail vertices.
-        /// </param>
-        /// <param name="maxDetailTris">The maximum allowed detail vetices.
-        /// </param>
+        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.</param>
+        /// <param name="maxDetailVerts">The maximum allowed detail vertices.</param>
+        /// <param name="maxDetailTris">The maximum allowed detail vetices.</param>
         public NavmeshTileBuildData(int maxPolyVerts
                 , int maxPolys
                 , int maxVertsPerPoly
@@ -488,17 +479,15 @@ namespace org.critterai.nav
         /// Constructor. (No detail mesh.)
         /// </summary>
         /// <remarks>
-        /// <para>If invalid parameter values are supplied the resulting object
-        /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</para>
+        /// <para>
+        /// If invalid parameter values are supplied the resulting object will not be usable. 
+        /// (Buffers won't be initialized, all maximum size values set to zero.)
+        /// </para>
         /// </remarks>
-        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
-        /// </param>
+        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.</param>
         /// <param name="maxPolys">The maximum allowed polygons.</param>
-        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.
-        /// </param>
-        /// <param name="maxConns">The maximum allowed off-mesh connections.
-        /// </param>
+        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.</param>
+        /// <param name="maxConns">The maximum allowed off-mesh connections.</param>
         public NavmeshTileBuildData(int maxPolyVerts
                 , int maxPolys
                 , int maxVertsPerPoly
@@ -528,15 +517,14 @@ namespace org.critterai.nav
         /// Constructor. (No detail mesh or off-mesh connections.)
         /// </summary>
         /// <remarks>
-        /// <para>If invalid parameter values are supplied the resulting object
-        /// will not be usable. (Buffers won't be initialized, all maximum
-        /// size values set to zero.)</para>
+        /// <para>
+        /// If invalid parameter values are supplied the resulting object will not be usable. 
+        /// (Buffers won't be initialized, all maximum size values set to zero.)
+        /// </para>
         /// </remarks>
-        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.
-        /// </param>
+        /// <param name="maxPolyVerts">The maximum allowed polygon vertices.</param>
         /// <param name="maxPolys">The maximum allowed polygons.</param>
-        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.
-        /// </param>
+        /// <param name="maxVertsPerPoly">The maximum vertices per polygon.</param>
         public NavmeshTileBuildData(int maxPolyVerts
                 , int maxPolys
                 , int maxVertsPerPoly)
@@ -659,17 +647,14 @@ namespace org.critterai.nav
         /// <param name="tileZ">The tile grid y-location.</param>
         /// <param name="tileLayer">The tile layer.</param>
         /// <param name="tileUserId">The tile's user assigned id.</param>
-        /// <param name="boundsMin">The minumum bounds.
-        /// </param>
-        /// <param name="boundsMax">The maximum bounds.
-        /// </param>
+        /// <param name="boundsMin">The minumum bounds.</param>
+        /// <param name="boundsMax">The maximum bounds.</param>
         /// <param name="xzCellSize">The xz-plane cell size.</param>
         /// <param name="yCellSize">The y-axis cell size.</param>
         /// <param name="walkableHeight">The walkable height.</param>
         /// <param name="walkableRadius">The walkable radius.</param>
         /// <param name="walkableStep">The walkable step.</param>
-        /// <param name="bvTreeEnabled">True if bounding volumes should be
-        /// used.</param>
+        /// <param name="bvTreeEnabled">True if bounding volumes should beused.</param>
         /// <returns>True if the load succeeded.</returns>
         public bool LoadBase(int tileX
             , int tileZ
@@ -879,8 +864,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the vertex information for each polygon.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="PolyVertCount"/> * 3]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="PolyVertCount"/> * 3]
+        /// </param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetPolyVerts(ushort[] buffer)
         {
@@ -897,8 +883,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of polygon and neighbor information. 
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="PolyCount"/>  * 2 * <see cref="MaxVertsPerPoly"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into.
+        /// [Length: >= <see cref="PolyCount"/>  * 2 * <see cref="MaxVertsPerPoly"/>]
+        /// </param>
         /// <returns>The number of polygons returned, or -1 on error.</returns>
         public int GetPolys(ushort[] buffer)
         {
@@ -915,8 +903,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the area for each polygon.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="PolyCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="PolyCount"/>]
+        /// </param>
         /// <returns>The number of areas returned, or -1 on error.</returns>
         public int GetPolyAreas(byte[] buffer)
         {
@@ -933,8 +922,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the user-defined flags for each polygon.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="PolyCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="PolyCount"/>]
+        /// </param>
         /// <returns>The number of flags returned, or -1 on error.</returns>
         public int GetPolyFlags(ushort[] buffer)
         {
@@ -951,10 +941,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the sub-mesh data for the detail mesh.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="PolyCount"/>] * 4</param>
-        /// <returns>The number of sub-meshes returned, or -1 on error.
-        /// </returns>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="PolyCount"/>] * 4
+        /// </param>
+        /// <returns>The number of sub-meshes returned, or -1 on error.</returns>
         public int GetDetailMeshes(uint[] buffer)
         {
             if (mDetailMeshes == IntPtr.Zero
@@ -970,8 +960,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the triangle/flag data for the detail mesh.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="DetailTriCount"/> * 4]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="DetailTriCount"/> * 4]
+        /// </param>
         /// <returns>The number of triangles returned, or -1 on error.</returns>
         public int GetDetailTris(byte[] buffer)
         {
@@ -988,8 +979,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the vertex data for the detail mesh.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="DetailVertCount"/> * 3]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="DetailVertCount"/> * 3]
+        /// </param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetDetailVerts(Vector3[] buffer)
         {
@@ -1008,8 +1000,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the off-mesh connection vertices.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="ConnCount"/> * 6]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/> * 6]
+        /// </param>
         /// <returns>The number of vertices returned, or -1 on error.</returns>
         public int GetConnVerts(Vector3[] buffer)
         {
@@ -1028,8 +1021,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the radii for off-mesh connections.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="ConnCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/>]
+        /// </param>
         /// <returns>The number of radii returned, or -1 on error.</returns>
         public int GetConnRadii(float[] buffer)
         {
@@ -1046,8 +1040,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the user-defined flags for off-mesh connections.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="ConnCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/>]
+        /// </param>
         /// <returns>The number of flags returned, or -1 on error.</returns>
         public int GetConnFlags(ushort[] buffer)
         {
@@ -1064,8 +1059,9 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the areas for off-mesh connections.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into. 
-        /// [Length: >= <see cref="ConnCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/>]
+        /// </param>
         /// <returns>The number of areas returned, or -1 on error.</returns>
         public int GetConnAreas(byte[] buffer)
         {
@@ -1082,10 +1078,10 @@ namespace org.critterai.nav
         /// <summary>
         /// Returns a copy of the direction flags for off-mesh connections.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="ConnCount"/>]</param>
-        /// <returns>The number of direction flags returned, or -1 on error.
-        /// </returns>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/>]
+        /// </param>
+        /// <returns>The number of direction flags returned, or -1 on error.</returns>
         public int GetConnDirs(byte[] buffer)
         {
             if (mConnDirs == IntPtr.Zero
@@ -1101,8 +1097,9 @@ namespace org.critterai.nav
         /// <summary>
         /// The user-defined ids for off-mesh connections.
         /// </summary>
-        /// <param name="buffer">The buffer to load the results into.
-        /// [Length: >= <see cref="ConnCount"/>]</param>
+        /// <param name="buffer">
+        /// The buffer to load the results into. [Length: >= <see cref="ConnCount"/>]
+        /// </param>
         /// <returns>The number of user ids returned, or -1 on error.</returns>
         public int GetConnUserIds(uint[] buffer)
         {

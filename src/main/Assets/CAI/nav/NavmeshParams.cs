@@ -33,9 +33,10 @@ namespace org.critterai.nav
     /// Navigation mesh configuration parameters.
     /// </summary>
     /// <remarks>
-    /// <para>Implemented as a class with public fields in order to support Unity
-    /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</para>
+    /// <para>
+    /// Implemented as a class with public fields in order to support Unity serialization.  
+    /// Care must be taken not to set the fields to invalid values.
+    /// </para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -78,9 +79,11 @@ namespace org.critterai.nav
         /// <param name="tileWidth">The width of each tile. (Along the x-axis.)</param>
         /// <param name="tileDepth">The depth of each tile. (Along the z-axis.)</param>
         /// <param name="maxTiles">
-        /// The maximum number of tiles the navigation mesh can contain.</param>
-        /// <param name="maxPolysPerTile">
-        /// The maximum number of polygons each tile can contain.</param>
+        /// The maximum number of tiles the navigation mesh can contain.
+        /// </param>
+        /// <param name="maxPolysPerTile"> 
+        /// The maximum number of polygons each tile can contain.
+        /// </param>
         public NavmeshParams(Vector3 origin
             , float tileWidth, float tileDepth
             , int maxTiles, int maxPolysPerTile)

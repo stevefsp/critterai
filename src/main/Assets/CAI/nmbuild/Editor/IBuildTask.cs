@@ -22,7 +22,7 @@
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// Represents the interface for a standard build task.
+    /// A standard build task.
     /// </summary>
     public interface IBuildTask
         : IPriorityItem
@@ -32,8 +32,12 @@ namespace org.critterai.nmbuild
         /// its state.
         /// </summary>
         /// <remarks>
-        /// <para>If true, the <see cref="Run"/> method will never throw exceptions.</para>
-        /// <para>The value of this property is immutable after construction.</para>
+        /// <para>
+        /// If true, the <see cref="Run"/> method will never throw exceptions.
+        /// </para>
+        /// <para>
+        /// The value of this property is immutable after construction.
+        /// </para>
         /// </remarks>
         bool IsThreadSafe { get; }
 
@@ -46,8 +50,10 @@ namespace org.critterai.nmbuild
         /// Messages available after the task is finished.
         /// </summary>
         /// <remarks>
-        /// <para>Will return a zero length array if the task is not finished or there are
-        /// no messages.  Will always provide a message if on abort.</para>
+        /// <para>
+        /// Will return a zero length array if the task is not finished or there are
+        /// no messages.  Will always provide a message on abort.
+        /// </para>
         /// </remarks>
         string[] Messages { get; }
 
@@ -55,7 +61,8 @@ namespace org.critterai.nmbuild
         /// Requests an abort of the task.
         /// </summary>
         /// <remarks>
-        /// <para>There may be a delay in the actual abort for tasks running on a separate thread.
+        /// <para>
+        /// There may be a delay in the actual abort for tasks running on a separate thread.
         /// </para>
         /// </remarks>
         /// <param name="reason">The reason for the abort.</param>
@@ -70,8 +77,10 @@ namespace org.critterai.nmbuild
         /// Runs the task through to a finished state.
         /// </summary>
         /// <remarks>
-        /// <para>If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
-        /// thread form the object(s) that are monitoring the task state.</para>
+        /// <para>
+        /// If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
+        /// thread from the object(s) that are monitoring the task state.
+        /// </para>
         /// </remarks>
         void Run();
     }

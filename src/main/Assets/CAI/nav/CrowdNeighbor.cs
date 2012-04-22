@@ -24,8 +24,8 @@ using System.Runtime.InteropServices;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Provides neighbor data for agents managed by a
-    /// crowd manager. (See: <see cref="CrowdAgent.GetNeighbors"/>)
+    /// Provides neighbor data for agents managed by a crowd manager. 
+    /// (See: <see cref="CrowdAgent.GetNeighbors"/>)
     /// </summary>
     /// <seealso cref="CrowdManager"/>
     /// <see cref="CrowdAgent"/>
@@ -35,12 +35,15 @@ namespace org.critterai.nav
         /// <summary>
         /// The maximum number of agent neighbors. 
         /// </summary>
-        /// <remarks>Used to size buffers of this structure.</remarks>
+        /// <remarks>
+        /// <para>
+        /// Used to size buffers of this structure.
+        /// </para>
+        /// </remarks>
         public const int MaxNeighbors = 6;
 
         /// <summary>
-        /// The index of the neighbor. (In the <see cref="CrowdManager"/>
-        /// agent buffer.)
+        /// The index of the neighbor. (In the <see cref="CrowdManager"/> agent buffer.)
         /// </summary>
         public int index;
 

@@ -121,7 +121,8 @@ namespace org.critterai.nav
         /// </para>
         /// </remarks>
         /// <param name="v">The input vector.</param>
-        /// <returns>A vector equal to the input vector if interop is functioning as expected.
+        /// <returns>
+        /// A vector equal to the input vector if interop is functioning as expected.
         /// </returns>
         public static Vector3 TestVector(Vector3 v)
         {

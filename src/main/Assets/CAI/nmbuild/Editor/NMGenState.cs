@@ -25,8 +25,12 @@ namespace org.critterai.nmbuild
     /// <summary>
     /// Represents the build state for an <see cref="IncrementalBuilder"/> object.
     /// </summary>
-    /// <remarks>There are three finished states: <see cref="Complete"/>,
-    /// <see cref="NoResult"/>, and <see cref="Aborted"/>.</remarks>
+    /// <remarks>
+    /// <para>
+    /// There are three finished states: <see cref="Complete"/>, <see cref="NoResult"/>, 
+    /// and <see cref="Aborted"/>.
+    /// </para>
+    /// </remarks>
     public enum NMGenState
     {
         /// <summary>
@@ -43,9 +47,13 @@ namespace org.critterai.nmbuild
         /// The build was completed and produced a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// <para>The build produced at least a <see cref="org.critterai.nmgen.PolyMesh"/> object 
-        /// with at least one polygon.</para>
+        /// <para>
+        /// The build produced at least a <see cref="org.critterai.nmgen.PolyMesh"/> object 
+        /// with at least one polygon.
+        /// </para>
+        /// <para>
         /// It is possible to complete, but have no resulting meshes. See <see cref="NoResult"/>.
+        /// </para>
         /// </remarks>
         Complete,
 
@@ -53,9 +61,11 @@ namespace org.critterai.nmbuild
         /// The build completed without producing a result. (Finished state.)
         /// </summary>
         /// <remarks>
-        /// <para>While having no result is usually considered a failure when building a single 
+        /// <para>
+        /// While having no result is usually considered a failure when building a single 
         /// tile mesh, it is not unexpected for tiled meshes. (Some tiles may not contain 
-        /// input geometry, or not enough to result in a usable surface.)</para>
+        /// input geometry, or not enough to result in a usable surface.)
+        /// </para>
         /// </remarks>
         NoResult,
 
@@ -88,7 +98,8 @@ namespace org.critterai.nmbuild
         /// At the step to build the detail mesh.
         /// </summary>
         /// <remarks>
-        /// <para>This state will only be reached if the build is set up to produce a detail mesh.
+        /// <para>
+        /// This state will only be reached if the build is set up to produce a detail mesh.
         /// </para>
         /// </remarks>
         DetailMeshBuild,

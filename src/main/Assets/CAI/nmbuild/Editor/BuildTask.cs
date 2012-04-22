@@ -29,8 +29,9 @@ namespace org.critterai.nmbuild
     /// A standard build task that provides data upon completion.
     /// </summary>
     /// <remarks>
-    /// <para>The task is always single use.  The task is constructed, run, then its
-    /// data and messages retrieved.</para>
+    /// <para>
+    /// The task is single use.  The task is constructed, run, then its data and messages retrieved.
+    /// </para>
     /// </remarks>
     /// <typeparam name="T">The type of data provided upon completion.</typeparam>
     public abstract class BuildTask<T>
@@ -76,12 +77,17 @@ namespace org.critterai.nmbuild
         /// Performs a work increment.
         /// </summary>
         /// <remarks>
-        /// <para>This method will be 'reasonably' responsive.  It should block its thread
-        /// for the minimum possible amount of time.</para>
-        /// <para>Called in a loop by the <see cref="Run"/> method until the task is finished.
+        /// <para>
+        /// This method will be 'reasonably' responsive.  It should block its thread
+        /// for the minimum possible amount of time.
         /// </para>
-        /// <para>Not guarenteed to be called.  (I.e. Will not be called if the task is aborted
-        /// before the task is run.)</para>
+        /// <para>
+        /// Called in a loop by the <see cref="Run"/> method until the task is finished.
+        /// </para>
+        /// <para>
+        /// Not guarenteed to be called.  (I.e. Will not be called if the task is aborted
+        /// before the task is run.)
+        /// </para>
         /// </remarks>
         /// <returns>True if the task is not yet finished.  Otherwise false.</returns>
         protected abstract bool LocalUpdate();
@@ -89,20 +95,27 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// Gets the result of the completed task.
         /// </summary>
-        /// <remarks>Called by <see cref="Run"/> after the task completes and before 
+        /// <remarks>
+        /// <para>
+        /// Called by <see cref="Run"/> after the task completes and before 
         /// <see cref="FinalizeTask"/> is run.  Will not be called on tasks in the aborted state.
+        /// </para>
         /// </remarks>
         /// <param name="result">The result of the completed task.</param>
-        /// <returns>True if the result is available, false if the task should abort with no
-        /// result. (I.e. An internal abort.)</returns>
+        /// <returns>
+        /// True if the result is available, false if the task should abort with no result. 
+        /// (I.e. An internal abort.)
+        /// </returns>
         protected abstract bool GetResult(out T result);
 
         /// <summary>
         /// Finalize the task.
         /// </summary>
         /// <remarks>
-        /// <para>Used for task cleanup.  Will be called before the <see cref="Run"/> method exits,
-        /// even on an exception.  Must never throw an exception.</para>
+        /// <para>
+        /// Used for task cleanup.  Will be called before the <see cref="Run"/> method exits,
+        /// even on an exception.  Must never throw an exception.
+        /// </para>
         /// </remarks>
         protected virtual void FinalizeTask() { }
 
@@ -139,25 +152,35 @@ namespace org.critterai.nmbuild
         /// Messages available after the task is finished.
         /// </summary>
         /// <remarks>
-        /// <para>Will return a zero length array if the task is not finished or there are
-        /// no messages.  Will always provide a message if on abort.</para>
+        /// <para>
+        /// Will return a zero length array if the task is not finished or there are
+        /// no messages.  Will always provide a message on abort.
+        /// </para>
         /// </remarks>
         public string[] Messages { get {  lock (mMessages) return mMessages.ToArray(); } }
 
         /// <summary>
         /// The data produced by the task.
         /// </summary>
-        /// <remarks>Will only contain useable data when the task is finished with a state of
-        /// <see cref="BuildTaskState.Complete"/>.</remarks>
+        /// <remarks>
+        /// <para>
+        /// Will only contain useable data when the task is finished with a state of
+        /// <see cref="BuildTaskState.Complete"/>.
+        /// </para>
+        /// </remarks>
         public T Result { get { return mData; } }
 
         /// <summary>
         /// Runs the task through to a finished state.
         /// </summary>
         /// <remarks>
-        /// <para>This method may only be called once.</para>
-        /// <para>If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
-        /// thread form the object(s) that are monitoring the task state.</para>
+        /// <para>
+        /// Never call this method more than once.
+        /// </para>
+        /// <para>
+        /// If <see cref="IsThreadSafe"/> is true, this method can be run on a separate
+        /// thread from the object(s) that are monitoring the task state.
+        /// </para>
         /// </remarks>
         public void Run()
         {
@@ -195,7 +218,8 @@ namespace org.critterai.nmbuild
         /// Requests an abort of the task.
         /// </summary>
         /// <remarks>
-        /// <para>There may be a delay in the actual abort for tasks running on a separate thread.
+        /// <para>
+        /// There may be a delay in the actual abort for tasks running on a separate thread.
         /// </para>
         /// </remarks>
         /// <param name="reason">The reason for the abort.</param>

@@ -71,11 +71,15 @@ namespace org.critterai.nmbuild
         /// Performs a single build step.
         /// </summary>
         /// <remarks>
-        /// <para>This method must be called repeatedly until it resturns false in order
-        /// to complete the build. (Useful in GUI environments.)</para>
+        /// <para>
+        /// This method must be called repeatedly until it resturns false in order
+        /// to complete the build. (Useful in GUI environments.)
+        /// </para>
         /// </remarks>
-        /// <returns>True if the build is still underway and another call is required. False
-        /// if the build is finished.</returns>
+        /// <returns>
+        /// True if the build is still underway and another call is required. False
+        /// if the build is finished.
+        /// </returns>
         public bool Build()
         {
             if (mBuilder == null)
@@ -108,12 +112,20 @@ namespace org.critterai.nmbuild
         /// Creates a thread-safe, fully validated builder.
         /// </summary>
         /// <remarks>
-        /// <para>The input mesh and area parameters are fully validated.</para>
-        /// <para>Will return null if there are zero triangles.</para>
-        /// <para>If the <paramref name="areas"/> parameter is null, all triangles
-        /// will default to the <see cref="NMGen.MaxArea"/>.</para>
-        /// <para>If walkable slope if greather than zero then the builder will
-        /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> to the areas.</para>
+        /// <para>
+        /// The input mesh and area parameters are fully validated.
+        /// </para>
+        /// <para>
+        /// Will return null if there are zero triangles.
+        /// </para>
+        /// <para>
+        /// All triangleswill default to <see cref="NMGen.MaxArea"/> if the 
+        /// <paramref name="areas"/> parameter is null.
+        /// </para>
+        /// <para>
+        /// If walkable slope if greather than zero then the builder will apply 
+        /// <see cref="NMGen.ClearUnwalkableTriangles"/> to the areas.
+        /// </para>
         /// </remarks>
         /// <param name="mesh">The triangle mesh to use for the build.</param>
         /// <param name="areas">The triangle areas. (Null permitted.)</param>
@@ -150,13 +162,19 @@ namespace org.critterai.nmbuild
         /// Creates a builder.
         /// </summary>
         /// <remarks>
-        /// <para>No validation is performed and the builder will use the parameters directly
-        /// during the build.</para>
-        /// <para>Builders created using this method are not guarenteed to produce a usable
-        /// result.</para>
-        /// <para>It is the responsibility of the caller to ensure thread safely if 
-        /// <paramref name="isThreadSafe"/>is set to true.</para>
-        /// <para>Warning: If walkable slope if greather than zero then the builder will
+        /// <para>
+        /// No validation is performed and the builder will use the parameters directly
+        /// during the build.
+        /// </para>
+        /// <para>
+        /// Builders created using this method are not guarenteed to produce a usable result.
+        /// </para>
+        /// <para>
+        /// It is the responsibility of the caller to ensure thread safely if 
+        /// <paramref name="isThreadSafe"/> is set to true.
+        /// </para>
+        /// <para>
+        /// <b>Warning:</b> If walkable slope if greather than zero then the builder will
         /// apply <see cref="NMGen.ClearUnwalkableTriangles"/> directly to the areas parameter.
         /// </para>
         /// </remarks>
@@ -198,7 +216,10 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// Validates the mesh and areas.
         /// </summary>
-        /// <remarks>The <paramref name="areas"/> parameter is validated only if it is non-null.
+        /// <remarks>
+        /// <para>
+        /// The <paramref name="areas"/> parameter is validated only if it is non-null.
+        /// </para>
         /// </remarks>
         /// <param name="mesh">The mesh to validate.</param>
         /// <param name="areas">The area to validate. (If non-null.)</param>

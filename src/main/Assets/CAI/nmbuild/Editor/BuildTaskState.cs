@@ -23,7 +23,7 @@
 namespace org.critterai.nmbuild
 {
     /// <summary>
-    /// The state of a build state.
+    /// The state of a build task.
     /// </summary>
     public enum BuildTaskState : byte
     {
@@ -48,7 +48,7 @@ namespace org.critterai.nmbuild
         Complete,
 
         /// <summary>
-        /// The task was aborted due to an abort or error. (A finished state.)
+        /// The task was aborted due to an abort request or error. (A finished state.)
         /// </summary>
         Aborted,
     }

@@ -31,16 +31,22 @@ namespace org.critterai.nmbuild
     /// Provides a simple multi-threaded processsor for <see cref="IBuildTask"/> objects.
     /// </summary>
     /// <remarks>
-    /// <para>The expected use case is that the processor is run on a separate thread.  Clients
+    /// <para>
+    /// The expected use case is that the processor is run on a separate thread.  Clients
     /// then create and pass it tasks to be run.  The processor will run tasks concurrently up
-    /// to its maximum allowed, then queue remaining tasks for later.</para>
-    /// <para>Individual tasks are aborted via the <see cref="IBuildTask.Abort"/> method.  The 
-    /// processor will clear the task from its queue when encounters the task for processing.  
-    /// So the task count will not decreate immediately.</para>
-    /// <para>Warning: A zombie worker thread will result if a task does not meet its 
-    /// <see cref="IBuildTask"/> obligation, and throws an exception in its 
+    /// to its maximum allowed, then queue remaining tasks for later.
+    /// </para>
+    /// <para>
+    /// Individual tasks are aborted via the <see cref="IBuildTask.Abort"/> method.  The 
+    /// processor will clear the task from its queue when it encounters the task for processing, 
+    /// so the task count will not decrement immediately.
+    /// </para>
+    /// <para>
+    /// <b>Warning:</b> A zombie worker thread will result if a task does not meet its 
+    /// <see cref="IBuildTask"/> obligation by throwing an exception in its 
     /// <see cref="IBuildTask.Run"/> method.  The worker thread will become un-usable for
-    /// new tasks.</para>
+    /// new tasks.
+    /// </para>
     /// </remarks>
     public sealed class BuildTaskProcessor
     {
@@ -141,7 +147,7 @@ namespace org.critterai.nmbuild
         private static int mIdleSleep = 100;
 
         /// <summary>
-        /// The length of time processors will idle when there are no tasks to process.
+        /// The length of time the processor will idle when there are no tasks to process.
         /// [Units: Milliseconds]
         /// [Limit: >= 1]
         /// </summary>
@@ -152,7 +158,7 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// The length of time processors will idle when there are tasks being processed.
+        /// The length of time the processor will idle when there are tasks being processed.
         /// [Units: Milliseconds]
         /// [Limit: >= 1]
         /// </summary>
@@ -177,8 +183,9 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="maxConcurrent">The maximum permitted active tasks before new tasks are 
-        /// queued.</param>
+        /// <param name="maxConcurrent">
+        /// The maximum permitted active tasks before new tasks are queued. [Limit: >= 1]
+        /// </param>
         public BuildTaskProcessor(int maxConcurrent)
         {
             maxConcurrent = Math.Max(1, maxConcurrent);
@@ -199,16 +206,21 @@ namespace org.critterai.nmbuild
         /// <summary>
         /// The maximum permitted active tasks before new tasks are queued.
         /// </summary>
-        /// <remarks>This also represents the number of background worker threads the
-        /// processor creates.</remarks>
+        /// <remarks>
+        /// <para>
+        /// This also represents the number of background worker threads the processor creates.
+        /// </para>
+        /// </remarks>
         public int MaxConcurrent { get { return mProcessors.Length; } }
 
         /// <summary>
         /// Aborts the processor.
         /// </summary>
         /// <remarks>
-        /// <para>The processor will call abort only on active tasks.  Queued tasks will simply be 
-        /// abandoned.</para>
+        /// <para>
+        /// The processor will call the abort method only on active tasks.  Queued tasks will 
+        /// simply be abandoned.
+        /// </para>
         /// </remarks>
         public void Abort()
         {
@@ -230,7 +242,9 @@ namespace org.critterai.nmbuild
         /// Queues a task to be run.
         /// </summary>
         /// <remarks>
-        /// <para>The processor will only queue inactive tasks that are threadsafe.</para>
+        /// <para>
+        /// The processor will only queue inactive tasks that are threadsafe.
+        /// </para>
         /// </remarks>
         /// <param name="task">The task to queue.</param>
         /// <returns>True if the task was accepted.</returns>
@@ -271,9 +285,12 @@ namespace org.critterai.nmbuild
         /// Runs the processor.
         /// </summary>
         /// <remarks>
-        /// <para>This method will block until the processor is aborted.  So the expected use
-        /// case is that this method will be run on its own thread.</para>
-        /// <para>Processors are single use.  They cannot be run again after they are aborted.
+        /// <para>
+        /// This method will block until the processor is aborted.  So the expected use
+        /// case is that this method will be run on its own thread.
+        /// </para>
+        /// <para>
+        /// Processors are single use.  They cannot be run again after they are aborted.
         /// </para>
         /// </remarks>
         public void Run()

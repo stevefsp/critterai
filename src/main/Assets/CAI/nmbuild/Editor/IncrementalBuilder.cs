@@ -36,7 +36,8 @@ namespace org.critterai.nmbuild
     /// Provides a way of building navigation mesh data in incremental steps.
     /// </summary>
     /// <remarks>
-    /// <para>Processors will be called for processing after each step. (Post-processing)
+    /// <para>
+    /// Processors will be called for processing after each step. (Post-processing)
     /// The assests available by default at each step will be as follows:
     /// </para>
     /// <para>
@@ -47,15 +48,21 @@ namespace org.critterai.nmbuild
     /// PolyMeshBuild: <see cref="PolyMesh"/> and <see cref="CompactHeightfield"/><br/>
     /// DetailMeshBuild: <see cref="PolyMeshDetail"/> and <see cref="CompactHeightfield"/><br/>
     /// </para>
-    /// <para>More assets will be avialable based on <see cref="INMGenProcessor.PreserveAssets"/> 
+    /// <para>
+    /// More assets will be avialable based on <see cref="INMGenProcessor.PreserveAssets"/> 
     /// <see cref="ResultOptions"/> requirements.
     /// </para>
-    /// <para>The detail mesh step will only occur if the <see cref="ResultOptions"/> settings 
+    /// <para>
+    /// The detail mesh step will only occur if the <see cref="ResultOptions"/> settings 
     /// require it.
     /// </para>
-    /// <para>Processors are allowed to replace assets.  But they must never set the assets to
-    /// an invalid state.</para>
-    /// <para>Each instance can be used to perform only a single build.</para>
+    /// <para>
+    /// Processors are allowed to replace assets.  But they must never set the assets to
+    /// an invalid state.
+    /// </para>
+    /// <para>
+    /// Each instance can be used to perform only a single build. (Single use.)
+    /// </para>
     /// </remarks>
     public sealed class IncrementalBuilder
     {
@@ -76,8 +83,10 @@ namespace org.critterai.nmbuild
         /// True if the builder is safe to run on a separate thread from which it was created.
         /// </summary>
         /// <remarks>
-        /// <para>Thread-safely only applies to running the build. Builder objects are
-        /// never safe to access from multiple threads at the same time.</para>
+        /// <para>
+        /// Thread-safely only applies to running the build. Builder objects are
+        /// never safe to access from multiple threads at the same time.
+        /// </para>
         /// </remarks>
         public bool IsThreadSafe { get { return mProcessors.IsThreadSafe; } }
 
@@ -85,8 +94,10 @@ namespace org.critterai.nmbuild
         /// The current state of the builder.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// If the value is an unfinished state, then it represents the build step that will 
         /// occur the next time the <see cref="Build"/> method called.
+        /// </para>
         /// </remarks>
         public NMGenState State { get { return mState; } }
 
@@ -117,8 +128,9 @@ namespace org.critterai.nmbuild
         /// The result of the build.
         /// </summary>
         /// <remarks>
-        /// <para>Will return a result only when in the <see cref="NMGenState.Complete"/>
-        /// state.</para>
+        /// <para>
+        /// Will return a result only when in the <see cref="NMGenState.Complete"/> state.
+        /// </para>
         /// </remarks>
         public NMGenAssets Result
         {
@@ -138,7 +150,9 @@ namespace org.critterai.nmbuild
         /// The NMGen assets that will be included in the <see cref="Result"/>.
         /// </summary>
         /// <remarks>
-        /// <para>Will always include <see cref="NMGenAssetFlag.PolyMesh"/></para>
+        /// <para>
+        /// Will always include <see cref="NMGenAssetFlag.PolyMesh"/>
+        /// </para>
         /// </remarks>
         public NMGenAssetFlag ResultOptions { get { return mResultOptions; } }
 
@@ -171,11 +185,12 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// Gets available build messages, or a zero length array if no messages
-        /// are available.
+        /// Gets available build messages, or a zero length array if no messages are available.
         /// </summary>
         /// <remarks>
-        /// <para>Messages will only be available when the build is finished.</para>
+        /// <para>
+        /// Messages will only be available when the build is finished.
+        /// </para>
         /// </remarks>
         /// <returns>Available build messages.</returns>
         public string[] GetMessages()
@@ -187,7 +202,9 @@ namespace org.critterai.nmbuild
         /// Gets a new line delimited flattened version of all build messages.
         /// </summary>
         /// <remarks>
-        /// <para>Messages will only be available when the build is finished.</para>
+        /// <para>
+        /// Messages will only be available when the build is finished.
+        /// </para>
         /// </remarks>
         /// <returns>All build messages.</returns>
         public string GetMessagesFlat()
@@ -199,8 +216,10 @@ namespace org.critterai.nmbuild
         /// Performs a single build step.
         /// </summary>
         /// <remarks>
-        /// <para>The result state will represent either a finished state or the build step that 
-        /// will be performed during the next call to the method.</para>
+        /// <para>
+        /// The result state will represent either a finished state or the build step that 
+        /// will be performed during the next call to the method.
+        /// </para>
         /// </remarks>
         /// <returns>The state at the end of the build step.</returns>
         public NMGenState Build()
@@ -709,12 +728,16 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// Creates a new builder for a single tile mesh build.
+        /// Creates a new builder for a single-tile mesh build.
         /// </summary>
         /// <remarks>
-        /// <para>The bounds of the tile will be based on the geometry.</para>
-        /// <para>Will return null if a processor requires the the detail mesh but
-        /// the detail mesh is not included in the result options.</para>
+        /// <para>
+        /// The bounds of the tile will be based on the geometry.
+        /// </para>
+        /// <para>
+        /// Will return null if a processor requires the the detail mesh but
+        /// the detail mesh is not included in the result options.
+        /// </para>
         /// </remarks>
         /// <param name="buildConfig">The build configuration.</param>
         /// <param name="resultOptions">The assets to include in the result.</param>
@@ -753,8 +776,10 @@ namespace org.critterai.nmbuild
         /// Creates a new builder for a multi-tile mesh build.
         /// </summary>
         /// <remarks>
-        /// <para>Will return null if a processor requires the the detail mesh but
-        /// the detail mesh is not included in the result options.</para>
+        /// <para>
+        /// Will return null if a processor requires the the detail mesh but the detail mesh is 
+        /// not included in the result options.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile to build.</param>
         /// <param name="tz">The z-index of the tile to build.</param>
@@ -827,8 +852,9 @@ namespace org.critterai.nmbuild
         /// Returns a progress value associated with the specified state. 
         /// </summary>
         /// <remarks>
-        /// <para>The value will be between 0 and 1.0, suitable for providing
-        /// build progress feedback.</para>
+        /// <para>
+        /// The value will be between 0 and 1.0, suitable for providing build progress feedback.
+        /// </para>
         /// </remarks>
         /// <param name="state">The state.</param>
         /// <returns>A progress value for the state.</returns>

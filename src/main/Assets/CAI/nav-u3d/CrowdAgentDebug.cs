@@ -28,59 +28,53 @@ namespace org.critterai.nav.u3d
     /// Provides debug visualizations for <see cref="CrowdAgent"/> objects.
     /// </summary>
     /// <remarks>
-    /// <para>All draw methods in this class use GL.  So they should generally 
-    /// be called from within the OnRenderObject() method.</para>
-    /// <para>The design of this class minimizes impact on garbage collection.
+    /// <para>
+    /// All draw methods in this class use GL, so they should generally be called from within the 
+    /// OnRenderObject() method.
     /// </para>
-    /// <para>Instances of this class are not thread-safe.</para>
+    /// <para>
+    /// The design of this class minimizes impact on garbage collection.
+    /// </para>
+    /// <para>
+    /// Instances of this class are not thread-safe.
+    /// </para>
     /// </remarks>
     public sealed class CrowdAgentDebug
     {
         /// <summary>
         /// The color to use when drawing neighbor visualizations.
         /// </summary>
-        public static Color neighborColor = new Color(Color.yellow.r
-            , Color.yellow.g
-            , Color.yellow.b
-            , 0.66f);
+        public static Color neighborColor = 
+            new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.66f);
 
         /// <summary>
         /// The base color to use when drawing visualizations.
         /// </summary>
-        public static Color baseColor = new Color(Color.blue.r
-            , Color.blue.g
-            , Color.blue.b
-            , 0.66f);
+        public static Color baseColor = 
+            new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.66f);
 
         /// <summary>
         /// The color to use when drawing the agent velocity.
         /// </summary>
-        public static Color velocityColor = new Color(Color.blue.r
-            , Color.blue.g
-            , Color.blue.b
-            , 0.66f);
+        public static Color velocityColor = 
+            new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.66f);
 
         /// <summary>
-        /// the color to use when drawing the agent desired velocity.
+        /// The color to use when drawing the agent desired velocity.
         /// </summary>
-        public static Color desiredVelocityColor = new Color(Color.cyan.r
-            , Color.cyan.g
-            , Color.cyan.b
-            , 0.5f);
+        public static Color desiredVelocityColor = 
+            new Color(Color.cyan.r, Color.cyan.g, Color.cyan.b, 0.5f);
 
         /// <summary>
         /// The color to use when drawing corridor boundary visualizations.
         /// </summary>
-        public static Color boundaryColor = new Color(Color.yellow.r
-            , Color.yellow.g
-            , Color.yellow.b
-            , 0.66f);
+        public static Color boundaryColor = 
+            new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.66f);
 
         private Navmesh navmesh;
 
         // Various buffers.  (Reduces GC impact.)
-        private CrowdNeighbor[] neighbors = 
-            new CrowdNeighbor[CrowdNeighbor.MaxNeighbors];
+        private CrowdNeighbor[] neighbors = new CrowdNeighbor[CrowdNeighbor.MaxNeighbors];
         private LocalBoundaryData boundary = new LocalBoundaryData();
         private CornerData corners = new CornerData();
         private PathCorridorData corridor = new PathCorridorData();
@@ -115,8 +109,12 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Draws the basic agent debug information.
         /// </summary>
-        /// <remarks>This does not include the duplicate agent information
-        /// such as target and corner positions.</remarks>
+        /// <remarks>
+        /// <para>
+        /// This does not include the duplicate agent information such as target and corner 
+        /// positions.
+        /// </para>
+        /// </remarks>
         /// <param name="agent">The agent to draw.</param>
         public void DrawBase(CrowdAgent agent)
         {

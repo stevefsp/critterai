@@ -39,8 +39,10 @@ namespace org.critterai.nmbuild
         /// Constructor
         /// </summary>
         /// <remarks>
-        /// <para>A 'no result' object will be created if the <paramref name="tile"/> parameter 
-        /// is null or polygon count is less than one.</para>
+        /// <para>
+        /// A 'no result' object will be created if the <paramref name="tile"/> parameter 
+        /// is null or polygon count is less than one.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile within the tile grid. (tx, tz)</param>
         /// <param name="tz">The z-index of the tile within the tile grid. (tx, tz)</param>

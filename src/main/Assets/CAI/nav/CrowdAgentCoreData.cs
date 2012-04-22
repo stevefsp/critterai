@@ -29,12 +29,13 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nav
 {
     /// <summary>
-    /// Provides core data for agents managed by a <see cref="CrowdManager"/>
-    /// object.
+    /// Provides core data for agents managed by a <see cref="CrowdManager"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>This structure is useful for marshalling information from the
-    /// <see cref="CrowdManager"/> back to the actual agent implementation.</para>
+    /// <para>
+    /// This structure is useful for marshalling information from the <see cref="CrowdManager"/> 
+    /// back to the actual agent implementation.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     internal struct CrowdAgentCoreState
@@ -80,7 +81,7 @@ namespace org.critterai.nav
         public float desiredSpeed;
 
         /// <summary>
-        /// The curent position of the agent in the form (x, y, z).
+        /// The position of the agent.
         /// </summary>
         public Vector3 position;
 
@@ -90,7 +91,7 @@ namespace org.critterai.nav
         private Vector3 disp;
 
         /// <summary>
-        /// The desired velocity of the agent in the form (x, y, z)
+        /// The desired velocity of the agent.
         /// </summary>
         public Vector3 desiredVelocity;
 
@@ -100,18 +101,22 @@ namespace org.critterai.nav
         private Vector3 nvel;
 
         /// <summary>
-        /// The velocity of the agent in the form (x, y, z).
+        /// The velocity of the agent.
         /// </summary>
         public Vector3 velocity;
 
         /// <summary>
-        /// The target of the agent in the form (x, y, z).
+        /// The target of the agent.
         /// </summary>
-        /// <remarks>This is the corridor target.</remarks>
+        /// <remarks>
+        /// <para>
+        /// This is the same as the corridor target.
+        /// </para>
+        /// </remarks>
         public Vector3 target;
 
         /// <summary>
-        /// The next corner in the path corridor in the form (x, y, z).
+        /// The next corner in the path corridor.
         /// </summary>
         public Vector3 nextCorner;
     }

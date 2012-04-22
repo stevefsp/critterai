@@ -91,7 +91,7 @@ namespace org.critterai.nmgen
     /// }
     /// </code></para>
     /// <para>Spans contain neighbor connection data that can be used to locate axis-neighbors.  
-    /// Axis neighbors are spans that are offset offset from the current cell column as follows:
+    /// Axis neighbors are spans that are offset from the current cell column as follows:
     /// </para>
     /// <para>Direction 0 = (-1, 0)<br/>
     /// Direction 1 = (0, 1)<br/>
@@ -365,7 +365,7 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use during the operation.
         /// </param>
-        /// <param name="radius">The radius to apply. (In voxels.)</param>
+        /// <param name="radius">The radius to apply. [Units: Spans]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool ErodeWalkableArea(BuildContext context, int radius)
         {
@@ -377,7 +377,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applies a median filter to the walkable areas, removing noide.
+        /// Applies a median filter to the walkable areas. (Removes noise.)
         /// </summary>
         /// <param name="context">The context to use duing the operation.
         /// </param>
@@ -390,11 +390,11 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applies the area id to all spans within the specified bounding
+        /// Applies the area to all spans within the specified bounding
         /// box. (AABB)
         /// </summary>
         /// <remarks>
-        /// <para>The method will return FALSE if the AABB is completely outside
+        /// <para>The method will return false if the AABB is completely outside
         /// of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
@@ -403,7 +403,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <param name="boundsMax">The maximum bounds of the AABB. 
         /// </param>
-        /// <param name="area">The area id to apply.</param>
+        /// <param name="area">The area to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
             , Vector3 boundsMin, Vector3 boundsMax
@@ -420,14 +420,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applies the area id to the all spans within the specified convex
+        /// Applies the area to the all spans within the specified convex
         /// polygon.
         /// </summary>
         /// <remarks>
         /// <para>The y-values of the polygon vertices are ignored.  So the
         /// polygon is effectively projected onto the xz-plane at yMin, 
         /// then extruded to yMax.</para>
-        /// <para>The method will return FALSE if the polygon is completely outside
+        /// <para>The method will return false if the polygon is completely outside
         /// of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
@@ -436,7 +436,7 @@ namespace org.critterai.nmgen
         /// [Fomr: (x, y, z) * vertCount]</param>
         /// <param name="yMin">The height of the base of the polygon.</param>
         /// <param name="yMax">The height of the top of the polygon.</param>
-        /// <param name="area">The area id to apply.</param>
+        /// <param name="area">The area to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool MarkConvexPolyArea(BuildContext context
             , Vector3[] verts, float yMin, float yMax
@@ -454,10 +454,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applied the area id to all spans within the specified cylinder.
+        /// Applied the area to all spans within the specified cylinder.
         /// </summary>
         /// <remarks>
-        /// <para>The method will return FALSE if the cylinder is completely 
+        /// <para>The method will return false if the cylinder is completely 
         /// outside of the heightfield.</para>
         /// </remarks>
         /// <param name="context">The context to use duing the operation.
@@ -502,29 +502,35 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Builds region data for the heightfield using watershed 
-        /// partitioning.
+        /// Builds region data for the heightfield using watershed partitioning.
         /// </summary>
         /// <remarks>
-        /// <para>Non-null regions consist of connected, non-overlapping walkable 
-        /// spans that form a single contour.</para>
-        /// <para>The region data is available via <see cref="MaxRegion"/>
-        /// and <see cref="GetSpanData"/>.</para>
-        /// <para>If multiple regions form an area which is smaller than
-        /// minRegionArea, all spans in the regions are set to
-        /// <see cref="NMGen.NullRegion"/>.</para>
-        /// <para>Watershed partitioning can result in smaller than necessary
-        /// regions, especially in diagonal corridors.  mergeRegionArea
-        /// helps reduce unecessarily small regions.</para>
+        /// <para>
+        /// Non-null regions consist of connected, non-overlapping walkable spans that form a 
+        /// single contour.
+        /// </para>
+        /// <para>The region data is available via <see cref="MaxRegion"/> and 
+        /// <see cref="GetSpanData"/>.
+        /// </para>
+        /// <para>
+        /// If a region forms an area that is smaller than <paramref name="minRegionArea"/>, 
+        /// all spans in the region is set to <see cref="NMGen.NullRegion"/>.
+        /// </para>
+        /// <para>
+        /// Watershed partitioning can result in smaller than necessary regions, especially 
+        /// in diagonal corridors.  <paramref name="mergeRegionArea"/> helps reduce unecessarily 
+        /// small regions.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <param name="borderSize">The AABB border size to apply.</param>
-        /// <param name="minRegionArea">The minimum area allowed for 
-        /// unconnected (island) regions. (In voxels.)</param>
-        /// <param name="mergeRegionArea">The maximum region size that will be
-        /// considered for merging with another region.
-        /// (In voxels.)</param>
+        /// <param name="minRegionArea">T
+        /// he minimum area allowed for unconnected (island) regions. [Units: Spans]
+        /// </param>
+        /// <param name="mergeRegionArea">
+        /// The maximum region size that will be considered for merging with another region.
+        /// [Units: Spans]
+        /// </param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegions(BuildContext context
             , int borderSize, int minRegionArea, int mergeRegionArea)
@@ -543,25 +549,32 @@ namespace org.critterai.nmgen
         /// partitioning.
         /// </summary>
         /// <remarks>
-        /// <para>Non-null regions consist of connected, non-overlapping walkable 
-        /// spans that form a single contour.</para>
-        /// <para>The region data is available via <see cref="MaxRegion"/>
-        /// and <see cref="GetSpanData"/>.</para>
-        /// <para>If multiple regions form an area which is smaller than
-        /// minRegionArea, all spans in the regions are set to
-        /// <see cref="NMGen.NullRegion"/>.</para>
-        /// <para>Partitioning can result in smaller than necessary
-        /// regions.  mergeRegionArea helps reduce unecessarily small regions.
+        /// <para>
+        /// Non-null regions consist of connected, non-overlapping walkable spans that form a 
+        /// single contour.
+        /// </para>
+        /// <para>
+        /// The region data is available via <see cref="MaxRegion"/> and <see cref="GetSpanData"/>.
+        /// </para>
+        /// <para>
+        /// If a region forms an area that is smaller than <paramref name="minRegionArea"/>, 
+        /// all spans in the region is set to <see cref="NMGen.NullRegion"/>.
+        /// </para>
+        /// <para>
+        /// Partitioning can result in smaller than necessary regions, especially 
+        /// in diagonal corridors.  <paramref name="mergeRegionArea"/> helps reduce unecessarily 
+        /// small regions.
         /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <param name="borderSize">The AABB border size to apply.</param>
-        /// <param name="minRegionArea">The minimum area allowed for 
-        /// unconnected (island) regions. (In voxels.)</param>
-        /// <param name="mergeRegionArea">The maximum region size that will be
-        /// considered for merging with another region.
-        /// (In voxels.)</param>
+        /// <param name="minRegionArea">
+        /// The minimum area allowed for unconnected (island) regions. [Units: Spans]
+        /// </param>
+        /// <param name="mergeRegionArea">
+        /// The maximum region size that will be considered for merging with another region.
+        /// [Units: Spans]
+        /// </param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool BuildRegionsMonotone(BuildContext context
             , int borderSize, int minRegionArea, int mergeRegionArea)

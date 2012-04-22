@@ -39,7 +39,7 @@ namespace org.critterai.nmgen
         BorderVertex = 0x10000,
 
         /// <summary>
-        /// The vertex is the start of an edge the forms a boundary 
+        /// The vertex is the start of an edge that forms a boundary 
         /// between areas.
         /// </summary>
         AreaBorder = 0x20000

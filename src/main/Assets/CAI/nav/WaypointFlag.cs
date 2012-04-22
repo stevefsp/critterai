@@ -41,8 +41,11 @@ namespace org.critterai.nav
         /// <summary>
         /// The point is the start of an off-mesh connection.
         /// </summary>
-        /// <remarks>This flag is useful in detecting when special
-        /// locomotion handling needs to occur.</remarks>
+        /// <remarks>
+        /// <para>
+        /// This flag is useful in detecting when special locomotion handling needs to occur.
+        /// </para>
+        /// </remarks>
         OffMesh = 0x04
     }
 }

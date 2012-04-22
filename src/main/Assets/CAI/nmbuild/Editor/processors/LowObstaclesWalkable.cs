@@ -29,7 +29,9 @@ namespace org.critterai.nmbuild
     /// a <see cref="Heightfield"/>.
     /// </summary>
     /// <remarks>
-    /// <para>This is a system processor.</para>
+    /// <para>
+    /// This is a system processor.
+    /// </para>
     /// </remarks>
     public sealed class LowObstaclesWalkable
         : NMGenProcessor
@@ -52,7 +54,9 @@ namespace org.critterai.nmbuild
         /// Process the build context.
         /// </summary>
         /// <remarks>
-        /// <para>Will be applied during the <see cref="NMGenState.HeightfieldBuild"/> state.</para>
+        /// <para>
+        /// Will be applied during the <see cref="NMGenState.HeightfieldBuild"/> state.
+        /// </para>
         /// </remarks>
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>

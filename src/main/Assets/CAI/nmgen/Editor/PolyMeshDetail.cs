@@ -33,7 +33,7 @@ namespace org.critterai.nmgen
     /// <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>Warning: The serializable attribute and interface will be removed 
+    /// <para><b>Warning:</b> The serializable attribute and interface will be removed 
     /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
     /// <para>The detail mesh is made up of triangle sub-meshes which provide
     /// extra height detail for each polygon in its assoicated polygon

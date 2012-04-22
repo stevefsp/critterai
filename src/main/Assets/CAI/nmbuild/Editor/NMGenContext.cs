@@ -28,8 +28,10 @@ namespace org.critterai.nmbuild
     /// An NMGen build context.
     /// </summary>
     /// <remarks>
-    /// <para>Holds objects releated to an NMGen build during the build process.  The builder
-    /// defines which assets are available at which point in the build.</para>
+    /// <para>
+    /// Holds objects related to an NMGen build during the build process.  The builder
+    /// defines which assets are available at which point in the build.
+    /// </para>
     /// </remarks>
     public class NMGenContext
         : BuildContext

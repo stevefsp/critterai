@@ -113,7 +113,9 @@ namespace org.critterai.nmbuild
         /// Add a connection.
         /// </summary>
         /// <remarks>
-        /// <para>All values are auto-clamped to valid values.</para>
+        /// <para>
+        /// All values are auto-clamped to valid values.
+        /// </para>
         /// </remarks>
         /// <param name="start">The connection start point.</param>
         /// <param name="end">The connection end point.</param>
@@ -192,7 +194,7 @@ namespace org.critterai.nmbuild
         /// Creates a thread-safe, immutable, fully validated connection set from the 
         /// connections.
         /// </summary>
-        /// <returns>A conneciton set created form the connections.</returns>
+        /// <returns>A conneciton set created from the connections.</returns>
         public ConnectionSet CreateConnectionSet()
         {
             if (mVerts.Count == 0)

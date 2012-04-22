@@ -24,8 +24,7 @@ using UnityEngine;
 namespace org.critterai.nav.u3d
 {
     /// <summary>
-    /// Provides a convenient structure for grouping together related
-    /// navigation resources.
+    /// Provides a convenient structure for grouping together related navigation resources.
     /// </summary>
     public struct NavGroup
     {
@@ -57,25 +56,25 @@ namespace org.critterai.nav.u3d
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="mesh">The navigation mesh used by the query.
-        /// </param>
+        /// <param name="mesh">The navigation mesh used by the query.</param>
         /// <param name="query">A navigation mesh query.</param>
         /// <param name="crowd">A crowd.</param>
         /// <param name="filter">The filter to use with the query.</param>
-        /// <param name="extents">The extents to use with query.</param>
-        /// <param name="cloneFE">If true, the filter and extents will be
-        /// cloned.  Otherwise they will be referenced.</param>
+        /// <param name="extents">The extents to use with the query.</param>
+        /// <param name="cloneFilter">
+        /// If true, the filter will be cloned rather than referenced.
+        /// </param>
         public NavGroup(Navmesh mesh
             , NavmeshQuery query
             , CrowdManager crowd
             , NavmeshQueryFilter filter
             , Vector3 extents
-            , bool cloneFE)
+            , bool cloneFilter)
         {
             this.mesh = mesh;
             this.query = query;
             this.crowd = crowd;
-            this.filter = (cloneFE ? filter.Clone() : filter);
+            this.filter = (cloneFilter ? filter.Clone() : filter);
             this.extents = extents;
         }
 
@@ -83,14 +82,15 @@ namespace org.critterai.nav.u3d
         /// Copy constructor.
         /// </summary>
         /// <param name="copy">The group to copy.</param>
-        /// <param name="cloneFE">If true, the filter and extents will be
-        /// cloned.  Otherwise they will be referenced.</param>
-        public NavGroup(NavGroup copy, bool cloneFE)
+        /// <param name="cloneFilter">
+        /// If true, the filter will be cloned. Otherwise it will be referenced.
+        /// </param>
+        public NavGroup(NavGroup copy, bool cloneFilter)
         {
             this.mesh = copy.mesh;
             this.query = copy.query;
             this.crowd = copy.crowd;
-            this.filter = (cloneFE ? copy.filter.Clone() : copy.filter);
+            this.filter = (cloneFilter ? copy.filter.Clone() : copy.filter);
             this.extents = copy.extents;
         }
     }
