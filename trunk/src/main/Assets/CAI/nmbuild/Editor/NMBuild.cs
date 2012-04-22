@@ -61,7 +61,8 @@ namespace org.critterai.nmbuild
         /// Clamps the value to the allowed non-system (custom) priority range.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>The clamped value. 
+        /// <returns>
+        /// The clamped value. 
         /// (<see cref="MinPriority"/> &lt;= clampedValue &lt;= <see cref="MaxPriority"/>
         /// </returns>
         public static int ClampPriority(int value)
@@ -70,19 +71,19 @@ namespace org.critterai.nmbuild
         }
 
         /// <summary>
-        /// Creates a standard <see cref="NavmeshTileBuildData"/> object
-        /// from the provided parameters.
+        /// Creates a standard <see cref="NavmeshTileBuildData"/> object from the provided
+        /// parameters.
         /// </summary>
         /// <remarks>
-        /// <para>The <paramref name="connections"/> parameter is required.  Supply an empty
-        /// connection set if there are no off-mesh connections.</para>
-        /// <para>Errors will be logged to the build context.</para>
+        /// <para>
+        /// Errors will be logged to the build context.
+        /// </para>
         /// </remarks>
         /// <param name="tx">The x-index of the tile.</param>
         /// <param name="tz">The z-index of the tile.</param>
         /// <param name="polyMesh">The polygon mesh data.</param>
         /// <param name="detailMesh">The detail mesh data. (Optional)</param>
-        /// <param name="connections">The off-mesh connections. (Required)</param>
+        /// <param name="connections">The off-mesh connections. (Null allowed.)</param>
         /// <param name="context">The build context.</param>
         /// <returns>The tile build data, or null on error.</returns>
         public static NavmeshTileBuildData GetBuildData(int tx, int tz
@@ -94,18 +95,20 @@ namespace org.critterai.nmbuild
                 // Silent.
                 return null;
 
-            Vector3[] verts;
-            float[] radii;
-            byte[] dirs;
-            byte[] areas;
-            ushort[] flags;
-            uint[] userIds;
+            Vector3[] verts = null;
+            float[] radii = null;
+            byte[] dirs = null;
+            byte[] areas = null;
+            ushort[] flags = null;
+            uint[] userIds = null;
 
             Vector3 bmin = polyMesh.boundsMin;
             Vector3 bmax = polyMesh.boundsMax;
 
-            int connCount = connections.GetConnections(bmin.x, bmin.z, bmax.x, bmax.z
-                , out verts, out radii, out dirs, out areas, out flags, out userIds);
+            int connCount = (connections == null)
+                ? 0 
+                : connections.GetConnections(bmin.x, bmin.z, bmax.x, bmax.z
+                    , out verts, out radii, out dirs, out areas, out flags, out userIds);
 
             NavmeshTileBuildData result = new NavmeshTileBuildData(
                     polyMesh.vertCount
