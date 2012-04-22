@@ -25,7 +25,7 @@ namespace org.critterai.nmbuild.u3d.editor
     internal enum TileBuildState
     {
         /// <summary>
-        /// Tile has no state. (Not built, not baked, build not queued.)
+        /// Tile has no state. (Not built, not baked, not queued for build.)
         /// </summary>
         NotBuilt = 0,
 
@@ -35,7 +35,7 @@ namespace org.critterai.nmbuild.u3d.editor
         Queued,
 
         /// <summary>
-        /// The build process is underway.
+        /// The build is underway.
         /// </summary>
         InProgress,
 
@@ -45,7 +45,7 @@ namespace org.critterai.nmbuild.u3d.editor
         Built,
 
         /// <summary>
-        /// There is no tile at this location.
+        /// There is no tile at this location. (Build did not produce a result.)
         /// </summary>
         Empty,
 
@@ -54,6 +54,9 @@ namespace org.critterai.nmbuild.u3d.editor
         /// </summary>
         Baked,
 
+        /// <summary>
+        /// An error occured during the build.
+        /// </summary>
         Error
     }
 }

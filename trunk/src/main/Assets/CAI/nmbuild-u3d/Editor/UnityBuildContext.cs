@@ -88,8 +88,8 @@ namespace org.critterai.nmbuild.u3d.editor
         /// </para>
         /// </remarks>
         /// <param name="summary">The error summary.</param>
-        /// <param name="messages">Messages to append to the log before posting to the console.
-        /// (Optional)
+        /// <param name="messages">
+        /// Messages to append to the log before posting to the console. (Optional)
         /// </param>
         /// <param name="context">The Unity object context. (Optional)</param>
         internal void PostError(string summary, string[] messages, Object context)
@@ -137,8 +137,8 @@ namespace org.critterai.nmbuild.u3d.editor
         /// </para>
         /// </remarks>
         /// <param name="summary">The trace summary.</param>
-        /// <param name="messages">Messages to append to the log before posting to the console.
-        /// (Optional)
+        /// <param name="messages">
+        /// Messages to append to the log before posting to the console. (Optional)
         /// </param>
         /// <param name="context">The Unity object context. (Optional)</param>
         internal void PostTrace(string summary, string[] messages, Object context)

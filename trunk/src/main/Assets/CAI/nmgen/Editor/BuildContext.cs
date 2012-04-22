@@ -29,11 +29,13 @@ namespace org.critterai.nmgen
     /// Provides logging functionality.
     /// </summary>
     /// <remarks>
-    /// <para>This class can be used as a base for a more complete build
-    /// context.</para>
-    /// <para>The message buffer can hold a maximum of 1000 messages
-    /// comprised of 64K characters.  Any messages added after the
-    /// buffer limit is reached will be ignored.</para>
+    /// <para>
+    /// This class can be used as a base for a more complete build context.
+    /// </para>
+    /// <para>
+    /// The message buffer can hold a maximum of 1000 messages comprised of 64K characters.  
+    /// Any messages added after the buffer limit is reached will be ignored.
+    /// </para>
     /// </remarks>
     public class BuildContext
     {
@@ -57,7 +59,7 @@ namespace org.critterai.nmgen
         internal IntPtr root = IntPtr.Zero;
 
         /// <summary>
-        /// The number of messages in the buffer.
+        /// The number of messages in the buffer. [Limit: &lt;= 1000]
         /// </summary>
         public int MessageCount
         {
@@ -156,10 +158,13 @@ namespace org.critterai.nmgen
         /// Gets all messages in the message buffer.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The length of the result will always equal <see cref="MessageCount"/>.
+        /// </para>
         /// </remarks>
-        /// <returns>All messages in the message buffer, or a zero length array if there 
-        /// are no messages.</returns>
+        /// <returns>
+        /// All messages in the message buffer, or a zero length array if there are no messages.
+        /// </returns>
         public string[] GetMessages()
         {
             byte[] buffer = new byte[MessagePoolSize];
@@ -224,10 +229,11 @@ namespace org.critterai.nmgen
         /// Tests the operation of the context by adding up to 100 test messages.
         /// </summary>
         /// <remarks>
-        /// <para>The only purpose of this method is to permit testing.</para></remarks>
+        /// <para>
+        /// The only purpose of this method is to permit testing.</para>
+        /// </remarks>
         /// <param name="context">The context to test.</param>
-        /// <param name="count">The number of messages to add. 
-        /// (Limit &lt;100)</param>
+        /// <param name="count">The number of messages to add. (Limit &lt;100)</param>
         public static void LoadTestMessages(BuildContext context, int count)
         {
             if (context != null)

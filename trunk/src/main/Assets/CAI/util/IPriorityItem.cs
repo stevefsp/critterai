@@ -30,7 +30,9 @@ namespace org.critterai
         /// The priority of the item.
         /// </summary>
         /// <remarks>
-        /// <para>This value is immutable after object construction.</para>
+        /// <para>
+        /// This value is immutable after object construction.
+        /// </para>
         /// </remarks>
         int Priority { get; }
 	}

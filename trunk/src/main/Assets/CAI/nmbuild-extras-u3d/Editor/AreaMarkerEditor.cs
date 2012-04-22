@@ -34,6 +34,7 @@ public class AreaMarkerEditor
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
+    /// <param name="targ">Editor target.</param>
     public void OnGUIStandard(NMGenAreaMarker targ)
     {
         EditorGUILayout.Separator();

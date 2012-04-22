@@ -33,17 +33,21 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Represents a triangle mesh with area data, spatially divided into nodes for 
-    /// more efficient querying.
+    /// Represents a triangle mesh with area data, spatially divided into nodes for more efficient 
+    /// querying.
     /// </summary>
     /// <remarks>
-    /// <para>Objects of this type are created using the <see cref="ChunkyTriMeshBuilder"/> class.
+    /// <para>
+    /// Objects of this type are created using the <see cref="ChunkyTriMeshBuilder"/> class.
     /// </para>
-    /// <para>Storage is optimized for use by the NMGen build process across muliple threads. 
+    /// <para>
+    /// Storage is optimized for use by the NMGen build process across muliple threads. 
     /// It is not efficient for other uses.
     /// </para>
-    /// <para>The content of a node can be inspected as follows:</para>
-    /// <para><code>
+    /// <para>
+    /// The content of a node can be inspected as follows:
+    /// </para>
+    /// <code>
     /// // Where lmesh is a TriangleMesh object and lareas is a byte array obtained
     /// // from ChunkyTriMesh.ExtractMesh.
     /// for (int j = 0; j &lt; node.count; j++, i++)
@@ -64,8 +68,10 @@ namespace org.critterai.nmgen
     ///     
     ///     // Use the vertices...
     /// }
-    /// </code></para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// </code>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
 	public sealed class ChunkyTriMesh
 	{
@@ -87,7 +93,9 @@ namespace org.critterai.nmgen
         /// The number of triangles in the mesh.
         /// </summary>
         /// <remarks>
-        /// <para>Will always be > 0.  Empty meshes cannot be created.</para>
+        /// <para>
+        /// Will always be > 0.  Empty meshes cannot be created.
+        /// </para>
         /// </remarks>
         public int TriCount { get { return mTriCount; } }
 

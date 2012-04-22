@@ -29,26 +29,22 @@ namespace org.critterai
     public static class CAIUtil
     {
         /// <summary>
-        /// Converts <see cref="DateTime"/> ticks to seconds. 
-        /// (seconts = ticks * TicksToSec)
+        /// Converts <see cref="DateTime"/> ticks to seconds. (seconts = ticks * TicksToSec)
         /// </summary>
         public const float TicksToSec = 1E-7f;
 
         /// <summary>
-        /// Converts <see cref="DateTime"/> ticks to milliseconds.
-        /// (ms = ticks * TicksToMS)
+        /// Converts <see cref="DateTime"/> ticks to milliseconds. (ms = ticks * TicksToMS)
         /// </summary>
         public const float TicksToMS = 1E-4f;
 
         /// <summary>
-        /// Converts seconds to <see cref="DateTime"/> ticks.
-        /// (tick = seconds * SecToTicks)
+        /// Converts seconds to <see cref="DateTime"/> ticks. (tick = seconds * SecToTicks)
         /// </summary>
         public const int SecToTicks = 10000000;
 
         /// <summary>
-        /// Converts milliseconds to <see cref="DateTime"/> ticks.
-        /// (ticks = ms * MSToTicks)
+        /// Converts milliseconds to <see cref="DateTime"/> ticks. (ticks = ms * MSToTicks)
         /// </summary>
         public const int MSToTicks = 10000;
 

@@ -651,12 +651,12 @@ namespace org.critterai.nmgen
 
         /// <summary>
         /// The maximum distance the mesh surface should deviate from the surface of the source 
-        /// geometry. (For height detail only.)
-        /// [Limit: >=0] 
-        /// [Units: World]
+        /// geometry. (For height detail only.) [Limit: >=0] [Units: World]
         /// </summary>
         /// <remarks>
-        /// <para>See <see cref="DetailSampleDistance"/> for information on this parameter.</para>
+        /// <para>
+        /// See <see cref="DetailSampleDistance"/> for information on this parameter.
+        /// </para>
         /// </remarks>
         public float DetailMaxDeviation
         {

@@ -93,6 +93,11 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <summary>
         /// Gets components of the specified type using the scene query.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// All queries are against the currently open scene.
+        /// </para>
+        /// </remarks>
         /// <typeparam name="T">The component type.</typeparam>
         /// <returns>The components, or a zero length array if none are found.</returns>
         public T[] GetFromScene<T>() where T : Component
@@ -107,6 +112,11 @@ namespace org.critterai.nmbuild.u3d.editor
         /// Loads all components of the specified type into the <see cref="components"/> list,
         /// using the scene query.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// All queries are against the currently open scene.
+        /// </para>
+        /// </remarks>
         /// <typeparam name="T">The component type.</typeparam>
         /// <returns>The number of components loaded.</returns>
         public int LoadFromScene<T>() where T : Component

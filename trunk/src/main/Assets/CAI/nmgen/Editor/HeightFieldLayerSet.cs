@@ -30,8 +30,12 @@ namespace org.critterai.nmgen
     /// <see cref="CompactHeightfield"/>.
     /// </summary>
     /// <remarks>
-    /// <para>Undocumented: Equivalent to Recast: rcHeightfieldLayerSet.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// Undocumented: Equivalent to Recast: rcHeightfieldLayerSet.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     public sealed class HeightfieldLayerSet
         : IManagedObject
@@ -78,8 +82,8 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Frees and marks as disposed all resoures associated with the
-        /// object.  (Including its <see cref="HeightfieldLayer"/> objects.)
+        /// Frees and marks as disposed all resoures associated with the object.  
+        /// (Including its <see cref="HeightfieldLayer"/> objects.)
         /// </summary>
         public void RequestDisposal()
         {
@@ -98,8 +102,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Gets the specified layser.
         /// </summary>
-        /// <param name="index">The layer. 
-        /// [Limit: 0 &lt;= value &lt; LayerCount]</param>
+        /// <param name="index">The layer. [Limit: 0 &lt;= value &lt; LayerCount]</param>
         /// <returns>The layer, or null on error.</returns>
         public HeightfieldLayer GetLayer(int index)
         {
@@ -112,8 +115,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Builds a layer set from the <see cref="CompactHeightfield"/>.
         /// </summary>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <param name="field">The source field.</param>
         /// <returns>The resulting layer set, or null on failure.</returns>
         public static HeightfieldLayerSet Build(BuildContext context

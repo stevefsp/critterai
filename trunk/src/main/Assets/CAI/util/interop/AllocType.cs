@@ -45,7 +45,8 @@ namespace org.critterai.interop
         /// <remarks>
         /// <para>
         /// Objects of this type are usually allocated and owned by another unmanaged object.  So 
-        /// its resources are freed by its owner when its owner is freed.</para>
+        /// its resources are freed by its owner when its owner is freed.
+        /// </para>
         /// </remarks>
         ExternallyManaged = 2
     }

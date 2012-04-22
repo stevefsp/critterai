@@ -31,7 +31,9 @@ namespace org.critterai.geom
     /// Provides various 2D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Triangle2
     {
@@ -39,7 +41,9 @@ namespace org.critterai.geom
         /// Returns true if the point is contained by the triangle.
         /// </summary>
         /// <remarks>
-        /// <para>The test is inclusive of the triangle edges.</para>
+        /// <para>
+        /// The test is inclusive of the triangle edges.
+        /// </para>
         /// </remarks>
         /// <param name="p">The point to test.</param>
         /// <param name="a">Vertex A of triangle ABC.</param>
@@ -71,7 +75,9 @@ namespace org.critterai.geom
         /// The absolute value of the returned value is two times the area of the triangle ABC.
         /// </summary>
         /// <remarks>
-        /// <para>A positive return value indicates:</para>
+        /// <para>
+        /// A positive return value indicates:
+        /// </para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
@@ -81,15 +87,19 @@ namespace org.critterai.geom
         /// <li>Clockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or represent the 
-        /// same point.</para>
-        /// <para>This is a low cost method.</para>
+        /// <para>
+        /// A value of zero indicates that all points are collinear or represent the same point.
+        /// </para>
+        /// <para>
+        /// This is a low cost method.
+        /// </para>
         /// </remarks>
         /// <param name="a">Vertex A of triangle ABC.</param>
         /// <param name="b">Vertex B of triangle ABC</param>
         /// <param name="c">Vertex C of triangle ABC</param>
-        /// <returns>The absolute value of the returned value is two times the area of the 
-        /// triangle ABC.</returns>
+        /// <returns>
+        /// The absolute value of the returned value is two times the area of the triangle ABC.
+        /// </returns>
         public static float GetSignedAreaX2(Vector2 a, Vector2 b, Vector2 c)
         {
             // References:
@@ -103,7 +113,9 @@ namespace org.critterai.geom
         /// The absolute value of the returned value is two times the area of the triangle ABC.
         /// </summary>
         /// <remarks>
-        /// <para>A positive return value indicates:</para>
+        /// <para>
+        /// A positive return value indicates:
+        /// </para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
@@ -113,9 +125,12 @@ namespace org.critterai.geom
         /// <li>Clockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear or represent the 
-        /// same point.</para>
-        /// <para>This is a low cost method.</para>
+        /// <para>
+        /// A value of zero indicates that all points are collinear or represent the same point.
+        /// </para>
+        /// <para>
+        /// This is a low cost method.
+        /// </para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A of triangle ABC</param>
         /// <param name="ay">The y-value for vertex A of triangle ABC</param>
@@ -138,19 +153,26 @@ namespace org.critterai.geom
         /// (Integer version.)
         /// </summary>
         /// <remarks>
-        /// <para>A positive return value indicates:</para>
+        /// <para>
+        /// A positive return value indicates:
+        /// </para>
         /// <ul>
         /// <li>Counterclockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the right of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A negative value indicates:</para>
+        /// <para>
+        /// A negative value indicates:
+        /// </para>
         /// <ul>
         /// <li>Clockwise wrapping of the vertices.</li>
         /// <li>Vertex B lies to the left of line AC, looking from A toward C.</li>
         /// </ul>
-        /// <para>A value of zero indicates that all points are collinear orrepresent the 
-        /// same point.</para>
-        /// <para>This is a low cost method.</para>
+        /// <para>
+        /// A value of zero indicates that all points are collinear orrepresent the same point.
+        /// </para>
+        /// <para>
+        /// This is a low cost method.
+        /// </para>
         /// </remarks>
         /// <param name="ax">The x-value for vertex A of triangle ABC</param>
         /// <param name="ay">The y-value for vertex A of triangle ABC</param>
@@ -158,8 +180,9 @@ namespace org.critterai.geom
         /// <param name="by">The y-value for vertex B of triangle ABC</param>
         /// <param name="cx">The x-value for vertex C of triangle ABC</param>
         /// <param name="cy">The y-value for vertex C of triangle ABC</param>
-        /// <returns>The absolute value of the returned value is two times the
-        /// area of the triangle ABC.</returns>
+        /// <returns>
+        /// The absolute value of the returned value is two times the area of the triangle ABC.
+        /// </returns>
         public static int GetSignedAreaX2(int ax, int ay
             , int bx, int by
             , int cx, int cy)

@@ -34,10 +34,13 @@ namespace org.critterai.nmgen
     /// Represents a group of related <see cref="Contour">contours</see>.
     /// </summary>
     /// <remarks>
-    /// <para>A contour set is usually generated from a single
-    /// <see cref="CompactHeightfield"/>.  All contours share the minimum
-    /// bounds and cell sizes of the set.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// A contour set is usually generated from a single <see cref="CompactHeightfield"/>.  All 
+    /// contours share the minimum bounds and cell sizes of the set.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     public sealed class ContourSet
         : IManagedObject
@@ -60,8 +63,10 @@ namespace org.critterai.nmgen
         /// The width/depth increment of each cell. (On the xz-plane.)
         /// </summary>
         /// <remarks>
-        /// <para>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</para>
+        /// <para>
+        /// See <see cref="Contour"/> for information on how the bounds and cell sizes are applied 
+        /// to member contours.
+        /// </para>
         /// </remarks>
         public float XZCellSize { get { return root.xzCellSize; } }
 
@@ -69,14 +74,16 @@ namespace org.critterai.nmgen
         /// The height increment of each cell. (On the y-axis.)
         /// </summary> 
         /// <remarks>
-        /// <para>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</para>
+        /// <para>
+        /// See <see cref="Contour"/> for information on how the bounds and cell sizes are 
+        /// applied to member contours.
+        /// </para>
         /// </remarks>
         public float YCellSize { get { return root.yCellSize; } }
 
         /// <summary>
-        /// The AABB border size used to generate the source data from
-        /// which the contours were derived.
+        /// The AABB border size used to generate the source data from which the contours were 
+        /// derived.
         /// </summary>
         public int BorderSize { get { return root.borderSize; } }
 
@@ -89,18 +96,18 @@ namespace org.critterai.nmgen
         /// The minimum bounds of the set in world space.
         /// </summary>
         /// <remarks>
-        /// <para>See <see cref="Contour"/> for information on how the bounds and  
-        /// cell sizes are applied to member contours.</para>
+        /// <para>
+        /// See <see cref="Contour"/> for information on how the bounds and cell sizes are applied 
+        /// to member contours.
+        /// </para>
         /// </remarks>
-        /// <returns>The minimum bounds of the set.
-        /// </returns>
+        /// <returns>The minimum bounds of the set.</returns>
         public Vector3 BoundsMin { get { return root.boundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the set in world space.
         /// </summary>
-        /// <returns>The maximum bounds of the set.
-        /// </returns>
+        /// <returns>The maximum bounds of the set.</returns>
         public Vector3 BoundsMax { get { return root.boundsMax; } }
 
         /// <summary>
@@ -130,8 +137,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Frees and marks as disposed all resources. (Including
-        /// member <see cref="Contour"/> objects.)
+        /// Frees and marks as disposed all resources. (Including member <see cref="Contour"/> objects.)
         /// </summary>
         public void RequestDisposal()
         {
@@ -153,8 +159,9 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Gets the contour for the specified index.
         /// </summary>
-        /// <param name="index">The contour index. 
-        /// [Limits: 0 &lt; value &lt; <see cref="Count"/>]</param>
+        /// <param name="index">
+        /// The contour index. [Limits: 0 &lt; value &lt; <see cref="Count"/>]
+        /// </param>
         /// <returns>The contour, or null on failure.</returns>
         public Contour GetContour(int index)
         {
@@ -176,26 +183,31 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Builds a contour set from the region outlines in the provided 
-        /// <see cref="CompactHeightfield"/>.
+        /// Builds a contour set from the region outlines in the provided <see cref="CompactHeightfield"/>.
         /// </summary>
         /// <remarks>
-        /// <para>The raw contours will match the region outlines exactly.  The
-        /// edgeMaxDeviation and maxEdgeLength parameters control how closely
-        /// the simplified contours will match the raw contours.</para>
-        /// <para>Simplified contours are generated such that the vertices for
-        /// portals between areas match up.  (They are considered
-        /// mandatory vertices.)</para>
-        /// <para>Setting maxEdgeLength to zero will disabled the feature.</para>
+        /// <para>
+        /// The raw contours will match the region outlines exactly.  The edgeMaxDeviation 
+        /// and maxEdgeLength parameters control how closely the simplified contours will match 
+        /// the raw contours.
+        /// </para>
+        /// <para>
+        /// Simplified contours are generated such that the vertices for portals between areas 
+        /// match up.  (They are considered mandatory vertices.)
+        /// </para>
+        /// <para>
+        /// Setting maxEdgeLength to zero will disabled the feature.
+        /// </para>
         /// </remarks>
         /// <param name="context">The context to use for the build.</param>
-        /// <param name="field">The field to use for the build.
-        /// (Must have region data.)</param>
-        /// <param name="edgeMaxDeviation">The maximum distance a simplified
-        /// edge may deviate from the raw contour's vertices.
-        /// [Limit: >= 0]</param>
-        /// <param name="maxEdgeLength">The maximum allowed length of a 
-        /// simplified edge. [Limit: >= 0]</param>
+        /// <param name="field">The field to use for the build.(Must have region data.)</param>
+        /// <param name="edgeMaxDeviation">
+        /// The maximum distance a simplified edge may deviate from the raw contour's vertices.
+        /// [Limit: >= 0]
+        /// </param>
+        /// <param name="maxEdgeLength">
+        /// The maximum allowed length of a simplified edge. [Limit: >= 0]
+        /// </param>
         /// <param name="flags">The build flags.</param>
         /// <returns>The contour set, or null on failure.</returns>
         public static ContourSet Build(BuildContext context, CompactHeightfield field

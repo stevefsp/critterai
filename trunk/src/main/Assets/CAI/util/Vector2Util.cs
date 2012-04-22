@@ -32,7 +32,9 @@ namespace org.critterai
     /// Provides various 2D vector utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Vector2Util
     {
@@ -60,7 +62,8 @@ namespace org.critterai
         /// </summary>
         /// <param name="a">The starting point A.</param>
         /// <param name="b">The end point B.</param>
-        /// <returns>The normalized direction vector for the vector pointing from point A to B.
+        /// <returns>
+        /// The normalized direction vector for the vector pointing from point A to B.
         /// </returns>
         public static Vector2 GetDirectionAB(Vector2 a, Vector2 b)
         {
@@ -98,7 +101,8 @@ namespace org.critterai
         /// <param name="v">Vector v</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]
         /// </param>
-        /// <returns>True if the specified vectors are similar enough to be considered equal.
+        /// <returns>
+        /// True if the specified vectors are similar enough to be considered equal.
         /// </returns>
         public static bool SloppyEquals(Vector2 u, Vector2 v, float tolerance)
         {
@@ -167,11 +171,16 @@ namespace org.critterai
         /// Truncates the length of the vector to the specified value.
         /// </summary>
         /// <remarks>
-        /// <para>If the vector's length is longer than the specified value the 
-        ///  length of the vector is scaled back to the specified length.</para>
-        ///  <para>If the vector's length is shorter than the specified value, it is not changed.
-        ///  </para>
-        ///  <para>This is a potentially costly method.</para>
+        /// <para>
+        /// If the vector's length is longer than the specified value the length of the vector is 
+        /// scaled back to the specified length.
+        /// </para>
+        /// <para>
+        /// If the vector's length is shorter than the specified value, it is not changed.
+        /// </para>
+        /// <para>
+        /// This is a potentially costly method.
+        /// </para>
         /// </remarks>
         /// <param name="v">The vector to truncate.</param>
         /// <param name="maxLength">The maximum allowed length of the resulting vector.</param>

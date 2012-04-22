@@ -39,11 +39,16 @@ namespace org.critterai.nmgen
     /// a voxel field.
     /// </summary>
     /// <remarks>
-    /// <para>For this type of heightfield, the spans represent the floor and ceiling of the 
-    /// open spaces.</para>
-    /// <para>Data is stored in a compact, efficient manner.</para>
-    /// <para>The following process can be used to iterate spans:</para>
-    /// <para><code>
+    /// <para>
+    /// For this type of heightfield, the spans represent the floor and ceiling of the open spaces.
+    /// </para>
+    /// <para>
+    /// Data is stored in a compact, efficient manner.
+    /// </para>
+    /// <para>
+    /// The following process can be used to iterate spans:
+    /// </para>
+    /// <code>
     /// int w = chf.Width;
     /// int d = chf.Depth;
     /// 
@@ -89,19 +94,27 @@ namespace org.critterai.nmgen
     ///         }
     ///     }
     /// }
-    /// </code></para>
-    /// <para>Spans contain neighbor connection data that can be used to locate axis-neighbors.  
+    /// </code>
+    /// <para>
+    /// Spans contain neighbor connection data that can be used to locate axis-neighbors.  
     /// Axis neighbors are spans that are offset from the current cell column as follows:
     /// </para>
-    /// <para>Direction 0 = (-1, 0)<br/>
+    /// <para>
+    /// Direction 0 = (-1, 0)<br/>
     /// Direction 1 = (0, 1)<br/>
     /// Direction 2 = (1, 0)<br/>
-    /// Direction 3 = (0, -1)</para>
-    /// <para>These standard offset can be obtained from the <see cref="CompactSpan.GetDirOffsetX"/>
-    /// and  <see cref="CompactSpan.GetDirOffsetZ"/> methods.</para>
-    /// <para>See the earlier example code for information on how to use connection information.
+    /// Direction 3 = (0, -1)
     /// </para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// These standard offset can be obtained from the <see cref="CompactSpan.GetDirOffsetX"/>
+    /// and  <see cref="CompactSpan.GetDirOffsetZ"/> methods.
+    /// </para>
+    /// <para>
+    /// See the earlier example code for information on how to use connection information.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class CompactHeightfield
@@ -140,8 +153,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// The minimum bounds of the heightfield in world space. 
         /// </summary>
-        /// <returns>The minimum bounds of the heighfield.
-        /// </returns>
+        /// <returns>The minimum bounds of the heighfield.</returns>
         public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
@@ -154,10 +166,12 @@ namespace org.critterai.nmgen
         /// The width/depth size of each cell. (On the xz-plane.)
         /// </summary>
         /// <remarks>
-        /// <para>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</para>
-        /// <para>A width or depth value within the field can be converted
-        /// to world units as follows:</para>
+        /// <para>
+        /// The smallest span can be <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.
+        /// </para>
+        /// <para>
+        /// A width or depth value within the field can be converted to world units as follows:
+        /// </para>
         /// <code>
         /// boundsMin[0] + (width * XZCellSize)
         /// boundsMin[2] + (depth * XZCellSize)
@@ -169,10 +183,15 @@ namespace org.critterai.nmgen
         /// The height increments for span data.  (On the y-axis.)
         /// </summary>
         /// <remarks>
-        /// <para>The smallest span can be 
-        /// <c>XZCellSize width * XZCellSize depth * YCellSize</c> height.</para>
-        /// <para>A height within the field is converted to world units
-        /// as follows: <c>boundsMin[1] + (height * YCellSize)</c></para>
+        /// <para>
+        /// The smallest span can be 
+        /// <c>(XZCellSize width * XZCellSize depth * YCellSize)</c> height.
+        /// </para>
+        /// <para>
+        /// A height within the field is converted to world units as follows:</para>
+        /// <code>
+        /// boundsMin[1] + (height * YCellSize)
+        /// </code>
         /// </remarks>
         public float YCellSize { get { return mYCellSize; } }
 
@@ -200,8 +219,9 @@ namespace org.critterai.nmgen
         /// The maximum distance value for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <para>The value is only useful if the distance field has been
-        /// built.</para>
+        /// <para>
+        /// The value is only useful if the distance field has been built.
+        /// </para>
         /// </remarks>
         public ushort MaxDistance { get { return mMaxDistance; } }
 
@@ -209,7 +229,9 @@ namespace org.critterai.nmgen
         /// The maximum region id for any span within the field.
         /// </summary>
         /// <remarks>
-        /// <para>The value is only useful if the regions have been built.</para>
+        /// <para>
+        /// The value is only useful if the regions have been built.
+        /// </para>
         /// </remarks>
         public ushort MaxRegion { get { return mMaxRegions; } }
 
@@ -234,8 +256,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Frees all unmanaged resources controlled by the object 
-        /// and marks it as disposed.
+        /// Frees all unmanaged resources controlled by the object and marks it as disposed.
         /// </summary>
         public void RequestDisposal()
         {
@@ -258,11 +279,9 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heighfield's <see cref="CompactCell"/> data into
-        /// the provided buffer.
+        /// Loads the heighfield's <see cref="CompactCell"/> data into the provided buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= Width * Depth]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= Width * Depth]</param>
         /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetCellData(CompactCell[] buffer)
         {
@@ -275,11 +294,9 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heightfield's <see cref="CompactSpan"/>
-        /// data into the provided buffer.
+        /// Loads the heightfield's <see cref="CompactSpan"/> data into the provided buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= SpanCount]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= SpanCount]</param>
         /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetSpanData(CompactSpan[] buffer)
         {
@@ -292,18 +309,19 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the heightfield's distance field data into the 
-        /// provided buffer.
+        /// Loads the heightfield's distance field data into the provided buffer.
         /// </summary>
         /// <remarks>
-        /// <para>This data is only available after the distance field has
-        /// been built.</para>
-        /// <para>Each value represents the estimated distance of the span
-        /// from the nearest boundary/obstruction. The index is the same
-        /// as for the span data.  E.g. span[i], distance[i]</para>
+        /// <para>
+        /// This data is only available after the distance field has been built.
+        /// </para>
+        /// <para>
+        /// Each value represents the estimated distance of the span from the nearest 
+        /// boundary/obstruction. The index is the same as for the span data.  
+        /// E.g. span[i], distance[i]
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= SpanCount]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= SpanCount]</param>
         /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetDistanceData(ushort[] buffer)
         {
@@ -325,12 +343,12 @@ namespace org.critterai.nmgen
         /// Loads the heightfield's area data into the provided buffer.
         /// </summary>
         /// <remarks>
-        /// <para>Each value represents the id of the area the span belongs to.
-        /// The index is the same as for the span data.  
-        /// E.g. span[i], area[i]</para>
+        /// <para>
+        /// Each value represents the id of the area the span belongs to. The index is the same 
+        /// as for the span data. E.g. span[i], area[i]
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= SpanCount]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= SpanCount]</param>
         /// <returns>True if the buffer was successfully loaded.</returns>
         public bool GetAreaData(byte[] buffer)
         {
@@ -354,17 +372,18 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Erodes the walkable area within the heightfield by the specified
-        /// radius.
+        /// Erodes the walkable area within the heightfield by the specified radius.
         /// </summary>
         /// <remarks>
-        /// <para>Basically, any spans that are closer to a boundary or obstruction
-        /// than the specified radius are marked as unwalkable.</para>
-        /// <para>This method is usually called immediately after the heightfield
-        /// has been created.</para>
+        /// <para>
+        /// Basically, any spans that are closer to a boundary or obstruction than the specified 
+        /// radius are marked as unwalkable.
+        /// </para>
+        /// <para>
+        /// This method is usually called immediately after the heightfield has been created.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use during the operation.
-        /// </param>
+        /// <param name="context">The context to use during the operation. </param>
         /// <param name="radius">The radius to apply. [Units: Spans]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool ErodeWalkableArea(BuildContext context, int radius)
@@ -379,8 +398,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Applies a median filter to the walkable areas. (Removes noise.)
         /// </summary>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation. </param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool ApplyMedianFilter(BuildContext context)
         {
@@ -390,19 +408,16 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applies the area to all spans within the specified bounding
-        /// box. (AABB)
+        /// Applies the area to all spans within the specified bounding box. (AABB)
         /// </summary>
         /// <remarks>
-        /// <para>The method will return false if the AABB is completely outside
-        /// of the heightfield.</para>
+        /// <para>
+        /// The method will return false if the AABB is completely outside of the heightfield.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
-        /// <param name="boundsMin">The minimum bounds of the AABB. 
-        /// </param>
-        /// <param name="boundsMax">The maximum bounds of the AABB. 
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
+        /// <param name="boundsMin">The minimum bounds of the AABB.</param>
+        /// <param name="boundsMax">The maximum bounds of the AABB. </param>
         /// <param name="area">The area to apply.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool MarkBoxArea(BuildContext context
@@ -420,20 +435,19 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Applies the area to the all spans within the specified convex
-        /// polygon.
+        /// Applies the area to the all spans within the specified convex polygon.
         /// </summary>
         /// <remarks>
-        /// <para>The y-values of the polygon vertices are ignored.  So the
-        /// polygon is effectively projected onto the xz-plane at yMin, 
-        /// then extruded to yMax.</para>
-        /// <para>The method will return false if the polygon is completely outside
-        /// of the heightfield.</para>
+        /// <para>
+        /// The y-values of the polygon vertices are ignored.  So the polygon is effectively 
+        /// projected onto the xz-plane at yMin, then extruded to yMax.
+        /// </para>
+        /// <para>
+        /// The method will return false if the polygon is completely outside of the heightfield.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
-        /// <param name="verts">The vertices of the polygon 
-        /// [Fomr: (x, y, z) * vertCount]</param>
+        /// <param name="context">The context to use duing the operation.</param>
+        /// <param name="verts">The vertices of the polygon [Length: vertCount]</param>
         /// <param name="yMin">The height of the base of the polygon.</param>
         /// <param name="yMax">The height of the top of the polygon.</param>
         /// <param name="area">The area to apply.</param>
@@ -457,13 +471,12 @@ namespace org.critterai.nmgen
         /// Applied the area to all spans within the specified cylinder.
         /// </summary>
         /// <remarks>
-        /// <para>The method will return false if the cylinder is completely 
-        /// outside of the heightfield.</para>
+        /// <para>
+        /// The method will return false if the cylinder is completely outside of the heightfield.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
-        /// <param name="centerBase">The center of the base of the cylinder.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
+        /// <param name="centerBase">The center of the base of the cylinder.</param>
         /// <param name="radius">The radius of the cylinder.</param>
         /// <param name="height">The height of the cylinder.</param>
         /// <param name="area">The area to apply.</param>
@@ -486,13 +499,15 @@ namespace org.critterai.nmgen
         /// Builds the distance field for the heightfield.
         /// </summary>
         /// <remarks>
-        /// <para>This method must be called before attempting to build
-        /// region data.</para>
-        /// <para>The distance data is avaiable via <see cref="MaxDistance"/>
-        /// and <see cref="GetDistanceData"/>.</para>
+        /// <para>
+        /// This method must be called before attempting to build region data.
+        /// </para>
+        /// <para>
+        /// The distance data is avaiable via <see cref="MaxDistance"/> and 
+        /// <see cref="GetDistanceData"/>.
+        /// </para>
         /// </remarks>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool BuildDistanceField(BuildContext context)
         {
@@ -509,8 +524,8 @@ namespace org.critterai.nmgen
         /// Non-null regions consist of connected, non-overlapping walkable spans that form a 
         /// single contour.
         /// </para>
-        /// <para>The region data is available via <see cref="MaxRegion"/> and 
-        /// <see cref="GetSpanData"/>.
+        /// <para>
+        /// The region data is available via <see cref="MaxRegion"/> and <see cref="GetSpanData"/>.
         /// </para>
         /// <para>
         /// If a region forms an area that is smaller than <paramref name="minRegionArea"/>, 
@@ -524,8 +539,8 @@ namespace org.critterai.nmgen
         /// </remarks>
         /// <param name="context">The context to use duing the operation.</param>
         /// <param name="borderSize">The AABB border size to apply.</param>
-        /// <param name="minRegionArea">T
-        /// he minimum area allowed for unconnected (island) regions. [Units: Spans]
+        /// <param name="minRegionArea">
+        /// The minimum area allowed for unconnected (island) regions. [Units: Spans]
         /// </param>
         /// <param name="mergeRegionArea">
         /// The maximum region size that will be considered for merging with another region.
@@ -545,8 +560,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Builds region data for the heightfield using simple monotone
-        /// partitioning.
+        /// Builds region data for the heightfield using simple monotone partitioning.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -592,15 +606,16 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Creates a compact open heightfield from a solid heightfield.
         /// </summary>
-        /// <param name="context">The context to use duing the operation.
+        /// <param name="context">The context to use duing the operation.</param>
+        /// <param name="sourceField">
+        /// The solid heighfield to derive the compact heightfield from.
         /// </param>
-        /// <param name="sourceField">The solid heighfield to derive the
-        /// compact heightfield from.</param>
-        /// <param name="walkableHeight">The minimum floor to ceiling height that is still 
-        /// considered walkable. [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
+        /// <param name="walkableHeight">
+        /// The minimum floor to ceiling height that is still considered walkable. 
+        /// [Limit: >= <see cref="NMGen.MinWalkableHeight"/>]
         /// </param>
-        /// <param name="walkableStep">The maximum floor to floor step
-        /// that is still considered walkable.</param>
+        /// <param name="walkableStep">
+        /// The maximum floor to floor step that is still considered walkable.</param>
         /// <returns>True if the operation completed successfully.</returns>
         public static CompactHeightfield Build(BuildContext context
             , Heightfield sourceField

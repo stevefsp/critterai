@@ -23,12 +23,12 @@
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Contour vertex flags. (Applied to the forth element of the vertices
-    /// arrays.)
+    /// Contour vertex flags. (Applied to the forth element of the vertices arrays.)
     /// </summary>
     /// <remarks>
-    /// <para>Contour vertices take the form (x, y, z, r).  The r-value can contain
-    /// these flags.</para>
+    /// <para>
+    /// Contour vertices take the form (x, y, z, r).  The r-value can contain these flags.
+    /// </para>
     /// </remarks>
     [System.Flags]
     public enum ContourFlags
@@ -39,8 +39,7 @@ namespace org.critterai.nmgen
         BorderVertex = 0x10000,
 
         /// <summary>
-        /// The vertex is the start of an edge that forms a boundary 
-        /// between areas.
+        /// The vertex is the start of an edge that forms a boundary between areas.
         /// </summary>
         AreaBorder = 0x20000
     }

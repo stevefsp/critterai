@@ -27,7 +27,9 @@ namespace org.critterai
     /// Provides various math related constants and utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class MathUtil 
     {
@@ -42,17 +44,12 @@ namespace org.critterai
         public const float Tolerance = 0.0001f;
         
         /// <summary>
-        /// Determines whether the values are within the specified tolerance
-        /// of each other.
+        /// Determines whether the values are within the specified tolerance of each other.
         /// </summary>
-        /// <param name="a">The a-value to compare against the b-value.
-        /// </param>
-        /// <param name="b">The b-value to compare against the a-value.
-        /// </param>
-        /// <param name="tolerance">The tolerance to use for the comparison.
-        /// </param>
-        /// <returns>True if the values are within the specified tolerance
-        /// of each other.</returns>
+        /// <param name="a">The a-value to compare against the b-value.</param>
+        /// <param name="b">The b-value to compare against the a-value.</param>
+        /// <param name="tolerance">The tolerance to use for the comparison.</param>
+        /// <returns>True if the values are within the specified tolerance of each other.</returns>
         public static bool SloppyEquals(float a, float b, float tolerance)
         {
             return !(b < a - tolerance || b > a + tolerance);
@@ -62,16 +59,18 @@ namespace org.critterai
         /// Clamps the value to a positive non-zero value.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
-        /// <returns>The value clamped to a minimum of the smallest possible 
-        /// positive value greater  than zero.</returns>
+        /// <returns>
+        /// The value clamped to a minimum of the smallest possible positive value greater 
+        /// than zero.
+        /// </returns>
         public static float ClampToPositiveNonZero(float value)
         {
             return Math.Max(float.Epsilon, value);
         }
         
         /// <summary>
-        /// Clamps the value to the specified range.  The clamp is inclusive
-        /// of the minimum and maximum.
+        /// Clamps the value to the specified range.  The clamp is inclusive of the minimum and
+        /// maximum.
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <param name="minimum">The minimum allowed value.</param>

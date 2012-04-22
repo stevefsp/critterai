@@ -29,10 +29,14 @@ namespace org.critterai
     /// Represents a 3D floating point vector.
     /// </summary>
     /// <remarks>
-    /// <para>Not present in the Unity build.</para>
-    /// <para>This structure's API kept very simple in order to minimize
-    /// conflicts with other vector implementations.  The <see cref="Vector3Util"/> class 
-    /// provides some standard vector operations.</para>
+    /// <para>
+    /// Not present in the Unity build.
+    /// </para>
+    /// <para>
+    /// This structure's API kept very simple in order to minimize conflicts with other 
+    /// vector implementations.  The <see cref="Vector3Util"/> class provides some standard 
+    /// vector operations.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector3

@@ -32,7 +32,10 @@ namespace org.critterai.geom
     /// A basic indexed triangle mesh.
     /// </summary>
     /// <remarks>
-    /// <para>The buffers may contain unused space.</para></remarks>
+    /// <para>
+    /// The buffers may contain unused space.
+    /// </para>
+    /// </remarks>
     public class TriangleMesh
     {
         /// <summary>
@@ -64,11 +67,14 @@ namespace org.critterai.geom
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="maxVerts">The maximum number of vertices the <see cref="verts"/> buffer 
-        /// needs to hold. [Limit: >= 3]
+        /// <param name="maxVerts">
+        /// The maximum number of vertices the <see cref="verts"/> buffer needs to hold. 
+        /// [Limit: >= 3]
         /// </param>
-        /// <param name="maxTris">The maximum number of triangles the <see cref="tris"/> buffer 
-        /// needs to hold. [Limit: >= 1]</param>
+        /// <param name="maxTris">
+        /// The maximum number of triangles the <see cref="tris"/> buffer needs to hold. 
+        /// [Limit: >= 1]
+        /// </param>
         public TriangleMesh(int maxVerts, int maxTris)
         {
             this.verts = new Vector3[Math.Max(3, maxVerts)];
@@ -79,15 +85,16 @@ namespace org.critterai.geom
         /// Constructor.
         /// </summary>
         /// <remarks>
-        /// <para>This constructor assigns the provided arrays to the object.  (No copying.)
+        /// <para>
+        /// This constructor assigns the provided arrays to the object.  (No copying.)
         /// </para>
         /// </remarks>
-        /// <param name="verts">The vertices. [Length: >= <typeparamref name="vertCount"/>]
+        /// <param name="verts">
+        /// The vertices. [Length: >= <typeparamref name="vertCount"/>]
         /// </param>
         /// <param name="vertCount">The number of vertices.</param>
         /// <param name="tris">
-        /// The triangles. 
-        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// The triangles. [(vertAIndex, vertBIndex, vertCIndex) * triCount]
         /// [Length: >= (<typeparamref name="triCount"/>) * 3]
         /// </param>
         /// <param name="triCount">The number of triangles.</param>
@@ -103,7 +110,9 @@ namespace org.critterai.geom
         /// Gets the AABB bounds of the mesh.
         /// </summary>
         /// <remarks>
-        /// <para>Do not call this method on an uninitialized mesh.</para>
+        /// <para>
+        /// Do not call this method on an uninitialized mesh.
+        /// </para>
         /// </remarks>
         /// <param name="boundsMin">The minimum bounds of the mesh.</param>
         /// <param name="boundsMax">The maximum bounds of the mesh.</param>
@@ -129,7 +138,8 @@ namespace org.critterai.geom
         /// </summary>
         /// <param name="bmin">The minimum AABB bounds.</param>
         /// <param name="bmax">The maximum AABB bounds.</param>
-        /// <returns>True if the minimum bounds is less than the maximum bounds on all axes.
+        /// <returns>
+        /// True if the minimum bounds is less than the maximum bounds on all axes.
         /// </returns>
         public static bool IsBoundsValid(Vector3 bmin, Vector3 bmax)
         {
@@ -140,17 +150,21 @@ namespace org.critterai.geom
         /// Validates the structure and, optionally, the content of the mesh.
         /// </summary>
         /// <remarks>
-        /// <para>The basic structural validation includes null checks, array size checks, etc.
+        /// <para>
+        /// The basic structural validation includes null checks, array size checks, etc.
         /// </para>
-        /// <para>The optional content validation checks that the indices refer to valid vertices 
-        /// and that triangles do not contain duplicate vertices.</para>
+        /// <para>
+        /// The optional content validation checks that the indices refer to valid vertices 
+        /// and that triangles do not contain duplicate vertices.
+        /// </para>
         /// </remarks>
         /// <param name="verts">The mesh vertices.</param>
         /// <param name="vertCount">The vertex count.</param>
         /// <param name="tris">The triangle indices.</param>
         /// <param name="triCount">The triangle count.</param>
-        /// <param name="includeContent">If true, the content will be checked.  Otherwise only
-        /// the structure will be checked.</param>
+        /// <param name="includeContent">
+        /// If true, the content will be checked.  Otherwise only the structure will be checked.
+        /// </param>
         /// <returns>True if the validation tests pass.</returns>
         public static bool IsValid(Vector3[] verts, int vertCount
             , int[] tris, int triCount
@@ -191,14 +205,18 @@ namespace org.critterai.geom
         /// Validates the structure and, optionally, the content of the mesh.
         /// </summary>
         /// <remarks>
-        /// <para>The basic structural validation includes null checks, array size checks, etc.
+        /// <para>
+        /// The basic structural validation includes null checks, array size checks, etc.
         /// </para>
-        /// <para>The optional content validation checks that the indices refer to valid vertices
-        /// and that triangles do not contain duplicate vertices.</para>
+        /// <para>
+        /// The optional content validation checks that the indices refer to valid vertices
+        /// and that triangles do not contain duplicate vertices.
+        /// </para>
         /// </remarks>
         /// <param name="mesh">The mesh to check.</param>
-        /// <param name="includeContent">If true, the content will be checked.  Otherwise only
-        /// the structure will be checked.</param>
+        /// <param name="includeContent">
+        /// If true, the content will be checked.  Otherwise only the structure will be checked.
+        /// </param>
         /// <returns>True if the validation tests pass.</returns>
         public static bool IsValid(TriangleMesh mesh, bool includeContent)
         {

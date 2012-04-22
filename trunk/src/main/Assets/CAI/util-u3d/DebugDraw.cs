@@ -271,7 +271,8 @@ namespace org.critterai.u3d
         /// <summary>
         /// Append a filled convex polygon.
         /// </summary>
-        /// <param name="verts">The polygon vertices. [Length: >= <paramref name="vertCount"/>]
+        /// <param name="verts">
+        /// The polygon vertices. [Length: >= <paramref name="vertCount"/>]
         /// </param>
         /// <param name="vertCount">The number of vertices.</param>
         /// <param name="color">The color of the polygon surface.</param>
@@ -478,8 +479,9 @@ namespace org.critterai.u3d
         /// <param name="position">The center point of the cylinder base.</param>
         /// <param name="radius">The radius.</param>
         /// <param name="height">The cylinder height, relative to the base.</param>
-        /// <param name="includeHalf">True if a circle should be drawn halfway from the base to
-        /// the top of the cyclinder.</param>
+        /// <param name="includeHalf">
+        /// True if a circle should be drawn halfway from the base to the top of the cyclinder.
+        /// </param>
         /// <param name="color">The wireframe color.</param>
         public static void Cylinder(Vector3 position, float radius, float height
             , bool includeHalf
@@ -501,8 +503,9 @@ namespace org.critterai.u3d
         /// <param name="position">The center point of the cylinder base.</param>
         /// <param name="radius">The radius.</param>
         /// <param name="height">The cylinder height, relative to the base.</param>
-        /// <param name="includeHalf">True if a circle should be drawn halfway from the base to
-        /// the top of the cyclinder.</param>
+        /// <param name="includeHalf">
+        /// True if a circle should be drawn halfway from the base to the top of the cyclinder.
+        /// </param>
         public static void AppendCylinder(Vector3 position, float radius, float height
             , bool includeHalf)
         {
@@ -566,9 +569,11 @@ namespace org.critterai.u3d
         /// </summary>
         /// <param name="pointA">Endpoint A.</param>
         /// <param name="pointB">Endpoint B.</param>
-        /// <param name="headScaleA">The scale of endpoint A arrow head. (Or zero for no head.)
+        /// <param name="headScaleA">
+        /// The scale of endpoint A arrow head. (Or zero for no head.)
         /// </param>
-        /// <param name="headScaleB">The scale of the endpoint B arrow head.(Or zero for no head.)
+        /// <param name="headScaleB">
+        /// The scale of the endpoint B arrow head.(Or zero for no head.)
         /// </param>
         /// <param name="color">The color.</param>
         public static void Arrow(Vector3 pointA, Vector3 pointB
@@ -590,9 +595,11 @@ namespace org.critterai.u3d
         /// </summary>
         /// <param name="pointA">Endpoint A.</param>
         /// <param name="pointB">Endpoint B.</param>
-        /// <param name="headScaleA">The scale of endpoint A arrow head. (Or zero for no head.)
+        /// <param name="headScaleA">
+        /// The scale of endpoint A arrow head. (Or zero for no head.)
         /// </param>
-        /// <param name="headScaleB">The scale of the endpoint B arrow head.(Or zero for no head.)
+        /// <param name="headScaleB">
+        /// The scale of the endpoint B arrow head.(Or zero for no head.)
         /// </param>
         public static void AppendArrow(Vector3 pointA, Vector3 pointB
             , float headScaleA, float headScaleB)
@@ -631,8 +638,10 @@ namespace org.critterai.u3d
         /// Draw a triangle mesh.
         /// </summary>
         /// <param name="verts">The vertices.</param>
-        /// <param name="tris">The triangle indices. 
-        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]</param>
+        /// <param name="tris">
+        /// The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]
+        /// </param>
         /// <param name="triCount">The number of triangles.</param>
         /// <param name="includeEdges">True if the triangle edges should be drawn.</param>
         /// <param name="color">The surface color.</param>
@@ -679,8 +688,10 @@ namespace org.critterai.u3d
         /// Draw a triangle mesh, colored per triangle.
         /// </summary>
         /// <param name="verts">The vertices.</param>
-        /// <param name="tris">The triangle indices. 
-        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]</param>
+        /// <param name="tris">
+        /// The triangle indices. 
+        /// [(vertAIndex, vertBIndex, vertCIndex) * <paramref name="triCount"/>]
+        /// </param>
         /// <param name="areas">The color area assigned to the triangle.</param>
         /// <param name="triCount">The number of triangles.</param>
         /// <param name="includeEdges">True if the triangle edges should be drawn.</param>
@@ -782,9 +793,11 @@ namespace org.critterai.u3d
         /// <param name="pointA">Endpoint A.</param>
         /// <param name="pointB">Endpoint B.</param>
         /// <param name="height">The relative height of the arc.</param>
-        /// <param name="headScaleA">The scale endpoint A arrow head. (Or zero for no head.)
+        /// <param name="headScaleA">
+        /// The scale endpoint A arrow head. (Or zero for no head.)
         /// </param>
-        /// <param name="headScaleB">The scale of endpoint B arrow head.(Or zero for no head.)
+        /// <param name="headScaleB">
+        /// The scale of endpoint B arrow head.(Or zero for no head.)
         /// </param>
         /// <param name="color">The color.</param>
         public static void Arc(Vector3 pointA, Vector3 pointB, float height
@@ -807,9 +820,11 @@ namespace org.critterai.u3d
         /// <param name="pointA">Endpoint A.</param>
         /// <param name="pointB">Endpoint B.</param>
         /// <param name="height">The relative height of the arc.</param>
-        /// <param name="headScaleA">The scale of the arrow head for point A. (Or zero for no head.)
+        /// <param name="headScaleA">
+        /// The scale of the arrow head for point A. (Or zero for no head.)
         /// </param>
-        /// <param name="headScaleB">The scale of the arrow head for point B.(Or zero for no head.)
+        /// <param name="headScaleB">
+        /// The scale of the arrow head for point B.(Or zero for no head.)
         /// </param>
         public static void AppendArc(Vector3 pointA, Vector3 pointB, float height
             , float headScaleA, float headScaleB)

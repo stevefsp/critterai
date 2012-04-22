@@ -33,14 +33,14 @@ namespace org.critterai.geom
         OnLine,
 
         /// <summary>
-        /// The reference  point is to the left when looking from point 
-        /// A toward point B along the line.
+        /// The reference  point is to the left when looking from point A toward point B along 
+        /// the line.
         /// </summary>
         LeftSide,
 
         /// <summary>
-        /// The reference point is to the right when looking from point 
-        /// A toward point B along the line.
+        /// The reference point is to the right when looking from point A toward point B along 
+        /// the line.
         /// </summary>
         RightSide
     }

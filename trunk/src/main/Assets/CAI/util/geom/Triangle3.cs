@@ -32,7 +32,9 @@ namespace org.critterai.geom
     /// Provides various 3D triangle utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Triangle3 
     {
@@ -40,7 +42,8 @@ namespace org.critterai.geom
         /// Returns the area of the triangle ABC. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>Use <see cref="GetAreaComp">GetAreaComp</see> if the value is only needed 
+        /// <para>
+        /// Use <see cref="GetAreaComp">GetAreaComp</see> if the value is only needed 
         /// for comparison with other triangles.
         /// </para>
         /// </remarks>
@@ -58,9 +61,13 @@ namespace org.critterai.geom
         /// Is triangle A larger than triangle B.)
         /// </summary>
         /// <remarks>
-        /// <para>The value returned by this method can be converted to an area as 
-        /// follows: Area = Math.sqrt(value) / 2</para>
-        /// <para>Useful for cheaply comparing the size of triangles.</para>
+        /// <para>
+        /// The value returned by this method can be converted to an area as follows: 
+        /// <c>Area = Math.sqrt(value) / 2</c>
+        /// </para>
+        /// <para>
+        /// Useful for cheaply comparing the size of triangles.
+        /// </para>
         /// </remarks>
         /// <param name="a">Vertex A of triangle ABC.</param>
         /// <param name="b">Vertex B of triangle ABC.</param>
@@ -88,10 +95,12 @@ namespace org.critterai.geom
         /// Returns the normal for the  triangle. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>The normal of a triangle is the vector perpendicular to the triangle's plane 
+        /// <para>
+        /// The normal of a triangle is the vector perpendicular to the triangle's plane 
         /// with the direction determined by the  
         /// <a href="http://en.wikipedia.org/wiki/Right-hand_rule" target="_blank">
-        /// right-handed rule</a>.</para>
+        /// right-handed rule</a>.
+        /// </para>
         /// </remarks>
         /// <param name="a">Vertex A of triangle ABC.</param>
         /// <param name="b">Vertex B of triangle ABC.</param>
@@ -110,12 +119,16 @@ namespace org.critterai.geom
         /// Returns the normal for the  triangle. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>The normal of a triangle is the vector perpendicular to the triangle's plane with
+        /// <para>
+        /// The normal of a triangle is the vector perpendicular to the triangle's plane with
         /// the direction determined by the  <a href="http://en.wikipedia.org/wiki/Right-hand_rule"
-        /// target="_blank">right-handed rule</a>.</para>
+        /// target="_blank">right-handed rule</a>.
+        /// </para>
         /// </remarks>
-        /// <param name="vertices">An array of vertices which contains a representation of 
-        /// triangles. The wrap direction is  expected to be clockwise.</param>
+        /// <param name="vertices">
+        /// An array of vertices which contains a representation of triangles. The wrap direction 
+        /// is  expected to be clockwise.
+        /// </param>
         /// <param name="triangle">The index of the first vertex in the triangle.</param>
         /// <returns>The normal of the triangle.</returns>
         public static Vector3 GetNormal(Vector3[] vertices, int triangle)

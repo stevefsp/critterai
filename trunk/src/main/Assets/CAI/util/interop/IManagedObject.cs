@@ -37,9 +37,11 @@ namespace org.critterai.interop
         /// the object marked as disposed.
         /// </summary>
         /// <remarks>
-        /// <para> Whether or not unmanaged resources are actually freed depends on whether the 
+        /// <para>
+        /// Whether or not unmanaged resources are actually freed depends on whether the 
         /// resources  are owned by the object.  In some cases the only action is to mark the 
-        /// object as  disposed.</para>
+        /// object as  disposed.
+        /// </para>
         /// </remarks>
         void RequestDisposal();
 

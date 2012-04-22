@@ -35,7 +35,8 @@ namespace org.critterai.nmbuild.u3d.editor
         /// The target object's name must match the instance pattern of the source.
         /// </summary>
         /// <remarks>
-        /// <para>The instance pattern is the source name, followed by a space, and containing the
+        /// <para>
+        /// The instance pattern is the source name, followed by a space, and containing the
         /// word "instance". The check is lazy.  If the source name is "SwampMesh", then 
         /// both "SwampMesh Instance" and "SwampMesh NotAnInstance" will match.
         /// </para>

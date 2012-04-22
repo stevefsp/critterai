@@ -27,8 +27,10 @@ namespace org.critterai.nmgen
     /// Represents a span within a <see cref="Heightfield"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>Useful instances of this type can only by obtained from a <see cref="Heightfield"/> 
-    /// object.</para>
+    /// <para>
+    /// Useful instances of this type can only by obtained from a <see cref="Heightfield"/> 
+    /// object.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct HeightfieldSpan
