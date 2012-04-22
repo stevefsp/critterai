@@ -31,7 +31,9 @@ namespace org.critterai.geom
     /// Provides 2D line and line segment utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Line2
     {
@@ -46,8 +48,7 @@ namespace org.critterai.geom
         /// <param name="cy">The y-value for point C on line CD.</param>
         /// <param name="dx">The x-value for point D on line CD.</param>
         /// <param name="dy">The y-value for point D on line CD.</param>
-        /// <returns>True if the two lines are either collinear or intersect 
-        /// at one point.</returns>
+        /// <returns>True if the two lines are either collinear or intersect at one point.</returns>
         public static bool LinesIntersect(int ax, int ay, int bx, int by
                 , int cx, int cy, int dx, int dy)
         {
@@ -69,8 +70,7 @@ namespace org.critterai.geom
         /// <param name="b">Point B on ling AB.</param>
         /// <param name="c">Point C on line CD.</param>
         /// <param name="d">Point D on line CD.</param>
-        /// <returns>True if the two lines are either collinear or intersect 
-        /// at one point.</returns>
+        /// <returns>True if the two lines are either collinear or intersect at one point.</returns>
         public static bool LinesIntersect(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
         {
             float numerator = ((a.y - c.y) * (d.x - c.x)) - ((a.x - c.x) * (d.y - c.y));
@@ -90,8 +90,7 @@ namespace org.critterai.geom
         /// <param name="p">The point.</param>
         /// <param name="a">Endpoint A of line segment AB.</param>
         /// <param name="b">Endpoing B of line segment AB.</param>
-        /// <returns>The distance squared from the point to line segment AB.
-        /// </returns>
+        /// <returns>The distance squared from the point to line segment AB.</returns>
         public static float GetPointSegmentDistanceSq(Vector2 p, Vector2 a, Vector2 b)
         {
             /*
@@ -177,15 +176,19 @@ namespace org.critterai.geom
         /// Returns the normalized vector that is perpendicular to line AB. (Costly method!)
         /// </summary>
         /// <remarks>
-        /// <para>The direction of the vector will be to the right when viewed 
-        /// from point A to point B along the line.</para>
-        /// <para>Special Case: A zero length vector will be returned if the points 
-        /// are collocated.</para>
+        /// <para>
+        /// The direction of the vector will be to the right when viewed from point A to point B 
+        /// along the line.
+        /// </para>
+        /// <para>
+        /// Special Case: A zero length vector will be returned if the points are collocated.
+        /// </para>
         /// </remarks>
         /// <param name="a">Point A on line AB.</param>
         /// <param name="b">Point B on line AB.</param>
-        /// <returns>The normalized vector that is perpendicular to line AB, 
-        /// or a zero length vector if the points are collocated.
+        /// <returns>
+        /// The normalized vector that is perpendicular to line AB, or a zero length vector if the 
+        /// points are collocated.
         /// </returns>
         public static Vector2 GetNormalAB(Vector2 a, Vector2 b)
         {
@@ -206,10 +209,12 @@ namespace org.critterai.geom
         /// Determines the relationship between lines AB and CD.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// While this check is technically inclusive of segment end points, floating point errors
         /// can result in end point intersection being missed.  If this matters, a 
         /// <see  cref="Vector2Util.SloppyEquals(Vector2, Vector2, float)">
         /// SloppyEquals</see> or similar test of the intersection point can be performed.
+        /// </para>
         /// </remarks>
         /// <param name="a">Point A on line AB.</param>
         /// <param name="b">Point B on ling AB.</param>

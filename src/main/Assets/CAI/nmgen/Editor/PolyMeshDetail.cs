@@ -33,18 +33,25 @@ namespace org.critterai.nmgen
     /// <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para><b>Warning:</b> The serializable attribute and interface will be removed 
-    /// in v0.5. Use <see cref="GetSerializedData"/> instead.</para>
-    /// <para>The detail mesh is made up of triangle sub-meshes which provide
-    /// extra height detail for each polygon in its assoicated polygon
-    /// mesh.</para>
-    /// <para>This class is moslty opaque.  The 
-    /// <see cref="PolyMeshDetailData"/> class provides the ability to 
-    /// inspect and update the content.</para>
-    /// <para>This class is not compatible with Unity serialization.
-    /// The <see cref="GetSerializedData"/> method can be used for
-    /// manual serialization within Unity.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// <b>Warning:</b> The serializable attribute and interface will be removed in v0.5. Use 
+    /// <see cref="GetSerializedData"/> instead.
+    /// </para>
+    /// <para>
+    /// The detail mesh is made up of triangle sub-meshes which provide extra height detail for 
+    /// each polygon in its assoicated polygon mesh.
+    /// </para>
+    /// <para>
+    /// This class is moslty opaque.  The <see cref="PolyMeshDetailData"/> class provides the 
+    /// ability to inspect and update the content.
+    /// </para>
+    /// <para>
+    /// This class is not compatible with Unity serialization. The <see cref="GetSerializedData"/> 
+    /// method can be used for manual serialization within Unity.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -116,16 +123,18 @@ namespace org.critterai.nmgen
         public AllocType ResourceType { get { return mResourceType; } }
 
         /// <summary>
-        /// Constructs an object with all buffers allocated and 
-        /// ready to load with data. (See: <see cref="Load"/>)
+        /// Constructs an object with all buffers allocated and ready to load with data. 
+        /// (See: <see cref="Load"/>)
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the vertex buffer
-        /// will hold.
-        /// [Limit: >= 3]</param>
-        /// <param name="maxTris">The maximum triangles the triangle buffer
-        /// will hold. [Limit: > 0]</param>
-        /// <param name="maxMeshes">The maximum sub-meshes the mesh
-        /// buffer will hold. [Limit: > 0]</param>
+        /// <param name="maxVerts">
+        /// The maximum vertices the vertex buffer will hold. [Limit: >= 3]
+        /// </param>
+        /// <param name="maxTris">
+        /// The maximum triangles the triangle buffer  will hold. [Limit: > 0]
+        /// </param>
+        /// <param name="maxMeshes">
+        /// The maximum sub-meshes the mesh buffer will hold. [Limit: > 0]
+        /// </param>
         private PolyMeshDetail(int maxVerts
             , int maxTris
             , int maxMeshes)
@@ -209,10 +218,15 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Gets the data from the mesh buffers.
         /// </summary>
-        /// <remarks>This method is useful for extracting mesh data so it
-        /// can be inspected or altered and reloaded.</remarks>
-        /// <param name="includeBuffer">If true, includes the unused
-        /// buffer space.  Otherwise only the used buffer data is returned.
+        /// <remarks>
+        /// <para>
+        /// This method is useful for extracting mesh data so it can be inspected or altered and 
+        /// reloaded.
+        /// </para>
+        /// </remarks>
+        /// <param name="includeBuffer">
+        /// If true, includes the unused buffer space.  Otherwise only the used buffer data is 
+        /// returned.
         /// </param>
         /// <returns>The data from the mesh buffers.</returns>
         public PolyMeshDetailData GetData(bool includeBuffer)
@@ -234,9 +248,13 @@ namespace org.critterai.nmgen
         /// Loads the data from the mesh buffers into the data object.
         /// </summary>
         /// <remarks>
-        /// <para>If the buffer argument is null, a new buffer will be returned.
-        /// If the buffer is too small it will be resized.</para>
-        /// <para>Only the used portions of the mesh buffers are copied.</para>
+        /// <para>
+        /// If the buffer argument is null, a new buffer will be returned. If the buffer is too 
+        /// small it will be resized.
+        /// </para>
+        /// <para>
+        /// Only the used portions of the mesh buffers are copied.
+        /// </para>
         /// </remarks>
         /// <param name="buffer">A buffer to load the data into.</param>
         /// <returns>A reference to the mesh data.</returns>
@@ -298,11 +316,10 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Gets a serialized version of the mesh that can be used to
-        /// recreate it later.
+        /// Gets a serialized version of the mesh that can be used to recreate it later.
         /// </summary>
-        /// <param name="includeBuffer">True if serialized data should
-        /// include the full buffer size.  Otherwise the buffers will
+        /// <param name="includeBuffer">
+        /// True if serialized data should include the full buffer size.  Otherwise the buffers will
         /// be stripped and the smallest possible serialized data returned.
         /// </param>
         /// <returns>A serialized version of the mesh.</returns>
@@ -336,8 +353,11 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Gets serialization data for the object.
         /// </summary>
-        /// <remarks>Will always include the unused buffer space.
-        /// (No compression.)</remarks>
+        /// <remarks>
+        /// <para>
+        /// Will always include the unused buffer space. (No compression.)
+        /// </para>
+        /// </remarks>
         /// <param name="info">Serialization information.</param>
         /// <param name="context">Serialization context.</param>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -362,12 +382,13 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <param name="context">The context to use for the operation.</param>
         /// <param name="polyMesh">The source polygon mesh.</param>
-        /// <param name="field">The compact heightfield used to build
-        /// the polygon mesh.</param>
-        /// <param name="detailSampleDistance">The sample distance
-        /// to use when sampling the surface height of the polygon mesh.</param>
-        /// <param name="detailMaxDeviation">The maximum the surface of the
-        /// detail mesh should deviate from the heightfield data.</param>
+        /// <param name="field">The compact heightfield used to build the polygon mesh.</param>
+        /// <param name="detailSampleDistance">
+        /// The sample distance to use when sampling the surface height of the polygon mesh.
+        /// </param>
+        /// <param name="detailMaxDeviation">
+        /// The maximum the surface of the detail mesh should deviate from the heightfield data.
+        /// </param>
         /// <returns>A new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Build(BuildContext context
             , PolyMesh polyMesh
@@ -399,16 +420,18 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Constructs an object with all buffers allocated and 
-        /// ready to load with data. (See: <see cref="Load"/>)
+        /// Constructs an object with all buffers allocated and ready to load with data. 
+        /// (See: <see cref="Load"/>)
         /// </summary>
-        /// <param name="maxVerts">The maximum vertices the vertex buffer
-        /// will hold.
-        /// [Limit: >= 3]</param>
-        /// <param name="maxTris">The maximum triangles the triangle buffer
-        /// will hold. [Limit: > 0]</param>
-        /// <param name="maxMeshes">The maximum sub-meshes the mesh
-        /// buffer will hold. [Limit: > 0]</param>
+        /// <param name="maxVerts">
+        /// The maximum vertices the vertex buffer will hold. [Limit: >= 3]
+        /// </param>
+        /// <param name="maxTris">
+        /// The maximum triangles the triangle buffer will hold. [Limit: > 0]
+        /// </param>
+        /// <param name="maxMeshes">
+        /// The maximum sub-meshes the mesh buffer will hold. [Limit: > 0]
+        /// </param>
         /// <returns>The new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Create(int maxVerts
             , int maxTris
@@ -421,8 +444,8 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Constructs a detail mesh from the data generated by
-        /// the <see cref="GetSerializedData"/> method.
+        /// Constructs a detail mesh from the data generated by the <see cref="GetSerializedData"/> 
+        /// method.
         /// </summary>
         /// <param name="serializedMesh">The source data.</param>
         /// <returns>The new detail mesh, or null on error.</returns>

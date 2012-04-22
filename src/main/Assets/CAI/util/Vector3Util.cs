@@ -32,7 +32,9 @@ namespace org.critterai
     /// Provides various 3D vector utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Vector3Util
     {
@@ -50,9 +52,13 @@ namespace org.critterai
         /// (u x v)
         /// </summary>
         /// <remarks>
-        /// <para>The resulting vector will be perpendicular to the plane containing the two 
-        /// vectors.</para>
-        /// <para>Special Case: The result will be zero if the two vectors are  parallel.</para>
+        /// <para>
+        /// The resulting vector will be perpendicular to the plane containing the two 
+        /// vectors.
+        /// </para>
+        /// <para>
+        /// Special Case: The result will be zero if the two vectors are  parallel.
+        /// </para>
         /// </remarks>
         /// <param name="u">Vector u.</param>
         /// <param name="v">Vector v.</param>
@@ -151,7 +157,8 @@ namespace org.critterai
         /// <param name="u">Vector u.</param>
         /// <param name="v">Vector v.</param>
         /// <param name="tolerance">The allowed tolerance. [Limit: >= 0]</param>
-        /// <returns>True if the specified vectors are close enough to be considered equal.
+        /// <returns>
+        /// True if the specified vectors are close enough to be considered equal.
         /// </returns>
         public static bool SloppyEquals(Vector3 u, Vector3 v, float tolerance)
         {
@@ -164,14 +171,18 @@ namespace org.critterai
         /// xz-plane radius and a y-axis height.
         /// </summary>
         /// <remarks>
-        /// <para>Essentially, one point defines the centroid of the cylinder and the other is 
-        /// tested for inclusion.  The height test is <c>(Math.Abs(deltaY) &lt; height)</c></para>
+        /// <para>
+        /// Essentially, one point defines the centroid of the cylinder and the other is 
+        /// tested for inclusion.  The height test is <c>(Math.Abs(deltaY) &lt; height)</c>
+        /// </para>
         /// </remarks>
         /// <param name="a">Point A.</param>
         /// <param name="b">Point B.</param>
         /// <param name="radius">The allowed radius on the xz-plane.</param>
         /// <param name="height">The allowed y-axis delta.</param>
-        /// <returns>True if the two vectors are within the xz-radius and y-height of each other.</returns>
+        /// <returns>
+        /// True if the two vectors are within the xz-radius and y-height of each other.
+        /// </returns>
         public static bool IsInRange(Vector3 a, Vector3 b, float radius, float height)
         {
             Vector3 d = b - a;
@@ -183,7 +194,9 @@ namespace org.critterai
         /// Translates point A toward point B by the specified factor of the distance between them.
         /// </summary>
         /// <remarks>
-        /// <para>Examples:</para>
+        /// <para>
+        /// Examples:
+        /// </para>
         /// <para>
         /// If the factor is 0.0, then the result will equal A.<br/>
         /// If the factor is 0.5, then the result will be the midpoint between A and B.<br/>
@@ -192,8 +205,9 @@ namespace org.critterai
         /// </remarks>
         /// <param name="a">Point A.</param>
         /// <param name="b">Point B.</param>
-        /// <param name="factor">The factor that governs the distance the point is translated 
-        /// from A toward B.</param>
+        /// <param name="factor">
+        /// The factor that governs the distance the point is translated from A toward B.
+        /// </param>
         /// <returns>The point translated toward point B from point A.</returns>
         public static Vector3 TranslateToward(Vector3 a, Vector3 b, float factor)
         {
@@ -221,11 +235,9 @@ namespace org.critterai
         }
 
         /// <summary>
-        /// Creates an array of vectors from a flattend array of vectors in the 
-        /// form (x, y, z) * vertCount.
+        /// Creates an array of vectors from a flattend array of vectors.
         /// </summary>
-        /// <param name="flatVectors">An array of vectors in the form (x, y, z) * vertCount.
-        /// </param>
+        /// <param name="flatVectors">An array of vectors. [(x, y, z) * vertCount]</param>
         /// <returns>An array of vectors.</returns>
         public static Vector3[] GetVectors(float[] flatVectors)
         {
@@ -245,18 +257,23 @@ namespace org.critterai
         /// Copies a range of vectors from a flattend array to a vector array.
         /// </summary>
         /// <remarks>
-        /// <para>If a target buffer is provided is must be large enough to contain the results.
+        /// <para>
+        /// If a target buffer is provided is must be large enough to contain the results.
         /// </para>
-        /// <para>If the target buffer is null a new array will be created with a length of
-        /// <paramref name="count"/> + <paramref name="targetIndex"/></para>
+        /// <para>
+        /// If the target buffer is null a new array will be created with a length of
+        /// <paramref name="count"/> + <paramref name="targetIndex"/>
+        /// </para>
         /// </remarks>
         /// <param name="source">An array of vectors in the form (x, y, z) * vertCount.</param>
         /// <param name="sourceIndex">The index of the start vector in the source array.</param>
         /// <param name="target">The target vector buffer. (Or null.)</param>
         /// <param name="targetIndex">The index within the target buffer to start the copy.</param>
         /// <param name="count">The number of vectors to copy.</param>
-        /// <returns>The reference to the <paramref name="target"/> buffer, or a new array
-        /// if no buffer was provided.</returns>
+        /// <returns>
+        /// The reference to the <paramref name="target"/> buffer, or a new array if no buffer 
+        /// was provided.
+        /// </returns>
         public static Vector3[] GetVectors(float[] source
             , int sourceIndex
             , Vector3[] target

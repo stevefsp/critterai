@@ -54,8 +54,8 @@ namespace org.critterai.u3d
         /// Creates a Unity color from an integer value.
         /// </summary>
         /// <remarks>
-        /// <para>This method is useful for generating a variety of colors that
-        /// are visually disimilar.
+        /// <para>
+        /// This method is useful for generating a variety of colors that are visually disimilar.
         /// </para>
         /// </remarks>
         /// <param name="i">An integer value to create the color from.</param>

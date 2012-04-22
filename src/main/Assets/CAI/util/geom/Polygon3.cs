@@ -31,8 +31,12 @@ namespace org.critterai.geom
     /// Provides various 3D polygon utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Unless otherwise noted, methods expect all polygon vertices to be co-planar.</para>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Unless otherwise noted, methods expect all polygon vertices to be co-planar.
+    /// </para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Polygon3
     {
@@ -40,16 +44,21 @@ namespace org.critterai.geom
         /// Determines whether a polygon is convex.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior is undefined if vertices are not coplanar.</para>
-        /// <para>This method may improperly return false if the area of the triangle formed 
+        /// <para>
+        /// Behavior is undefined if vertices are not coplanar.
+        /// </para>
+        /// <para>
+        /// This method may improperly return false if the area of the triangle formed 
         /// by the first three vertices of the polygon is too small to detect on both the (x, z) 
-        /// and (x, y) planes.</para>
+        /// and (x, y) planes.
+        /// </para>
         /// </remarks>
-        /// <param name="vertices">An array of vertices that contains a representation of 
-        /// polygons with an  arbitrary number of sides. Wrap direction does not matter.</param>
-        /// <param name="startVert">The index of the first vertex in the polygon.</param>
-        /// <param name="vertCount">The number of vertices in the polygon.
+        /// <param name="vertices">
+        /// An array of vertices that contains a representation of polygons with an  arbitrary 
+        /// number of sides. Wrap direction does not matter.
         /// </param>
+        /// <param name="startVert">The index of the first vertex in the polygon.</param>
+        /// <param name="vertCount">The number of vertices in the polygon.</param>
         /// <returns>True if the polygon is convex.</returns>
         public static bool IsConvex(Vector3[] vertices, int startVert, int vertCount)
         {  
@@ -144,13 +153,18 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior is undefined if the polygon is not convex.</para>
-        /// <para>Behavior is undefined if the vector being overwritten in the 
-        /// out array is a vertex in the polygon.  (Can only happen if the vertices and result 
-        /// arrays are the same object.)</para>
+        /// <para>
+        /// Behavior is undefined if the polygon is not convex.
+        /// </para>
+        /// <para>
+        /// Behavior is undefined if the vector being overwritten in the out array is a vertex 
+        /// in the polygon.  (Can only happen if the vertices and result arrays are the same object.)
+        /// </para>
         /// </remarks>
-        /// <param name="vertices">An array of vertices that contains a representation of a 
-        /// polygon with an  arbitrary number of sides.  Wrap direction does not matter.</param>
+        /// <param name="vertices">
+        /// An array of vertices that contains a representation of a polygon with an  arbitrary 
+        /// number of sides.  Wrap direction does not matter.
+        /// </param>
         /// <param name="startVert">The index of the first vertex in the polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.</param>
         /// <param name="result">The array to store the result in.</param>
@@ -185,10 +199,13 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior is undefined if the polygon is not convex.</para>
+        /// <para>
+        /// Behavior is undefined if the polygon is not convex.
+        /// </para>
         /// </remarks>
-        /// <param name="vertices">An array of vertices that contains a representation of a 
-        /// polygon with an arbitrary number of sides. Wrap direction does not matter.
+        /// <param name="vertices">
+        /// An array of vertices that contains a representation of a polygon with an arbitrary 
+        /// number of sides. Wrap direction does not matter.
         /// </param>
         /// <param name="startVert">The index of the first vertex in the polygon.</param>
         /// <param name="vertCount">The number of vertices in the polygon.</param>
@@ -219,10 +236,14 @@ namespace org.critterai.geom
         /// centroid</a> of a convex polygon.
         /// </summary>
         /// <remarks>
-        /// <para>Behavior is undefined if the polygon is not convex.</para>
+        /// <para>
+        /// Behavior is undefined if the polygon is not convex.
+        /// </para>
         /// </remarks>
-        /// <param name="vertices">An list of vertices that represent a  polygon with an 
-        /// arbitrary number of sides. Wrap direction does not matter.</param>
+        /// <param name="vertices">
+        /// An list of vertices that represent a  polygon with an arbitrary number of sides. Wrap 
+        /// direction does not matter.
+        /// </param>
         /// <returns>The centroid of the polygon.</returns>
         public static Vector3 GetCentroid(params Vector3[] vertices)
         {

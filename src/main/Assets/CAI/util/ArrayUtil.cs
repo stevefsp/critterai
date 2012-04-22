@@ -26,7 +26,9 @@ namespace org.critterai
     /// Provides array related utility methods.
     /// </summary>
     /// <remarks>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class ArrayUtil
     {
@@ -34,14 +36,19 @@ namespace org.critterai
         /// Compresses an array by removing all null values.
         /// </summary>
         /// <remarks>
-        /// <para>Only valid for use with arrays of reference types.</para>
-        /// <para>No guarentees are made concerning the order of the items in the returned array.
+        /// <para>
+        /// Only valid for use with arrays of reference types.
+        /// </para>
+        /// <para>
+        /// No guarentees are made concerning the order of the items in the returned array.
         /// </para>
         /// </remarks>
         /// <typeparam name="T">The type of the array.</typeparam>
         /// <param name="items">The array.</param>
-        /// <returns>A reference to original array if it contained no nulls, or a
-        /// new array with all nulls removed.</returns>
+        /// <returns>
+        /// A reference to original array if it contained no nulls, or a new array with all nulls 
+        /// removed.
+        /// </returns>
         public static T[] Compress<T>(T[] items)
         {
             if (items == null)

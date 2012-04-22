@@ -29,29 +29,38 @@ namespace org.critterai.nmgen
     /// Represents a simple, non-overlapping contour in voxel space.
     /// </summary>
     /// <remarks>
-    /// <para>While the height of the border will vary, the contour will always
-    /// form a simple polygon when projected onto the xz-plane.</para>
-    /// <para>Minimum bounds and cell size information is needed in order to
-    /// translate vertex coordinates into world space.</para>
+    /// <para>
+    /// While the height of the border will vary, the contour will always form a simple polygon 
+    /// when projected onto the xz-plane.
+    /// </para>
+    /// <para>
+    /// Minimum bounds and cell size information is needed in order to translate vertex 
+    /// coordinates into world space.
+    /// </para>
     /// <code>
     /// worldX = boundsMin[0] + vertX * xzCellSize
     /// worldY = boundsMin[1] + vertY * yCellSize
     /// worldZ = boundsMin[2] + vertZ * xzCellSize
     /// </code>
-    /// <para>A contour only exists within the context of a 
-    /// <see cref="ContourSet"/>.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// A contour only exists within the context of a <see cref="ContourSet"/>.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Contour
         : IManagedObject
     {
         /// <summary>
-        /// The mask to apply to the forth element of the vertices data in 
-        /// order to extract region ids. (Removes flags from the element.)
+        /// The mask to apply to the forth element of the vertices data in order to extract region 
+        /// ids. (Removes flags from the element.)
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Example:
+        /// </para>
         /// <code>
         /// int region = verts[i * 4 + 3] &amp; Contour.RegionMask;
         /// </code>
@@ -79,8 +88,9 @@ namespace org.critterai.nmgen
         /// The region id associated with the contour.
         /// </summary>
         /// <remarks>
-        /// <para>Note: The <see cref="RegionMask"/> is not associated with this 
-        /// field.</para>
+        /// <para>
+        /// Note: The <see cref="RegionMask"/> is not associated with this field.
+        /// </para>
         /// </remarks>
         public ushort Region { get { return mRegion; } }
 
@@ -115,12 +125,13 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Has no effect on the object. (The object owner will handle
-        /// disposal.)
+        /// Has no effect on the object. (The object owner will handle disposal.)
         /// </summary>
         /// <remarks>
-        /// <para>Objects of this type are always owned by a 
-        /// <see cref="ContourSet"/> object, which manages its disposal.</para>
+        /// <para>
+        /// Objects of this type are always owned by a <see cref="ContourSet"/> object, which 
+        /// manages its disposal.
+        /// </para>
         /// </remarks>
         public void RequestDisposal()
         {
@@ -128,28 +139,35 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the vertices and connection data for the simplified contour
-        /// into the specified buffer.
+        /// Loads the vertices and connection data for the simplified contour into the specified 
+        /// buffer.
         /// </summary>
         /// <remarks>
-        /// <para>The simplified contour is a version of the raw contour with
-        /// all 'unnecessary' vertices removed.  Whether a vertex is
-        /// considered unnecessary depends on the contour build process.</para>
-        /// <para>The data is represented as follows: 
-        /// <c>(x, y, z, r) * VertCount</c>.</para>
-        /// <para>A contour edge is formed by the current and next vertex. The
-        /// r-value indicates the region and connection information for
-        /// the edge.</para>
-        /// <para>The region id is obtained by applying <see cref="RegionMask"/>.
-        /// E.g. <c>regionId = (vert[i * 4 + 3] &amp; RegionMask)</c></para>
-        /// <para>The edge is not connected if the region id is 
-        /// <see cref="NMGen.NullRegion"/>.</para>
-        /// <para>If the r-value has the <see cref="ContourFlags.AreaBorder"/>
-        /// flag set, then the edge represents an change in area as well
-        /// as region.</para>
+        /// <para>
+        /// The simplified contour is a version of the raw contour with all 'unnecessary' vertices 
+        /// removed.  Whether a vertex is considered unnecessary depends on the contour build 
+        /// process.
+        /// </para>
+        /// <para>
+        /// The data is represented as follows: <c>(x, y, z, r) * VertCount</c>.
+        /// </para>
+        /// <para>
+        /// A contour edge is formed by the current and next vertex. The r-value indicates the 
+        /// region and connection information for the edge.
+        /// </para>
+        /// <para>
+        /// The region id is obtained by applying <see cref="RegionMask"/>. 
+        /// E.g. <c>regionId = (vert[i * 4 + 3] &amp; RegionMask)</c>
+        /// </para>
+        /// <para>
+        /// The edge is not connected if the region id is <see cref="NMGen.NullRegion"/>.
+        /// </para>
+        /// <para>
+        /// If the r-value has the <see cref="ContourFlags.AreaBorder"/> flag set, then the edge 
+        /// represents an change in area as well as region.
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= 4 * VertCount]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= 4 * VertCount]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetVerts(int[] buffer)
         {
@@ -162,15 +180,14 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Loads the vertices and connection data for the raw contour
-        /// into the specified buffer.
+        /// Loads the vertices and connection data for the raw contour into the specified buffer.
         /// </summary>
         /// <remarks>
-        /// <para>See the <see cref="GetVerts"/> method for details on the
-        /// element layout.</para>
+        /// <para>
+        /// See the <see cref="GetVerts"/> method for details on the  element layout.
+        /// </para>
         /// </remarks>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= 4 * VertCount]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= 4 * VertCount]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetRawVerts(int[] buffer)
         {

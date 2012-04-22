@@ -33,10 +33,13 @@ namespace org.critterai.nmgen
     /// Tile configuration parameters.
     /// </summary>
     /// <remarks>
-    /// <para>These values are derived during the build process.</para>
-    /// <para>Implemented as a class with public fields in order to support Unity
-    /// serialization.  Care must be taken not to set the fields to invalid
-    /// values.</para>
+    /// <para>
+    /// These values are derived during the build process.
+    /// </para>
+    /// <para>
+    /// Implemented as a class with public fields in order to support Unity serialization.  Care 
+    /// must be taken not to set the fields to invalid values.
+    /// </para>
     /// </remarks>
     /// <seealso cref="NMGenParams"/>
     [StructLayout(LayoutKind.Sequential)]
@@ -67,8 +70,8 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This value is a zero based tile index representing the position of the
-        /// tile along the depth of the tile grid.
+        /// This value is a zero based tile index representing the position of the tile along the 
+        /// depth of the tile grid.
         /// </para>
         /// <para>
         /// The value is auto-clamped to a valid value.
@@ -85,8 +88,8 @@ namespace org.critterai.nmgen
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This value is a zero based tile index representing the position of the
-        /// tile along the width of the tile grid.
+        /// This value is a zero based tile index representing the position of the tile along the 
+        /// width of the tile grid.
         /// </para>
         /// <para>
         /// The value is auto-clamped to a valid value.

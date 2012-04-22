@@ -34,10 +34,15 @@ namespace org.critterai.nmgen
     /// Represents a layer within a <see cref="HeightfieldLayerSet"/>.
     /// </summary>
     /// <remarks>
-    /// <para>Undocumented: Equivalent to Recast: rcHeightfieldLayer.</para>
-    /// <para>Instances of this class can only be obtained from a
-    /// <see cref="HeightfieldLayerSet"/>.</para>
-    /// <para>Behavior is undefined if used after disposal.</para>
+    /// <para>
+    /// Undocumented: Equivalent to Recast: rcHeightfieldLayer.
+    /// </para>
+    /// <para>
+    /// Instances of this class can only be obtained from a <see cref="HeightfieldLayerSet"/>.
+    /// </para>
+    /// <para>
+    /// Behavior is undefined if used after disposal.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public sealed class HeightfieldLayer
@@ -79,15 +84,13 @@ namespace org.critterai.nmgen
         /// <summary>
         /// The minimum bounds of the layer in world space.
         /// </summary>
-        /// <returns>The minimum bounds of the layer.
-        /// </returns>
+        /// <returns>The minimum bounds of the layer.</returns>
         public Vector3 BoundsMin { get { return mBoundsMin; } }
 
         /// <summary>
         /// The maximum bounds of the layer in world space.
         /// </summary>
-        /// <returns>The maximum bounds of the layer.
-        /// </returns>
+        /// <returns>The maximum bounds of the layer.</returns>
         public Vector3 BoundsMax { get { return mBoundsMax; } }
 
         /// <summary>
@@ -166,12 +169,12 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Has no effect on the object. (The object owner will handle
-        /// disposal.)
+        /// Has no effect on the object. (The object owner will handle disposal.)
         /// </summary>
         /// <remarks>
-        /// <para>A <see cref="HeightfieldLayerSet"/> always owns and manages 
-        /// objects of this type.</para>
+        /// <para>
+        /// A <see cref="HeightfieldLayerSet"/> always owns and manages objects of this type.
+        /// </para>
         /// </remarks>
         public void RequestDisposal()
         {
@@ -182,8 +185,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Loads the height data into the specified buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= Width * Depth]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= Width * Depth]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetHeightData(byte[] buffer)
         {
@@ -198,8 +200,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Loads the area data into the specified buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= Width * Depth]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= Width * Depth]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetAreaData(byte[] buffer)
         {
@@ -214,8 +215,7 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Loads the connection data into the specified buffer.
         /// </summary>
-        /// <param name="buffer">The buffer to load the data into.
-        /// [Size: >= Width * Depth]</param>
+        /// <param name="buffer">The buffer to load the data into. [Size: >= Width * Depth]</param>
         /// <returns>True if the operation completed successfully.</returns>
         public bool GetConnectionData(byte[] buffer)
         {

@@ -51,11 +51,16 @@ namespace org.critterai
         /// equal to, or greater than the other.
         /// </summary>
         /// <remarks>
-        /// <para>Returns zero if the priorities are equal.</para>
-        /// <para>If ascending, returns -1 if x is less than y, and 1 if x is greater than y.
+        /// <para>
+        /// Returns zero if the priorities are equal.
         /// </para>
-        /// <para>If descending, return -1 if x is greater than y, and 1 if x is less than y.
-        /// </para></remarks>
+        /// <para>
+        /// If ascending, returns -1 if x is less than y, and 1 if x is greater than y.
+        /// </para>
+        /// <para>
+        /// If descending, return -1 if x is greater than y, and 1 if x is less than y.
+        /// </para>
+        /// </remarks>
         /// <param name="x">A priority item.</param>
         /// <param name="y">A priority item.</param>
         /// <returns>The comparision result. (See remarks.)</returns>

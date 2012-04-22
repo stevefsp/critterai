@@ -98,12 +98,15 @@ public class TagSceneQuery
     }
 
     /// <summary>
-    /// Gets all components of the specified type based the component or parent tags.
+    /// Gets all scene components of the specified type, based the component or parent tags.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// All queries are against the currently open scene.
+    /// </para>
+    /// </remarks>
     /// <typeparam name="T">The type of component to retrieve.</typeparam>
-    /// <returns>
-    /// All components of the specified type.
-    /// </returns>
+    /// <returns>All components of the specified type.</returns>
     public T[] GetComponents<T>() where T : Component
     {
         List<T> result = new List<T>();

@@ -31,8 +31,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace org.critterai.nmgen
 {
     /// <summary>
-    /// Provides various constants and utility methods related to generating
-    /// navigation mesh data.
+    /// Provides various constants and utility methods related to generating navigation mesh data.
     /// </summary>
     public static class NMGen
     {
@@ -45,9 +44,13 @@ namespace org.critterai.nmgen
         /// Represents an unwalkable area.
         /// </summary>
         /// <remarks>
-        /// <para>When a data element is given this value it is considered to no longer be 
-        /// assigned to a usable area. (It usually becomes an obstruction.)</para>
-        /// <para>This is also the minimum value that can be used as an area.</para>
+        /// <para>
+        /// When a data element is given this value it is considered to no longer be assigned to a 
+        /// usable area. (It usually becomes an obstruction.)
+        /// </para>
+        /// <para>
+        /// This is also the minimum value that can be used as an area.
+        /// </para>
         /// </remarks>
         public const byte NullArea = 0;
 
@@ -55,10 +58,14 @@ namespace org.critterai.nmgen
         /// Represents the null region.
         /// </summary>
         /// <remarks>
-        /// <para>When a data element is given this value it is considered to have been removed 
-        /// from the the data set.</para>
-        /// <para>Examples: When applied to a poygon, it indicates the polygon should be culled 
-        /// from the final mesh. When applied to an edge, it means the edge is a solid wall.</para>
+        /// <para>
+        /// When a data element is given this value it is considered to have been removed 
+        /// from the the data set.
+        /// </para>
+        /// <para>
+        /// Examples: When applied to a poygon, it indicates the polygon should be culled 
+        /// from the final mesh. When applied to an edge, it means the edge is a solid wall.
+        /// </para>
         /// </remarks>
         public const byte NullRegion = 0;
 
@@ -89,7 +96,9 @@ namespace org.critterai.nmgen
         /// Derives the width and depth of a tile grid based on the provided parameters.
         /// </summary>
         /// <remarks>
-        /// <para>This method does not validate the parameters.</para>
+        /// <para>
+        /// This method does not validate the parameters.
+        /// </para>
         /// </remarks>
         /// <param name="boundsMin">The minimum bounds.</param>
         /// <param name="boundsMax">The maximum bounds.</param>
@@ -121,12 +130,15 @@ namespace org.critterai.nmgen
         /// Derive the width and depth of a cell grid based on the provided parameters.
         /// </summary>
         /// <remarks>
-        /// <para>This method does not validate the parameters.</para>
+        /// <para>
+        /// This method does not validate the parameters.
+        /// </para>
         /// </remarks>
         /// <param name="boundsMin">The minimum bounds.</param>
         /// <param name="boundsMax">The maximum bounds.</param>
-        /// <param name="xzCellSize">The cell size on the xz-plane. 
-        /// (<see cref="NMGenParams.XZCellSize"/>)</param>
+        /// <param name="xzCellSize">
+        /// The cell size on the xz-plane. (<see cref="NMGenParams.XZCellSize"/>)
+        /// </param>
         /// <param name="width">The number of cells along the x-axis.</param>
         /// <param name="depth">The number of cells along the z-axis.</param>
         public static void DeriveSizeOfCellGrid(Vector3 boundsMin, Vector3 boundsMax
@@ -170,8 +182,10 @@ namespace org.critterai.nmgen
         /// Validates the content of an area buffer. (All areas are valid.)
         /// </summary>
         /// <remarks>
-        /// <para>The validation checks for an undersized buffer. It doesn't care about an
-        /// oversized buffer.</para>
+        /// <para>
+        /// The validation checks for an undersized buffer. It doesn't care about an oversized 
+        /// buffer.
+        /// </para>
         /// </remarks>
         /// <param name="areas">The area buffer. [Length: &lt;= areaCount]</param>
         /// <param name="areaCount">The number of areas defined in the buffer.</param>
@@ -196,8 +210,9 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.</param>
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
-        /// <param name="areas">The areas associated with each triangle. 
-        /// [Length: >= mesh.triCount].</param>
+        /// <param name="areas">
+        /// The areas associated with each triangle. [Length: >= mesh.triCount].
+        /// </param>
         /// <returns>True if the operation was successful.</returns>
         public static bool MarkWalkableTriangles(BuildContext context
             , TriangleMesh mesh
@@ -226,12 +241,12 @@ namespace org.critterai.nmgen
         /// Set the area of all triangles with a slope above the specified value to 
         /// <see cref="NullArea"/>.
         /// </summary>
-        /// <param name="context">The context to use duing the operation.
-        /// </param>
+        /// <param name="context">The context to use duing the operation.</param>
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
-        /// <param name="areas">The areas associated with each triangle.
-        /// [Length: >= mesh.triCount].</param>
+        /// <param name="areas">
+        /// The areas associated with each triangle. [Length: >= mesh.triCount].
+        /// </param>
         /// <returns>True if the operation was successful.</returns>
         public static bool ClearUnwalkableTriangles(BuildContext context
             , TriangleMesh mesh
@@ -260,12 +275,15 @@ namespace org.critterai.nmgen
         /// Builds an aggregate triangle mesh from a detail mesh.
         /// </summary>
         /// <remarks>
-        /// <para>All duplicate vertices are merged.</para>
+        /// <para>
+        /// All duplicate vertices are merged.
+        /// </para>
         /// </remarks>
         /// <param name="source">The detail mesh to extract the triangle mesh from.</param>
         /// <param name="verts">The result vertices.</param>
-        /// <param name="tris">The result triangles. 
-        /// [(vertAIndex, vertBIndex, vertCIndex) * triCount]</param>
+        /// <param name="tris">
+        /// The result triangles. [(vertAIndex, vertBIndex, vertCIndex) * triCount]
+        /// </param>
         /// <returns>True if the operation completed successfully.</returns>
         public static bool ExtractTriMesh(PolyMeshDetail source
             , out Vector3[] verts
@@ -305,8 +323,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Clamps the value to the valid area range. 
-        /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
+        /// Clamps the value to the valid area range. (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <returns>A valid area.</returns>
@@ -316,8 +333,7 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Clamps the value to the valid area range. 
-        /// (0 &lt;= value &lt;= <see cref="MaxArea"/>)
+        /// Clamps the value to the valid area range. (0 &lt;= value &lt;= <see cref="MaxArea"/>)
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <returns>A valid area.</returns>

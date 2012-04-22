@@ -35,24 +35,36 @@ namespace org.critterai.geom
     /// Provides limited Wavefront utility methods. (Very limited.)
     /// </summary>
     /// <remarks>
-    /// <para>Only a small subset of Wavefront information is supported.</para>
-    /// <para>Only the "v" and "f" entries are recognized. All others are ignored.</para>
-    /// <para>The v entries are expected to be in one of the following forms:
+    /// <para>
+    /// Only a small subset of Wavefront information is supported.
+    /// </para>
+    /// <para>
+    /// Only the "v" and "f" entries are recognized. All others are ignored.
+    /// </para>
+    /// <para>
+    /// The v entries are expected to be in one of the following forms:
     /// </para>
     /// <blockquote>
     /// "v x y z w"<br/>
     /// "v x y z"
     /// </blockquote>
-    /// <para>The f entries are expected to be in one of the following forms: 
+    /// <para>
+    /// The f entries are expected to be in one of the following forms: 
     /// </para>
-    /// <para>(Note that only triangles are supported.  Quads are not supported.)</para>
+    /// <para>
+    /// (Note that only triangles are supported.  Quads are not supported.)
+    /// </para>
     /// <blockquote>
     /// "f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3"<br/>
     /// "f v1 v2 v3"
     /// </blockquote>
-    /// <para> Only the vertex portions of the entries are recognized,  and only positive indices 
-    /// supported.</para>
-    /// <para>Static methods are thread safe.</para>
+    /// <para>
+    /// Only the vertex portions of the entries are recognized,  and only positive indices 
+    /// supported.
+    /// </para>
+    /// <para>
+    /// Static methods are thread safe.
+    /// </para>
     /// </remarks>
     public static class Wavefront
     {
@@ -72,12 +84,9 @@ namespace org.critterai.geom
             for (int i = 0; i < mesh.vertCount; i += 1)
             {
                 sb.Append("v "
-                    + (mesh.verts[i].x * xFactor)
-                        .ToString(CultureInfo.InvariantCulture) + " "
-                    + mesh.verts[i].y
-                        .ToString(CultureInfo.InvariantCulture) + " "
-                    + mesh.verts[i].z
-                        .ToString(CultureInfo.InvariantCulture) + "\n");
+                    + (mesh.verts[i].x * xFactor).ToString(CultureInfo.InvariantCulture) + " "
+                    + mesh.verts[i].y.ToString(CultureInfo.InvariantCulture) + " "
+                    + mesh.verts[i].z.ToString(CultureInfo.InvariantCulture) + "\n");
             }
 
             for (int p = 0; p < mesh.triCount * 3; p += 3)
@@ -86,22 +95,16 @@ namespace org.critterai.geom
                 if (reverseWrap)
                 {
                     sb.Append("f "
-                        + (mesh.tris[p + 0] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (mesh.tris[p + 2] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (mesh.tris[p + 1] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + "\n");
+                        + (mesh.tris[p + 0] + 1).ToString(CultureInfo.InvariantCulture) + " "
+                        + (mesh.tris[p + 2] + 1).ToString(CultureInfo.InvariantCulture) + " "
+                        + (mesh.tris[p + 1] + 1).ToString(CultureInfo.InvariantCulture) + "\n");
                 }
                 else
                 {
                     sb.Append("f "
-                        + (mesh.tris[p + 0] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (mesh.tris[p + 1] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + " "
-                        + (mesh.tris[p + 2] + 1)
-                            .ToString(CultureInfo.InvariantCulture) + "\n");
+                        + (mesh.tris[p + 0] + 1).ToString(CultureInfo.InvariantCulture) + " "
+                        + (mesh.tris[p + 1] + 1).ToString(CultureInfo.InvariantCulture) + " "
+                        + (mesh.tris[p + 2] + 1).ToString(CultureInfo.InvariantCulture) + "\n");
                 }
             }
 
@@ -111,8 +114,9 @@ namespace org.critterai.geom
         /// <summary>
         /// Translates a string in Wavefront format into a triangle mesh.
         /// </summary>
-        /// <param name="wavefrontText">Valid wavefront format text defining the vertices and 
-        /// indices.</param>
+        /// <param name="wavefrontText">
+        /// Valid wavefront format text defining the vertices and indices.
+        /// </param>
         /// <returns>A loaded triangle mesh.</returns>
         public static TriangleMesh TranslateFrom(string wavefrontText)
         {
@@ -150,8 +154,7 @@ namespace org.critterai.geom
                         string[] subtokens = rs.Split(token);
                         // Subtraction converts from 1-based index to 
                         // zero-based index.
-                        lindices.Add(int.Parse(subtokens[0]
-                            , CultureInfo.InvariantCulture) - 1);
+                        lindices.Add(int.Parse(subtokens[0], CultureInfo.InvariantCulture) - 1);
                     }
                 }
             }

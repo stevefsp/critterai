@@ -34,7 +34,9 @@ namespace org.critterai.nmbuild.u3d.editor
         /// Draws a debug view of a <see cref="PolyMeshData"/> object.
         /// </summary>
         /// <remarks>
-        /// <para>Meant to be called during the MonoBehavior.OnRenderObject() method.</para>
+        /// <para>
+        /// Meant to be called during the MonoBehavior.OnRenderObject() method.
+        /// </para>
         /// </remarks>
         /// <param name="polyData">The polygon mesh to draw.</param>
         public static void Draw(PolyMeshData polyData)
@@ -153,7 +155,9 @@ namespace org.critterai.nmbuild.u3d.editor
         /// Draws a debug view of a <see cref="PolyMeshDetailData"/> object.
         /// </summary>
         /// <remarks>
-        /// <para>Meant to be called during the MonoBehavior.OnRenderObject() method.</para>
+        /// <para>
+        /// Meant to be called during the MonoBehavior.OnRenderObject() method.
+        /// </para>
         /// </remarks>
         /// <param name="detailData">The detail mesh to draw.</param>
         public static void Draw(PolyMeshDetailData detailData)

@@ -33,7 +33,9 @@ namespace org.critterai.interop
         /// Copies data from an unmanaged memory pointer to a ushort array.
         /// </summary>
         /// <remarks>
-        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
+        /// <para>
+        /// This method behaves the same as the Marshal.Copy methods.
+        /// </para>
         /// </remarks>
         /// <param name="source">A memory pointer to copy from.</param>
         /// <param name="destination">The array to copy to.</param>
@@ -50,7 +52,9 @@ namespace org.critterai.interop
         /// Copies data from an unmanaged memory pointer to a uint array.
         /// </summary>
         /// <remarks>
-        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
+        /// <para>
+        /// This method behaves the same as the Marshal.Copy methods.
+        /// </para>
         /// </remarks>
         /// <param name="source">A memory pointer to copy from.</param>
         /// <param name="destination">The array to copy to.</param>
@@ -67,7 +71,9 @@ namespace org.critterai.interop
         /// Copies the content of a one-dimentional array to an unmanaged memory pointer.
         /// </summary>
         /// <remarks>
-        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
+        /// <para>
+        /// This method behaves the same as the Marshal.Copy methods.
+        /// </para>
         /// </remarks>
         /// <param name="source">An array to copy from.</param>
         /// <param name="startIndex">The index where the copy should start.</param>
@@ -87,7 +93,9 @@ namespace org.critterai.interop
         /// Copies the content of a one-dimentional array to an unmanaged memory pointer.
         /// </summary>
         /// <remarks>
-        /// <para>This method behaves the same as the Marshal.Copy methods.</para>
+        /// <para>
+        /// This method behaves the same as the Marshal.Copy methods.
+        /// </para>
         /// </remarks>
         /// <param name="source">An array to copy from.</param>
         /// <param name="startIndex">The index where the copy should start.</param>

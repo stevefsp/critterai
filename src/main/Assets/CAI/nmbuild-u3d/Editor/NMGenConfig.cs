@@ -29,10 +29,11 @@ namespace org.critterai.nmbuild.u3d.editor
     /// Represents a configuration for a navigation mesh build in Unity. (Editor Only)
     /// </summary>
     /// <remarks>
-    /// <para>See <see cref="NMGenParams"/> for details on the various 
-    /// properties. The primary difference between this class and 
-    /// <see cref="NMGenParams"/> is that some values in this class are in 
-    /// world units rather than cell units.</para>
+    /// <para>
+    /// See <see cref="NMGenParams"/> for details on the various properties. The primary difference 
+    /// between this class and see cref="NMGenParams"/> is that some values in this class are in 
+    /// world units rather than cell units.
+    /// </para>
     /// </remarks>
     [System.Serializable]
     internal sealed class NMGenConfig

@@ -27,8 +27,9 @@ namespace org.critterai.nmgen
     /// A node in a <see cref="ChunkyTriMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para>The bounds of the node represents the AABB of the triangles
-    /// contained by the node.</para>
+    /// <para>
+    /// The bounds of the node represents the AABB of the triangles contained by the node.
+    /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct ChunkyTriMeshNode

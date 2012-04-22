@@ -32,16 +32,19 @@ namespace org.critterai.nmgen
     /// Represents the mesh data for a <see cref="PolyMesh"/> object.
     /// </summary>
     /// <remarks>
-    /// <para><b>Warning:</b> The serializable attributewill be removed 
-    /// in v0.5. Use <see cref="PolyMesh.GetSerializedData"/> instead of
-    /// serializing this object.</para>
-    /// <para>Represents a mesh of potentially overlapping convex polygons of 
-    ///  between three and <see cref="maxVertsPerPoly"/> vertices. The mesh 
-    ///  exists within the context of an axis-aligned bounding box (AABB) 
-    ///  with vertices laid out in an evenly spaced grid based on xz-plane 
-    ///  and y-axis cells.
+    /// <para>
+    /// <b>Warning:</b> The serializable attributewill be removed in v0.5. Use 
+    /// <see cref="PolyMesh.GetSerializedData"/> instead of serializing this object.
     /// </para>
-    /// <para>This class is not compatible with Unity serialization.</para>
+    /// <para>
+    /// Represents a mesh of potentially overlapping convex polygons of between three and 
+    /// <see cref="maxVertsPerPoly"/> vertices. The mesh exists within the context of an 
+    /// axis-aligned bounding box (AABB) with vertices laid out in an evenly spaced grid 
+    /// based on xz-plane and y-axis cells.
+    /// </para>
+    /// <para>
+    /// This class is not compatible with Unity serialization.
+    /// </para>
     /// </remarks>
     /// <example>
 	///	<para>Iterating the Polygons</para>
@@ -112,8 +115,9 @@ namespace org.critterai.nmgen
         /// [(x, y, z) * vertCount]
         /// </summary>
         /// <remarks>
-        /// <para>Minimum bounds and cell size is used to convert vertex 
-        /// coordinates into world space.</para>
+        /// <para>
+        /// Minimum bounds and cell size is used to convert vertex coordinates into world space.
+        /// </para>
         /// <code>
         /// worldX = boundsMin[0] + vertX * xzCellSize
         /// worldY = boundsMin[1] + vertY * yCellSize
@@ -123,52 +127,56 @@ namespace org.critterai.nmgen
         public ushort[] verts;
 
         /// <summary>
-        /// Polygon and neighbor data. 
-        /// [Length: >= polyCount * 2 * maxVertsPerPoly]
+        /// Polygon and neighbor data. [Length: >= polyCount * 2 * maxVertsPerPoly]
         /// </summary>
         /// <remarks>
-        /// <para>Each entry is 2 * MaxVertsPerPoly in length.</para>
-        /// <para>The first half of the entry contains the indices of the polygon.
-        /// The first instance of <see cref="PolyMesh.NullIndex"/> indicates 
-        /// the end of the indices for the entry.</para>
-        /// <para>The second half contains indices to neighbor polygons.  A
-        /// value of <see cref="PolyMesh.NullIndex"/> indicates no connection 
-        /// for the  associated edge. (Solid wall.)</para>
-        /// <para><b>Example:</b></para>
+        /// <para>
+        /// Each entry is 2 * MaxVertsPerPoly in length.</para>
+        /// <para>
+        /// The first half of the entry contains the indices of the polygon. The first instance of 
+        /// <see cref="PolyMesh.NullIndex"/> indicates the end of the indices for the entry.
+        /// </para>
+        /// <para>
+        /// The second half contains indices to neighbor polygons.  A value of 
+        /// <see cref="PolyMesh.NullIndex"/> indicates no connection for the  associated edge. 
+        /// (Solid wall.)
+        /// </para>
+        /// <para>
+        /// <b>Example:</b>
+        /// </para>
         /// <para>
         /// MaxVertsPerPoly = 6<br/>
-        /// For the entry: (1, 3, 4, 8, NullIndex, NullIndex, 18, NullIndex
-        /// , 21, NullIndex, NullIndex, NullIndex)</para>
+        /// For the entry: 
+        /// (1, 3, 4, 8, NullIndex, NullIndex, 18, NullIndex, 21, NullIndex, NullIndex, NullIndex)
+        /// </para>
         /// <para>
         /// (1, 3, 4, 8) defines a polygon with 4 vertices.<br />
         /// Edge 1->3 is shared with polygon 18.<br />
         /// Edge 4->8 is shared with polygon 21.<br />
-        /// Edges 3->4 and 4->8 are border edges not shared with any other
-        /// polygon.
+        /// Edges 3->4 and 4->8 are border edges not shared with any other polygon.
         /// </para>
         /// </remarks>
         public ushort[] polys;
 
         /// <summary>
-        /// The region id assigned to each polygon.
-        /// [Length: >= polyCount]
+        /// The region id assigned to each polygon. [Length: >= polyCount]
         /// </summary>
         public ushort[] regions;
 
         /// <summary>
-        /// The flags assigned to each polygon.
-        /// [Length: >= polyCount]
+        /// The flags assigned to each polygon. [Length: >= polyCount]
         /// </summary>
         public ushort[] flags;
 
         /// <summary>
-        /// The area assigned to each polygon.
-        /// [Length: >= polyCount]
+        /// The area assigned to each polygon. [Length: >= polyCount]
         /// </summary>
         /// <remarks>
-        /// <para>During the standard build process, all walkable polygons
-        /// get the default value of <see cref="NMGen.MaxArea"/>.
-        /// This value can then be changed to meet user requirements.</para>
+        /// <para>
+        /// During the standard build process, all walkable polygons get the default value 
+        /// of <see cref="NMGen.MaxArea"/>. This value can then be changed to meet user 
+        /// requirements.
+        /// </para>
         /// </remarks>
         public byte[] areas;
 
@@ -183,9 +191,8 @@ namespace org.critterai.nmgen
         public int polyCount;
 
         /// <summary>
-        /// The maximum vertices per polygon.
-        /// [Limits: 3 &lt;= value &lt;= 
-        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
+        /// The maximum vertices per polygon. 
+        /// [Limits: 3 &lt;= value &lt;= <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
         /// </summary>
         public int maxVertsPerPoly;
 
@@ -200,54 +207,48 @@ namespace org.critterai.nmgen
         public Vector3 boundsMax;
 
         /// <summary>
-        /// The xz-plane cell size. 
-        /// [Limit: >= <see cref="NMGen.MinCellSize"/>]
+        /// The xz-plane cell size. [Limit: >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         public float xzCellSize;
 
         /// <summary>
-        /// The y-axis cell height.
-        /// [Limit: >= <see cref="NMGen.MinCellSize"/>]
+        /// The y-axis cell height. [Limit: >= <see cref="NMGen.MinCellSize"/>]
         /// </summary>
         public float yCellSize;
 
         /// <summary>
-        /// The AABB border size used to build the mesh. 
-        /// [Limit: >= 0]
-        /// [Units: XZCellSize]
+        /// The AABB border size used to build the mesh. [Limit: >= 0] [Units: XZCellSize]
         /// </summary>
         public int borderSize;
 
         /// <summary>
-        /// The walkable height used to build the mesh. 
-        /// [Units: World]
+        /// The walkable height used to build the mesh.  [Units: World]
         /// </summary>
         public float walkableHeight;
 
         /// <summary>
-        /// The walkable radius used to build the mesh. 
-        /// [Limit: >= 0]
-        /// [Units: World]
+        /// The walkable radius used to build the mesh. [Limit: >= 0] [Units: World]
         /// </summary>
         public float walkableRadius;
 
         /// <summary>
-        /// The maximum walkable step used to build the mesh. 
-        /// [Limit: >= 0]
-        /// [Units: World]
+        /// The maximum walkable step used to build the mesh. [Limit: >= 0] [Units: World]
         /// </summary>
         public float walkableStep;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="maxVerts">The maximum veritices the vertex buffer
-        /// can hold. [Limit: >= 3]</param>
-        /// <param name="maxPolys">The maximum polygons the polygon buffer
-        /// can hold. [Limit: > 0]</param>
-        /// <param name="maxVertsPerPoly">The maximum allowed vertices for a
-        /// polygon.[Limits: 3 &lt;= value &lt;= 
-        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]</param>
+        /// <param name="maxVerts">
+        /// The maximum veritices the vertex buffer can hold. [Limit: >= 3]
+        /// </param>
+        /// <param name="maxPolys">
+        /// The maximum polygons the polygon buffer can hold. [Limit: > 0]
+        /// </param>
+        /// <param name="maxVertsPerPoly">
+        /// The maximum allowed vertices for a polygon.
+        /// [Limits: 3 &lt;= value &lt;= <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
+        /// </param>
         public PolyMeshData(int maxVerts
             , int maxPolys
             , int maxVertsPerPoly)
@@ -272,13 +273,16 @@ namespace org.critterai.nmgen
         /// <summary>
         /// Clears all object data and resizes the buffers.
         /// </summary>
-        /// <param name="maxVerts">The maximum veritices the vertex buffer
-        /// can hold. [Limit: >= 3]</param>
-        /// <param name="maxPolys">The maximum polygons the polygon buffer
-        /// can hold. [Limit: > 0]</param>
-        /// <param name="maxVertsPerPoly">The maximum allowed vertices for a
-        /// polygon.[Limits: 3 &lt;= value &lt;= 
-        /// <see cref="NMGen.MaxAllowedVertsPerPoly"/>]</param>
+        /// <param name="maxVerts">
+        /// The maximum veritices the vertex buffer can hold. [Limit: >= 3]
+        /// </param>
+        /// <param name="maxPolys">
+        /// The maximum polygons the polygon buffer can hold. [Limit: > 0]
+        /// </param>
+        /// <param name="maxVertsPerPoly">
+        /// The maximum allowed vertices for a polygon.
+        /// [Limits: 3 &lt;= value &lt;= <see cref="NMGen.MaxAllowedVertsPerPoly"/>]
+        /// </param>
         public void Resize(int maxVerts
             , int maxPolys
             , int maxVertsPerPoly)
@@ -323,17 +327,13 @@ namespace org.critterai.nmgen
         }
 
         /// <summary>
-        /// Checks the size of the buffers to see if they are large enough
-        /// to hold the specified data.
+        /// Checks the size of the buffers to see if they are large enough to hold the specified 
+        /// data.
         /// </summary>
-        /// <param name="vertCount">The maximum vertices the vertex buffer
-        /// needs to hold.</param>
-        /// <param name="polyCount">The maximum polygons the polygon buffer
-        /// needs to hold.</param>
-        /// <param name="maxVertsPerPoly">The maximum allowed vertices
-        /// for a polygon.</param>
-        /// <returns>True if all buffers are large enough to fit the data.
-        /// </returns>
+        /// <param name="vertCount">The maximum vertices the vertex buffer needs to hold.</param>
+        /// <param name="polyCount">The maximum polygons the polygon buffer needs to hold.</param>
+        /// <param name="maxVertsPerPoly">The maximum allowed vertices for a polygon.</param>
+        /// <returns>True if all buffers are large enough to fit the data.</returns>
         public bool CanFit(int vertCount
             , int polyCount
             , int maxVertsPerPoly)
