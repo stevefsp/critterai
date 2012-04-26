@@ -90,8 +90,12 @@ public class CAINavSettingsEditor
 
                 string areaName = EditorGUILayout.TextField(areaNames[i]);
 
-                if (areaName == areaNames[i] || !areaNames.Contains(areaName))
+                if (areaName.Length > 0 
+                    && areaName != areaNames[i] 
+                    && !areaNames.Contains(areaName))
+                {
                     areaNames[i] = areaName;
+                }
 
                 GUI.enabled = !(areas[i] == Navmesh.NullArea || areas[i] == Navmesh.MaxArea);
 
@@ -164,7 +168,8 @@ public class CAINavSettingsEditor
 
         for (int i = 0; i < names.Length; i++)
         {
-            names[i] = EditorGUILayout.TextField(string.Format("0x{0:X}", 1 << i), names[i]);
+            string val = EditorGUILayout.TextField(string.Format("0x{0:X}", 1 << i), names[i]);
+            names[i] = (val.Length == 0 ? names[i] : val);
         }
     }
 

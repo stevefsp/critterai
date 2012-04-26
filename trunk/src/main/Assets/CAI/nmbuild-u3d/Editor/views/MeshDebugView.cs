@@ -203,6 +203,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void HandlePolyMesh(NavmeshBuild build, int tx, int tz)
         {
+            if (!build)
+                return;
+
             if (mDebugObject == null)
             {
                 PolyMesh mesh = build.BuildData.GetPolyMesh(tx, tz);
@@ -217,6 +220,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void HandleDetailMesh(NavmeshBuild build, int tx, int tz)
         {
+            if (!build)
+                return;
+
             if (mDebugObject == null)
             {
                 PolyMeshDetail mesh = build.BuildData.GetDetailMesh(tx, tz);
@@ -231,6 +237,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void OnRenderObject(NavmeshBuild build, TileSelection selection)
         {
+            if (!build)
+                return;
+
             TileBuildData tdata = build.BuildData;
 
             if (!mEnabled

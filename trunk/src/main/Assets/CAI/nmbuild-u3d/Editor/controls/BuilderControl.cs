@@ -63,6 +63,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NavmeshBuild build = Context.Build;
 
+            if (!build)
+                return result;
+
             bool guiEnabled = GUI.enabled;
 
             GUI.enabled = guiEnabled
@@ -106,6 +109,10 @@ namespace org.critterai.nmbuild.u3d.editor
                 return;
 
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
+
             UnityBuildContext mLogger = new UnityBuildContext();
 
             if (mInputCompile.HasData)

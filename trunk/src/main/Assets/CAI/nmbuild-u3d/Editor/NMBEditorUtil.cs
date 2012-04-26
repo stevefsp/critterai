@@ -68,6 +68,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         internal static NavmeshBuildInfo GetConfig(NavmeshBuild build)
         {
+            if (!build)
+                return null;
+
             NMGenParams config = build.Config.GetConfig();
 
             NavmeshBuildInfo result = new NavmeshBuildInfo();

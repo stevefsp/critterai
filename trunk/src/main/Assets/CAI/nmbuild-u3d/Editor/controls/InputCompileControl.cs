@@ -56,6 +56,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NavmeshBuild build = Context.Build;
 
+            if (!build)
+                return;
+
             if (Context.Build.BuildState == NavmeshBuildState.Invalid
                 && mCompiler != null)
             {
@@ -88,6 +91,9 @@ namespace org.critterai.nmbuild.u3d.editor
         protected override void OnGUIMain()
         {
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
             
             Rect statusArea = Context.MainArea;
 
@@ -162,7 +168,13 @@ namespace org.critterai.nmbuild.u3d.editor
             GUILayout.BeginArea(statusArea, GUI.skin.box);
 
             string currScene = System.IO.Path.GetFileName(EditorApplication.currentScene);
-            currScene = currScene.Substring(0, currScene.LastIndexOf("."));
+
+            int idx = currScene.LastIndexOf(".");
+            if (idx >= 0)
+                currScene = currScene.Substring(0, idx);
+
+            if (currScene.Length == 0)
+                currScene = "None";
 
             GUILayout.BeginHorizontal();
 
@@ -262,7 +274,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private void ApplyData()
         {
-            NavmeshBuild build = Context.Build;
+            NavmeshBuild build = Context.Build;  // Caller checks for null.
 
             if (!build.SetInputData(mCompiler.Geometry
                 , mCompiler.Info
@@ -281,6 +293,9 @@ namespace org.critterai.nmbuild.u3d.editor
         protected override void OnGUIButtons()
         {
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
 
             if (build.BuildState == NavmeshBuildState.Invalid)
             {

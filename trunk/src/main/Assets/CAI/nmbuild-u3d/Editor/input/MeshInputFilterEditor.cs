@@ -53,11 +53,32 @@ public class MeshInputFilterEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Input Build Processor\nFilters out " + typeof(MeshFilter).Name + " compoents that"
-            + " reference the specified " + typeof(Mesh).Name + " objects."
-            , EditorUtil.HelpStyle
-            , GUILayout.ExpandWidth(true));
+        string msg = "Input Build Processor\n\nFilters out " + typeof(MeshFilter).Name
+            + " components that reference the specified " + typeof(Mesh).Name + " objects.\n\n";
+
+        switch (targ.matchType)
+        {
+            case MatchType.Strict:
+
+                msg += "Will match only on strict mesh equality.";
+                break;
+
+            case MatchType.NameBeginsWith:
+
+                msg += "Will match any mesh that starts with the mesh names. Example: If the"
+                    + " source mesh name is 'Column', then 'ColumnWooden' and 'Column Iron' will"
+                    + " match.";
+                break;
+
+            case MatchType.AnyInstance:
+
+                msg += "Will match any instance, based on name. The check is lazy.  Example:"
+                    + " If the source mesh name is 'SwampMesh', then both 'SwampMesh Instance' and "
+                    + " 'SwampMesh NotReallyAnInstance' will match.";
+                break;
+        }
+
+        GUILayout.Box(msg, EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
         EditorGUILayout.Separator();
 

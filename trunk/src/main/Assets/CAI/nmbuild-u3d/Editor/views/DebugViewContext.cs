@@ -43,6 +43,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public DebugViewContext(NavmeshBuild build, TileSelection selection) 
         {
+            if (!build || selection == null)
+                throw new System.ArgumentNullException();
+
             mSelectionView = new SelectionDebugView();
             mSelectionView.Enabled = true;
             mSelectionView.Show = true;
@@ -135,15 +138,14 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void OnGUIMeshDisplayOptions()
         {
-            if (!mMeshView.Enabled)
+            if (!mBuild || !mMeshView.Enabled)
                 return;
 
             bool guiEnabled = GUI.enabled;
 
-            NavmeshBuild build = mBuild;
             MeshDebugView meshView = mMeshView;
 
-            INavmeshData bnm = build.BuildTarget;
+            INavmeshData bnm = mBuild.BuildTarget;
             NavmeshSceneDraw sceneDraw = NavmeshSceneDraw.Instance;
 
             bool showBaked = false;
@@ -175,7 +177,7 @@ namespace org.critterai.nmbuild.u3d.editor
             GUILayout.Space(ControlUtil.MarginSize);
 
             GUI.enabled = guiEnabled 
-                && (mSelection.HasSelection || !build.BuildData.IsTiled);
+                && (mSelection.HasSelection || !mBuild.BuildData.IsTiled);
 
             if (GUILayout.Toggle(meshView.Show == MeshDebugOption.PolyMesh
                 , "PolyMesh"))
@@ -195,7 +197,7 @@ namespace org.critterai.nmbuild.u3d.editor
             else if (meshView.Show == MeshDebugOption.Detailmesh)
                 meshView.Show = MeshDebugOption.None;
 
-            if (build.TileSetDefinition != null)
+            if (mBuild.TileSetDefinition != null)
             {
                 if (GUILayout.Toggle(meshView.Show == MeshDebugOption.InputGeometry
                     , mShowInputLabel))

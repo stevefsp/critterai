@@ -59,12 +59,10 @@ public class DefaultAreaDefEditor
         if (curr != orig)
             targ.DefaultArea = mSettings.GetArea(mAreaNames[curr]);
 
-        // targ.DefaultAreaInt = EditorGUILayout.IntField("Default Area", targ.DefaultArea);
-
         EditorGUILayout.Separator();
 
         GUILayout.Box(
-            "Input Build Processor\nApplies the area id to all components in the build."
+            "Input Build Processor\nApplies the area to all components in the build."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
 

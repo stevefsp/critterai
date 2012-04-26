@@ -143,7 +143,7 @@ public sealed class AreaFlagDef
             if (marked > 0)
             {
                 string msg = string.Format(
-                    "{0}: Added '0x{1:X}' flags to {2} connections with the area id {3}."
+                    "{0}: Added '0x{1:X}' flags to {2} connections with the area {3}."
                    , name, flag, marked, area);
 
                 context.Log(msg, this);

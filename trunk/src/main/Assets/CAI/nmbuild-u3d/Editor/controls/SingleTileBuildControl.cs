@@ -131,6 +131,12 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             DebugContext.SetViews(ViewOption.Mesh);
 
+            NavmeshBuild build = Context.Build;
+
+            if (!build)
+                // Build deleted.
+                return;
+
             TileBuildData tdata = Context.Build.BuildData;
             TileBuildState bstate = tdata.GetState(0, 0);
 

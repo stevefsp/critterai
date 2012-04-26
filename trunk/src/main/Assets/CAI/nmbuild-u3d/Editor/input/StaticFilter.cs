@@ -65,7 +65,7 @@ public sealed class StaticFilter
 
         List<Component> items = context.components;
 
-        int count = items.Count;
+        int count = 0;
 
         for (int i = items.Count - 1; i >= 0; i--)
         {

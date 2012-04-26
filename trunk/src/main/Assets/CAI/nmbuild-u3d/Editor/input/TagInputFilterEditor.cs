@@ -61,12 +61,16 @@ public class TagInputFilterEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Input Build Processor\nFilters out components with the specified tags."
-            + " If recursive, then a component will be filtered out if any of its parents"
-            + " have one of the tags."
-            , EditorUtil.HelpStyle
-            , GUILayout.ExpandWidth(true));
+        string msg = "Input Build Processor\n\nFilters out components with the specified tags.";
+
+        if (targ.recursive)
+        {
+            msg += 
+                "\n\nRecursive: A component will be filtered out if any of its parents"
+                + " have one of the tags.";
+        }
+
+        GUILayout.Box(msg, EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
         EditorGUILayout.Separator();
 

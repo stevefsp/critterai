@@ -21,6 +21,7 @@
  */
 using System.Collections.Generic;
 using org.critterai.nmbuild;
+using org.critterai.nmgen;
 using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
@@ -86,7 +87,7 @@ public sealed class TagAreaDef
     /// <returns>False if the input build should abort.</returns>
     public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
-        if (state != InputBuildState.ApplyAreaModifiers || tags.Count == 0)
+        if (state != InputBuildState.ApplyAreaModifiers)
             return true;
 
         context.info.areaModifierCount++;
@@ -97,6 +98,12 @@ public sealed class TagAreaDef
             return false;
         }
 
+        if (tags.Count == 0)
+        {
+            context.Log("No action taken. No tags defined.", this);
+            return true;
+        }
+
         List<Component> targetItems = context.components;
         List<byte> targetAreas = context.areas;
 
@@ -105,7 +112,8 @@ public sealed class TagAreaDef
         {
             Component targetItem = targetItems[iTarget];
 
-            if (targetItem == null)
+            if (targetItem == null || targetAreas[iTarget] == NMGen.NullArea)
+                // Don't override null area.
                 continue;
 
             int iSource = tags.IndexOf(targetItem.tag);

@@ -30,7 +30,7 @@ using UnityEngine;
 /// </summary>
 /// <remarks>
 /// <para>
-/// Normally all components in an input build get a default area id of  <see cref="NMGen.MaxArea"/>.
+/// Normally all components in an input build get a default area of  <see cref="NMGen.MaxArea"/>.
 /// This processor allows a different default to be assigned.
 /// </para>
 /// </remarks>

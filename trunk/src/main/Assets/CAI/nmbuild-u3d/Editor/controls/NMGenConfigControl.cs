@@ -44,6 +44,10 @@ namespace org.critterai.nmbuild.u3d.editor
         protected override void OnGUIMain()
         {
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
+
             NMGenConfig config = build.Config;
 
             GUI.Box(Context.MainArea, "");
@@ -78,6 +82,10 @@ namespace org.critterai.nmbuild.u3d.editor
         protected override void OnGUIButtons()
         {
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
+
             NMGenConfig config = build.Config;
 
             // Buttons area.
@@ -163,6 +171,9 @@ namespace org.critterai.nmbuild.u3d.editor
             , NMGenConfig config
             , bool includeSlope)
         {
+            if (!build)
+                return;
+
             bool guiEnabled = GUI.enabled;
 
             EditorGUIUtility.LookLikeControls(155);
@@ -427,6 +438,9 @@ namespace org.critterai.nmbuild.u3d.editor
             , NMGenConfig config
             , bool isInspector)
         {
+            if (!build)
+                return;
+
             if (build.HasBuildData)
                 // Not an option if the build is in progress.
                 return;

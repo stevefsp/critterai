@@ -153,7 +153,7 @@ public sealed class NavmeshBuildManager
     {
         Object selection = Selection.activeObject;
 
-        if (selection == null || !(selection is NavmeshBuild))
+        if (!selection || !(selection is NavmeshBuild))
             return;
 
         NavmeshBuild build = (NavmeshBuild)selection;

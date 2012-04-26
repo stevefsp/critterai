@@ -58,12 +58,15 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public List<TileBuildTask> TileTasks { get { return mTileTasks; } }
         public List<NMGenTask> NMGenTasks { get { return mNMGenTasks; } } 
-        public NavmeshBuild Build { get { return mBuild; } }
+        public NavmeshBuild Build { get { return mBuild ? mBuild : null; } }
         public TileSelection Selection { get { return mSelection; } }
         public int TaskCount { get { return mNMGenTasks.Count + mTileTasks.Count; } }
 
         public ControlContext(NavmeshBuild build, BuildTaskProcessor manager)
         {
+            if (!build || manager == null)
+                throw new System.ArgumentNullException();
+
             mTaskProcessor = manager;
 
             mBuild = build;
@@ -106,6 +109,10 @@ namespace org.critterai.nmbuild.u3d.editor
             // Check for existing task and purge it.
 
             NavmeshBuild build = Build;
+
+            if (!build)
+                return false;
+
             TileBuildData tdata = build.BuildData;
 
             if (build.TileSetDefinition == null && (tx > 0 || tz > 0))
@@ -208,13 +215,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void AbortAllReqests(string reason)
         {
-            NavmeshBuild build = mBuild;
 
             foreach (NMGenTask item in mNMGenTasks)
             {
                 item.Abort(reason);
-                if (build != null)  // Important: Might be aborting due to lost build component.
-                    build.BuildData.ClearUnbaked(item.TileX, item.TileZ);                
+                if (mBuild)  // Important: Might be aborting due to lost build component.
+                    mBuild.BuildData.ClearUnbaked(item.TileX, item.TileZ);                
             }
 
             mNMGenTasks.Clear();
@@ -222,8 +228,8 @@ namespace org.critterai.nmbuild.u3d.editor
             foreach (TileBuildTask item in mTileTasks)
             {
                 item.Abort(reason);
-                if (build != null)  // Important: Might be aborting due to lost build component.
-                    build.BuildData.ClearUnbaked(item.TileX, item.TileZ);   
+                if (mBuild != null)  // Important: Might be aborting due to lost build component.
+                    mBuild.BuildData.ClearUnbaked(item.TileX, item.TileZ);   
             }
 
             mTileTasks.Clear();

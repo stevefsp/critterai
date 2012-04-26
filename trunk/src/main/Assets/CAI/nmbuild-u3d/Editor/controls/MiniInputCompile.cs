@@ -81,6 +81,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NavmeshBuild build = context.Build;
 
+            if (!build)
+            {
+                FinalizeOnFail("The control context's build does not exist.", true);
+                return;
+            }
+
             InputBuildOption options = InputBuildOption.ThreadSafeOnly;
             options |= (build.AutoCleanGeometry ? InputBuildOption.AutoCleanGeometry : 0);
 
@@ -102,6 +108,14 @@ namespace org.critterai.nmbuild.u3d.editor
             if (mState == State.Finished)
                 // Nothing to do.
                 return;
+
+            NavmeshBuild build = mContext.Build;
+
+            if (!build)
+            {
+                FinalizeOnFail("Build has been deleted.", true);
+                return;
+            }
 
             if (mContext.Build.BuildState == NavmeshBuildState.Invalid)
             {
@@ -146,7 +160,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             mLogger.Log(mBuilder.Messages);
 
-            NavmeshBuild build = mContext.Build;
+            NavmeshBuild build = mContext.Build;  // Caller has validated.
 
             if (mBuilder.State == InputBuildState.Aborted)
             {

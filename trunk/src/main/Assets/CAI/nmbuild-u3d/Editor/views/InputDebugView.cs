@@ -64,7 +64,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void OnRenderObject(NavmeshBuild build)
         {
-            if (mEnabled && mShow && build.HasInputData)
+            if (mEnabled && mShow && build && build.HasInputData)
             {
                 InputGeometry geom = build.InputGeom;
                 DebugDraw.Bounds(geom.BoundsMin, geom.BoundsMax, Color.grey);

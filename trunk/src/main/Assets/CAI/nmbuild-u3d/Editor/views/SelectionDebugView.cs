@@ -78,6 +78,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void OnRenderObject(NavmeshBuild build, TileSelection selection)
         {
+            if (!build)
+                return;
+
             TileSetDefinition tdef = build.TileSetDefinition;
 
             if (!mShow || !mEnabled || build != selection.Build || tdef == null)

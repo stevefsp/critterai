@@ -251,6 +251,10 @@ namespace org.critterai.nmbuild.u3d.editor
             DebugContext.SetViews(ViewOption.Grid | ViewOption.Selection | ViewOption.Mesh);
 
             NavmeshBuild build = Context.Build;
+
+            if (!build)
+                return;
+
             TileBuildData tdata = build.BuildData;
 
             if (tdata == null)
@@ -345,7 +349,7 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             const string Category = "Bake To Target";
 
-            NavmeshBuild build = Context.Build;
+            NavmeshBuild build = Context.Build;  // Caller checks for null.
             TileBuildData tdata = build.BuildData;
 
             // Double check.

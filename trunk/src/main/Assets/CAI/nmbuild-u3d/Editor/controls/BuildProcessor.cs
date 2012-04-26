@@ -32,7 +32,12 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public static int DefaultConcurrency
         {
-            get { return Mathf.Max(1, System.Environment.ProcessorCount - 2); }
+            get 
+            { 
+                // Bugs in Unity Editor 3.5 threading causing problems. 
+                return 1;
+                // return Mathf.Max(1, System.Environment.ProcessorCount - 2); 
+            }
         }
 
         public static int MaxConcurrency
@@ -89,7 +94,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private bool Contains(NavmeshBuild build)
         {
-            if (build == null)
+            if (!build)
                 return false;
 
             foreach (BuildController controller in mControllers)
@@ -132,9 +137,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 NavmeshBuild build = controller.Build;
                 NavmeshBuild selected = BuildSelector.Instance.Selected;
 
-                // controller.ActiveTasks;
-
-                if (build == null 
+                if (!build 
                     || build.BuildType != NavmeshBuildType.Advanced
                     || (build != selected && !controller.BuildIsActive))
                 {

@@ -78,7 +78,7 @@ namespace org.critterai.nav.u3d.editor
         /// <returns>True if the object is currently assigned for visualization.</returns>
         public bool IsShown(INavmeshData data)
         {
-            return (data != null && data == mNavmeshData);
+            return ((ScriptableObject)data && data == mNavmeshData);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace org.critterai.nav.u3d.editor
         /// <returns></returns>
         public bool IsShown()
         {
-            return mNavmeshData != null;
+            return (ScriptableObject)mNavmeshData;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace org.critterai.nav.u3d.editor
         {
             Hide();
 
-            if (data == null)
+            if (!(ScriptableObject)data)
                 return;
 
             mNavmeshData = data;
@@ -141,7 +141,7 @@ namespace org.critterai.nav.u3d.editor
             , bool isInspector
             , bool includeAreaOption)
         {
-            if (target == null)
+            if (!(ScriptableObject)target)
                 return false;
 
             bool guiEnabled = GUI.enabled;
@@ -189,7 +189,7 @@ namespace org.critterai.nav.u3d.editor
 
         private void OnSceneGUI(SceneView sceneView)
         {
-            if (mNavmeshData == null)
+            if (!(ScriptableObject)mNavmeshData)
             {
                 Hide();
                 return;
