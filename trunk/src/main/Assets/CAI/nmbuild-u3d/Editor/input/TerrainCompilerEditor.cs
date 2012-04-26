@@ -29,6 +29,7 @@ using org.critterai.u3d;
 /// <summary>
 /// <see cref="TerrainCompiler"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(TerrainCompiler))]
 public class TerrainCompilerEditor
     : Editor
@@ -87,9 +88,9 @@ public class TerrainCompilerEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Loads and compiles a " + typeof(Terrain).Name + " component if it references the"
-                + " specified " + typeof(TerrainData).Name + " object."
+        GUILayout.Box("Input Build Processor\n\nLoads and compiles a " 
+            + typeof(Terrain).Name + " component if it references the specified " 
+            + typeof(TerrainData).Name + " object."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
 
@@ -113,7 +114,7 @@ public class TerrainCompilerEditor
                 mLastCheck = time;
                 if (mDebugTerrain != terrain)
                 {
-                     mDebugTerrain = terrain;
+                    mDebugTerrain = terrain;
                     SceneView.RepaintAll();
                 }
             }
@@ -155,7 +156,7 @@ public class TerrainCompilerEditor
             int triCount = (xc - 1) * (zc - 1) * 2;
 
             helpText = string.Format("Mouse-over the terrain in the scene to see a "
-                + " triangulation preview.\nTrees are not included.\n"
+                + " triangulation preview. Trees are not included in the preview.\n\n"
                 + "Total surface triangles: {0:N0}\n"
                 + "Sample distance: {1:F1} x {2:F1}"
                 , triCount, scale.x, scale.z);
@@ -172,8 +173,6 @@ public class TerrainCompilerEditor
 
     void OnSceneGUI(SceneView view)
     {
-        // Note: Normal OnSceneGUI call is not working for some reason.
-
         TerrainCompiler targ = (TerrainCompiler)target;
 
         if (!mDebugEnabled || mDebugTerrain == null)

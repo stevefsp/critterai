@@ -30,16 +30,17 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="MeshAreaDef"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(MeshAreaDef))]
 public class MeshAreaDefEditor
     : Editor
 {
-    private CAINavSettings mSettings;
+    private CAINavEditorSettings mSettings;
     private string[] mAreaNames;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         mAreaNames = mSettings.GetAreaNames();
     }
 

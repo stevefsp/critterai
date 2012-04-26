@@ -124,8 +124,8 @@ public sealed class TerrainCompiler
         if (multiple)
         {
             string msg = string.Format(
-                "{0}: Multiple terrains in the scene use the same data. {1} was selected"
-                , name, selected.name);
+                "Multiple terrains in the scene use the same data. {0} was selected"
+                , selected.name);
 
             if (context == null)
                 Debug.LogWarning(msg, this);
@@ -177,16 +177,13 @@ public sealed class TerrainCompiler
 
         if (!item)
         {
-            context.LogWarning(string.Format("{0}: No terrain found using {1} terrain data."
-                , name, terrainData.name)
+            context.Log(string.Format("No terrain found using {0} terrain data.", terrainData.name)
                 , this);
         }
         else
         {
             context.Load(item);
-            context.Log(string.Format("{0}: Loaded the {1} terrain object."
-                , name, terrainData.name)
-                , this);
+            context.Log(string.Format("Loaded the {0} terrain object.", terrainData.name), this);
         }
     }
 
@@ -214,16 +211,15 @@ public sealed class TerrainCompiler
 
                 if (compiler.AddTriangles(mesh, lareas))
                 {
-                    string msg = string.Format(
-                        "{0}: Compiled the {1} terrain surface. Triangles: {2}"
-                        , name, terrain.name, mesh.triCount);
+                    string msg = string.Format("Compiled the {0} terrain surface. Triangles: {1}"
+                        , terrain.name, mesh.triCount);
 
                     context.Log(msg, this);
                 }
                 else
                 {
-                    string msg = string.Format("{0}: Compiler rejected mesh for the {1} terrain."
-                        , name, terrain.name);
+                    string msg = 
+                        string.Format("Compiler rejected mesh for the {0} terrain.", terrain.name);
 
                     context.LogError(msg, this);
 
@@ -236,8 +232,8 @@ public sealed class TerrainCompiler
 
                     TerrainUtil.TriangluateTrees(terrain, areas[i], compiler);
 
-                    string msg = string.Format("{0}: Compiled the {1} terrain trees. Triangles: {2}"
-                        , name, terrain.name, compiler.TriCount - before);
+                    string msg = string.Format("Compiled the {0} terrain trees. Triangles: {1}"
+                        , terrain.name, compiler.TriCount - before);
 
                     context.Log(msg, this);
                 }

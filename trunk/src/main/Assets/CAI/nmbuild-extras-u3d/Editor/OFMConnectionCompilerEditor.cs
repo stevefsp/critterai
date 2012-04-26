@@ -27,6 +27,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="OFMConnectionCompiler"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(OFMConnectionCompiler))]
 public class OFMConnectionCompilerEditor
     : Editor
@@ -44,7 +45,7 @@ public class OFMConnectionCompilerEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box("Input Build Processor\n"
+        GUILayout.Box("Input Build Processor\n\n"
             + "Loads and compiles the " + typeof(OFMConnection).Name + " components in the scene."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));

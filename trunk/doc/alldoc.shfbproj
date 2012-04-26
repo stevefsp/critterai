@@ -37,15 +37,15 @@
 &amp;lt%3b/p&amp;gt%3b</ProjectSummary>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\build\unity\nav\cai-nav.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nav-u3d\cai-nav-u3d.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nmbuild\cai-nmbuild.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d-editor\cai-nmbuild-extras-u3d-editor.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nmbuild-u3d-editor\cai-nmbuild-u3d-editor.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\nmgen\cai-nmgen.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\util\cai-util.csproj" />
-      <DocumentationSource sourceFile="..\build\unity\util-u3d\cai-util-u3d.csproj" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="..\build\unity\nav-u3d\cai-nav-u3d.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nav-u3d-editor\cai-nav-u3d-editor.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nmbuild\cai-nmbuild.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d\cai-nmbuild-extras-u3d.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nmbuild-extras-u3d-editor\cai-nmbuild-extras-u3d-editor.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nmbuild-u3d-editor\cai-nmbuild-u3d-editor.csproj" />
+<DocumentationSource sourceFile="..\build\unity\nmgen\cai-nmgen.csproj" />
+<DocumentationSource sourceFile="..\build\unity\util\cai-util.csproj" />
+<DocumentationSource sourceFile="..\build\unity\util-u3d\cai-util-u3d.csproj" /></DocumentationSources>
     <CopyrightText>Copyright %28c%29 2010-2012 Stephen A. Pratt</CopyrightText>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bProject Home&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://code.google.com/p/critterai/&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bSource Code&amp;lt%3b/a&amp;gt%3b | &amp;lt%3ba href=&amp;quot%3bhttp://www.critterai.org/cailic&amp;quot%3b target=&amp;quot%3b_parent&amp;quot%3b&amp;gt%3bLicense&amp;lt%3b/a&amp;gt%3b</FooterText>
     <HelpTitle>CritterAI Documentation</HelpTitle>

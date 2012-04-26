@@ -31,6 +31,7 @@ using org.critterai.geom;
 /// <summary>
 /// <see cref="NavmeshBuild"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(NavmeshBuild))]
 public class NavmeshBuildEditor
     : Editor

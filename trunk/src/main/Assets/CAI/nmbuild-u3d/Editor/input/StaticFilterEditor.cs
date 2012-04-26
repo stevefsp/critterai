@@ -27,6 +27,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="StaticFilter"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(StaticFilter))]
 public class StaticFilterEditor
     : Editor

@@ -27,6 +27,11 @@ using UnityEngine;
 /// <summary>
 /// Assigns areas to MeshFilter components based on the component's mesh. (Editor Only)
 /// </summary>
+/// <remarks>
+/// <para>
+/// Will not override the assignment of <see cref="org.critterai.nmgen.NMGen.NullArea"/>.
+/// </para>
+/// </remarks>
 public sealed class MeshAreaDef 
     : ScriptableObject, IInputBuildProcessor
 {

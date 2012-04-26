@@ -89,8 +89,8 @@ namespace org.critterai.nav.u3d.editor
             if (nso is INavmeshData || !nso)  // Null OK.
                 return (INavmeshData)nso;
 
-            Debug.LogError(string.Format("{0} does not implement {1}."
-                , nso.name, typeof(INavmeshData).Name));
+            Debug.LogError(
+                string.Format("{0} does not implement {1}.", nso.name, typeof(INavmeshData).Name));
 
             return item;
         }

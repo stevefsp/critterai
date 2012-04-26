@@ -26,6 +26,7 @@ using org.critterai.u3d;
 /// <summary>
 /// Base editor for <see cref="NMGenAreaMarker"/> components.
 /// </summary>
+/// <exclude />
 public class AreaMarkerEditor
     : NMGenComponentEditor
 {

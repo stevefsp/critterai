@@ -25,7 +25,7 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Filters out all components with the specified tag. (Editor Only)
+/// Filters out all components with the specified tags. (Editor Only)
 /// </summary>
 [System.Serializable]
 public sealed class TagInputFilter

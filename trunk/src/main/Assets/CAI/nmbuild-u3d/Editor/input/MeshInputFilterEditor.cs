@@ -28,6 +28,7 @@ using org.critterai.nmbuild;
 /// <summary>
 /// <see cref="MeshInputFilter"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(MeshInputFilter))]
 public class MeshInputFilterEditor
     : Editor

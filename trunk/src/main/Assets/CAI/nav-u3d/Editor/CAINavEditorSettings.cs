@@ -27,7 +27,7 @@ using org.critterai.nav;
 /// Global navigation related settings. (Editor Only)
 /// </summary>
 [System.Serializable]
-public sealed class CAINavSettings
+public sealed class CAINavEditorSettings
     : ScriptableObject
 {
     private const string UnWalkable = "Not Walkable";
@@ -131,7 +131,7 @@ public sealed class CAINavSettings
     }
 
     /// <summary>
-    /// Gets a clone of the well known names for flags, index on flag bit.
+    /// Gets a clone of the well known names for flags, indexed on the flag's bit.
     /// </summary>
     /// <remarks>
     /// <para>

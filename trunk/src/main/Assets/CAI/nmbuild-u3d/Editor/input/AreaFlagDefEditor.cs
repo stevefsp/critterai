@@ -21,7 +21,6 @@
  */
 using UnityEngine;
 using UnityEditor;
-using org.critterai.nmgen;
 using System.Collections.Generic;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
@@ -29,17 +28,18 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="AreaFlagDef"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(AreaFlagDef))]
 public class AreaFlagDefEditor
     : Editor
 {
-    private CAINavSettings mSettings;
+    private CAINavEditorSettings mSettings;
     private string[] mAreaNames;
     private string[] mFlagNames;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         mAreaNames = mSettings.GetAreaNames();
         mFlagNames = mSettings.GetFlagNames();
     }
@@ -55,8 +55,7 @@ public class AreaFlagDefEditor
 
         if (targ.areas == null || targ.areas == null || targ.areas.Count != targ.flags.Count)
         {
-            Debug.LogError(targ.name 
-                + ": Data null reference or size mismatch. Resetting component.");
+            Debug.LogError("Data null reference or size mismatch. Resetting component.", targ);
             targ.areas = new List<byte>();
             targ.flags = new List<int>();
         }
@@ -128,9 +127,9 @@ public class AreaFlagDefEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Input Build Processor\nAdds an NMGen processor that adds flags to polygons based"
-                + " on area. E.g. Add the 'swim' flag to all 'water' polygons."
+        GUILayout.Box("Input Build Processor\n\nAdds an NMGen processor that adds flags to"
+                + " polygons based on area assignment. E.g. Add the 'swim' flag to all 'water'"
+                + " polygons."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
 

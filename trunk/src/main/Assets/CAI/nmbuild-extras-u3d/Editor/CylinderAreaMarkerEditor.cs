@@ -26,6 +26,7 @@ using UnityEditor;
 /// <summary>
 /// <see cref="CylinderAreaMarker"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(CylinderAreaMarker))]
 public class CylinderAreaMarkerEditor
     : AreaMarkerEditor

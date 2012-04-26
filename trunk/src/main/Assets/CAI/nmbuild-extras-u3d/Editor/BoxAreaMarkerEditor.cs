@@ -26,6 +26,7 @@ using UnityEditor;
 /// <summary>
 /// <see cref="BoxAreaMarker"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(BoxAreaMarker))]
 public class BoxAreaMarkerEditor
     : AreaMarkerEditor

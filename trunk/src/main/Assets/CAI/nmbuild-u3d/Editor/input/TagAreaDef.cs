@@ -26,8 +26,13 @@ using org.critterai.nmbuild.u3d.editor;
 using UnityEngine;
 
 /// <summary>
-/// Assigns areas to components based on tags. (Editor Only)
+/// Assigns areas to components based on the component's tag. (Editor Only)
 /// </summary>
+/// <remarks>
+/// <para>
+/// Will not override the assignment of <see cref="NMGen.NullArea"/>.
+/// </para>
+/// </remarks>
 [System.Serializable]
 public sealed class TagAreaDef 
     : ScriptableObject, IInputBuildProcessor
