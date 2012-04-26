@@ -27,6 +27,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="AreaMarkerCompiler"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(AreaMarkerCompiler))]
 public class AreaMarkerCompilerEditor
     : Editor
@@ -44,7 +45,7 @@ public class AreaMarkerCompilerEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box("Input Build Processor\n"
+        GUILayout.Box("Input Build Processor\n\n"
             + "Loads and compiles the " + typeof(NMGenAreaMarker).Name + " components in the scene."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
@@ -53,8 +54,7 @@ public class AreaMarkerCompilerEditor
     }
 
     [MenuItem(EditorUtil.NMGenAssetMenu + "Compiler : Area Marker"
-        , false
-        , NMBEditorUtil.CompilerGroup)]
+        , false, NMBEditorUtil.CompilerGroup)]
     static void CreateAsset()
     {
         AreaMarkerCompiler item = 

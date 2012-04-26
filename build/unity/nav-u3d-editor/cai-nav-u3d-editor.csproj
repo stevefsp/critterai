@@ -52,6 +52,10 @@
       <Project>{319D361B-147F-45AC-854E-50C06FCA3393}</Project>
       <Name>cai-nav-rcn</Name>
     </ProjectReference>
+    <ProjectReference Include="..\nav-u3d\cai-nav-u3d.csproj">
+      <Project>{D2154397-4098-4170-BBB0-58714D84E4C8}</Project>
+      <Name>cai-nav-u3d</Name>
+    </ProjectReference>
     <ProjectReference Include="..\util-u3d-editor\cai-util-u3d-editor.csproj">
       <Project>{1FF01BFD-2593-406A-959E-D4D84CEB662C}</Project>
       <Name>cai-util-u3d-editor</Name>
@@ -67,10 +71,6 @@
     <ProjectReference Include="..\util\cai-util.csproj">
       <Project>{C4B32B85-13F0-42b8-AC89-770BEFEAF022}</Project>
       <Name>cai-util</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\nav-u3d\cai-nav-u3d.csproj">
-      <Project>{66D600B7-FB99-45AC-BEC8-5A2982A5D722}</Project>
-      <Name>cai-nav-u3d</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

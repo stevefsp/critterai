@@ -26,10 +26,11 @@ using org.critterai.nav;
 using org.critterai.u3d.editor;
 
 /// <summary>
-/// <see cref="CAINavSettings"/> editor.
+/// <see cref="CAINavEditorSettings"/> editor.
 /// </summary>
-[CustomEditor(typeof(CAINavSettings))]
-public class CAINavSettingsEditor
+/// <exclude />
+[CustomEditor(typeof(CAINavEditorSettings))]
+public class CAINavEditorSettingsEditor
     : Editor
 {
     private static bool mShowAreas = true;
@@ -65,7 +66,7 @@ public class CAINavSettingsEditor
 
     private void OnGUIAreas()
     {
-        CAINavSettings targ = (CAINavSettings)target;
+        CAINavEditorSettings targ = (CAINavEditorSettings)target;
 
         List<byte> areas = targ.areas;
         List<string> areaNames = targ.areaNames;
@@ -138,7 +139,8 @@ public class CAINavSettingsEditor
         {
             if (areaNames.Contains(mNewName) || areas.Contains(mNewArea))
             {
-                Debug.LogError(string.Format("{0}: Name or area already defined: Name: {1}, Area: {2}"
+                Debug.LogError(string.Format(
+                    "{0}: Name or area already defined: Name: {1}, Area: {2}"
                     , targ.name, mNewName, mNewArea));
             }
             else
@@ -160,7 +162,7 @@ public class CAINavSettingsEditor
 
     private void OnGUIFlags()
     {
-        CAINavSettings targ = (CAINavSettings)target;
+        CAINavEditorSettings targ = (CAINavEditorSettings)target;
 
         string[] names = targ.flagNames;
 
@@ -173,10 +175,10 @@ public class CAINavSettingsEditor
         }
     }
 
-    [MenuItem(EditorUtil.MainMenu + "Nav Settings", false, EditorUtil.GlobalGroup)]
+    [MenuItem(EditorUtil.MainMenu + "Nav Editor Settings", false, EditorUtil.GlobalGroup)]
     static void EditSettings()
     {
-        CAINavSettings item = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        CAINavEditorSettings item = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         Selection.activeObject = item;
     }
 }

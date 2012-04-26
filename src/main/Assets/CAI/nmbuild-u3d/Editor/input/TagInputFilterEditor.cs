@@ -28,6 +28,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="TagInputFilter"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(TagInputFilter))]
 public class TagInputFilterEditor
     : Editor

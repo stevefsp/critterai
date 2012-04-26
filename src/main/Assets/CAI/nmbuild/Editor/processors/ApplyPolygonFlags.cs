@@ -84,7 +84,7 @@ namespace org.critterai.nmbuild
             }
 
             context.PolyMesh.Load(data);
-            context.Log(string.Format("{0}: Applied flags to all polys. Flags: 0x{1:X}"
+            context.Log(string.Format("{0}: Applied flag(s) to all polys. Flag(s): 0x{1:X}"
                 , Name, mFlags)
                 , this);
 

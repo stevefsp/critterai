@@ -94,7 +94,7 @@ namespace org.critterai.nmbuild
                 if (marked > 0)
                 {
                     string msg = string.Format(
-                        "{0} : Added '0x{1:X}' flags to {2} poylgons with the area id {3}."
+                        "{0} : Added '0x{1:X}' flag(s) to {2} poylgons assigned to area {3}."
                         , Name, flags, marked, area);
 
                     context.Log(msg, this);
@@ -116,8 +116,7 @@ namespace org.critterai.nmbuild
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Will return null if parameters are invalid. Must have at least one valid
-        /// area/flag map.
+        /// Will return null if parameters are invalid. Must have at least one valid area/flag map.
         /// </para>
         /// </remarks>
         /// <param name="name">The processor name.</param>

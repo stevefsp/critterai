@@ -113,7 +113,7 @@ public sealed class AreaFlagDef
 
         if (areas.Count == 0)
         {
-            context.Log(name + ": No area/flag maps.  No action taken.", this);
+            context.Log("No area/flag maps.  No action taken.", this);
             return true;
         }
 
@@ -143,8 +143,8 @@ public sealed class AreaFlagDef
             if (marked > 0)
             {
                 string msg = string.Format(
-                    "{0}: Added '0x{1:X}' flags to {2} connections with the area {3}."
-                   , name, flag, marked, area);
+                    "Added '0x{0:X}' flags to {1} connections with the area {2}."
+                   , flag, marked, area);
 
                 context.Log(msg, this);
 
@@ -153,7 +153,7 @@ public sealed class AreaFlagDef
         }
 
         if (!applied)
-            context.Log(name + ": No flags applied.", this);
+            context.Log("No flags applied.", this);
 
         return true;
     }
@@ -162,7 +162,7 @@ public sealed class AreaFlagDef
     {
         if (flags == null || areas == null || flags.Count != areas.Count)
         {
-            context.Log(name + ": Area/Flag size error. (Invalid processor state.)", this);
+            context.Log("Area/Flag size error. (Invalid processor state.)", this);
             return false;
         }
         return true;
@@ -177,7 +177,7 @@ public sealed class AreaFlagDef
 
         if (areas.Count == 0)
         {
-            context.Log(name + ": No area/flag maps.  No action taken.", this);
+            context.Log("No area/flag maps.  No action taken.", this);
             return true;
         }
 
@@ -189,21 +189,17 @@ public sealed class AreaFlagDef
             sflags[i] = (ushort)flags[i];
         }
 
-        AreaFlagMapper mapper
-            = AreaFlagMapper.Create(name, Priority, areas.ToArray(), sflags);
+        AreaFlagMapper mapper = AreaFlagMapper.Create(name, Priority, areas.ToArray(), sflags);
 
         if (mapper == null)
         {
-            context.LogError(name + ": Failed to create NMGen processor. Unexpected invalid data."
-                , this);
+            context.LogError("Failed to create NMGen processor. Unexpected invalid data.", this);
             return false;
         }
 
         context.processors.Add(mapper);
 
-        context.Log(
-            string.Format("{0}: Added {1} NMGenprocessor.", name, typeof(AreaFlagMapper).Name)
-            , this);
+        context.Log(string.Format("Added {0} NMGen processor.", typeof(AreaFlagMapper).Name), this);
 
         return true;
     }

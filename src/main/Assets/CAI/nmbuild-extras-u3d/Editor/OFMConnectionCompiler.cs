@@ -85,7 +85,7 @@ public sealed class OFMConnectionCompiler
 
         int count = context.LoadFromScene<OFMConnection>();
 
-        context.Log(string.Format("{0}: Loaded {1} off-mesh connections.", name, count), this);
+        context.Log(string.Format("Loaded {0} off-mesh connections.", count), this);
     }
 
     private void Compile(InputBuildContext context)
@@ -118,6 +118,6 @@ public sealed class OFMConnectionCompiler
             }
         }
 
-        context.Log(string.Format("{0}: Compiled off-mesh connections: {1}", name, count), this);
+        context.Log(string.Format("Compiled off-mesh connections: {0}", count), this);
     }
 }

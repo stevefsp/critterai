@@ -27,8 +27,7 @@ using org.critterai.u3d;
 /// </summary>
 /// <remarks>
 /// <para>
-/// The data is in a format compatible with the CompactHeightfield.MarkCylinderArea() method 
-/// method.
+/// The data is in a format compatible with the CompactHeightfield.MarkCylinderArea() method.
 /// </para>
 /// <para>
 /// The y- and x-scales are used to size the cylinder.  The z-scale is ignored.
@@ -42,7 +41,7 @@ public sealed class CylinderAreaMarker
     : NMGenAreaMarker
 {
     /// <summary>
-    /// Marker data.
+    /// Cylinder marker data.
     /// </summary>
     public struct MarkerData
     {

@@ -42,7 +42,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <summary>
         /// The name of the processor.
         /// </summary>
-        string Name { get; }
+        string Name { get; }    // Don't get rid of this.  It is convenient.
 
         /// <summary>
         /// Processes the context.

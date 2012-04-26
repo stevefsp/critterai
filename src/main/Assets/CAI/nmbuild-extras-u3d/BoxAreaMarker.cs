@@ -39,7 +39,7 @@ public sealed class BoxAreaMarker
     : NMGenAreaMarker
 {
     /// <summary>
-    /// Marker data.
+    /// Convex marker data.
     /// </summary>
     public struct MarkerData
     {

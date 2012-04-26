@@ -28,6 +28,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="TagSceneQuery"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(TagSceneQuery))]
 public class TagSceneQueryEditor
     : Editor
@@ -62,7 +63,7 @@ public class TagSceneQueryEditor
         EditorGUILayout.Separator();
 
         GUILayout.Box(
-            "Scene Query\nComponent search will include game objects with the specified tags."
+            "Scene Query\n\nComponent search will include game objects with the specified tags."
             + " The search can optionally include child game objects."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));

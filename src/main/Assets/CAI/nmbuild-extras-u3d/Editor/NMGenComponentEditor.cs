@@ -25,13 +25,14 @@ using UnityEditor;
 /// <summary>
 /// Base editor for <see cref="NMGenComponent"/> objects.
 /// </summary>
+/// <exclude />
 public class NMGenComponentEditor
     : Editor
 {
     /// <summary>
     /// The global navigation settings.
     /// </summary>
-    protected CAINavSettings settings;
+    protected CAINavEditorSettings settings;
 
     /// <summary>
     /// The well known area names.
@@ -45,7 +46,7 @@ public class NMGenComponentEditor
     {
         ((NMGenComponent)target).debugEnabledLocal = true;
 
-        settings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        settings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         areaNames = settings.GetAreaNames();
     }
 

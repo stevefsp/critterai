@@ -85,7 +85,7 @@ public sealed class AreaMarkerCompiler
 
         int count = context.LoadFromScene<NMGenAreaMarker>();
 
-        context.Log(string.Format("{0}: Loaded {1} area markers.", name, count), this);
+        context.Log(string.Format("Loaded {0} area markers.", count), this);
     }
 
     private void Compile(InputBuildContext context)
@@ -132,6 +132,6 @@ public sealed class AreaMarkerCompiler
             }
         }
 
-        context.Log(string.Format("{0}: Loaded {1} area markers.", name, count), this);
+        context.Log(string.Format("Loaded {0} area markers.", count), this);
     }
 }

@@ -27,13 +27,14 @@ using UnityEditor;
 /// <summary>
 /// <see cref="OFMConnection"/> compiler.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(OFMConnection))]
 public class OFMConnectionEditor
     : Editor
 {
     private static Vector3 markerSize = new Vector3(0.3f, 0.05f, 0.3f);
 
-    private CAINavSettings mSettings;
+    private CAINavEditorSettings mSettings;
     private string[] mAreaNames;
     private string[] mFlagNames;
 
@@ -41,7 +42,7 @@ public class OFMConnectionEditor
     {
         ((NMGenComponent)target).debugEnabledLocal = true;
 
-        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         mAreaNames = mSettings.GetAreaNames();
         mFlagNames = mSettings.GetFlagNames();
     }

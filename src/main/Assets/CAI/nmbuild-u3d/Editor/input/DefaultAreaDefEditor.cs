@@ -27,16 +27,17 @@ using org.critterai.nmbuild.u3d.editor;
 /// <summary>
 /// <see cref="DefaultAreaDef"/> editor.
 /// </summary>
+/// <exclude />
 [CustomEditor(typeof(DefaultAreaDef))]
 public class DefaultAreaDefEditor
     : Editor
 {
-    private CAINavSettings mSettings;
+    private CAINavEditorSettings mSettings;
     private string[] mAreaNames;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavSettings>();
+        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
         mAreaNames = mSettings.GetAreaNames();
     }
 
@@ -62,7 +63,7 @@ public class DefaultAreaDefEditor
         EditorGUILayout.Separator();
 
         GUILayout.Box(
-            "Input Build Processor\nApplies the area to all components in the build."
+            "Input Build Processor\n\nApplies the area to all components in the build."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
 
