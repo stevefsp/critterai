@@ -88,8 +88,10 @@ public sealed class TagInputFilter
         }
 
         if (tags.Count == 0)
-            // Nothing to do.
+        {
+            context.Log(name + ": Filter is inactive. No tags configured to filter.", this);
             return true;
+        }
 
         List<Component> targetItems = context.components;
 

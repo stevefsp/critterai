@@ -38,7 +38,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <para>
         /// The instance pattern is the source name, followed by a space, and containing the
         /// word "instance". The check is lazy.  If the source name is "SwampMesh", then 
-        /// both "SwampMesh Instance" and "SwampMesh NotAnInstance" will match.
+        /// both "SwampMesh Instance" and "SwampMesh NotReallyAnInstance" will match.
         /// </para>
         /// </remarks>
         AnyInstance,

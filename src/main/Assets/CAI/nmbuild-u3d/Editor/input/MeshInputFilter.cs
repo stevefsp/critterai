@@ -76,7 +76,7 @@ public sealed class MeshInputFilter
     /// <returns>False if the input build should abort.</returns>
     public bool ProcessInput(InputBuildState state, InputBuildContext context)
     {
-        if (state != InputBuildState.FilterComponents || context == null)
+        if (state != InputBuildState.FilterComponents)
             return true;
 
         if (meshes == null)
@@ -87,8 +87,10 @@ public sealed class MeshInputFilter
         }
 
         if (meshes.Count == 0)
-            // Nothing to do.
+        {
+            context.Log(name + ": Filter is inactive. No meshes configured to filter.", this);
             return true;
+        }
 
         List<Component> targetFilters = context.components;
 
@@ -100,10 +102,10 @@ public sealed class MeshInputFilter
 
             MeshFilter filter = (MeshFilter)targetFilters[iTarget];
 
-            if (filter == null)
+            if (!filter)
                 continue;
 
-            MatchPredicate p = new MatchPredicate(filter.sharedMesh, matchType);
+            MatchPredicate p = new MatchPredicate(filter.sharedMesh, matchType, true);
 
             int iSource = meshes.FindIndex(p.Matches);
 
@@ -115,9 +117,7 @@ public sealed class MeshInputFilter
         }
 
         if (removed > 0)
-        {
             context.Log(string.Format("{0}: Filtered out {1} components.", name, removed), this);
-        }
         else
             context.Log(name + ": No components filtered.", this);
 

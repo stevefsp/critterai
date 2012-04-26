@@ -78,7 +78,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void OnRenderObject(NavmeshBuild build)
         {
-            if (!(mEnabled && mShow && build.HasInputData))
+            if (!build || !(mEnabled && mShow && build.HasInputData))
                 return;
 
             Vector3 whd;

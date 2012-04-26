@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using org.critterai.nav;
 
 /// <summary>
-/// Global navigation related settings.
+/// Global navigation related settings. (Editor Only)
 /// </summary>
 [System.Serializable]
 public sealed class CAINavSettings

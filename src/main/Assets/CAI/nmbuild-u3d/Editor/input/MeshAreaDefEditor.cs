@@ -101,13 +101,10 @@ public class MeshAreaDefEditor
                 Mesh mesh = (Mesh)
                     EditorGUILayout.ObjectField(meshes[i], typeof(Mesh), false);
 
-                if (mesh == null || mesh == meshes[i] || !meshes.Contains(mesh))
+                if (mesh == null)
+                    delChoice = i;
+                else if (mesh == meshes[i] || !meshes.Contains(mesh))
                     meshes[i] = mesh;
-                else
-                {
-                    Debug.LogError(targ.name + ": " 
-                        + mesh.name + " is already defined.  Change ignored.");
-                }
 
                 int orig = mSettings.GetAreaNameIndex(areas[i]);
 
@@ -115,9 +112,6 @@ public class MeshAreaDefEditor
 
                 if (curr != orig)
                     areas[i] = mSettings.GetArea(mAreaNames[curr]);
-
-                //areas[i] = NavUtil.ClampArea(
-                //    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
 
                 if (GUILayout.Button("X"))
                     delChoice = i;
@@ -142,18 +136,10 @@ public class MeshAreaDefEditor
         Mesh nmesh = (Mesh)
             EditorGUILayout.ObjectField("Add", null, typeof(Mesh), false);
 
-        if (nmesh != null)
+        if (nmesh != null && !meshes.Contains(nmesh))
         {
-            if (meshes.Contains(nmesh))
-            {
-                Debug.LogWarning(targ.name + ": "
-                        + nmesh.name + " is already defined.  New entry igored.");
-            }
-            else
-            {
-                meshes.Add(nmesh);
-                areas.Add(NMGen.MaxArea);
-            }
+            meshes.Add(nmesh);
+            areas.Add(NMGen.MaxArea);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -162,11 +148,32 @@ public class MeshAreaDefEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Input Build Processor\nApplies area ids to " + typeof(MeshFilter).Name 
-            + " compoents based on the " + typeof(Mesh).Name + " object they reference."
-            , EditorUtil.HelpStyle
-            , GUILayout.ExpandWidth(true));
+        string msg = "Input Build Processor\n\nApplies areas to " + typeof(MeshFilter).Name 
+            + " compoents based on the " + typeof(Mesh).Name + " object they reference.\n\n";
+
+        switch (targ.matchType)
+        {
+            case MatchType.Strict:
+
+                msg += "Will match only on strict mesh equality.";
+                break;
+
+            case MatchType.NameBeginsWith:
+
+                msg += "Will match any mesh that starts with the mesh names. Example: If the"
+                    + " source mesh name is 'Column', then 'ColumnWooden' and 'Column Iron' will"
+                    + " match.";
+                break;
+
+            case MatchType.AnyInstance:
+
+                msg += "Will match any instance, based on name. The check is lazy.  Example:"
+                    + " If the source mesh name is 'SwampMesh', then both 'SwampMesh Instance' and "
+                    + " 'SwampMesh NotReallyAnInstance' will match.";
+                break;
+        }
+
+        GUILayout.Box(msg, EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
         EditorGUILayout.Separator();
 

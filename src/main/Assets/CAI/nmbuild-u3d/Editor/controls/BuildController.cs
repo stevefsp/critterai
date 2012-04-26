@@ -25,6 +25,9 @@ using System.Collections.Generic;
 
 namespace org.critterai.nmbuild.u3d.editor
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	internal class BuildController
 	{
         private enum ControlType : byte
@@ -71,7 +74,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public BuildController(NavmeshBuild build, BuildTaskProcessor manager)
         {
-            if (build == null || manager == null)
+            if (!build || manager == null)
                 throw new System.ArgumentNullException();
 
             mContext = new ControlContext(build, manager);
@@ -89,6 +92,12 @@ namespace org.critterai.nmbuild.u3d.editor
                 return true;
 
             NavmeshBuild build = mContext.Build;
+
+            if (!build)
+            {
+                SetCriticalFailure("The build object has been deleted.");
+                return true;
+            }
 
             build.CleanBuild();
 
@@ -126,10 +135,8 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (mContext.Build != null)
             {
-                // mContext.DisconnectDebuggers();
                 mContext.AbortAllReqests("Build controller exiting");
                 mContext.Build.CleanBuild();
-                // mContext.NeedsRepaint = true;
             }
 
             mLogger.ResetLog();
@@ -143,9 +150,8 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NavmeshBuild build = mContext.Build;
 
-            // Note: This null check is performed in case the Unity component
-            // has been destroyed. (Deleted by user.)
-            if (build == null)
+            if (!build)
+                // Asset was deleted.
                 return;
 
             NavmeshBuildState buildState = build.BuildState;
@@ -212,6 +218,10 @@ namespace org.critterai.nmbuild.u3d.editor
                     requests.RemoveAt(i);
 
                     NavmeshBuild build = mContext.Build;
+
+                    if (!build)
+                        // Asset was deleted.
+                        continue;
 
                     string tileText = string.Format("({0},{1})", item.TileX, item.TileZ);
 
@@ -282,6 +292,10 @@ namespace org.critterai.nmbuild.u3d.editor
                     requests.RemoveAt(i);
 
                     NavmeshBuild build = mContext.Build;
+
+                    if (!build)
+                        // Asset was deleted.
+                        continue;
 
                     string tileText = string.Format("({0},{1})", item.TileX, item.TileZ);
 
@@ -461,7 +475,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 mOverrideControl = null;
             }
 
-            NavmeshBuild build = mContext.Build;
+            NavmeshBuild build = mContext.Build;  // Note: Caller already checked for null.
             NavmeshBuildState buildState = build.BuildState;
 
             // No early exits after this point.

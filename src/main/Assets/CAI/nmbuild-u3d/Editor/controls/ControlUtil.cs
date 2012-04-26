@@ -58,6 +58,10 @@ namespace org.critterai.nmbuild.u3d.editor
             , bool resetAllowed)
         {
             NavmeshBuild build = context.Build;
+
+            if (!build)
+                return false;
+
             TileBuildData tdata = build.BuildData;
 
             GUILayout.FlexibleSpace();
@@ -81,6 +85,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
                 return OnGUIResetButton(context, debugContext, style);
             }
+
             return false;
         }
 

@@ -54,7 +54,7 @@ public class TagAreaDefEditor
 
         if (targ.areas == null || targ.tags == null)
         {
-            Debug.LogError(targ.name + "Data null reference. Resetting component.");
+            Debug.LogError("Data null reference. Resetting component.", targ);
             targ.areas = new List<byte>();
             targ.tags = new List<string>();
         }
@@ -65,12 +65,12 @@ public class TagAreaDefEditor
         if (areas.Count > tags.Count)
         {
             areas.RemoveRange(tags.Count, areas.Count - tags.Count);
-            Debug.LogError(targ.name + "Data size mismatch. Area list truncated.");
+            Debug.LogError("Data size mismatch. Area list truncated.", targ);
         }
         else if (tags.Count > areas.Count)
         {
             tags.RemoveRange(areas.Count, tags.Count - areas.Count);
-            Debug.LogError(targ.name + "Data size mismatch. Mesh list truncated.");
+            Debug.LogError("Data size mismatch. Mesh list truncated.", targ);
         }
 
         EditorGUILayout.Separator();
@@ -101,11 +101,6 @@ public class TagAreaDefEditor
 
                 if (tag == tags[i] || !tags.Contains(tag))
                     tags[i] = tag;
-                else
-                {
-                    Debug.LogWarning(targ.name + ": " 
-                        + tag + " is already defined.  Change ignored.");
-                }
 
                 int orig = mSettings.GetAreaNameIndex(areas[i]);
 
@@ -113,9 +108,6 @@ public class TagAreaDefEditor
 
                 if (curr != orig)
                     areas[i] = mSettings.GetArea(mAreaNames[curr]);
-
-                //areas[i] = NavUtil.ClampArea(
-                //    EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
 
                 if (GUILayout.Button("X"))
                     delChoice = i;
@@ -141,12 +133,7 @@ public class TagAreaDefEditor
 
         if (ntag.Length > 0)
         {
-            if (tags.Contains(ntag))
-            {
-                Debug.LogWarning(targ.name + ": "
-                        + ntag + " is already defined.  New entry igored.");
-            }
-            else
+            if (!tags.Contains(ntag))
             {
                 tags.Add(ntag);
                 areas.Add(NMGen.MaxArea);
@@ -159,12 +146,15 @@ public class TagAreaDefEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box(
-            "Input Build Processor\nApplies area ids to components based on the specified tags."
-                + " If recursive, then the area will be applied if any of a component's parents"
-                + " have the tag."
-            , EditorUtil.HelpStyle
-            , GUILayout.ExpandWidth(true));
+        string msg = 
+            "Input Build Processor\n\nApplies areas to components based on the specified tags.";
+
+        if (targ.recursive)
+        {
+            msg += "\n\nRecursive: Will apply area if a parent has one of the tags.";
+        }
+
+        GUILayout.Box(msg, EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
         EditorGUILayout.Separator();
 

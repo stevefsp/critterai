@@ -130,7 +130,7 @@ public class AreaFlagDefEditor
 
         GUILayout.Box(
             "Input Build Processor\nAdds an NMGen processor that adds flags to polygons based"
-                + " on area id. E.g. Add the 'swim' flag to all 'water' polygons."
+                + " on area. E.g. Add the 'swim' flag to all 'water' polygons."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
 

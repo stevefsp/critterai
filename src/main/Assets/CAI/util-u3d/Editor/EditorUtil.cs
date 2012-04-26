@@ -386,7 +386,6 @@ namespace org.critterai.u3d.editor
 
             if (!result)
             {
-
                 result = ScriptableObject.CreateInstance<T>();
                 result.name = name;
 

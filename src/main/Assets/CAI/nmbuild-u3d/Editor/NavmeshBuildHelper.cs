@@ -33,11 +33,17 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public NavmeshBuildHelper(NavmeshBuild build)
         {
+            if (!build)
+                throw new System.ArgumentNullException();
+
             this.mBuild = build;
         }
 
         public void Build()
         {
+            if (!mBuild)
+                return;
+
             mBuild.ResetBuild();
 
             // Note: The 'finally' takes care of all cleanup.
@@ -402,6 +408,8 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public InputAssets BuildInput()
         {
+            if (!mBuild)
+                return new InputAssets();
             return BuildInput(true);
         }
 

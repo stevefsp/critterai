@@ -63,7 +63,7 @@ namespace org.critterai.nmbuild.u3d.editor
             }
 
             GUI.Box(Context.MainArea
-                , build.name + " is not ready to build!\n"
+                , (build ? build.name : "Unknown build") + " is not ready to build!\n"
                     + "Issue(s) must be corrected before a build can be started."
                 , mBoxStyle);
         }

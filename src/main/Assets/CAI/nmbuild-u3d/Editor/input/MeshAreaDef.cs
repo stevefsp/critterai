@@ -92,13 +92,15 @@ public sealed class MeshAreaDef
 
         if (meshes == null || areas == null || meshes.Count != areas.Count)
         {
-            context.LogError(name + " Mesh/Area size error. (Invalid processor state.)", this);
+            context.LogError("Mesh/Area size error. (Invalid processor state.)", this);
             return false;
         }
 
         if (meshes.Count == 0)
-            // Nothing to do.
+        {
+            context.Log("No action taken. No mesh areas defined.", this);
             return true;
+        }
 
         List<Component> targetFilters = context.components;
         List<byte> targetAreas = context.areas;
@@ -111,10 +113,11 @@ public sealed class MeshAreaDef
 
             MeshFilter filter = (MeshFilter)targetFilters[iTarget];
 
-            if (filter == null)
+            if (filter == null || targetAreas[iTarget] == org.critterai.nmgen.NMGen.NullArea)
+                // Never override null area.
                 continue;
 
-            MatchPredicate p = new MatchPredicate(filter.sharedMesh, matchType);
+            MatchPredicate p = new MatchPredicate(filter.sharedMesh, matchType, true);
 
             int iSource = meshes.FindIndex(p.Matches);
 
@@ -125,7 +128,7 @@ public sealed class MeshAreaDef
             }
         }
 
-        context.Log(string.Format("{0}: Applied area(s) to {1} components.", name, applied), this);
+        context.Log(string.Format("Applied area(s) to {0} components.", applied), this);
 
         return true;
     }

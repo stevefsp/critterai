@@ -167,9 +167,10 @@ public class NavmeshBuildEditor
         GUI.changed = false;
 
         // Never allow nulls.  So get rid of them first.
+        // Can happen it target assets have been deleted.
         for (int i = items.Count - 1; i >= 0; i--)
         {
-            if (items[i] == null)
+            if (!items[i])
             {
                 items.RemoveAt(i);
                 GUI.changed = true;
@@ -324,6 +325,8 @@ public class NavmeshBuildEditor
 
             NMGenConfigControl.OnGUIButtons(build, config, true);
 
+            GUI.enabled = (build.BuildState != NavmeshBuildState.Invalid);
+
             if (GUILayout.Button("Derive"))
             {
                 NavmeshBuildHelper helper = new NavmeshBuildHelper(build);
@@ -345,6 +348,8 @@ public class NavmeshBuildEditor
                     GUI.changed = true;
                 }
             }
+
+            GUI.enabled = true;
 
             EditorGUILayout.Separator();
 
@@ -383,8 +388,10 @@ public class NavmeshBuildEditor
 
         if (build.BuildState == NavmeshBuildState.Invalid)
         {
-            if (btarget == null)
-                sb.AppendLine("No build target.");
+
+            if (!(ScriptableObject)btarget)
+                 sb.AppendLine("No build target.");
+
             if (build.inputProcessors.Count == 0)
                 sb.AppendLine("No input processors.");
 
@@ -401,6 +408,8 @@ public class NavmeshBuildEditor
 
         if (build.TargetHasNavmesh)
             sb.AppendLine("Target has existing navmesh.");
+        else
+            sb.AppendLine("Target does not have a navmesh.");
 
         if (build.BuildType == NavmeshBuildType.Advanced)
         {

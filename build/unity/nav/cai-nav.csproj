@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{42218E47-156D-46ff-84E0-119D47B0E4EB}</ProjectGuid>
+    <ProjectGuid>{42218E47-156D-46FF-84E0-119D47B0E4EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>org.critterai</RootNamespace>
@@ -34,10 +34,6 @@
     <DocumentationFile>..\bin\Release\cai-nav.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>

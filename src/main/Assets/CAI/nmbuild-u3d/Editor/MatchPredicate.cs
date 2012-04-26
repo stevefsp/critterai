@@ -27,16 +27,21 @@ namespace org.critterai.nmbuild.u3d.editor
 	{
         private readonly Object mRoot;
         private readonly MatchType mType;
+        private readonly bool mInvert;
 
-        public MatchPredicate(Object root, MatchType type)
+        public MatchPredicate(Object root, MatchType type, bool invert)
         {
             mRoot = root;
             mType = type;
+            mInvert = invert;
         }
 
         public bool Matches(Object item)
         {
-            return Matches(mRoot, item, mType);
+            if (mInvert)
+                return Matches(mRoot, item, mType);
+            else
+                return Matches(item, mRoot, mType);
         }
 
         // Not commutative
@@ -58,7 +63,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 case MatchType.AnyInstance:
 
                     return (target == source
-                        || (target.name.StartsWith(source.name)
+                        || (target.name.StartsWith(source.name + " ")
                             && target.name.Contains("Instance")));
             }
             return false;

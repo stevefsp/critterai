@@ -161,7 +161,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (items.Count == 0)
             {
-                FinalizeOnAbort(string.Format("No scene objects available. ({0})", mState));
+                FinalizeOnAbort(string.Format("No components available. ({0})", mState));
                 return false;
             }
 

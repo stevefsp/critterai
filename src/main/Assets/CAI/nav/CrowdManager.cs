@@ -175,6 +175,8 @@ namespace org.critterai.nav
             mMaxAgentRadius = maxAgentRadius;
             mNavmesh = navmesh;
 
+            root = crowd;
+
             mAgents = new CrowdAgent[maxAgents];
             agentStates = new CrowdAgentCoreState[maxAgents];
 

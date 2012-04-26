@@ -35,7 +35,7 @@ namespace org.critterai.nmbuild.u3d.editor
         private int mSelectedZ = NoSelection;
         private int mZoneSize = 1;
 
-        public NavmeshBuild Build { get { return mBuild; } } 
+        public NavmeshBuild Build { get { return mBuild ? mBuild : null; } } 
         
         public int SelectedX { get { return mSelectedX; } }
         public int SelectedZ { get { return mSelectedZ; } }
@@ -63,6 +63,9 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             get
             {
+                if (!mBuild)
+                    return new TileZone();
+
                 return new TileZone(Mathf.Max(0, mSelectedX - mZoneSize)
                     , Mathf.Max(0, mSelectedZ - mZoneSize)
                     , Mathf.Min(mBuild.TileSetDefinition.Width - 1, mSelectedX + mZoneSize)
@@ -72,11 +75,17 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public bool HasSelection
         {
-            get { return !(mSelectedX == NoSelection || mBuild.TileSetDefinition == null); }
+            get 
+            { 
+                return mBuild && !(mSelectedX == NoSelection || mBuild.TileSetDefinition == null); 
+            }
         }
 
         public TileSelection(NavmeshBuild build)
         {
+            if (!build)
+                throw new System.ArgumentNullException();
+
             mBuild = build;
         }
 
@@ -88,6 +97,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
         public void SetSelection(int tx, int tz)
         {
+            if (!mBuild)
+                return;
+
             TileSetDefinition tdef = mBuild.TileSetDefinition;
 
             if (tx < 0 || tz < 0 

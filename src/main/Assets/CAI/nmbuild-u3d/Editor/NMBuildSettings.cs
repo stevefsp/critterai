@@ -56,8 +56,11 @@ public sealed class NMBuildSettings
         if (orig != val)
             BuildProcessor.MaxConcurrency = val;
 
+        // TODO: Review threading recommendation after below noted bug is fixed.
         GUILayout.Box("Recommended: " + BuildProcessor.DefaultConcurrency
             + "\nWill take effect next processor start."
+            + "\nWarning: Threading bugs in Unity Editor 3.5 can cause problems if set"
+            + " to a higher value."
             , EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
 
         GUILayout.Space(ControlUtil.MarginSize * 2);

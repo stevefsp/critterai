@@ -44,7 +44,7 @@ public class StaticFilterEditor
 
         EditorGUILayout.Separator();
 
-        GUILayout.Box("Input Build Processor\n"
+        GUILayout.Box("Input Build Processor\n\n"
             + "Filters out all components that are NOT marked as static."
             , EditorUtil.HelpStyle
             , GUILayout.ExpandWidth(true));
@@ -59,24 +59,4 @@ public class StaticFilterEditor
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = item;
     }
-
-    //[MenuItem("CONTEXT/NavmeshBuild/New Static Filter", true)]
-    //static bool AddAssetValidate(MenuCommand command)
-    //{
-    //    NavmeshBuild context = (NavmeshBuild)command.context;
-
-    //    return !context.ContainsProcessor<StaticObjectFilter>();
-    //}
-
-    //[MenuItem("CONTEXT/NavmeshBuild/New Static Filter", false)]
-    //static void AddAsset(MenuCommand command)
-    //{
-    //    NavmeshBuild context = (NavmeshBuild)command.context;
-
-    //    InputBuildProcessor item =
-    //        EditorUtil.CreateAsset<StaticObjectFilter>(context, NMBEditorUtil.AssetLabel);
-
-    //    context.inputProcessors.Add(item);
-    //    EditorUtility.SetDirty(context);
-    //}
 }

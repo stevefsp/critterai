@@ -52,15 +52,22 @@ public sealed class NavmeshBuild
      * an uncontroled editor reset or a manual reset of the build.
      * The recovery state is detected by the input data going missing while
      * there is build data.
+     * 
+     * ScribableObjects: Can't recast a ScribableObject to an interface and test for null due
+     * to an oddity. If the ScribableObject is deleted while it is still assigned to a build, then 
+     * (CastedToInterfaceVar == null) will evaluate to false for a long period of time.  
+     * But (!ScribableObjectVar) will evaluate to true.
+     * 
      */
 
-    /// <summary>
-    /// The minimum supported tile size for tiled navigation meshes.
-    /// </summary>
-    public const int MinAllowedTileSize = 12;
+    internal const int MinAllowedTileSize = 12;
 
     #region Serialized Fields
 
+    // WARNING: Don't make this field read-only.  It breaks serialization.
+    /// <summary>
+    /// Warning: Always check for nulls via (inputProcessors[i]) evaluation. Don't do null check.
+    /// </summary>
     [SerializeField]
     internal List<ScriptableObject> inputProcessors = new List<ScriptableObject>();
 
@@ -89,7 +96,7 @@ public sealed class NavmeshBuild
     private bool mCleanInputGeometry = true;
 
     [SerializeField]
-    private bool mIsDirty = false;
+    private bool mIsDirty = false;  // Yes, this needs to be serialized.
 
     #endregion
 
@@ -112,7 +119,9 @@ public sealed class NavmeshBuild
     {
         get
         {
-            if (mTarget == null || inputProcessors.Count == 0)
+            // The test for the input processors is lazy since it may contain
+            // nulls due to asset deletions.  Choosing performance over accuracy.
+            if (!mTarget || inputProcessors.Count == 0)
                 return NavmeshBuildState.Invalid;
 
             if (mNMGenProcessors == null)
@@ -174,6 +183,16 @@ public sealed class NavmeshBuild
 
     internal IInputBuildProcessor[] GetInputProcessors()
     {
+        // May contain nulls due to asset deletions.  So clean things up.
+        for (int i = inputProcessors.Count - 1; i >= 0; i--)
+        {
+            if (!inputProcessors[i])
+            {
+                inputProcessors.RemoveAt(i);
+                mIsDirty = true;
+            }
+        }
+
         IInputBuildProcessor[] result = new IInputBuildProcessor[inputProcessors.Count];
 
         // Assumption: The editor is properly controlling additions to the list.
@@ -195,17 +214,25 @@ public sealed class NavmeshBuild
 
     internal bool TargetHasNavmesh
     {
-        get { return (mTarget == null) ? false : BuildTarget.HasNavmesh; }
+        get { return (mTarget) ? BuildTarget.HasNavmesh : false; }
     }
 
     internal ISceneQuery SceneQuery
     {
-        get { return (ISceneQuery)mSceneQuery; }
+
+        get 
+        { 
+            // See design notes for reason for this test.
+            return mSceneQuery ? (ISceneQuery)mSceneQuery : null; 
+        }
         set
         {
+            mSceneQuery = mSceneQuery ? mSceneQuery : null;  // Clean
             if (value == null || value is ScriptableObject)
             {
+
                 ScriptableObject so = (ScriptableObject)value;
+                so = so ? so : null;
                 if (mSceneQuery != so)
                 {
                     mSceneQuery = so;
@@ -217,12 +244,19 @@ public sealed class NavmeshBuild
 
     internal INavmeshData BuildTarget
     {
-        get { return (INavmeshData)mTarget; }
+
+        get 
+        {
+            // See design notes for reason for this test.
+            return mTarget ? (INavmeshData)mTarget : null; 
+        }
         set
         {
+            mTarget = mTarget ? mTarget : null;   // Clean;
             if (value is ScriptableObject || value == null)
             {
                 ScriptableObject so = (ScriptableObject)value;
+                so = so ? so : null;
                 if (mTarget != so)
                 {
                     mTarget = so;
@@ -544,6 +578,12 @@ public sealed class NavmeshBuild
     {
         mBuildData.Resize(0, 0);
         mTileSet = null;
+        
+        // Note: The user may have recompiled the input geometry during the build, resulting in a
+        // significant change in the bounds.  So need to derive new bounds in order.
+        // (This effectively released the bounds lock.)
+        DeriveBounds(mInputGeom.BoundsMin, mInputGeom.BoundsMax, out mBoundsMin, out mBoundsMax);
+
     }
 
     internal bool InitializeBuild(bool fromTarget, BuildContext mLogger)
@@ -653,8 +693,8 @@ public sealed class NavmeshBuild
 
                     string msg = string.Format("The existing navigation mesh"
                         + " contains a tile outside the expected range. Ignoring"
-                        + " the tile. (Source: {0}) (Tile: [{1},{2}])"
-                        , mTarget.name, tx, tz);
+                        + " the tile. (Tile: [{0},{1}])"
+                        , tx, tz);
 
                     mLogger.LogWarning(msg, this);
 
