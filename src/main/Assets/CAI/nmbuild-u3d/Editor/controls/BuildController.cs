@@ -254,10 +254,10 @@ namespace org.critterai.nmbuild.u3d.editor
                                 mLogger.PostTrace("NMGen build complete: " + tileText
                                     , item.Messages, build);
 
-                                mContext.QueueTask(r.TileX, r.TileZ
+                                mContext.QueueTask(mLogger,r.TileX, r.TileZ
                                     , r.PolyMesh, r.DetailMesh
-                                    , item.Priority
-                                    , mLogger);
+                                    , (build.Config.BuildFlags & NMGenBuildFlag.BVTreeEnabled) != 0
+                                    , item.Priority);
                             }
 
                             break;

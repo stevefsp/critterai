@@ -31,7 +31,10 @@ namespace org.critterai.nav.u3d.editor
     /// </summary>
     public static class NavEditorUtil
     {
-        internal static string AssetLabel = "Navigation";
+        /// <summary>
+        /// The standard label for navigation assets.
+        /// </summary>
+        public static string AssetLabel = "Navigation";
 
         /// <summary>
         /// The menu priority for navigation asset creation.

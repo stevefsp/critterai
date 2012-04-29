@@ -30,7 +30,7 @@ using org.critterai.nmbuild;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(MeshInputFilter))]
-public class MeshInputFilterEditor
+public sealed class MeshInputFilterEditor
     : Editor
 {
     /// <summary>

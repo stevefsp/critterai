@@ -29,7 +29,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(DefaultAreaDef))]
-public class DefaultAreaDefEditor
+public sealed class DefaultAreaDefEditor
     : Editor
 {
     private CAINavEditorSettings mSettings;

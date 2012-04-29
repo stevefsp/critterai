@@ -31,7 +31,7 @@ using org.critterai.u3d;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(TerrainCompiler))]
-public class TerrainCompilerEditor
+public sealed class TerrainCompilerEditor
     : Editor
 {
     private const float CheckDelay = 5;

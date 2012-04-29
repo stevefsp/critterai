@@ -33,7 +33,7 @@ using org.critterai.geom;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(NavmeshBuild))]
-public class NavmeshBuildEditor
+public sealed class NavmeshBuildEditor
     : Editor
 {
     private const string ShowInputKey = "org.critterai.nmbuild.ShowInputConfig";

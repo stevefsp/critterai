@@ -55,7 +55,7 @@ namespace org.critterai.nmbuild
         private int mDepth;
 
         private TileSetDefinition(int width, int depth
-            , Vector3 bmin, Vector3 bmax
+            , Vector3 boundsMin, Vector3 boundsMax
             , NMGenParams config
             , InputGeometry geom)
         {
@@ -65,8 +65,8 @@ namespace org.critterai.nmbuild
             mGeometry = geom;
             mWidth = width;
             mDepth = depth;
-            mBoundsMin = bmin;
-            mBoundsMax = bmax;
+            mBoundsMin = boundsMin;
+            mBoundsMax = boundsMax;
         }
 
         /// <summary>

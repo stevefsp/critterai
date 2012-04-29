@@ -118,7 +118,7 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             foreach (IInputBuildProcessor item in mInputProcessors)
             {
-                if (!item.ProcessInput(mState, mContext))
+                if (!item.ProcessInput(mContext, mState))
                 {
                     FinalizeOnAbort(string.Format("Processor requested abort: {0} ({1})"
                         , item.Name, mState));

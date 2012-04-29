@@ -276,7 +276,7 @@ namespace org.critterai.u3d
         /// </param>
         /// <param name="vertCount">The number of vertices.</param>
         /// <param name="color">The color of the polygon surface.</param>
-        public static void ConvexPoly(float[] verts, int vertCount, Color color)
+        public static void ConvexPoly(Vector3[] verts, int vertCount, Color color)
         {
             DebugDraw.SimpleMaterial.SetPass(0);
 
@@ -286,12 +286,12 @@ namespace org.critterai.u3d
 
             for (int i = 2; i < vertCount; i++)
             {
-                int pB = (i - 1) * 3;
-                int pC = (i + 0) * 3;
+                int pB = i - 1;
+                int pC = i + 0;
 
-                GL.Vertex3(verts[0], verts[1], verts[2]);
-                GL.Vertex3(verts[pB + 0], verts[pB + 1], verts[pB + 2]);
-                GL.Vertex3(verts[pC + 0], verts[pC + 1], verts[pC + 2]);
+                GL.Vertex(verts[0]);
+                GL.Vertex(verts[pB]);
+                GL.Vertex(verts[pC]);
             }
 
             GL.End();
@@ -303,11 +303,11 @@ namespace org.critterai.u3d
 
             for (int i = 1; i < vertCount; i++)
             {
-                int pA = (i - 1) * 3;
-                int pB = (i + 0) * 3;
+                int pA = i - 1;
+                int pB = i + 0;
 
-                GL.Vertex3(verts[pA + 0], verts[pA + 1], verts[pA + 2]);
-                GL.Vertex3(verts[pB + 0], verts[pB + 1], verts[pB + 2]);
+                GL.Vertex(verts[pA]);
+                GL.Vertex(verts[pB]);
             }
 
             GL.End();

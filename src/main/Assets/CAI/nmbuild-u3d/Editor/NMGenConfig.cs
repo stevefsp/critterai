@@ -38,18 +38,11 @@ namespace org.critterai.nmbuild.u3d.editor
     [System.Serializable]
     internal sealed class NMGenConfig
     {
-        /**
-         * Design notes:
-         * 
-         * Important: This configuration should not contain any new data not
-         * already contained by NMGenParams.  E.g. No Unity specific flags
-         * or other values. SetConfig() must effectively clone the configuration.
-         */
-
         public const NMGenBuildFlag DefaultBuildFlags = 
             NMGenBuildFlag.LowHeightSpansNotWalkable
             | NMGenBuildFlag.LowObstaclesWalkable
-            | NMGenBuildFlag.ApplyPolyFlags;
+            | NMGenBuildFlag.ApplyPolyFlags
+            | NMGenBuildFlag.BVTreeEnabled;
 
         #region Standard Param Labels
 
@@ -86,6 +79,8 @@ namespace org.critterai.nmbuild.u3d.editor
         public const string MergeSizeLabel = "Merge Region Area";
 
         public const string LedgeSpansLabel = "Ledges Not Walkable";
+
+        public const string BVTreeLabel = "BVTreeEnabled";
 
         public const string LowHeightLabel = "Low Height Not Walkable";
 
@@ -162,6 +157,7 @@ namespace org.critterai.nmbuild.u3d.editor
         [SerializeField]
         private NMGenParams mRoot;
 
+        // World unit parameters.
         [SerializeField]
         private float mWalkableRadius;
         [SerializeField]

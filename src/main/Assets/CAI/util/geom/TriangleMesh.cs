@@ -136,14 +136,16 @@ namespace org.critterai.geom
         /// <summary>
         /// True if the minimum bounds is less than the maximum bounds on all axes.
         /// </summary>
-        /// <param name="bmin">The minimum AABB bounds.</param>
-        /// <param name="bmax">The maximum AABB bounds.</param>
+        /// <param name="boundsMin">The minimum AABB bounds.</param>
+        /// <param name="boundsMax">The maximum AABB bounds.</param>
         /// <returns>
         /// True if the minimum bounds is less than the maximum bounds on all axes.
         /// </returns>
-        public static bool IsBoundsValid(Vector3 bmin, Vector3 bmax)
+        public static bool IsBoundsValid(Vector3 boundsMin, Vector3 boundsMax)
         {
-            return !(bmax.x < bmin.x || bmax.y < bmin.y || bmax.z < bmin.z);
+            return !(boundsMax.x < boundsMin.x 
+                || boundsMax.y < boundsMin.y 
+                || boundsMax.z < boundsMin.z);
         }
 
         /// <summary>

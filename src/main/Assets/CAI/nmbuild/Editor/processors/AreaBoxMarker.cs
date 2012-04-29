@@ -72,7 +72,7 @@ namespace org.critterai.nmbuild
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>
         /// <returns>False on error, otherwise true.</returns>
-        public override bool ProcessBuild(NMGenState state, NMGenContext context)
+        public override bool ProcessBuild(NMGenContext context, NMGenState state)
         {
             if (state != NMGenState.CompactFieldBuild)
                 return true;

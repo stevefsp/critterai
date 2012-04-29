@@ -29,7 +29,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(StaticFilter))]
-public class StaticFilterEditor
+public sealed class StaticFilterEditor
     : Editor
 {
     /// <summary>

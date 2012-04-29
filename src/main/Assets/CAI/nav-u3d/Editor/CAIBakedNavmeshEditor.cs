@@ -32,7 +32,7 @@ using org.critterai.nav.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(CAIBakedNavmesh))]
-public class CAIBakedNavmeshEditor
+public sealed class CAIBakedNavmeshEditor
     : Editor
 {
     /// <summary>

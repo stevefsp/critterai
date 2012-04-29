@@ -117,12 +117,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
             if (mInputCompile.HasData)
             {
-                if (!build.SetInputData(mInputCompile.Geometry
-                    , mInputCompile.Info
-                    , mInputCompile.Processors
-                    , mInputCompile.Connections
-                    , true
-                    , mLogger))
+                if (!build.SetInputData(mLogger, mInputCompile.Geometry
+                    , mInputCompile.Info, mInputCompile.Processors, mInputCompile.Connections
+                    , true))
                 {
                    mLogger.PostError("Could not apply input data.", build);
                 }

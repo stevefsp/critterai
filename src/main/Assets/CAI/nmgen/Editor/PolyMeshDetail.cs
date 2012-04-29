@@ -391,10 +391,8 @@ namespace org.critterai.nmgen
         /// </param>
         /// <returns>A new detail mesh, or null on error.</returns>
         public static PolyMeshDetail Build(BuildContext context
-            , PolyMesh polyMesh
-            , CompactHeightfield field
-            , float detailSampleDistance
-            , float detailMaxDeviation)
+            , PolyMesh polyMesh, CompactHeightfield field
+            , float detailSampleDistance, float detailMaxDeviation)
         {
             if (context == null || polyMesh == null || polyMesh.IsDisposed
                 || field == null || field.IsDisposed

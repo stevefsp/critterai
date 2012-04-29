@@ -211,11 +211,10 @@ namespace org.critterai.nmgen
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
         /// <param name="areas">
-        /// The areas associated with each triangle. [Length: >= mesh.triCount].
+        /// The areas associated with each triangle. [Length: >= mesh.triCount] (In/Out)
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public static bool MarkWalkableTriangles(BuildContext context
-            , TriangleMesh mesh
+        public static bool MarkWalkableTriangles(BuildContext context, TriangleMesh mesh
             , float walkableSlope
             , byte[] areas)
         {
@@ -245,11 +244,10 @@ namespace org.critterai.nmgen
         /// <param name="mesh">The source mesh.</param>
         /// <param name="walkableSlope">The maximum walkable slope.</param>
         /// <param name="areas">
-        /// The areas associated with each triangle. [Length: >= mesh.triCount].
+        /// The areas associated with each triangle. [Length: >= mesh.triCount] (In/Out)
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public static bool ClearUnwalkableTriangles(BuildContext context
-            , TriangleMesh mesh
+        public static bool ClearUnwalkableTriangles(BuildContext context, TriangleMesh mesh
             , float walkableSlope
             , byte[] areas)
         {

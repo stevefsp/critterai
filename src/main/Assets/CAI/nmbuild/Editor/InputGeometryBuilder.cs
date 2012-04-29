@@ -33,7 +33,7 @@ namespace org.critterai.nmbuild
     /// <summary>
     /// Builds an <see cref="InputGeometry"/> object.
     /// </summary>
-    public class InputGeometryBuilder
+    public sealed class InputGeometryBuilder
     {
         private ChunkyTriMeshBuilder mBuilder;
         private readonly Vector3 mBoundsMin;
@@ -42,13 +42,13 @@ namespace org.critterai.nmbuild
         private InputGeometry mGeom;
 
         private InputGeometryBuilder(ChunkyTriMeshBuilder builder
-            , Vector3 bmin
-            , Vector3 bmax
+            , Vector3 boundsMin
+            , Vector3 boundsMax
             , bool isThreadSafe)
         {
             mBuilder = builder;
-            mBoundsMin = bmin;
-            mBoundsMax = bmax;
+            mBoundsMin = boundsMin;
+            mBoundsMax = boundsMax;
             mIsThreadSafe = isThreadSafe;
         }
 

@@ -50,7 +50,7 @@ namespace org.critterai.nmbuild.u3d.editor
         /// <param name="state">The current state of the input build.</param>
         /// <param name="context">The input context to process.</param>
         /// <returns>False if the input build should abort.</returns>
-        bool ProcessInput(InputBuildState state, InputBuildContext context);
+        bool ProcessInput(InputBuildContext context, InputBuildState state);
 
         /// <summary>
         /// True if the multiple processors of the same type can be included in a build.

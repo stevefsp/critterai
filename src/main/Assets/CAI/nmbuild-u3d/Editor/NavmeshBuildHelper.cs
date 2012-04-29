@@ -112,7 +112,7 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             mContext.ResetLog();
 
-            if (!mBuild.InitializeBuild(false, mContext))
+            if (!mBuild.InitializeBuild(mContext, false))
             {
                 mContext.PostError("Build initialization failed.", mBuild);
                 return false;
@@ -216,11 +216,11 @@ namespace org.critterai.nmbuild.u3d.editor
 
             NMGenAssets result = builder.Result;
 
-            NavmeshTileBuildData tbd = org.critterai.nmbuild.NMBuild.GetBuildData(0, 0
-                , result.PolyMesh.GetData(false)
-                , result.DetailMesh.GetData(false)
+            NavmeshTileBuildData tbd = org.critterai.nmbuild.NMBuild.GetBuildData(
+                mContext, 0, 0
+                , result.PolyMesh.GetData(false), result.DetailMesh.GetData(false)
                 , mBuild.Connections
-                , mContext);
+                , (config.BuildFlags & NMGenBuildFlag.BVTreeEnabled) != 0);
 
             if (tbd == null)
             {
@@ -331,6 +331,7 @@ namespace org.critterai.nmbuild.u3d.editor
                     TileBuildTask ttask = TileBuildTask.Create(tx, tz
                         , nr.PolyMesh.GetData(false), nr.DetailMesh.GetData(false)
                         , mBuild.Connections
+                        , (mBuild.Config.BuildFlags & NMGenBuildFlag.BVTreeEnabled) != 0
                         , false, 0);
 
                     ttask.Run();
@@ -396,9 +397,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
             gbuilder.BuildAll();
 
-            if (mBuild.SetInputData(gbuilder.Result
+            if (mBuild.SetInputData(mContext, gbuilder.Result
                 , assets.info, assets.processors, assets.conns
-                , false, mContext))
+                , false))
             {
                 mContext.PostTrace("Input compile complete.", mBuild);
             }

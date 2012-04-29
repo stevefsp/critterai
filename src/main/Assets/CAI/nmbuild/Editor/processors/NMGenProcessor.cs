@@ -68,6 +68,6 @@ namespace org.critterai.nmbuild
         /// <param name="state">The current build state.</param>
         /// <param name="context">The context to process.</param>
         /// <returns>False if the build should abort.  Otherwise true.</returns>
-        public abstract bool ProcessBuild(NMGenState state, NMGenContext context);
+        public abstract bool ProcessBuild(NMGenContext context, NMGenState state);
     }
 }

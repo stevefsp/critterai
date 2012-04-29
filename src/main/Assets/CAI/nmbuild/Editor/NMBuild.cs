@@ -84,12 +84,14 @@ namespace org.critterai.nmbuild
         /// <param name="polyMesh">The polygon mesh data.</param>
         /// <param name="detailMesh">The detail mesh data. (Optional)</param>
         /// <param name="connections">The off-mesh connections. (Null allowed.)</param>
+        /// <param name="bvTreeEnabled">True if bounding volumes should be generated.</param>
         /// <param name="context">The build context.</param>
         /// <returns>The tile build data, or null on error.</returns>
-        public static NavmeshTileBuildData GetBuildData(int tx, int tz
+        public static NavmeshTileBuildData GetBuildData(BuildContext context
+            , int tx, int tz
             , PolyMeshData polyMesh, PolyMeshDetailData detailMesh
             , ConnectionSet connections
-            , BuildContext context)
+            , bool bvTreeEnabled)
         {
             if (context == null)
                 // Silent.
@@ -126,7 +128,7 @@ namespace org.critterai.nmbuild
                 , polyMesh.walkableHeight
                 , polyMesh.walkableRadius
                 , polyMesh.walkableStep
-                , true))  // TODO: Parameterize
+                , bvTreeEnabled))
             {
                 context.LogError("Base data load failed. Bad configuration data or internal error."
                     , null);

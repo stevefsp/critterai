@@ -29,7 +29,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(MeshCompiler))]
-public class MeshCompilerEditor
+public sealed class MeshCompilerEditor
     : Editor
 {
     /// <summary>

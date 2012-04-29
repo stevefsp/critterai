@@ -30,7 +30,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(TagInputFilter))]
-public class TagInputFilterEditor
+public sealed class TagInputFilterEditor
     : Editor
 {
     /// <summary>

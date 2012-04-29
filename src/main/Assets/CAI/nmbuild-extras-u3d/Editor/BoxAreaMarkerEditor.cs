@@ -28,7 +28,7 @@ using UnityEditor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(BoxAreaMarker))]
-public class BoxAreaMarkerEditor
+public sealed class BoxAreaMarkerEditor
     : AreaMarkerEditor
 {
     /// <summary>

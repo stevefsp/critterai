@@ -33,7 +33,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </para>
 /// </remarks>
 [System.Serializable]
-public class TagSceneQuery 
+public sealed class TagSceneQuery 
     : ScriptableObject, ISceneQuery 
 {
     /// <summary>

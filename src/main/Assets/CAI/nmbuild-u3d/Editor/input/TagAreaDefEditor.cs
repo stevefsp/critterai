@@ -32,7 +32,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(TagAreaDef))]
-public class TagAreaDefEditor
+public sealed class TagAreaDefEditor
     : Editor
 {
     private CAINavEditorSettings mSettings;

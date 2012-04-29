@@ -29,7 +29,7 @@ using UnityEditor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(OFMConnection))]
-public class OFMConnectionEditor
+public sealed class OFMConnectionEditor
     : Editor
 {
     private static Vector3 markerSize = new Vector3(0.3f, 0.05f, 0.3f);

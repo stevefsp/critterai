@@ -65,6 +65,11 @@ namespace org.critterai.nmbuild
         /// Apply the 0x01 flag to all polygons in the <see cref="org.critterai.nmgen.PolyMesh"/> 
         /// object.
         /// </summary>
-        ApplyPolyFlags = 0x080
+        ApplyPolyFlags = 0x080,
+
+        /// <summary>
+        /// Generate tile bounding volumns.
+        /// </summary>
+        BVTreeEnabled = 0x100
     }
 }

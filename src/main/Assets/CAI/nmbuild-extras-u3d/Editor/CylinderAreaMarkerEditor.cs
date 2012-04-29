@@ -28,7 +28,7 @@ using UnityEditor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(CylinderAreaMarker))]
-public class CylinderAreaMarkerEditor
+public sealed class CylinderAreaMarkerEditor
     : AreaMarkerEditor
 {
     /// <summary>

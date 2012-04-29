@@ -321,7 +321,7 @@ namespace org.critterai.nav
         /// <summary>
         /// True if bounding volumn data should be generated for the tile.
         /// </summary>
-        /// <remarks>This value is normally set to FALSE if the tile is small
+        /// <remarks>This value is normally set to false if the tile is small
         /// or layers are being used.</remarks>
         public bool BVTreeEnabled { get { return mBVTreeEnabled; } }
 

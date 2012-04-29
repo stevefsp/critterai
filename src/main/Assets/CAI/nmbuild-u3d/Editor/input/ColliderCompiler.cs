@@ -43,7 +43,7 @@
 //    public override int Priority { get { return NMBuild.MinPriority - 1; } }
 //    public override bool DuplicatesAllowed { get { return false; } }
 
-//    public override bool ProcessInput(InputBuildState state, InputBuildContext context)
+//    public override bool ProcessInput(InputBuildContext context, InputBuildState state)
 //    {
 //        if (context != null)
 //        {
