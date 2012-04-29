@@ -17,6 +17,13 @@
 			 
 			<para>There are five main classes you'll be dealing with:</para>
 			
+			<para></para>
+			<alert class="note">
+			  <para>
+			  CAINav uses the OpenGL coordinate system.
+			  </para>
+			</alert>
+			
 			<para>
 			The <token>Navmesh</token> class defines the structure and state of the navigation mesh.  The only user component that deals directly with this class
 			on a regular basis is the component responsible for creating the mesh and managing its state.  Normal navigation clients, the one's needing to perform pathfinding

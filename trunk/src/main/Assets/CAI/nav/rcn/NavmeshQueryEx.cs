@@ -75,8 +75,8 @@ namespace org.critterai.nav.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern NavStatus dtqQueryPolygons(IntPtr query
-                , [In] ref Vector3 position
-                , [In] ref Vector3 extents
+                , ref Vector3 position
+                , ref Vector3 extents
                 , IntPtr filter
                 , [In, Out] uint[] resultPolyRefs
                 , ref int resultCount

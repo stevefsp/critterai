@@ -339,7 +339,7 @@ namespace org.critterai.nmbuild
 
         private bool PostProcess()
         {
-            if (!mProcessors.Process(mState, mBuildContext))
+            if (!mProcessors.Process(mBuildContext, mState))
             {
                 FinalizeAbort("Abort requested by custom processors. (" + mState + " Post)");
                 return false;

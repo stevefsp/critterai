@@ -29,7 +29,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(OFMConnectionCompiler))]
-public class OFMConnectionCompilerEditor
+public sealed class OFMConnectionCompilerEditor
     : Editor
 {
     /// <summary>

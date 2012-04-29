@@ -30,7 +30,7 @@ using org.critterai.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(CAINavEditorSettings))]
-public class CAINavEditorSettingsEditor
+public sealed class CAINavEditorSettingsEditor
     : Editor
 {
     private static bool mShowAreas = true;

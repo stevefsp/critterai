@@ -43,7 +43,7 @@ namespace org.critterai.nav
     /// <seealso cref="CrowdAgent.GetBoundary"/>
     /// <seealso cref="CrowdAgent"/>
     [StructLayout(LayoutKind.Sequential)]
-    public class LocalBoundaryData
+    public sealed class LocalBoundaryData
     {
         /*
          * Design note:

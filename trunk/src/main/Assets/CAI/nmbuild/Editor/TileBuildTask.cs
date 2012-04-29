@@ -38,6 +38,7 @@ namespace org.critterai.nmbuild
         private readonly int mTileX;
         private readonly int mTileZ;
         private readonly bool mIsThreadSafe;
+        private readonly bool mBVTreeEnabled;
         private PolyMeshData mPolyData;
         private PolyMeshDetailData mDetailData;
         private ConnectionSet mConnections;
@@ -46,6 +47,7 @@ namespace org.critterai.nmbuild
             , PolyMeshData polyData
             , PolyMeshDetailData detailData
             , ConnectionSet connections
+            , bool bvTreeEnabled
             , bool isThreadSafe
             , int priority)
             : base(priority)
@@ -55,6 +57,7 @@ namespace org.critterai.nmbuild
             mPolyData = polyData;
             mDetailData = detailData;
             mConnections = connections;
+            mBVTreeEnabled = bvTreeEnabled;
             mIsThreadSafe = isThreadSafe;
         }
 
@@ -91,6 +94,7 @@ namespace org.critterai.nmbuild
         /// <param name="polyData">The polygon mesh data.</param>
         /// <param name="detailData">The detail mesh data. (Optional)</param>
         /// <param name="conns">The off-mesh connection set.</param>
+        /// <param name="bvTreeEnabled">True if bounding volumes should be generated.</param>
         /// <param name="isThreadSafe">True if the task is safe to run on its own thread.</param>
         /// <param name="priority">The task priority.</param>
         /// <returns>A new task, or null on error.</returns>
@@ -98,6 +102,7 @@ namespace org.critterai.nmbuild
             , PolyMeshData polyData
             , PolyMeshDetailData detailData
             , ConnectionSet conns
+            , bool bvTreeEnabled
             , bool isThreadSafe
             , int priority)
         {
@@ -108,7 +113,8 @@ namespace org.critterai.nmbuild
                 return null;
             }
 
-            return new TileBuildTask(tx, tz, polyData, detailData, conns, isThreadSafe, priority);
+            return new TileBuildTask(tx, tz
+                , polyData, detailData, conns, bvTreeEnabled, isThreadSafe, priority);
         }
 
         /// <summary>
@@ -134,11 +140,9 @@ namespace org.critterai.nmbuild
             result = new TileBuildAssets();
 
             NavmeshTileBuildData tbd =
-                NMBuild.GetBuildData(mTileX, mTileZ
-                , mPolyData
-                , (mDetailData == null ? null : mDetailData)
-                , mConnections
-                , logger);
+                NMBuild.GetBuildData(logger, mTileX, mTileZ
+                , mPolyData, (mDetailData == null ? null : mDetailData), mConnections
+                , mBVTreeEnabled);
 
             AddMessages(logger.GetMessages());
 

@@ -29,7 +29,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(AreaMarkerCompiler))]
-public class AreaMarkerCompilerEditor
+public sealed class AreaMarkerCompilerEditor
     : Editor
 {
     /// <summary>

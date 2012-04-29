@@ -307,20 +307,20 @@ public sealed class NavmeshBuild
         mIsDirty = true;
     }
 
-    internal bool SetConfigFromTarget(BuildContext logger)
+    internal bool SetConfigFromTarget(BuildContext context)
     {
         if (mBuildData.IsValid)
             // Can't do it while in buildable state.
             return false;
 
-        if (!CanLoadFromTarget(false, logger))
+        if (!CanLoadFromTarget(context, false))
             return false;
 
         Navmesh navmesh = BuildTarget.GetNavmesh();
 
         if (navmesh == null)
         {
-            logger.LogError("Build target does not have an existing navigation mesh. (It lied.)"
+            context.LogError("Build target does not have an existing navigation mesh. (It lied.)"
                     , this);
             return false;
         }
@@ -373,19 +373,19 @@ public sealed class NavmeshBuild
         mIsDirty = true;
     }
 
-    internal bool SetInputData(InputGeometry geometry
+    internal bool SetInputData(BuildContext context
+        , InputGeometry geometry
         , InputBuildInfo info
         , INMGenProcessor[] processors
         , ConnectionSet connections
-        , bool threadSafeOnly
-        , BuildContext mLogger)
+        , bool threadSafeOnly)
     {
         // Remember: Never allow this method to clear the input geometry.
         // Note: Don't set class fields until it is safe.
 
         if (geometry == null)
         {
-            mLogger.LogError("Set input data: Invalid parameters.", this);
+            context.LogError("Set input data: Invalid parameters.", this);
             return false;
         }
 
@@ -415,14 +415,14 @@ public sealed class NavmeshBuild
 
             if (threadSafeOnly && !p.IsThreadSafe)
             {
-                mLogger.LogError(p.Name + " processor is not thread-safe.", this);
+                context.LogError(p.Name + " processor is not thread-safe.", this);
                 threadCheckFail = true;
             }
         }
 
         if (threadCheckFail)
         {
-            mLogger.LogError("One or more processors is not thread-safe.", this);
+            context.LogError("One or more processors is not thread-safe.", this);
             return false;
         }
 
@@ -432,7 +432,7 @@ public sealed class NavmeshBuild
 
         if (pset == null)
         {
-            mLogger.LogError("Set input data: No NMGen processors available.", this);
+            context.LogError("Set input data: No NMGen processors available.", this);
             return false;
         }
 
@@ -450,7 +450,7 @@ public sealed class NavmeshBuild
 
             if (mTileSet == null)
             {
-                mLogger.LogError("Set input data: Create tile build definition: Unexpected error."
+                context.LogError("Set input data: Create tile build definition: Unexpected error."
                     + " Invalid input data or configuration."
                     , this);
                 return false;
@@ -488,14 +488,14 @@ public sealed class NavmeshBuild
         }
     }
 
-    internal bool CanLoadFromTarget(bool fullCheck, BuildContext logger)
+    internal bool CanLoadFromTarget(BuildContext context, bool fullCheck)
     {
         INavmeshData target = BuildTarget;
 
         if (target == null || !target.HasNavmesh)
         {
-            if (logger != null)
-                logger.LogError("Build target does not have an existing navigation mesh.", this);
+            if (context != null)
+                context.LogError("Build target does not have an existing navigation mesh.", this);
             return false;
         }
 
@@ -506,8 +506,8 @@ public sealed class NavmeshBuild
         if (targetConfig == null
             || targetConfig.tileSize >= 0 && targetConfig.tileSize < MinAllowedTileSize)
         {
-            if (logger != null)
-                logger.LogError("Unavailable or unsupported build target configuration.", this);
+            if (context != null)
+                context.LogError("Unavailable or unsupported build target configuration.", this);
             return false;
         }
 
@@ -518,9 +518,9 @@ public sealed class NavmeshBuild
 
         if (nm == null)
         {
-            if (logger != null)
+            if (context != null)
             {
-                logger.LogError(
+                context.LogError(
                     "Build target does not have an existing navigation mesh. (It lied.)", this);
             }
             return false;
@@ -530,8 +530,8 @@ public sealed class NavmeshBuild
 
         if (nmConfig.maxTiles < 2)
         {
-            if (logger != null)
-                logger.LogError("Target navigation mesh is not tiled.", this);
+            if (context != null)
+                context.LogError("Target navigation mesh is not tiled.", this);
             return false;
         }
 
@@ -552,9 +552,9 @@ public sealed class NavmeshBuild
 
             if (header.layer > 0)
             {
-                if (logger != null)
+                if (context != null)
                 {
-                    logger.LogError(
+                    context.LogError(
                         "Target navigation mesh contains layered tiles. (Not supported.)", this);
                 }
                 return false;
@@ -563,9 +563,9 @@ public sealed class NavmeshBuild
 
         if (tileCount < 2)
         {
-            if (logger != null)
+            if (context != null)
             {
-                logger.LogError(
+                context.LogError(
                     "Target navigation mesh is either not tiled or has no tiles loaded.", this);
             }
             return false;
@@ -586,13 +586,13 @@ public sealed class NavmeshBuild
 
     }
 
-    internal bool InitializeBuild(bool fromTarget, BuildContext mLogger)
+    internal bool InitializeBuild(BuildContext context, bool fromTarget)
     {
         Navmesh navmesh = null;
 
         if (fromTarget)
         {
-            if (!CanLoadFromTarget(true, mLogger))
+            if (!CanLoadFromTarget(context, true))
                 return false;
 
             navmesh = BuildTarget.GetNavmesh();
@@ -611,7 +611,7 @@ public sealed class NavmeshBuild
                 + " {0} to 0 (non-tiled). Minimum tile size is {1}"
                 , mConfig.TileSize, MinAllowedTileSize);
 
-            mLogger.LogWarning(msg, this);
+            context.LogWarning(msg, this);
 
             mConfig.TileSize = 0;
         }
@@ -643,7 +643,7 @@ public sealed class NavmeshBuild
 
                 if (mTileSet == null)
                 {
-                    mLogger.LogError("Create tile build definition: Unexpected error."
+                    context.LogError("Create tile build definition: Unexpected error."
                         + " Invalid input data or configuration."
                         , this);
 
@@ -670,7 +670,7 @@ public sealed class NavmeshBuild
 
             if ((status & NavStatus.Failure) != 0)
             {
-                mLogger.LogError("Could not extract the tile data from the target's"
+                context.LogError("Could not extract the tile data from the target's"
                     + " navigation mesh. (Can't initialize from build target.)"
                     , this);
                 return false;
@@ -696,7 +696,7 @@ public sealed class NavmeshBuild
                         + " the tile. (Tile: [{0},{1}])"
                         , tx, tz);
 
-                    mLogger.LogWarning(msg, this);
+                    context.LogWarning(msg, this);
 
                     continue;
                 }

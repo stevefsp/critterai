@@ -100,7 +100,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
             bool guiEnabled = GUI.enabled;
 
-            bool targetOK = build.CanLoadFromTarget(false, null);
+            bool targetOK = build.CanLoadFromTarget(null, false);
 
             GUILayout.Space(MarginSize * 2);
 
@@ -163,7 +163,7 @@ namespace org.critterai.nmbuild.u3d.editor
 
         private void InitializeBuild(bool fromTarget)
         {
-            if (!Context.Build.InitializeBuild(fromTarget, Logger))
+            if (!Context.Build.InitializeBuild(Logger, fromTarget))
                 Logger.PostError("Could not initialize the build.", Context.Build);
         }
 
@@ -430,6 +430,11 @@ namespace org.critterai.nmbuild.u3d.editor
                 config.ResultOptions |= NMGenAssetFlag.DetailMesh;
             else
                 config.ResultOptions &= ~NMGenAssetFlag.DetailMesh;
+
+            HandleFlagGUI(ref flags
+                , NMGenConfig.BVTreeLabel
+                , NMGenBuildFlag.BVTreeEnabled
+                , isInspector);
 
             config.BuildFlags = flags;
         }

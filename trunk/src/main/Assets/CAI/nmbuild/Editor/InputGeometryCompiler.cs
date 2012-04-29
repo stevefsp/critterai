@@ -42,7 +42,7 @@ namespace org.critterai.nmbuild
     /// </remarks>
     /// <seealso cref="InputGeometry"/>
     /// <seealso cref="InputGeometryBuilder"/>
-    public class InputGeometryCompiler
+    public sealed class InputGeometryCompiler
     {
         private readonly List<Vector3> mVerts;
         private readonly List<int> mTris;

@@ -56,10 +56,10 @@ namespace org.critterai.nmbuild
 
         private readonly ChunkyTriMesh mMesh;
 
-        internal InputGeometry(ChunkyTriMesh mesh, Vector3 bmin, Vector3 bmax)
+        internal InputGeometry(ChunkyTriMesh mesh, Vector3 boundsMin, Vector3 boundsMax)
         {
-            mBoundsMin = bmin;
-            mBoundsMax = bmax;
+            mBoundsMin = boundsMin;
+            mBoundsMax = boundsMax;
             mMesh = mesh;
         }
 

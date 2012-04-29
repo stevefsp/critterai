@@ -33,6 +33,13 @@
 				<listItem>Create the navigation mesh.</listItem>
 				
 			</list>
+			
+			<para></para>
+			<alert class="note">
+			  <para>
+			  CAINav uses the OpenGL coordinate system.
+			  </para>
+			</alert>
      
     </introduction>
     

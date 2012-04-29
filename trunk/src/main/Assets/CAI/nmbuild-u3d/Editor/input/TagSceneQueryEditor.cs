@@ -30,7 +30,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(TagSceneQuery))]
-public class TagSceneQueryEditor
+public sealed class TagSceneQueryEditor
     : Editor
 {
     /// <summary>

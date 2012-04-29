@@ -30,7 +30,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(AreaFlagDef))]
-public class AreaFlagDefEditor
+public sealed class AreaFlagDefEditor
     : Editor
 {
     private CAINavEditorSettings mSettings;

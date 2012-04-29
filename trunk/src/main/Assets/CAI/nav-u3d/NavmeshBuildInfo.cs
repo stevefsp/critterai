@@ -34,7 +34,7 @@ namespace org.critterai.nav.u3d
     /// </para>
     /// </remarks>
     [System.Serializable]
-    public class NavmeshBuildInfo
+    public sealed class NavmeshBuildInfo
     {
         /// <summary>
         /// Tile size.

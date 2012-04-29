@@ -276,12 +276,9 @@ namespace org.critterai.nmbuild.u3d.editor
         {
             NavmeshBuild build = Context.Build;  // Caller checks for null.
 
-            if (!build.SetInputData(mCompiler.Geometry
-                , mCompiler.Info
-                , mCompiler.Processors
-                , mCompiler.Connections
-                , true
-                , Logger))
+            if (!build.SetInputData(Logger, mCompiler.Geometry
+                , mCompiler.Info, mCompiler.Processors, mCompiler.Connections
+                , true))
             {
                 Logger.PostError("Could not apply input data.", build);
                 return;  // Let the compiler persist so user can review it.

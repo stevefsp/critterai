@@ -89,6 +89,13 @@
 				build process.
 				</para>
 				
+				<para></para>
+				<alert class="note">
+				  <para>
+				  CAINav uses the OpenGL coordinate system.
+				  </para>
+				</alert>
+				
 				<mediaLink>
 					<image xlink:href="WrapDirection"/>
 				</mediaLink>

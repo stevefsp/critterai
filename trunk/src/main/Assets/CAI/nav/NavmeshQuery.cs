@@ -107,16 +107,16 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Finds the polygon nearest to the specified point.
+        /// Finds the nearest point on the surface of the navigation mesh.
         /// </summary>
         /// <remarks>
         /// <para>
         /// If the search box does not intersect any polygons the search will return success, 
-        /// but the result polyRef will be zero.  So always check the result polyRef before using 
-        /// the nearest point data.
+        /// but the result polygon reference will be zero.  So always check the polygon reference
+        /// before using the point data.
         /// </para>
-        /// <b>Warning:</b> This function is not suitable for large area searches.  If the search extents 
-        /// overlaps more than 128 polygons it may return an invalid result.
+        /// <b>Warning:</b> This function is not suitable for large area searches.  If the 
+        /// search extents overlaps more than 128 polygons it may return an invalid result.
         /// <para>
         /// The detail mesh is used to correct the y-value of result.
         /// </para>
@@ -126,7 +126,7 @@ namespace org.critterai.nav
         /// <param name="filter">The filter to apply to the query.</param>
         /// <param name="result">The nearest point on the polygon.</param>
         /// <returns>The <see cref="NavStatus"/> flags for the query.</returns>
-        public NavStatus GetNearestPoly(Vector3 searchPoint, Vector3 extents
+        public NavStatus GetNearestPoint(Vector3 searchPoint, Vector3 extents
             , NavmeshQueryFilter filter
             , out NavmeshPoint result)
         {
@@ -427,7 +427,7 @@ namespace org.critterai.nav
             return NavmeshQueryEx.dtqFindPolysAroundShape(root
                 , startPolyRef
                 , vertices
-                , vertices.Length / 3
+                , vertices.Length
                 , filter.root
                 , resultPolyRefs
                 , resultParentRefs
@@ -527,9 +527,7 @@ namespace org.critterai.nav
         /// <param name="sourcePoint">The position to search from.</param>
         /// <param name="resultPoint">The closest point on the polygon.</param>
         /// <returns>The <see cref="NavStatus" /> flags for the query.</returns>
-        public NavStatus GetNearestPoint(uint polyRef
-            , Vector3 sourcePoint
-            , out Vector3 resultPoint)
+        public NavStatus GetNearestPoint(uint polyRef, Vector3 sourcePoint, out Vector3 resultPoint)
         {
             resultPoint = Vector3Util.Zero;
 
@@ -545,7 +543,7 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Much faster than <see cref="GetNearestPoint" />.
+        /// Much faster than the other nearest point methods.
         /// </para>
         /// <para>
         /// If the provided point lies within the polygon's xz-column (above or below), then 
@@ -692,10 +690,15 @@ namespace org.critterai.nav
         /// have a polygon reference of zero, then this method is equivalent to the following:
         /// </para>
         /// <ol>
-        /// <li>Call <see cref="GetNearestPoly"/> using the <paramref name="start"/> point.</li>
-        /// <li>Call <see cref="GetNearestPoly"/> using the <paramref name="end"/> point.</li>
-        /// <li>Call the normal find path using the two new start and end points.
+        /// <li>
+        /// Using <see cref="GetNearestPoint(uint, Vector3, out Vector3)"/> with the 
+        /// <paramref name="start"/> point to get the start polygon.
         /// </li>
+        /// <li>
+        /// Using <see cref="GetNearestPoint(uint, Vector3, out Vector3)"/> with the 
+        /// <paramref name="end"/> point to get the end polygon.
+        /// </li>
+        /// <li>Calling the normal find path using the two new start and end points.</li>
         /// </ol>
         /// <para>
         /// <em>A point search will only be performed for points with a polygon reference 

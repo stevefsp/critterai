@@ -493,12 +493,8 @@ namespace org.critterai.nmgen
         /// The walkable step used to build
         /// the contour data. [Limit: >= 0] [Units: YCellSize]</param>
         /// <returns>The generated polygon mesh, or null if there were errors.</returns>
-        public static PolyMesh Build(BuildContext context
-            , ContourSet contours
-            , int maxVertsPerPoly
-            , int walkableHeight
-            , int walkableRadius
-            , int walkableStep)
+        public static PolyMesh Build(BuildContext context, ContourSet contours
+            , int maxVertsPerPoly, int walkableHeight, int walkableRadius, int walkableStep)
         {
             if (context == null || contours == null)
                 return null;

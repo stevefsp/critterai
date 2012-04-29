@@ -118,8 +118,7 @@ namespace org.critterai.nmgen
         /// <param name="context">The context to use duing the operation.</param>
         /// <param name="field">The source field.</param>
         /// <returns>The resulting layer set, or null on failure.</returns>
-        public static HeightfieldLayerSet Build(BuildContext context
-            , CompactHeightfield field)
+        public static HeightfieldLayerSet Build(BuildContext context, CompactHeightfield field)
         {
             if (context == null)
                 return null;

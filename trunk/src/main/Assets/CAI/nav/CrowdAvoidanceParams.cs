@@ -41,7 +41,7 @@ namespace org.critterai.nav
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public class CrowdAvoidanceParams
+    public sealed class CrowdAvoidanceParams
     {
 
         /*

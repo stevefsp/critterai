@@ -304,8 +304,7 @@ namespace org.critterai.nmgen
         /// waklable. [Limit: > 0]
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public bool MarkLowObstaclesWalkable(BuildContext context
-            , int walkableStep)
+        public bool MarkLowObstaclesWalkable(BuildContext context, int walkableStep)
         {
             if (IsDisposed)
                 return false;
@@ -339,8 +338,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <returns>True if the operation was successful.</returns>
         public bool MarkLedgeSpansNotWalkable(BuildContext context
-            , int walkableHeight
-            , int walkableStep)
+            , int walkableHeight, int walkableStep)
         {
             if (IsDisposed)
                 return false;
@@ -367,8 +365,7 @@ namespace org.critterai.nmgen
         /// [Limit: > <see cref="NMGen.MinWalkableHeight"/>]
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public bool MarkLowHeightSpansNotWalkable(BuildContext context
-            , int walkableHeight)
+        public bool MarkLowHeightSpansNotWalkable(BuildContext context, int walkableHeight)
         {
             if (IsDisposed)
                 return false;
@@ -392,9 +389,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <returns>True if the operation was successful.</returns>
         public bool AddTriangle(BuildContext context
-            , Vector3[] verts
-            , byte area
-            , int flagMergeThreshold)
+            , Vector3[] verts, byte area, int flagMergeThreshold)
         {
             if (IsDisposed)
                 return false;
@@ -420,9 +415,7 @@ namespace org.critterai.nmgen
         /// [Limit: >= 0] [Normal: 1]
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public bool AddTriangles(BuildContext context
-            , TriangleMesh mesh
-            , byte[] areas
+        public bool AddTriangles(BuildContext context, TriangleMesh mesh, byte[] areas
             , int flagMergeThreshold)
         {
             if (IsDisposed)
@@ -456,10 +449,8 @@ namespace org.critterai.nmgen
         /// [Limit: >= 0] [Normal: 1]
         /// </param>
         /// <returns>True if the operation was successful.</returns>
-        public bool AddTriangles(BuildContext context
-            , ChunkyTriMesh mesh
-            , Vector3 boundsMin
-            , Vector3 boundsMax
+        public bool AddTriangles(BuildContext context, ChunkyTriMesh mesh
+            , Vector3 boundsMin, Vector3 boundsMax
             , int flagMergeThreshold)
         {
             if (IsDisposed || mesh == null || mesh.IsDisposed)
@@ -509,9 +500,7 @@ namespace org.critterai.nmgen
         /// </param>
         /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
-            , Vector3[] verts
-            , ushort[] tris
-            , byte[] areas
+            , Vector3[] verts, ushort[] tris, byte[] areas
             , int flagMergeThreshold)
         {
             if (IsDisposed)
@@ -543,18 +532,14 @@ namespace org.critterai.nmgen
         /// </param>
         /// <returns>True if the operation was successful.</returns>
         public bool AddTriangles(BuildContext context
-            , Vector3[] verts
-            , byte[] areas
-            , int triCount
+            , Vector3[] verts, byte[] areas, int triCount
             , int flagMergeThreshold)
         {
             if (IsDisposed)
                 return false;
 
             return HeightfieldEx.nmhfRasterizeTriangles(context.root
-                , verts
-                , areas
-                , triCount
+                , verts, areas, triCount
                 , root
                 , flagMergeThreshold);
         }

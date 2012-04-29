@@ -51,7 +51,7 @@ namespace org.critterai.nav
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public class CornerData
+    public sealed class CornerData
     {
         /*
          * Design note:
@@ -155,7 +155,7 @@ namespace org.critterai.nav
 
             Array.Copy(source.flags, desitation.flags, size);
             Array.Copy(source.polyRefs, desitation.polyRefs, size);
-            Array.Copy(source.verts, desitation.verts, size * 3);
+            Array.Copy(source.verts, desitation.verts, size);
             desitation.cornerCount = Math.Min(size, source.cornerCount);
         }
 

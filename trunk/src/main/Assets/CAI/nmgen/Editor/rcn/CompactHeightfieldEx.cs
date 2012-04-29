@@ -63,8 +63,8 @@ namespace org.critterai.nmgen.rcn
 
         [DllImport(InteropUtil.PLATFORM_DLL)]
         public static extern bool nmcfMarkBoxArea(IntPtr context
-            , [In] ref Vector3 bmin
-            , [In] ref Vector3 bmax
+            , [In] ref Vector3 boundsMin
+            , [In] ref Vector3 boundsMax
             , byte areaId
             , [In, Out] CompactHeightfield chf);
 

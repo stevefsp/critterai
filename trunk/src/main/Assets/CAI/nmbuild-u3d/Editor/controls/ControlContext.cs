@@ -81,15 +81,17 @@ namespace org.critterai.nmbuild.u3d.editor
             return mTaskProcessor.QueueTask(task);
         }
 
-        public bool QueueTask(int tx, int tz
+        public bool QueueTask(BuildContext context
+            , int tx, int tz
             , PolyMesh polyMesh, PolyMeshDetail detailMesh
-            , int priority
-            , BuildContext context)
+            , bool bvTreeEnabled
+            , int priority)
         {
             TileBuildTask task = TileBuildTask.Create(tx, tz
                 , polyMesh.GetData(false)
                 , (detailMesh == null ? null : detailMesh.GetData(true))
                 , Build.Connections
+                , bvTreeEnabled
                 , true
                 , priority);
 

@@ -58,7 +58,7 @@ public sealed class AreaMarkerCompiler
     /// <param name="state">The current state of the input build.</param>
     /// <param name="context">The input context to process.</param>
     /// <returns>False if the input build should abort.</returns>
-    public bool ProcessInput(InputBuildState state, InputBuildContext context)
+    public bool ProcessInput(InputBuildContext context, InputBuildState state)
     {
         if (context != null)
         {

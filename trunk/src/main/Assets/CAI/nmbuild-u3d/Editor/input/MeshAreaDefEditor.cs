@@ -32,7 +32,7 @@ using org.critterai.nmbuild.u3d.editor;
 /// </summary>
 /// <exclude />
 [CustomEditor(typeof(MeshAreaDef))]
-public class MeshAreaDefEditor
+public sealed class MeshAreaDefEditor
     : Editor
 {
     private CAINavEditorSettings mSettings;
