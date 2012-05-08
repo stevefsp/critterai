@@ -35,13 +35,11 @@ using org.critterai.nmbuild.u3d.editor;
 public sealed class TagAreaDefEditor
     : Editor
 {
-    private CAINavEditorSettings mSettings;
-    private string[] mAreaNames;
+    private CAINavEditorSettingsEditor.AreaGUIControl mAreaControl;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
-        mAreaNames = mSettings.GetAreaNames();
+        mAreaControl = CAINavEditorSettingsEditor.CreateAreaControl("");
     }
 
     /// <summary>
@@ -103,12 +101,7 @@ public sealed class TagAreaDefEditor
                 if (tag == tags[i] || !tags.Contains(tag))
                     tags[i] = tag;
 
-                int orig = mSettings.GetAreaNameIndex(areas[i]);
-
-                int curr = EditorGUILayout.Popup(orig, mAreaNames);
-
-                if (curr != orig)
-                    areas[i] = mSettings.GetArea(mAreaNames[curr]);
+                areas[i] = mAreaControl.OnGUI(areas[i]);
 
                 if (GUILayout.Button("X"))
                     delChoice = i;

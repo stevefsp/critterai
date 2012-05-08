@@ -226,9 +226,13 @@ namespace org.critterai.nav
         }
 
         /// <summary>
-        /// Finds the polygons that overlap the search box.
+        /// Gets all polygons whose AABB's overlap the search box.
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// This is a fast, but inaccurate query since only AABB's are checked.  A strict 
+        /// polygon-box overlap check is not performed.
+        /// </para>
         /// <para>
         /// If no polygons are found, the method will return success with a result count of zero.
         /// </para>

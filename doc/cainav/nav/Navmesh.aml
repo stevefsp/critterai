@@ -211,7 +211,7 @@
 				Using the <codeEntityReference>T:org.critterai.nav.NavmeshTileBuildData</codeEntityReference> class
 				directly can be a bit daunting.  The 
 				<codeEntityReference>
-				M:org.critterai.nmbuild.NMBuild.GetBuildData(System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,org.critterai.nmgen.BuildContext)
+				M:org.critterai.nmbuild.NMBuild.GetBuildData(org.critterai.nmgen.BuildContext,System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,System.Boolean)
 				</codeEntityReference>
 				utility method provides a standard way of creating the build data.
 				</para>

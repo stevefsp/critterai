@@ -2,11 +2,12 @@
 
 build
 
-    Contains build scripts and Visual Studio projects for active projects.
+    Contains Visual Studio projects and build related source files for active 
+    projects.
 
 doc
 
-    Documentation source and project files.
+    Documentation project and source files.
 
 legacy
 
@@ -20,12 +21,11 @@ src
     under  /src/main/Assets/CAI.  This layout mimics the layout within
     a Unity project.  It is structured in this way to support easy source
     deployment to non-Windows Unity projects which can't use the pre-compiled
-    DLL's.
+    libraries.
 
 >> .NET Notes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 No automatic builds or packaging.
-Visual Studio Test for testing.
 Sandcastle for documentation build.
 
 DOCUMENTATION BUILD NOTES
@@ -42,14 +42,13 @@ http://sandcastlestyles.codeplex.com/releases/view/47767 - Patch Used
 
 >> Unity Notes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+Libraries and namespaces containing 'u3d' depend on Unity Pro 
+(http://unity3d.com/). The free version of unity is not supported.
 
-Projects targeted to the 'u3d' platform depend on Unity (http://unity3d.com/).
-Some require Unity Pro.  See project home for details. (http://critterai.org/)
+The Visual Studio projects were created on Windows 64-bit, so the Unity DLL 
+reference will be broken on 32-bit Windows.
 
-The Visual Studio projects were created on a 64-bit version of Windows, so the
-Unity DLL reference may be broken on 32-bit Windows.
-
-For Unity 3.0, the expected location of the DLL for both operating systems is 
+For Unity 3.x, the normal location of the DLL for both operating systems is 
 as follows:
 
 Windows 32-bit: C:\Program Files\Unity\Editor\Data\Managed

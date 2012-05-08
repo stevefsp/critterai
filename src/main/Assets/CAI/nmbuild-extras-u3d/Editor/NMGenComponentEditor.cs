@@ -30,27 +30,6 @@ public class NMGenComponentEditor
     : Editor
 {
     /// <summary>
-    /// The global navigation settings.
-    /// </summary>
-    protected CAINavEditorSettings settings;
-
-    /// <summary>
-    /// The well known area names.
-    /// </summary>
-    protected string[] areaNames;
-
-    /// <summary>
-    /// Run when the editor is enabled.
-    /// </summary>
-    protected virtual void OnEnable()
-    {
-        ((NMGenComponent)target).debugEnabledLocal = true;
-
-        settings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
-        areaNames = settings.GetAreaNames();
-    }
-
-    /// <summary>
     /// Run when the editor is disabled. (Goes out of scope.)
     /// </summary>
     protected virtual void OnDisable()

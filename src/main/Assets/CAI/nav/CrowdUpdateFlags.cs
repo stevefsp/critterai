@@ -30,28 +30,39 @@ namespace org.critterai.nav
     public enum CrowdUpdateFlags : byte
     {
         /// <summary>
-        /// Undocumented
+        /// Modify steering in order to anticipate turns.
         /// </summary>
         AnticipateTurns = 0x01,
 
         /// <summary>
-        /// Undocumented.
+        /// Modify steering to avoid obstacles.
         /// </summary>
         ObstacleAvoidance = 0x02,
 
         /// <summary>
-        /// Undocumented.
+        /// Modify steering for crowd separation.
         /// </summary>
         CrowdSeparation = 0x04,
 
         /// <summary>
         /// Optimize visibility using <see cref="PathCorridor.OptimizePathVisibility"/> .
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Improves pathfinding appearance when using meshes that contain non-border.
+        /// vertices.  (E.g. Tiled meshes and meshes constructed using multiple areas.)
+        /// </para>
+        /// </remarks>
         OptimizeVis = 0x08,
 
         /// <summary>
         /// Optimize topology using <see cref="PathCorridor.OptimizePathTopology"/>.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Improves pathfinding appearance in crowded areas and for complex meshes.
+        /// </para>
+        /// </remarks>
         OptimizeTopo = 0x10
     }
 }

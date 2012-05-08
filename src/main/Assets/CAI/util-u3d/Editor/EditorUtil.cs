@@ -298,7 +298,7 @@ namespace org.critterai.u3d.editor
         /// Creates a new asset in the same directory as the specified asset.
         /// </summary>
         /// <typeparam name="T">The type of asse to create.</typeparam>
-        /// <param name="atAsset">The asset where the new asset should be located.</param>
+        /// <param name="atAsset">The asset where the new asset should be colocated.</param>
         /// <param name="label">The asset label.</param>
         /// <returns>The new asset.</returns>
         public static T CreateAsset<T>(ScriptableObject atAsset, string label) 
@@ -390,8 +390,6 @@ namespace org.critterai.u3d.editor
                 result.name = name;
 
                 AssetDatabase.CreateAsset(result, path);
-
-                AssetDatabase.SaveAssets();
                 AssetDatabase.ImportAsset(path);
             }
 
@@ -399,7 +397,7 @@ namespace org.critterai.u3d.editor
         }
 
         /// <summary>
-        /// Attemps to create a scene position based on the current SceneView camera.
+        /// Attempts to get a scene position based on the current SceneView camera.
         /// </summary>
         /// <remarks>
         /// <para>

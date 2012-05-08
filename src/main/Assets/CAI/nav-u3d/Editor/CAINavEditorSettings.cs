@@ -24,28 +24,49 @@ using System.Collections.Generic;
 using org.critterai.nav;
 
 /// <summary>
-/// Global navigation related settings. (Editor Only)
+/// Global navigation settings. (Editor Only)
 /// </summary>
+/// <remarks>
+/// <para>The values in this class can only be edited via the Unity Editor.</para>
+/// </remarks>
 [System.Serializable]
 public sealed class CAINavEditorSettings
     : ScriptableObject
 {
-    private const string UnWalkable = "Not Walkable";
-    private const string Default = "Default";
-    private const string Unknown = "Unknown";
+    /// <summary>
+    /// The well known name for <see cref="Navmesh.NullArea"/>.
+    /// </summary>
+    public const string NotWalkable = "Not Walkable";
+
+    /// <summary>
+    /// The well known name for <see cref="Navmesh.MaxArea"/>.
+    /// </summary>
+    public const string Default = "Default";
+
+    /// <summary>
+    /// The area name for areas with no defined well known name.
+    /// </summary>
+    public const string Undefined = "<Undefined>";
+
+    /// <summary>
+    /// A value indicating that the area is unknown.
+    /// </summary>
+    /// <seealso cref="GetArea"/>
+    public const byte UnknownArea = Navmesh.MaxArea + 1;
 
     [SerializeField]
-    internal List<string> areaNames = new List<string>();
-
-    [SerializeField]
-    internal List<byte> areas = new List<byte>();
+    internal string[] areaNames;
 
     [SerializeField]
     internal string[] flagNames;
 
+    [SerializeField]
+    internal string[] avoidanceNames;
+
     void OnEnable()
     {
-        if (areaNames.Count == 0)
+        if (areaNames == null || areaNames.Length == 0)
+            // First startup.
             Reset();
     }
 
@@ -54,17 +75,16 @@ public sealed class CAINavEditorSettings
     /// </summary>
     public void Reset()
     {
-        areaNames.Clear();
-        areas.Clear();
+        areaNames = new string[Navmesh.MaxArea + 1];
 
-        areaNames.Add(UnWalkable);
-        areas.Add(Navmesh.NullArea);
+        for (int i = 1; i < Navmesh.MaxArea; i++)
+        {
+            areaNames[i] = Undefined;
+        }
 
-        areaNames.Add(Default);
-        areas.Add(Navmesh.MaxArea);
-
-        areaNames.Add("Water");
-        areas.Add((byte)(Navmesh.MaxArea - 1));
+        areaNames[Navmesh.NullArea] = NotWalkable;
+        areaNames[Navmesh.MaxArea] = Default;
+        areaNames[Navmesh.MaxArea - 1] = "Water";
 
         flagNames = new string[16];
 
@@ -77,57 +97,52 @@ public sealed class CAINavEditorSettings
         {
             flagNames[i] = string.Format("Flag 0x{0:X}", 1 << i);
         }
+
+        avoidanceNames = new string[CrowdManager.MaxAvoidanceParams];
+
+        avoidanceNames[0] = "Low";
+        avoidanceNames[1] = "Medium";
+        avoidanceNames[2] = "Good";
+        avoidanceNames[3] = "High";
+
+        for (int i = 4; i < avoidanceNames.Length; i++)
+        {
+            avoidanceNames[i] = "Quality " + i;
+        }
     }
 
     /// <summary>
-    /// Gets a clone of the defined well known area names.
+    /// Gets a clone of the area names.
     /// </summary>
-    /// <returns>A clone of the area names.</returns>
+    /// <remarks>
+    /// <para>
+    /// This is the full array, including the <see cref="Undefined"/> values.
+    /// </para>
+    /// </remarks>
+    /// <returns>A clone of the area names. [Length: <see cref="Navmesh.MaxArea"/> + 1]</returns>
     public string[] GetAreaNames()
     {
-        return areaNames.ToArray();
+        return (string[])areaNames.Clone();
     }
 
     /// <summary>
-    /// True if the area has a defined well known name.
+    /// Gets the area associated with the well known area name.
     /// </summary>
-    /// <param name="area">The area.</param>
-    /// <returns>True if the area is well known.</returns>
-    public bool HasAreaName(byte area)
-    {
-        return (areas.IndexOf(area) >= 0);
-    }
-
-    /// <summary>
-    /// Gets the name of the area, or a default name if none has been defined.
-    /// </summary>
-    /// <param name="area">The area.</param>
-    /// <returns>The area's well known name.</returns>
-    public string GetAreaName(byte area)
-    {
-        int i = areas.IndexOf(area);
-        return (i == -1) ? Unknown : areaNames[i];
-    }
-
-    /// <summary>
-    /// Gets the index of the area's well known name. (Or -1 if it is not well known.)
-    /// </summary>
-    /// <param name="area">The area.</param>
-    /// <returns>The index of the well known name.</returns>
-    public int GetAreaNameIndex(byte area)
-    {
-        return areas.IndexOf(area);
-    }
-
-    /// <summary>
-    /// Gets the area associated with the well known name. (Or 0 if not a valid name.)
-    /// </summary>
-    /// <param name="name">The well known name.</param>
-    /// <returns>The area associated with the name.</returns>
+    /// <param name="name">The well known area name.</param>
+    /// <returns>Gets the area associated with the well known name, or 
+    /// <see cref="UnknownArea"/> if the name is invalid.</returns>
     public byte GetArea(string name)
     {
-        int i = areaNames.IndexOf(name);
-        return (i == -1) ? (byte)0 : areas[i];
+        if (name == NotWalkable)
+            return Navmesh.NullArea;
+
+        for (int i = 0; i < areaNames.Length; i++)
+        {
+            if (areaNames[i] == name)
+                return (byte)i;
+        }
+
+        return UnknownArea;
     }
 
     /// <summary>
@@ -142,34 +157,20 @@ public sealed class CAINavEditorSettings
     /// for flag (1 &lt;&lt; 5).
     /// </para>
     /// </remarks>
-    /// <returns>A clone of the flag names.</returns>
+    /// <returns>A clone of the flag names. [Length: 16]</returns>
     public string[] GetFlagNames()
     {
         return (string[])flagNames.Clone();
     }
 
-    ///// <summary>
-    ///// Gets the well known name of the flag. (Only one should be set.)
-    ///// </summary>
-    ///// <param name="flag">The flag.</param>
-    ///// <returns></returns>
-    //public string GetFlagName(ushort flag)
-    //{
-    //    for (int i = 0; i < 16; i++)
-    //    {
-    //        if ((flag & (1 << i)) != 0)
-    //            return flagNames[i];
-    //    }
-    //    return "";
-    //}
-
-    //public int GetFlagNameIndex(ushort flag)
-    //{
-    //    for (int i = 0; i < 16; i++)
-    //    {
-    //        if ((flag & (1 << i)) != 0)
-    //            return i;
-    //    }
-    //    return -1;
-    //}
+    /// <summary>
+    /// Gets a clone of the well known crowd avoidance names.
+    /// </summary>
+    /// <returns>
+    /// A clone of the avoidance names. [Length: <see cref="CrowdManager.MaxAvoidanceParams"/>]
+    /// </returns>
+    public string[] GetAvoidanceNames()
+    {
+        return (string[])avoidanceNames.Clone();
+    }
 }

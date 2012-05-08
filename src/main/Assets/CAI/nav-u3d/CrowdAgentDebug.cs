@@ -177,7 +177,7 @@ namespace org.critterai.nav.u3d
 
             for (int i = 0; i < boundary.segmentCount; i++)
             {
-                int p = i * 6;
+                int p = i * 2;
                 GL.Vertex(boundary.segments[p]);
                 GL.Vertex(boundary.segments[p + 1]);
             }

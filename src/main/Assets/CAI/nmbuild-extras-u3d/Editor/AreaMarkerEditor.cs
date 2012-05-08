@@ -33,6 +33,21 @@ public class AreaMarkerEditor
     private static Vector3 markerSize = new Vector3(0.3f, 0.05f, 0.3f);
 
     /// <summary>
+    /// An area selector control
+    /// </summary>
+    protected CAINavEditorSettingsEditor.AreaGUIControl areaControl;
+
+    /// <summary>
+    /// Run when the editor is enabled.
+    /// </summary>
+    protected virtual void OnEnable()
+    {
+        ((NMGenComponent)target).debugEnabledLocal = true;
+
+        areaControl = CAINavEditorSettingsEditor.CreateAreaControl("Area");
+    }
+
+    /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
     /// <param name="targ">Editor target.</param>
@@ -55,11 +70,7 @@ public class AreaMarkerEditor
         // Note: Clamp before sending to property.
         targ.Priority = EditorGUILayout.IntField("Priority", targ.Priority);
 
-        int orig = settings.GetAreaNameIndex(targ.Area);
-        int curr = EditorGUILayout.Popup("Area", orig, areaNames);
-
-        if (curr != orig)
-            targ.Area = settings.GetArea(areaNames[curr]);
+        targ.Area = areaControl.OnGUI(targ.Area);
 
         EditorGUILayout.Separator();
     }

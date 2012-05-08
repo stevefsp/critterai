@@ -63,7 +63,7 @@
 						
 					  <para>
 						<codeEntityReference>
-						M:org.critterai.nav.NavmeshQuery.GetNearestPoly(UnityEngine.Vector3,UnityEngine.Vector3,org.critterai.nav.NavmeshQueryFilter,org.critterai.nav.NavmeshPoint@)
+						M:org.critterai.nav.NavmeshQuery.GetNearestPoint(UnityEngine.Vector3,UnityEngine.Vector3,org.critterai.nav.NavmeshQueryFilter,org.critterai.nav.NavmeshPoint@)
 						</codeEntityReference>
 						</para>
 					  
