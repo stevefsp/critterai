@@ -480,11 +480,9 @@ namespace org.critterai.nmbuild.u3d.editor
 
                     GUI.changed = true;
                 }
-
-                if (isInspector)
-                    EditorGUILayout.EndHorizontal();
             }
-            else if (isInspector)
+
+            if (isInspector)
                 EditorGUILayout.EndHorizontal();
 
         }

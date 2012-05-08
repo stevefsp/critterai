@@ -196,7 +196,7 @@ namespace org.critterai.u3d.editor
                     if (item == items[i] || !items.Contains(item))
                         items[i] = item;
 
-                    if (GUILayout.Button("X"))
+                    if (GUILayout.Button("X", GUILayout.Width(30)))
                         delChoice = i;
 
                     EditorGUILayout.EndHorizontal();
@@ -262,7 +262,7 @@ namespace org.critterai.u3d.editor
                     if (item == items[i] || !items.Contains(item))
                         items[i] = item;
 
-                    if (GUILayout.Button("X"))
+                    if (GUILayout.Button("X", GUILayout.Width(30)))
                         delChoice = i;
 
                     EditorGUILayout.EndHorizontal();
