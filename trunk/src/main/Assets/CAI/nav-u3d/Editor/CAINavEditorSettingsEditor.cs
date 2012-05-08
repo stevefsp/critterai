@@ -33,17 +33,129 @@ using org.critterai.u3d.editor;
 public sealed class CAINavEditorSettingsEditor
     : Editor
 {
+    /// <summary>
+    /// A control GUI suitable for selecting an area based on its well known name. 
+    /// </summary>
+    public class AreaGUIControl
+    {
+        private List<string> mNamesAll = new List<string>(Navmesh.MaxArea + 1);
+        private string[] mNamesShort;
+        private string mLabel;
+
+        internal AreaGUIControl(string label, string[] areaNames)
+        {
+            mLabel = label;
+
+            for (int i = 0; i < areaNames.Length; i++)
+            {
+                if (areaNames[i] != CAINavEditorSettings.Undefined)
+                    mNamesAll.Add(areaNames[i]);
+            }
+
+            mNamesAll.Add(CAINavEditorSettings.Undefined);
+
+            mNamesShort = mNamesAll.ToArray();
+
+            mNamesAll.Clear();
+
+            mNamesAll.AddRange(areaNames);
+        }
+
+        /// <summary>
+        /// Displays the area selector.
+        /// </summary>
+        /// <param name="currentArea">The current area.</param>
+        /// <returns>The selected area.</returns>
+        public byte OnGUI(byte currentArea)
+        {
+            return OnGUI(mLabel, currentArea);
+        }
+
+        /// <summary>
+        /// Displays the area selector with a custom label.
+        /// </summary>
+        /// <param name="labelOverride">The custom label.</param>
+        /// <param name="currentArea">The current area.</param>
+        /// <returns>The selected area.</returns>
+        public byte OnGUI(string labelOverride, byte currentArea)
+        {
+            string name = mNamesAll[currentArea];
+            
+            int undef = mNamesShort.Length - 1;
+
+            int i = undef;
+            for (;i >= 0; i--)
+            {
+                if (name == mNamesShort[i])
+                    break;
+            }
+
+            if (i == undef)
+                mNamesShort[undef] = currentArea + " " + mNamesShort[undef];
+
+            int ni = EditorGUILayout.Popup(labelOverride, i, mNamesShort);
+
+            mNamesShort[undef] = CAINavEditorSettings.Undefined;
+
+            if (i == ni || ni == undef)
+                return currentArea;
+
+            return (byte)mNamesAll.IndexOf(mNamesShort[ni]);
+        }
+    }
+
+    private const string AddAreaName = "AddArea";
+
     private static bool mShowAreas = true;
     private static bool mShowFlags = true;
+    private static bool mShowAvoidance = true;
 
-    private static string mNewName = "";
     private static byte mNewArea = Navmesh.NullArea;
+    private static bool mFocusNew = false;
+
+    /// <summary>
+    /// Creates a control useful for assigning area values.
+    /// </summary>
+    /// <param name="label">The default label for the control.</param>
+    /// <returns></returns>
+    public static AreaGUIControl CreateAreaControl(string label)
+    {
+        CAINavEditorSettings settings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
+        return new AreaGUIControl(label, (string[])settings.areaNames.Clone());
+    }
+
+    /// <summary>
+    /// Gets a clone of the global well know flag names.
+    /// </summary>
+    /// <returns>A clone of the flag names.</returns>
+    public static string[] GetFlagNames()
+    {
+        CAINavEditorSettings settings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
+        return (string[])settings.flagNames.Clone();
+    }
+
+    /// <summary>
+    /// Gets a clone of the global  well known avoidance type names.
+    /// </summary>
+    /// <returns>A clone of the well known avoidance type names.</returns>
+    public static string[] GetAvoidanceNames()
+    {
+        CAINavEditorSettings settings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
+        return (string[])settings.avoidanceNames.Clone();
+    }
+
+    void OnEnable()
+    {
+        mNewArea = NextUndefinedArea();
+    }
 
     /// <summary>
     /// Controls behavior of the inspector.
     /// </summary>
     public override void OnInspectorGUI()
     {
+        EditorGUIUtility.LookLikeControls(80);
+
         EditorGUILayout.Separator();
 
         mShowAreas = EditorGUILayout.Foldout(mShowAreas, "Area Names");
@@ -60,104 +172,108 @@ public sealed class CAINavEditorSettingsEditor
 
         EditorGUILayout.Separator();
 
+        mShowAvoidance = EditorGUILayout.Foldout(mShowAvoidance, "Crowd Avoidance Names");
+
+        if (mShowAvoidance)
+            OnGUIAvoidance();
+
+        EditorGUILayout.Separator();
+
         if (GUI.changed)
             EditorUtility.SetDirty(target);
+    }
+
+    private byte NextUndefinedArea()
+    {
+        CAINavEditorSettings targ = (CAINavEditorSettings)target;
+
+        string[] areaNames = targ.areaNames;
+
+        for (int i = 1; i < areaNames.Length; i++)
+        {
+            if (areaNames[i] == CAINavEditorSettings.Undefined)
+                return (byte)i;
+        }
+
+        return 0;
     }
 
     private void OnGUIAreas()
     {
         CAINavEditorSettings targ = (CAINavEditorSettings)target;
 
-        List<byte> areas = targ.areas;
-        List<string> areaNames = targ.areaNames;
+        string[] areaNames = targ.areaNames;
 
         EditorGUILayout.Separator();
 
-        GUILayout.Label("Name / Area");
-
-        EditorGUILayout.Separator();
-
-        if (areas.Count > 0)
+        for (int i = 0; i < areaNames.Length; i++)
         {
-            EditorGUILayout.BeginVertical();
+            if (areaNames[i] == CAINavEditorSettings.Undefined)
+                continue;
 
-            int delChoice = -1;
+            EditorGUILayout.BeginHorizontal();
 
-            for (int i = 0; i < areas.Count; i++)
+            GUI.enabled = (i != Navmesh.NullArea);
+
+            string areaName = EditorGUILayout.TextField(i.ToString(), areaNames[i]);
+
+            // Note: Extra checks reduce the need to run the last check, which is more expensive.
+            if (areaName.Length > 0
+                && areaName != areaNames[i]
+                && areaName != CAINavEditorSettings.NotWalkable  // Quick check.
+                && areaName != CAINavEditorSettings.Undefined  // This check is important.
+                && targ.GetArea(areaName) == CAINavEditorSettings.UnknownArea)  
             {
-                EditorGUILayout.BeginHorizontal();
-
-                GUI.enabled = (areas[i] != Navmesh.NullArea);
-
-                string areaName = EditorGUILayout.TextField(areaNames[i]);
-
-                if (areaName.Length > 0 
-                    && areaName != areaNames[i] 
-                    && !areaNames.Contains(areaName))
-                {
-                    areaNames[i] = areaName;
-                }
-
-                GUI.enabled = !(areas[i] == Navmesh.NullArea || areas[i] == Navmesh.MaxArea);
-
-                byte area =
-                    NavUtil.ClampArea(EditorGUILayout.IntField(areas[i], GUILayout.Width(40)));
-
-                if (area == areas[i] || !areas.Contains(area))
-                    areas[i] = area;
-
-                if (GUILayout.Button("X"))
-                    delChoice = i;
-
-                GUI.enabled = true;
-
-                EditorGUILayout.EndHorizontal();
+                areaNames[i] = areaName;
             }
 
-            if (delChoice >= 0)
+            GUI.enabled = !(i == Navmesh.NullArea || i == Navmesh.MaxArea);
+
+            if (GUILayout.Button("X", GUILayout.Width(30)))
             {
-                areaNames.RemoveAt(delChoice);
-                areas.RemoveAt(delChoice);
+                areaNames[i] = CAINavEditorSettings.Undefined;
+
+                mNewArea = NextUndefinedArea();
+                mFocusNew = true;  // Prevents off GUI behavior.
+
                 GUI.changed = true;
             }
 
-            EditorGUILayout.EndVertical();
+            GUI.enabled = true;
+
+            EditorGUILayout.EndHorizontal();
         }
 
-        EditorGUILayout.BeginVertical();
         EditorGUILayout.Separator();
 
         EditorGUILayout.BeginHorizontal();
 
-        mNewName = EditorGUILayout.TextField(mNewName).Trim();
-        mNewArea =
-            NavUtil.ClampArea(EditorGUILayout.IntField(mNewArea, GUILayout.Width(40)));
-
-        GUI.enabled = (mNewName.Length > 0);
-
-        if (GUILayout.Button("Add"))
+        GUI.SetNextControlName(AddAreaName);
+        mNewArea = NavUtil.ClampArea(EditorGUILayout.IntField(mNewArea, GUILayout.Width(80)));
+        if (mFocusNew)
         {
-            if (areaNames.Contains(mNewName) || areas.Contains(mNewArea))
-            {
-                Debug.LogError(string.Format(
-                    "{0}: Name or area already defined: Name: {1}, Area: {2}"
-                    , targ.name, mNewName, mNewArea));
-            }
-            else
-            {
-                areaNames.Add(mNewName);
-                areas.Add(mNewArea);
-                mNewName = "";
-                mNewArea = Navmesh.NullArea;
-                GUI.changed = true;
-            }
+            GUI.FocusControl(AddAreaName);
+            mFocusNew = false;
+        }
+
+        GUI.enabled = (areaNames[mNewArea] == CAINavEditorSettings.Undefined);
+
+        if (GUILayout.Button("Add", GUILayout.Width(80)))
+        {
+            areaNames[mNewArea] = "Area " + mNewArea;
+            mNewArea = NextUndefinedArea();
+            mFocusNew = true;
+            GUI.changed = true;
         }
 
         GUI.enabled = true;
 
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.EndVertical();
+        EditorGUILayout.Separator();
+
+        EditorGUILayout.LabelField("Maximum allowed area: " + Navmesh.MaxArea
+            , EditorUtil.HelpStyle, GUILayout.ExpandWidth(true));
     }
 
     private void OnGUIFlags()
@@ -171,6 +287,21 @@ public sealed class CAINavEditorSettingsEditor
         for (int i = 0; i < names.Length; i++)
         {
             string val = EditorGUILayout.TextField(string.Format("0x{0:X}", 1 << i), names[i]);
+            names[i] = (val.Length == 0 ? names[i] : val);
+        }
+    }
+
+    private void OnGUIAvoidance()
+    {
+        CAINavEditorSettings targ = (CAINavEditorSettings)target;
+
+        string[] names = targ.avoidanceNames;
+
+        EditorGUILayout.Separator();
+
+        for (int i = 0; i < names.Length; i++)
+        {
+            string val = EditorGUILayout.TextField(i.ToString(), names[i]);
             names[i] = (val.Length == 0 ? names[i] : val);
         }
     }

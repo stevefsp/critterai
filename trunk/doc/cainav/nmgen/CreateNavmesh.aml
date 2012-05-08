@@ -29,7 +29,7 @@
 				<para>
 				One method is to use the 
 				<codeEntityReference>
-				M:org.critterai.nmbuild.NMBuild.GetBuildData(System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,org.critterai.nmgen.BuildContext)
+				M:org.critterai.nmbuild.NMBuild.GetBuildData(org.critterai.nmgen.BuildContext,System.Int32,System.Int32,org.critterai.nmgen.PolyMeshData,org.critterai.nmgen.PolyMeshDetailData,org.critterai.nmbuild.ConnectionSet,System.Boolean)
 				</codeEntityReference> utility method.
 				</para>
 			

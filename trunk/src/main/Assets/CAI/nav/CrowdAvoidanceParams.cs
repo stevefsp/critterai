@@ -134,5 +134,69 @@ namespace org.critterai.nav
             result.adaptiveDepth = adaptiveDepth;
             return result;
         }
+
+        /// <summary>
+        /// Creates a standard low quality configuration.
+        /// </summary>
+        /// <returns>A high quality configuration.</returns>
+        public static CrowdAvoidanceParams CreateStandardLow()
+        {
+            CrowdAvoidanceParams result = new CrowdAvoidanceParams();
+
+            result.velocityBias = 0.5f;
+            result.adaptiveDivisions = 5;
+            result.adaptiveRings = 2;
+            result.adaptiveDepth = 1;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a standard medium quality configuration.
+        /// </summary>
+        /// <returns>A high quality configuration.</returns>
+        public static CrowdAvoidanceParams CreateStandardMedium()
+        {
+            CrowdAvoidanceParams result = new CrowdAvoidanceParams();
+
+            result.velocityBias = 0.5f;
+            result.adaptiveDivisions = 5;
+            result.adaptiveRings = 2;
+            result.adaptiveDepth = 2;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a standard good quality configuration.
+        /// </summary>
+        /// <returns>A high quality configuration.</returns>
+        public static CrowdAvoidanceParams CreateStandardGood()
+        {
+            CrowdAvoidanceParams result = new CrowdAvoidanceParams();
+ 
+            result.velocityBias = 0.5f;
+            result.adaptiveDivisions = 7;
+            result.adaptiveRings = 2;
+            result.adaptiveDepth = 3;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a standard high quality configuration.
+        /// </summary>
+        /// <returns>A high quality configuration.</returns>
+        public static CrowdAvoidanceParams CreateStandardHigh()
+        {
+            CrowdAvoidanceParams result = new CrowdAvoidanceParams();
+
+            result.velocityBias = 0.5f;
+            result.adaptiveDivisions = 7;
+            result.adaptiveRings = 3;
+            result.adaptiveDepth = 3;
+
+            return result;
+        }
     }
 }

@@ -103,10 +103,7 @@ namespace org.critterai.nav
         /// </summary>
         /// <param name="index">The corner index. [Limit: &lt;= <see cref="MaxCorners"/></param>
         /// <returns>The corner point.</returns>
-        public NavmeshPoint this[int index]
-        {
-            get { return mCorners[index]; }
-        }
+        public NavmeshPoint this[int index] { get { return mCorners[index]; } }
 
         /// <summary>
         /// The maximum path size that can be handled by the corridor.
@@ -116,10 +113,7 @@ namespace org.critterai.nav
         /// <summary>
         /// The maximum number of corners that the corner buffer can hold.
         /// </summary>
-        public int MaxCorners 
-        { 
-            get { return mCorners.MaxCorners; } 
-        }
+        public int MaxCorners { get { return mCorners.MaxCorners; } }
 
         /// <summary>
         /// The type of unmanaged resource used by the object.
@@ -353,12 +347,9 @@ namespace org.critterai.nav
         public int FindCorners(CornerData buffer)
         {
             buffer.cornerCount = PathCorridorEx.dtpcFindCorners(mRoot
-                , buffer.verts
-                , buffer.flags
-                , buffer.polyRefs
-                , buffer.polyRefs.Length
-                , mQuery.root
-                , mFilter.root);
+                , buffer.verts, buffer.flags, buffer.polyRefs, buffer.polyRefs.Length
+                , mQuery.root, mFilter.root);
+
             return buffer.cornerCount;
         }
 
@@ -368,14 +359,18 @@ namespace org.critterai.nav
         /// </summary>
         /// <remarks>
         /// <para>
+        /// Improves pathfinding appearance when using meshes that contain non-border.
+        /// vertices.  (E.g. Tiled meshes and meshes constructed using multiple areas.)
+        /// </para>
+        /// <para>
         /// The only time <paramref name="updateCorners"/> should be set to false is if a move 
         /// or other optimization method is to be called next. Otherwise the corner data may 
         /// become invalid.
         /// </para>
         /// <para>
-        /// Inaccurate locomotion or dynamic obstacle avoidance can forcethe agent position 
+        /// Inaccurate locomotion or dynamic obstacle avoidance can force the agent position 
         /// significantly outside the original corridor. Over time this can result in the 
-        /// formation of a non-optima corridor. A non-optimal corridor can also form near
+        /// formation of a non-optimal corridor. A non-optimal corridor can also form near
         /// non-border vertices.  (I.e. At tile corners or area transitions.)
         /// </para>
         /// <para>
@@ -398,27 +393,21 @@ namespace org.critterai.nav
         /// <param name="next">The point to search toward.</param>
         /// <param name="optimizationRange">The maximum range to search. [Limit: > 0]</param>
         /// <param name="updateCorners">True if the corners data should be refreshed.</param>
-        public void OptimizePathVisibility(Vector3 next
-            , float optimizationRange
+        public void OptimizePathVisibility(Vector3 next, float optimizationRange
             , bool updateCorners)
         {
             if (updateCorners)
-                mCorners.cornerCount =
-                    PathCorridorEx.dtpcOptimizePathVisibilityExt(mRoot
-                        , ref next
-                        , optimizationRange
-                        , mCorners.verts
-                        , mCorners.flags
-                        , mCorners.polyRefs
-                        , mCorners.polyRefs.Length
-                        , mQuery.root
-                        , mFilter.root);
+            {
+                mCorners.cornerCount = PathCorridorEx.dtpcOptimizePathVisibilityExt(mRoot
+                    , ref next, optimizationRange
+                    , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                    , mQuery.root, mFilter.root);
+            }
             else
-                PathCorridorEx.dtpcOptimizePathVisibility(mRoot
-                    , ref next
-                    , optimizationRange
-                    , mQuery.root
-                    , mFilter.root);
+            {
+                PathCorridorEx.dtpcOptimizePathVisibility(
+                    mRoot, ref next, optimizationRange, mQuery.root, mFilter.root);
+            }
         }
 
         /// <summary>
@@ -426,6 +415,9 @@ namespace org.critterai.nav
         /// (Partial replanning.)
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// Improves pathfinding appearance in crowded areas and for complex meshes.
+        /// </para>
         /// <para>
         /// The only time <paramref name="updateCorners"/> should be set to false is if a move or 
         /// another optimization method is to be called next. Otherwise the corner data may 
@@ -442,27 +434,22 @@ namespace org.critterai.nav
         /// Simply adjust the frequency of the call to match the needs to the client.
         /// </para>
         /// <para>
-        /// This is a local optimization and will not necessarily effect the entire corridor 
-        /// through to the goal.  So it should normally be called based on a time increment rather 
-        /// than movement events. I.e. Optimize once a second.
+        /// This is a local optimization.  It usually doesn't effect the entire corridor 
+        /// through to the goal.  It should normally be called based on a time increment rather 
+        /// than movement events. I.e. Call once a second.
         /// </para>
         /// </remarks>
         /// <param name="updateCorners">True if the corners data should be refreshed.</param>
         public void OptimizePathTopology(bool updateCorners)
         {
             if (updateCorners)
-                mCorners.cornerCount =
-                    PathCorridorEx.dtpcOptimizePathTopologyExt(mRoot
-                        , mCorners.verts
-                        , mCorners.flags
-                        , mCorners.polyRefs
-                        , mCorners.polyRefs.Length
-                        , mQuery.root
-                        , mFilter.root);
+            {
+                mCorners.cornerCount = PathCorridorEx.dtpcOptimizePathTopologyExt(mRoot
+                    , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                    , mQuery.root, mFilter.root);
+            }
             else
-                PathCorridorEx.dtpcOptimizePathTopology(mRoot
-                    , mQuery.root
-                    , mFilter.root);
+                PathCorridorEx.dtpcOptimizePathTopology(mRoot, mQuery.root, mFilter.root);
         }
 
         /// <summary>
@@ -478,17 +465,11 @@ namespace org.critterai.nav
         /// <param name="startPosition">The start position.</param>
         /// <param name="endPosition">The end position.</param>
         /// <returns>True if the operation succeeded.</returns>
-        public bool MoveOverConnection(uint connectionRef
-            , uint[] endpointRefs
-            , Vector3 startPosition
-            , Vector3 endPosition)
+        public bool MoveOverConnection(uint connectionRef, uint[] endpointRefs
+            , Vector3 startPosition, Vector3 endPosition)
         {
             return PathCorridorEx.dtpcMoveOverOffmeshConnection(mRoot
-                , connectionRef
-                , endpointRefs
-                , ref startPosition
-                , ref endPosition
-                , ref mPosition
+                , connectionRef, endpointRefs, ref startPosition, ref endPosition, ref mPosition
                 , mQuery.root);
         }
 
@@ -516,17 +497,15 @@ namespace org.critterai.nav
         /// </para>
         /// </remarks>
         /// <param name="desiredPosition">The desired position.</param>
-        public void MovePosition(Vector3 desiredPosition)
+        /// <returns>The result of the move.</returns>
+        public NavmeshPoint MovePosition(Vector3 desiredPosition)
         {
             mCorners.cornerCount = PathCorridorEx.dtpcMovePosition(mRoot
-                , ref desiredPosition
-                , ref mPosition
-                , mCorners.verts
-                , mCorners.flags
-                , mCorners.polyRefs
-                , mCorners.polyRefs.Length
-                , mQuery.root
-                , mFilter.root);
+                , ref desiredPosition, ref mPosition
+                , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                , mQuery.root, mFilter.root);
+
+            return mPosition;
         }
 
         /// <summary>
@@ -553,18 +532,15 @@ namespace org.critterai.nav
         /// </para>
         /// </remarks>
         /// <param name="desiredTarget">The desired target.</param>
-        public void MoveTarget(Vector3 desiredTarget)
+        /// <returns>The result of the move.</returns>
+        public NavmeshPoint MoveTarget(Vector3 desiredTarget)
         {
-            mCorners.cornerCount =
-                PathCorridorEx.dtpcMoveTargetPosition(mRoot
-                    , ref desiredTarget
-                    , ref mTarget
-                    , mCorners.verts
-                    , mCorners.flags
-                    , mCorners.polyRefs
-                    , mCorners.polyRefs.Length
-                    , mQuery.root
-                    , mFilter.root);
+            mCorners.cornerCount = PathCorridorEx.dtpcMoveTargetPosition(mRoot
+                    , ref desiredTarget, ref mTarget
+                    , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                    , mQuery.root, mFilter.root);
+
+            return mTarget;
         }
 
         /// <summary>
@@ -590,16 +566,9 @@ namespace org.critterai.nav
         public void Move(Vector3 desiredPosition, Vector3 desiredTarget)
         {
             mCorners.cornerCount = PathCorridorEx.dtpcMove(mRoot
-                , ref desiredPosition
-                , ref desiredTarget
-                , ref mPosition
-                , ref mTarget
-                , mCorners.verts
-                , mCorners.flags
-                , mCorners.polyRefs
-                , mCorners.polyRefs.Length
-                , mQuery.root
-                , mFilter.root);
+                , ref desiredPosition, ref desiredTarget, ref mPosition, ref mTarget
+                , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                , mQuery.root, mFilter.root);
         }
 
         /// <summary>
@@ -625,16 +594,9 @@ namespace org.critterai.nav
             , int pathCount)
         {
             mCorners.cornerCount = PathCorridorEx.dtpcSetCorridor(mRoot
-                , ref target
-                , path
-                , pathCount
-                , ref mTarget
-                , mCorners.verts
-                , mCorners.flags
-                , mCorners.polyRefs
-                , mCorners.polyRefs.Length
-                , mQuery.root
-                , mFilter.root);
+                , ref target, path, pathCount, ref mTarget
+                , mCorners.verts, mCorners.flags, mCorners.polyRefs, mCorners.polyRefs.Length
+                , mQuery.root, mFilter.root);
         }
 
         /// <summary>
@@ -679,10 +641,7 @@ namespace org.critterai.nav
         /// <returns>True if the seached portion of the path is still valid.</returns>
         public bool IsValid(int maxLookAhead)
         {
-            return PathCorridorEx.dtpcIsValid(mRoot
-                , maxLookAhead
-                , mQuery.root
-                , mFilter.root);
+            return PathCorridorEx.dtpcIsValid(mRoot, maxLookAhead, mQuery.root, mFilter.root);
         }
 
         /// <summary>
@@ -702,12 +661,8 @@ namespace org.critterai.nav
         public bool GetData(PathCorridorData buffer)
         {
             // Only performs a partial parameter validation.
-            if (buffer == null
-                || buffer.path == null
-                || buffer.path.Length < 1)
-            {
+            if (buffer == null|| buffer.path == null|| buffer.path.Length < 1)
                 return false;
-            }
 
             if (buffer.path.Length == PathCorridorData.MarshalBufferSize)
                 return PathCorridorEx.dtpcGetData(mRoot, buffer);
@@ -766,13 +721,8 @@ namespace org.critterai.nav
             , NavmeshQuery query, NavmeshQueryFilter filter)
         {
             // Basic checks first.
-            if (position.polyRef == 0
-                || corridor == null
-                || query == null
-                || filter == null)
-            {
+            if (position.polyRef == 0|| corridor == null|| query == null|| filter == null)
                 return false;
-            }
 
             // Validate optional parameters.
 

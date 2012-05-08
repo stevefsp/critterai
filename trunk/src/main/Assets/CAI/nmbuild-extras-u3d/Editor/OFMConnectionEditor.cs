@@ -34,17 +34,15 @@ public sealed class OFMConnectionEditor
 {
     private static Vector3 markerSize = new Vector3(0.3f, 0.05f, 0.3f);
 
-    private CAINavEditorSettings mSettings;
-    private string[] mAreaNames;
     private string[] mFlagNames;
+    private CAINavEditorSettingsEditor.AreaGUIControl mAreaControl;
 
     void OnEnable()
     {
         ((NMGenComponent)target).debugEnabledLocal = true;
 
-        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
-        mAreaNames = mSettings.GetAreaNames();
-        mFlagNames = mSettings.GetFlagNames();
+        mAreaControl = CAINavEditorSettingsEditor.CreateAreaControl("Area");
+        mFlagNames = CAINavEditorSettingsEditor.GetFlagNames();
     }
 
     void OnDisable()
@@ -91,13 +89,7 @@ public sealed class OFMConnectionEditor
         GUI.enabled = targ.OverrideArea;
 
         if (GUI.enabled)
-        {
-            int orig = mSettings.GetAreaNameIndex(targ.Area);
-            int curr = EditorGUILayout.Popup("Area", orig, mAreaNames);
-
-            if (curr != orig)
-                targ.Area = mSettings.GetArea(mAreaNames[curr]);
-        }
+            targ.Area = mAreaControl.OnGUI(targ.Area);
         else
             EditorGUILayout.LabelField("Area", "Build Default");
 

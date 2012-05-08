@@ -86,7 +86,7 @@ namespace org.critterai.nav
         public float collisionQueryRange;
 
         /// <summary>
-        /// The path optimization range.
+        /// The path optimization range. [Limit: >= 0]
         /// </summary>
         /// <remarks>
         /// <para>
@@ -102,6 +102,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// How aggresive the agent manager should be at avoiding collisions with this agent.
+        /// [Limit: >= 0]
         /// </summary>
         /// <remarks>
         /// <para>
@@ -118,6 +119,7 @@ namespace org.critterai.nav
 
         /// <summary>
         /// The index of the avoidance parameters to use for the agent.
+        /// [Limits: 0 &lt;= value &lt; <see cref="CrowdManager.MaxAvoidanceParams"/>
         /// </summary>
         /// <remarks>
         /// <para>

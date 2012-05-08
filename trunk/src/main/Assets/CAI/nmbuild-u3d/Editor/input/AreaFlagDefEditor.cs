@@ -24,6 +24,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using org.critterai.u3d.editor;
 using org.critterai.nmbuild.u3d.editor;
+using org.critterai.nmgen;
 
 /// <summary>
 /// <see cref="AreaFlagDef"/> editor.
@@ -33,15 +34,15 @@ using org.critterai.nmbuild.u3d.editor;
 public sealed class AreaFlagDefEditor
     : Editor
 {
-    private CAINavEditorSettings mSettings;
-    private string[] mAreaNames;
     private string[] mFlagNames;
+    private CAINavEditorSettingsEditor.AreaGUIControl mAreaControl;
+
+    private byte mAddSelection = NMGen.MaxArea;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
-        mAreaNames = mSettings.GetAreaNames();
-        mFlagNames = mSettings.GetFlagNames();
+        mAreaControl = CAINavEditorSettingsEditor.CreateAreaControl("");
+        mFlagNames = CAINavEditorSettingsEditor.GetFlagNames();
     }
 
     /// <summary>
@@ -85,12 +86,7 @@ public sealed class AreaFlagDefEditor
 
                 // Note: Duplicates are a waste, but technically ok.
 
-                int orig = mSettings.GetAreaNameIndex(areas[i]);
-                int curr = EditorGUILayout.Popup(orig, mAreaNames);
-
-                if (curr != orig)
-                    areas[i] = mSettings.GetArea(mAreaNames[curr]);
-
+                areas[i] = mAreaControl.OnGUI(areas[i]);
                 flags[i] = EditorGUILayout.MaskField(flags[i], mFlagNames);
 
                 if (GUILayout.Button("X"))
@@ -113,12 +109,13 @@ public sealed class AreaFlagDefEditor
 
         EditorGUILayout.BeginHorizontal();
 
-        int selected = EditorGUILayout.Popup("Add", -1, mAreaNames);
+        mAddSelection = mAreaControl.OnGUI(mAddSelection);
 
-        if (selected >= 0)
+        if (GUILayout.Button("Add"))
         {
-            areas.Add(mSettings.GetArea(mAreaNames[selected]));
+            areas.Add(mAddSelection);
             flags.Add(org.critterai.nmbuild.NMBuild.DefaultFlag);
+            GUI.changed = true;
         }
 
         EditorGUILayout.EndHorizontal();

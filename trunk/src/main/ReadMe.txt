@@ -1,11 +1,5 @@
-The source code in this directory structure is in the same layout
-it should be in Unity if it is deployed in a un-compiled format.
-
-Example:
-
-Assets/CAI/nmgen-u3d
-    replaces Assets/CAI/cai-nmgen-u3d.dll
-
-Assets/CAI/nmgen-u3d/Editor 
-    replaces Assets/CAI/Editors/cai-nmgen-u3d-editor.dll
-
+The source code in the 'Assets' directory structure is in the same 
+layout it should be if deployed directly to a Unity project.
+(I.e. The 'Assets/CAI' directory can be dragged and dropped into
+a Unity project.)  The porject documentation contains some important
+notes when using a source distribution.

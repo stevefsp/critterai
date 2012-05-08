@@ -84,7 +84,7 @@ namespace org.critterai.nav.u3d.editor
         /// <summary>
         /// True if the visualization is active.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if an object is currently assigned for visualization.</returns>
         public bool IsShown()
         {
             return (ScriptableObject)mNavmeshData;

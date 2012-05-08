@@ -32,13 +32,11 @@ using org.critterai.nmbuild.u3d.editor;
 public sealed class DefaultAreaDefEditor
     : Editor
 {
-    private CAINavEditorSettings mSettings;
-    private string[] mAreaNames;
+    private CAINavEditorSettingsEditor.AreaGUIControl mAreaControl;
 
     void OnEnable()
     {
-        mSettings = EditorUtil.GetGlobalAsset<CAINavEditorSettings>();
-        mAreaNames = mSettings.GetAreaNames();
+        mAreaControl = CAINavEditorSettingsEditor.CreateAreaControl("Default Area");
     }
 
     /// <summary>
@@ -54,11 +52,7 @@ public sealed class DefaultAreaDefEditor
 
         EditorGUILayout.Separator();
 
-        int orig = mSettings.GetAreaNameIndex(targ.DefaultArea);
-        int curr = EditorGUILayout.Popup("Default Area", orig, mAreaNames);
-
-        if (curr != orig)
-            targ.DefaultArea = mSettings.GetArea(mAreaNames[curr]);
+        targ.DefaultArea = mAreaControl.OnGUI(targ.DefaultArea);
 
         EditorGUILayout.Separator();
 
