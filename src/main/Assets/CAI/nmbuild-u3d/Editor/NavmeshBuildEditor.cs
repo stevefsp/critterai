@@ -192,7 +192,7 @@ public sealed class NavmeshBuildEditor
                 ScriptableObject item = (ScriptableObject)
                     EditorGUILayout.ObjectField(currItem, typeof(ScriptableObject), false);
 
-                if (!item || GUILayout.Button("X"))
+                if (!item || GUILayout.Button("X", GUILayout.Width(30)))
                     delChoice = i;
                 else if (item != currItem && OkToAdd(items, item))
                     items[i] = item;

@@ -107,7 +107,7 @@ public sealed class MeshAreaDefEditor
 
                 areas[i] = mAreaControl.OnGUI(areas[i]);
 
-                if (GUILayout.Button("X"))
+                if (GUILayout.Button("X", GUILayout.Width(30)))
                     delChoice = i;
 
                 EditorGUILayout.EndHorizontal();

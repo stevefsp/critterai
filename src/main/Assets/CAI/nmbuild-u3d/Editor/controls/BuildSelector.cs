@@ -127,7 +127,7 @@ namespace org.critterai.nmbuild.u3d.editor
                 GUILayout.BeginHorizontal();
                 iSelected = EditorGUILayout.Popup(iOrig, mNames);
                 GUILayout.FlexibleSpace();
-                GUILayout.BeginHorizontal();
+                GUILayout.EndHorizontal();
                 GUILayout.EndArea();
             }
 
