@@ -53,16 +53,17 @@
     <VisibleItems>Protected, SealedProtected</VisibleItems>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="org.critterai" isDocumented="True">Provides general utility features.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Provides computational geometry features.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Provides native interop utility features.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Provides core pathfinding and local steering features.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Provides core features related to building navigation mesh data. (From source geometry.)</NamespaceSummaryItem>
-<NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use elements related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.u3d" isDocumented="True">Provides general &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nmbuild" isDocumented="True">Provides ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nmbuild.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="org.critterai.nav.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; Editor ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="org.critterai.geom" isDocumented="True">Provides computational geometry features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.interop" isDocumented="True">Provides native interop utility features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nav" isDocumented="True">Provides core pathfinding and local steering features.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nav.u3d" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmgen" isDocumented="True">Provides core features related to building navigation mesh data. (From source geometry.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="(global)" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use elements related to CAINav. (Navigation mesh generation, pathfinding, local steering, etc.)</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.u3d" isDocumented="True">Provides general &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use extentions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmbuild" isDocumented="True">Provides ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nmbuild.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; ease-of-use features related to building navigation meshes at design time.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="org.critterai.nav.u3d.editor" isDocumented="True">Provides &lt;a href="http://unity3d.com/unity/" target="_blank"&gt;Unity&lt;/a&gt; Editor ease-of-use extensions related to navigation. (Pathfinding and local steering.)</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <NamingMethod>HashedMemberName</NamingMethod>
     <Preliminary>True</Preliminary>
     <PresentationStyle>hana</PresentationStyle>
@@ -116,6 +117,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
+    <None Include="cainav\SwapingVectors.aml" />
     <None Include="cainav\u3d\AdvanceBuildType.aml" />
     <None Include="cainav\u3d\UnityBuildConfig.aml" />
     <None Include="cainav\u3d\InputBuild.aml" />

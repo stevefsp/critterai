@@ -39,11 +39,12 @@
 					BuildContext logger = new BuildContext();
 
 					NavmeshTileBuildData tbd = NMBuild.GetBuildData(
+								logger
 								tileX, tileZ	// The tile location.  (0, 0) for single tile meshes.
 								, polyData	  // A PolyMeshData object.
 								, detailData  // Optional PolyMeshDetailData object.
 								, connections // Optional ConnectionSet object.
-								, logger);
+								, true);
 
 					if (tbd == null)
 					{
