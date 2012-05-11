@@ -24,7 +24,7 @@
 				
 				<para>
 				Not all features have undergone rigorous testing. Some features have little documentation. 
-				Expect frequent changes to the API and potentially breaking to Unity components. 
+				Expect frequent changes to the API and potentially breaking changed to Unity components. 
 				E.g. Unity components may need to be deleted and re-created when migrating to a new release.
 				</para>
 				

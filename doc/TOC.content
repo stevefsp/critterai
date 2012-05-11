@@ -30,5 +30,6 @@
       <Topic id="21046960-3dc1-4369-a092-5f5bba4f752c" visible="True" title="Areas and the Build" />
     </Topic>
     <Topic id="bb02b5c5-1ea9-4ae4-bc1f-ff0e446fb703" visible="True" title="CAINav on Non-Windows Platforms" tocTitle="Tips for Non-Windows Platforms" linkText="CAINav on Non-Windows Platforms" />
+    <Topic id="3bea0158-1703-414c-bf1f-a47e47b12f48" visible="True" title=".NET: Swapping in Native Vectors" />
   </Topic>
 </Topics>
