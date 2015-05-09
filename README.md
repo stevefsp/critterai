@@ -1,4 +1,4 @@
-[Home Site](http://www.critterai.org/) | [Discussion Group](http://groups.google.com/group/critterai)
+[Home Site](http://www.critterai.org/)
 
 ## Project Archive
 
