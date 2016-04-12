@@ -92,13 +92,9 @@ namespace org.critterai.u3d
             {
                 if (!mSimpleMaterial)
                 {
-                    mSimpleMaterial = new Material(
-                        "Shader \"Lines/Colored Blended\" {"
-                        + "SubShader { Pass { "
-                        + "	BindChannels { Bind \"Color\",color } "
-                        + "	Blend SrcAlpha OneMinusSrcAlpha "
-                        + "	ZWrite Off Cull Off Fog { Mode Off } "
-                        + "} } }");
+                    /// using Hidden/Internal-Colored to replace
+		            var drawLine = Shader.Find("Hidden/Internal-Colored");
+		            mSimpleMaterial = new Material(drawLine);
                     mSimpleMaterial.hideFlags = HideFlags.HideAndDontSave;
                     mSimpleMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
                 }
